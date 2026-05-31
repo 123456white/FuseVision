@@ -1,0 +1,92 @@
+#include "Logger.h"
+#include <QFileInfo>
+#include <QDir>
+#include <spdlog/sinks/daily_file_sink.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
+
+/*
+ * Logger.cpp — PIMPL 实现体，封装所有 spdlog 依赖
+ *
+ * 日志格式: [日期 时间.毫秒] [级别] [源文件:行号] 日志内容
+ * 文件策略: daily_file_sink_mt 每日滚动，不限制文件数
+ * 控制台:   stdout_color_sink_mt 彩色输出（Windows 需 ANSI 支持）
+ * 刷盘策略: trace 及以上自动 flush（确保崩溃前日志落盘）
+ */
+
+struct Logger::Impl
+{
+    std::shared_ptr<spdlog::logger> logger;
+
+    static spdlog::level::level_enum toSpdlog(Logger::Level level)
+    {
+        switch (level) {
+        case Logger::Trace:    return spdlog::level::trace;
+        case Logger::Debug:    return spdlog::level::debug;
+        case Logger::Info:     return spdlog::level::info;
+        case Logger::Warn:     return spdlog::level::warn;
+        case Logger::Error:    return spdlog::level::err;
+        case Logger::Critical: return spdlog::level::critical;
+        case Logger::Off:      return spdlog::level::off;
+        default:               return spdlog::level::info;
+        }
+    }
+};
+
+std::unique_ptr<Logger::Impl> Logger::s_impl;
+
+void Logger::init(const QString& logPath, Level level)
+{
+    QFileInfo fileInfo(logPath);
+    QDir dir = fileInfo.absoluteDir();
+    if (!dir.exists()) {
+        dir.mkpath(".");
+    }
+
+    QString baseName = fileInfo.baseName();
+    QString dirPath = dir.absolutePath();
+    std::string dailyBasePath = (dirPath + "/" + baseName).toStdString();
+
+    auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>(
+        dailyBasePath, 0, 0, false, 0);
+    file_sink->set_level(Impl::toSpdlog(level));
+
+    auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
+    console_sink->set_level(spdlog::level::debug);
+
+    std::vector<spdlog::sink_ptr> sinks{ console_sink, file_sink };
+
+    auto logger = std::make_shared<spdlog::logger>("fusevision", sinks.begin(), sinks.end());
+    logger->set_level(Impl::toSpdlog(level));
+    logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [%s:%#] %v");
+    logger->flush_on(spdlog::level::trace);
+
+    spdlog::register_logger(logger);
+
+    s_impl = std::make_unique<Impl>();
+    s_impl->logger = logger;
+
+    s_impl->logger->info("Logger initialized (daily rolling, append mode). Log directory: {}",
+        dirPath.toStdString());
+}
+
+void Logger::setLevel(Level level)
+{
+    if (s_impl && s_impl->logger) {
+        s_impl->logger->set_level(Impl::toSpdlog(level));
+    }
+}
+
+void Logger::trace(const QString& msg)    { if (s_impl && s_impl->logger) s_impl->logger->trace(msg.toStdString()); }
+void Logger::debug(const QString& msg)    { if (s_impl && s_impl->logger) s_impl->logger->debug(msg.toStdString()); }
+void Logger::info(const QString& msg)     { if (s_impl && s_impl->logger) s_impl->logger->info(msg.toStdString()); }
+void Logger::warn(const QString& msg)     { if (s_impl && s_impl->logger) s_impl->logger->warn(msg.toStdString()); }
+void Logger::error(const QString& msg)    { if (s_impl && s_impl->logger) s_impl->logger->error(msg.toStdString()); }
+void Logger::critical(const QString& msg) { if (s_impl && s_impl->logger) s_impl->logger->critical(msg.toStdString()); }
+
+void Logger::flush()
+{
+    if (s_impl && s_impl->logger) {
+        s_impl->logger->flush();
+    }
+}

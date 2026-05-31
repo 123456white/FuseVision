@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/FuseVision.png</file>
+        <file>res/DeepLearningWidget.png</file>
+        <file>res/TraditionalWidget.png</file>
+        <file>res/SystemSettings.png</file>
+        <file>res/UserManagement.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,18 @@
+{
+    // 保留已有 Python 配置
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+
+    // CMake 集成
+    "cmake.configurePreset": "windows-x64-debug",
+    "cmake.buildPreset": "windows-debug",
+    "cmake.buildDirectory": "${workspaceFolder}/out/build/windows-x64-debug",
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.generator": "Ninja",
+    "cmake.configureOnOpen": true,
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+
+    // 性能优化
+    "files.exclude": { "out/": true, "backup/": true },
+    "files.watcherExclude": { "out/**": true, "backup/**": true }
+}

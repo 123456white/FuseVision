@@ -1,0 +1,35 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+
+jobs:
+  build-windows:
+    runs-on: windows-2025
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install CMake & Ninja
+        uses: lukka/get-cmake@latest
+
+      - name: Configure
+        run: cmake --preset windows-x64-debug
+
+      - name: Build
+        run: cmake --build --preset windows-debug --config Debug
+
+      - name: Test (预留)
+        run: ctest --preset windows-debug --output-on-failure
+        continue-on-error: true
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FuseVision-Windows-Debug
+          path: out/build/windows-x64-debug/bin/Debug/

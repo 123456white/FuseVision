@@ -1,0 +1,13 @@
+CompileFlags:
+  CompilationDatabase: out/build/windows-x64-debug
+  Remove:
+    - /showIncludes
+    - /wd*
+    - -external:W0
+  Add:
+    - -ID:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/include
+    - -ID:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/include/Qt6
+    - -ID:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/include/Qt6/QtCore
+    - -ID:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/include/Qt6/QtSql
+    - -ID:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/include/Qt6/QtGui
+    - -ID:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/include/Qt6/QtWidgets

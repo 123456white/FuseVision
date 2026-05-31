@@ -1,0 +1,50 @@
+# ========== 构建输出 ==========
+out/
+
+# ========== CMake 生成文件 ==========
+CMakeFiles/
+CMakeUserPresets.json
+
+# ========== vcpkg（嵌入模式，31 GB — 需本地引导克隆，不入库） ==========
+vcpkg/
+
+# ========== Visual Studio 生成文件 ==========
+.vs/
+
+# ========== 本地仓库 ==========
+.git/
+
+# ========== skill ==========
+.trae/
+
+# ========== 视频 ==========
+*.mp4
+
+# ========== 备份 ==========
+backup/
+
+# ========== 环境变量 / 密钥 ==========
+.env
+.env.local
+*.secret
+
+# ========== 第三方 SDK / 大型资源（不入库，需本地配置） ==========
+src/labelme/.claude/
+src/labelme/.gitHub/
+src/labelme/examples/
+src/labelme/tests/
+
+src/MVS/demo/
+
+src/VisionPro/Demo/
+
+src/yolo/weights/
+src/yolo/test/
+src/yolo/results/
+src/yolo/Services/FastAPI_test/
+src/yolo/Services/Brunotest/
+src/yolo/ultralytics-main/.github/
+src/yolo/ultralytics-main/docker/
+src/yolo/ultralytics-main/docs/
+src/yolo/ultralytics-main/examples/
+src/yolo/ultralytics-main/tests/
