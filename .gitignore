@@ -1,10 +1,6 @@
 # ========== 构建输出 ==========
 out/
 
-# ========== CMake 生成文件 ==========
-CMakeFiles/
-CMakeUserPresets.json
-
 # ========== vcpkg（嵌入模式，31 GB — 需本地引导克隆，不入库） ==========
 vcpkg/
 
