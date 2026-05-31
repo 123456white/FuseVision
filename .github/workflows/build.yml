@@ -20,6 +20,9 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git vcpkg
           .\vcpkg\bootstrap-vcpkg.bat
 
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Install CMake & Ninja
         uses: lukka/get-cmake@latest
 
