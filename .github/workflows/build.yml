@@ -11,12 +11,28 @@ env:
   VCPKG_DOWNLOADS: ${{ github.workspace }}/vcpkg/downloads
   VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
   VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg/bincache,readwrite"
+  VCPKG_FEATURE_FLAGS: manifests
 
 jobs:
   build-windows:
     runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Install CMake & Ninja
+        uses: lukka/get-cmake@latest
+
+      - name: Ensure Ninja available (fallback)
+        shell: pwsh
+        run: |
+          if (-not (Get-Command ninja -ErrorAction SilentlyContinue)) {
+            Write-Host "Ninja not found, installing via pip..."
+            pip install ninja
+          }
+          ninja --version
 
       - name: Restore vcpkg tool cache
         id: cache-vcpkg-tool
@@ -30,7 +46,7 @@ jobs:
             vcpkg/ports
             vcpkg/triplets
             vcpkg/versions
-          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
           restore-keys: |
             vcpkg-tool-${{ runner.os }}-
 
@@ -42,29 +58,30 @@ jobs:
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
         run: .\vcpkg\bootstrap-vcpkg.bat
 
-      - name: Restore vcpkg binary cache
-        id: cache-vcpkg-binary
-        uses: actions/cache@v4
-        with:
-          path: vcpkg/bincache
-          key: vcpkg-binary-${{ runner.os }}-x64-${{ hashFiles('**/vcpkg.json', '**/CMakePresets.json') }}
-          restore-keys: |
-            vcpkg-binary-${{ runner.os }}-x64-
-
       - name: Restore vcpkg downloads cache
         id: cache-vcpkg-downloads
         uses: actions/cache@v4
         with:
           path: vcpkg/downloads
-          key: vcpkg-downloads-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+          key: vcpkg-downloads-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
           restore-keys: |
             vcpkg-downloads-${{ runner.os }}-
 
-      - name: Setup MSVC
-        uses: ilammy/msvc-dev-cmd@v1
+      - name: Restore vcpkg binary cache
+        id: cache-vcpkg-binary
+        uses: actions/cache@v4
+        with:
+          path: vcpkg/bincache
+          key: vcpkg-binary-${{ runner.os }}-x64-windows-${{ hashFiles('vcpkg.json') }}-v1
+          restore-keys: |
+            vcpkg-binary-${{ runner.os }}-x64-windows-
 
-      - name: Install CMake & Ninja
-        uses: lukka/get-cmake@latest
+      - name: Ensure binary cache directory
+        run: |
+          if (-not (Test-Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}")) {
+            New-Item -ItemType Directory -Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}" -Force | Out-Null
+            Write-Host "Created binary cache directory: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
+          }
 
       - name: Configure
         run: cmake --preset windows-x64-debug
