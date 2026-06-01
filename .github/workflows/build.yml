@@ -31,6 +31,11 @@ jobs:
           if (-not (Get-Command ninja -ErrorAction SilentlyContinue)) {
             Write-Host "Ninja not found, installing via pip..."
             pip install ninja
+            $pyScripts = python -c "import sysconfig; print(sysconfig.get_path('scripts'))"
+            if ($pyScripts) {
+              echo "$pyScripts" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+              Write-Host "Added to PATH: $pyScripts"
+            }
           }
           ninja --version
 
@@ -40,14 +45,20 @@ jobs:
         with:
           path: |
             vcpkg/.git
+            vcpkg/.vcpkg-root
+            vcpkg/.gitattributes
+            vcpkg/.gitignore
             vcpkg/vcpkg.exe
             vcpkg/vcpkgmetricsuploader.exe
+            vcpkg/bootstrap-vcpkg.bat
+            vcpkg/bootstrap-vcpkg.sh
             vcpkg/scripts
             vcpkg/ports
             vcpkg/triplets
             vcpkg/versions
-          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
+          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-v2
           restore-keys: |
+            vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-
             vcpkg-tool-${{ runner.os }}-
 
       - name: Clone vcpkg (if cache miss)
@@ -57,6 +68,23 @@ jobs:
       - name: Bootstrap vcpkg (if cache miss)
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
         run: .\vcpkg\bootstrap-vcpkg.bat
+
+      - name: Verify vcpkg tool cache integrity
+        if: steps.cache-vcpkg-tool.outputs.cache-hit == 'true'
+        shell: pwsh
+        run: |
+          $missing = @()
+          if (-not (Test-Path "vcpkg/.vcpkg-root")) { $missing += ".vcpkg-root" }
+          if (-not (Test-Path "vcpkg/vcpkg.exe"))   { $missing += "vcpkg.exe" }
+          if (-not (Test-Path "vcpkg/scripts/buildsystems/vcpkg.cmake")) { $missing += "vcpkg.cmake" }
+          if ($missing.Count -gt 0) {
+            Write-Host "::warning::vcpkg tool cache corrupted, missing: $($missing -join ', '). Falling back to fresh install."
+            git clone https://github.com/microsoft/vcpkg.git vcpkg-temp
+            robocopy vcpkg-temp vcpkg /E /MOVE /NFL /NDL /NJH /NJS
+            .\vcpkg\bootstrap-vcpkg.bat
+          } else {
+            Write-Host "vcpkg tool cache verified OK"
+          }
 
       - name: Restore vcpkg downloads cache
         id: cache-vcpkg-downloads
