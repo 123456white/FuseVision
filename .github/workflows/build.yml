@@ -8,6 +8,9 @@ on:
 
 env:
   VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+  VCPKG_DOWNLOADS: ${{ github.workspace }}/vcpkg/downloads
+  VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg/bincache
+  VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg/bincache,readwrite"
 
 jobs:
   build-windows:
@@ -15,10 +18,46 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup vcpkg
-        run: |
-          git clone https://github.com/microsoft/vcpkg.git vcpkg
-          .\vcpkg\bootstrap-vcpkg.bat
+      - name: Restore vcpkg tool cache
+        id: cache-vcpkg-tool
+        uses: actions/cache@v4
+        with:
+          path: |
+            vcpkg/vcpkg.exe
+            vcpkg/vcpkgmetricsuploader.exe
+            vcpkg/scripts
+            vcpkg/ports
+            vcpkg/triplets
+            vcpkg/versions
+          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+          restore-keys: |
+            vcpkg-tool-${{ runner.os }}-
+
+      - name: Clone vcpkg (if cache miss)
+        if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
+        run: git clone --depth=1 --single-branch --branch 2026.02.15 https://github.com/microsoft/vcpkg.git vcpkg
+
+      - name: Bootstrap vcpkg (if cache miss)
+        if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
+        run: .\vcpkg\bootstrap-vcpkg.bat
+
+      - name: Restore vcpkg binary cache
+        id: cache-vcpkg-binary
+        uses: actions/cache@v4
+        with:
+          path: vcpkg/bincache
+          key: vcpkg-binary-${{ runner.os }}-x64-${{ hashFiles('**/vcpkg.json', '**/CMakePresets.json') }}
+          restore-keys: |
+            vcpkg-binary-${{ runner.os }}-x64-
+
+      - name: Restore vcpkg downloads cache
+        id: cache-vcpkg-downloads
+        uses: actions/cache@v4
+        with:
+          path: vcpkg/downloads
+          key: vcpkg-downloads-${{ runner.os }}-${{ hashFiles('**/vcpkg.json') }}
+          restore-keys: |
+            vcpkg-downloads-${{ runner.os }}-
 
       - name: Setup MSVC
         uses: ilammy/msvc-dev-cmd@v1
