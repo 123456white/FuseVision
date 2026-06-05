@@ -32,6 +32,8 @@ public:
     QString currentUsername() const;
     int     currentUserRole()   const;
 
+    void broadcastSession();  // 重新广播当前会话状态（用于延迟连接场景）
+
 signals:
     void sessionChanged();
 

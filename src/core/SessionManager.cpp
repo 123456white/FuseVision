@@ -52,3 +52,8 @@ bool    SessionManager::isLoggedIn()        const { return m_userId >= 0; }
 int     SessionManager::currentUserId()     const { return m_userId; }
 QString SessionManager::currentUsername()   const { return m_username; }
 int     SessionManager::currentUserRole()     const { return m_role; }
+
+void SessionManager::broadcastSession()
+{
+    emit sessionChanged();
+}

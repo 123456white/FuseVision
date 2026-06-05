@@ -10,33 +10,33 @@ ThemePalette lightPalette()
 {
     return {
         "#f0f2f5", "#ffffff", "#f8f9fa", "#f5f5f5",
-        "#eef4ff", "#ecf0f1",
-        "#2c3e50", "#555555", "#7f8c8d", "#0078d4",
-        "#dcdde1", "#bdc3c7", "#3498db",
-        "#0078d4", "#2980b9", "#1c5980",
-        "#27ae60", "#e67e22", "#e74c3c",
+        "#edf2fa", "#ecf0f1",
+        "#2c3e50", "#6b7280", "#8b95a5", "#5b8def",
+        "#dfe3e8", "#c8cdd3", "#5b8def",
+        "#5b8def", "#4a7de0", "#3d6bc7",
+        "#34a853", "#ed8936", "#e53e3e",
         "#ffffff", "#ffffff",
-        "#ffffff", "#eef4ff", "#f5f5f5", "none",
-        "#f8f9fa", "#dddddd",
-        "#dddddd",
-        "#f0f0f0", "#c0c0c0", "#a0a0a0"
+        "#ffffff", "#edf2fa", "#f5f5f5", "none",
+        "#f8f9fa", "#dfe3e8",
+        "#dfe3e8",
+        "#f0f0f0", "#c8cdd3", "#a8b0b8"
     };
 }
 
 ThemePalette darkPalette()
 {
     return {
-        "#1a1a2e", "#16213e", "#1e293b", "#2a3a5a",
-        "#1e3a5f", "#2d2d44",
-        "#e2e8f0", "#cbd5e1", "#94a3b8", "#60a5fa",
-        "#334155", "#475569", "#3b82f6",
-        "#3b82f6", "#2563eb", "#1d4ed8",
-        "#22c55e", "#f59e0b", "#ef4444",
-        "#16213e", "#1e293b",
-        "#16213e", "#1e3a5f", "#2a3a5a", "none",
-        "#1e293b", "#334155",
-        "#334155",
-        "#1e293b", "#475569", "#64748b"
+        "#1a1a2e", "#1e2540", "#243050", "#2a3858",
+        "#223a5a", "#2a3050",
+        "#e2e8f0", "#c0c8d4", "#96a0b0", "#6b9ff2",
+        "#3a4860", "#4a5870", "#4a80e0",
+        "#4a80e0", "#3b6ec8", "#305ab0",
+        "#34a853", "#ed8936", "#e53e3e",
+        "#1e2540", "#243050",
+        "#1e2540", "#223a5a", "#2a3858", "none",
+        "#243050", "#3a4860",
+        "#3a4860",
+        "#243050", "#4a5870", "#5a6880"
     };
 }
 
@@ -160,7 +160,15 @@ QString ThemeManager::buildWidgetQSS() const
             background-color: %4;
             border-radius: 4px;
         }
-    )").arg(p.textPrimary).arg(p.textMuted).arg(p.warning).arg(p.bgSelected);
+        QLabel#placeholderLabel {
+            color: %5;
+            font-size: 13px;
+        }
+        QLabel#hintLabel {
+            color: %5;
+            font-size: 12px;
+        }
+    )").arg(p.textPrimary).arg(p.textMuted).arg(p.warning).arg(p.bgSelected).arg(p.textMuted);
 }
 
 QString ThemeManager::buildButtonQSS() const

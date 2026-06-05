@@ -17,7 +17,7 @@
 struct Logger::Impl
 {
     std::shared_ptr<spdlog::logger> logger;
-
+    
     static spdlog::level::level_enum toSpdlog(Logger::Level level)
     {
         switch (level) {
@@ -38,23 +38,42 @@ std::unique_ptr<Logger::Impl> Logger::s_impl;
 void Logger::init(const QString& logPath, Level level)
 {
     QFileInfo fileInfo(logPath);
-    QDir dir = fileInfo.absoluteDir();
+    QString dirPath;
+    QString baseName;
+
+    // 判断 logPath 是目录还是文件路径：
+    //   - 无后缀（如 ".../logs"）→ 视为目录，默认文件名前缀 = "fusevision"
+    //   - 有后缀（如 ".../fusevision.log"）→ 取目录 + 文件名前缀
+    if (fileInfo.suffix().isEmpty()) {
+        // logPath 是目录路径
+        dirPath  = QDir(logPath).absolutePath();
+        baseName = "fusevision";
+    } else {
+        // logPath 是文件路径
+        dirPath  = fileInfo.absoluteDir().absolutePath();
+        baseName = fileInfo.baseName();
+    }
+
+    QDir dir(dirPath);
     if (!dir.exists()) {
         dir.mkpath(".");
     }
 
-    QString baseName = fileInfo.baseName();
-    QString dirPath = dir.absolutePath();
     std::string dailyBasePath = (dirPath + "/" + baseName).toStdString();
 
     auto file_sink = std::make_shared<spdlog::sinks::daily_file_sink_mt>(
         dailyBasePath, 0, 0, false, 0);
     file_sink->set_level(Impl::toSpdlog(level));
 
+    std::vector<spdlog::sink_ptr> sinks;
+    sinks.push_back(file_sink);  // 文件 sink 始终启用
+
+#ifndef NDEBUG
+    // Debug 模式：启用控制台彩色输出（Release 只写文件）
     auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
     console_sink->set_level(spdlog::level::debug);
-
-    std::vector<spdlog::sink_ptr> sinks{ console_sink, file_sink };
+    sinks.push_back(console_sink);
+#endif
 
     auto logger = std::make_shared<spdlog::logger>("fusevision", sinks.begin(), sinks.end());
     logger->set_level(Impl::toSpdlog(level));
