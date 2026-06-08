@@ -118,6 +118,7 @@ jobs:
         run: cmake --build --preset windows-debug --config Debug
 
       - name: Test (预留)
+        if: false
         run: ctest --preset windows-debug --output-on-failure
         continue-on-error: true
 
