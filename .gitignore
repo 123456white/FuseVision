@@ -45,10 +45,3 @@ sdk/yolo/ultralytics-main/docker/
 sdk/yolo/ultralytics-main/docs/
 sdk/yolo/ultralytics-main/examples/
 sdk/yolo/ultralytics-main/tests/
-
-# ========== Halcon SDK（大型二进制不入库，结构保留） ==========
-sdk/halcon/include/HalconC.h
-sdk/halcon/include/HalconCpp.h
-sdk/halcon/include/halconcpp/
-sdk/halcon/lib/
-sdk/halcon/bin/

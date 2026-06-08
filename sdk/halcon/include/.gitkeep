@@ -1,5 +1,0 @@
-# Halcon SDK 头文件占位目录
-# 请将 Halcon SDK 的头文件复制到此目录：
-#   - HalconC.h
-#   - HalconCpp.h
-#   - halconcpp/ 目录（含所有子头文件）
