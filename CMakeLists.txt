@@ -82,7 +82,7 @@ else()
     set(HALCON_SDK_LIB "${HALCON_SDK_DIR}/lib")
     set(HALCON_SDK_BIN "${HALCON_SDK_DIR}/bin")
 
-    if(EXISTS "${HALCON_SDK_INCLUDE}/HalconCpp.h" AND
+    if((EXISTS "${HALCON_SDK_INCLUDE}/HalconCpp.h" OR EXISTS "${HALCON_SDK_INCLUDE}/halconcpp/HalconCpp.h") AND
        EXISTS "${HALCON_SDK_LIB}/halcon.lib" AND
        EXISTS "${HALCON_SDK_LIB}/halconcpp.lib")
         set(HALCON_INCLUDE_DIR "${HALCON_SDK_INCLUDE}")
@@ -93,13 +93,12 @@ else()
         set(HALCON_SOURCE "sdk/halcon")
         message(STATUS "✅ Halcon 已检测到（sdk/halcon 内置 SDK）: ${HALCON_SDK_DIR}")
     else()
-        # 结构不完整时报告缺失的组件
         set(HALCON_INCLUDE_DIR "")
         set(HALCONCPP_INCLUDE_DIR "")
         set(HALCON_LIB_DIR "")
         set(HALCON_BIN_DIR "")
         message(WARNING "⚠️  Halcon 未检测到：系统未安装且 sdk/halcon 目录不完整。传统视觉模块的 Halcon 功能将不可用。")
-        message(STATUS "   期望的 sdk/halcon 结构: include/HalconCpp.h, lib/halcon.lib, lib/halconcpp.lib")
+        message(STATUS "   期望的 sdk/halcon 结构: include/HalconCpp.h (或 include/halconcpp/HalconCpp.h), lib/halcon.lib, lib/halconcpp.lib")
     endif()
 endif()
 
