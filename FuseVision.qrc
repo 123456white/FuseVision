@@ -5,5 +5,9 @@
         <file>res/TraditionalWidget.png</file>
         <file>res/SystemSettings.png</file>
         <file>res/UserManagement.png</file>
+        <file>res/DeepLearningWidget_D.png</file>
+        <file>res/SystemSettings_D.png</file>
+        <file>res/TraditionalWidget_D.png</file>
+        <file>res/UserManagement_D.png</file>
     </qresource>
 </RCC>

@@ -70,7 +70,6 @@ int main(int argc, char* argv[])
     // ── 步骤 4：初始化 SettingsManager & Logger ─────────────────
     // SettingsManager 独立于 Logger，提供日志路径和数据库路径的配置
     auto& settings = SettingsManager::instance();
-    settings.setNeedsRestart(false);  // 初始无脏标记
 
     // 获取日志路径（默认 <exe>/logs/fusevision）
     QString logPath = settings.logPath();
@@ -91,7 +90,10 @@ int main(int argc, char* argv[])
         return -1;  // 数据库初始化失败，应用无法运行
     }
 
-    // ── 步骤 6：注册权限模块 ───────────────────────────────────
+    // ── 步骤 6：权限数据迁移（一次性） ─────────────────────────
+    DatabaseManager::instance().migratePermissionKey("传统视觉.图像处理", "传统视觉.视觉工具区");
+
+    // ── 步骤 7：注册权限模块 ───────────────────────────────────
     // 每个模块的权限点格式：一级模块名.子模块名
     // 注册后 PermissionRegistry 会自动在所有用户的 user_permissions 表中
     // 创建对应记录（管理员可读写，普通用户只读）
@@ -111,24 +113,25 @@ int main(int argc, char* argv[])
     PermissionRegistry::instance().registerModule("传统视觉.相机建模");
     PermissionRegistry::instance().registerModule("传统视觉.通讯设置");
     PermissionRegistry::instance().registerModule("传统视觉.系统设置");
-    PermissionRegistry::instance().registerModule("传统视觉.图像处理");
+    PermissionRegistry::instance().registerModule("传统视觉.视觉工具区");
 
-    // ── 步骤 7：显示登录对话框 ─────────────────────────────────
+    // ── 步骤 8：显示登录对话框 ─────────────────────────────────
     // exec() 为模态阻塞调用：
     //   - 点击"登录"→ validateLogin → SessionManager::login → accept() → 返回 Accepted
     //   - 点击"取消"→ reject() → 返回 Rejected → return 0 退出
+
+    // 设置应用图标（必须在登录对话框之前，否则登录窗口无图标）
+    QIcon appIcon(":/res/FuseVision.png");
+    if (!appIcon.isNull())
+        app.setWindowIcon(appIcon);
+
     LoginDialog loginDlg;
     if (loginDlg.exec() != QDialog::Accepted) {
         Logger::info("Login cancelled, application will exit.");
         return 0;  // 用户取消登录，正常退出
     }
 
-    // ── 步骤 8：创建主窗口 & 进入事件循环 ───────────────────────
-    // 设置应用图标（FuseVision.png）
-    QIcon appIcon(":/res/FuseVision.png");
-    if (!appIcon.isNull())
-        app.setWindowIcon(appIcon);
-
+    // ── 步骤 9：创建主窗口 & 进入事件循环 ───────────────────────
     // 创建主窗口（构造函数中自动初始化 UI、连接信号）
     FuseVision w;
     w.setWindowTitle("FuseVision - 智能视觉系统");

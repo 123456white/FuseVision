@@ -66,14 +66,11 @@ QStringList PermissionGuard::watchedKeys() const
 
 void PermissionGuard::refresh()
 {
-    int uid = currentUserId();  // 委托 SessionManager 获取当前用户 ID
-    if (uid < 0) return;        // 未登录，无需刷新
+    int uid = currentUserId();
+    if (uid < 0) return;
     bool anyChanged = false;
 
-    // 步骤 1：一次 DB 查询拉取当前用户全部权限 → 刷新 Registry 缓存
-    PermissionRegistry::instance().refreshPermissions(uid);
-
-    // 步骤 2：遍历关注的模块，从缓存对比（纯内存操作，无 DB 查询）
+    // 从 Registry 缓存对比（SessionManager::login 已预热，纯内存操作）
     for (auto it = m_state.begin(); it != m_state.end(); ++it) {
         PermissionInfo fresh;
         fresh.canRead  = PermissionRegistry::instance().canRead(uid, it.key());
@@ -81,7 +78,7 @@ void PermissionGuard::refresh()
         if (fresh.canRead != it->canRead || fresh.canWrite != it->canWrite) {
             it->canRead  = fresh.canRead;
             it->canWrite = fresh.canWrite;
-            anyChanged   = true;  // 标记有变更，需要通知 Widget
+            anyChanged   = true;
         }
     }
 

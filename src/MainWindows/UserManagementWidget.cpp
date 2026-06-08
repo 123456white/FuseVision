@@ -4,14 +4,17 @@
 #include "core/PermissionRegistry.h"
 #include "core/PermissionGuard.h"
 #include "core/DatabaseManager.h"
+#include "core/ThemeManager.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QSplitter>
 #include <QHeaderView>
 #include <QMessageBox>
 #include <QFormLayout>
 #include <QDialogButtonBox>
 #include <QCheckBox>
 #include <QMap>
+#include <QTimer>
 
 /* ================================================================
  *  AddUserDialog — 新增用户弹窗
@@ -118,6 +121,12 @@ UserManagementWidget::UserManagementWidget(QWidget* parent)
     connect(&SessionManager::instance(), &SessionManager::sessionChanged,
             this, &UserManagementWidget::onSessionChanged);
 
+    connect(&ThemeManager::instance(), &ThemeManager::themeChanged,
+            this, [this](ThemeManager::Theme) {
+        // 推迟到下一轮事件循环，避免与 setStyleSheet 样式重绘冲突
+        QTimer::singleShot(0, this, &UserManagementWidget::refreshPermissionMatrix);
+    });
+
     onSessionChanged();
 
     Logger::info("UserManagementWidget initialized");
@@ -126,12 +135,8 @@ UserManagementWidget::UserManagementWidget(QWidget* parent)
 void UserManagementWidget::initUI()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(16, 16, 16, 16);
+    mainLayout->setContentsMargins(24, 8, 24, 20);
     mainLayout->setSpacing(12);
-
-    QLabel* titleLabel = new QLabel("用户管理");
-    titleLabel->setObjectName("widgetTitle");
-    mainLayout->addWidget(titleLabel);
 
     m_infoLabel = new QLabel;
     m_infoLabel->setObjectName("infoLabel");
@@ -150,23 +155,21 @@ void UserManagementWidget::initUI()
 
     m_userTable = new QTableWidget(0, 3);
     m_userTable->setHorizontalHeaderLabels({"ID", "用户名", "角色"});
-    m_userTable->horizontalHeader()->setStretchLastSection(true);
     m_userTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     m_userTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Stretch);
+    m_userTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Interactive);
     m_userTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_userTable->setSelectionMode(QAbstractItemView::SingleSelection);
     m_userTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
     m_userTable->verticalHeader()->setVisible(false);
     m_userTable->setAlternatingRowColors(true);
-    m_userTable->verticalHeader()->setDefaultSectionSize(34);
-    mainLayout->addWidget(m_userTable, 2);
+    m_userTable->verticalHeader()->setDefaultSectionSize(48);
 
     QGroupBox* permGroup = new QGroupBox("模块权限矩阵");
     QVBoxLayout* permLayout = new QVBoxLayout(permGroup);
 
     m_permTable = new QTableWidget(0, 3);
     m_permTable->setHorizontalHeaderLabels({"模块名称", "可读 (Read)", "可写 (Write)"});
-    m_permTable->horizontalHeader()->setStretchLastSection(true);
     m_permTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     m_permTable->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
     m_permTable->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
@@ -175,7 +178,14 @@ void UserManagementWidget::initUI()
     m_permTable->setAlternatingRowColors(true);
     permLayout->addWidget(m_permTable);
 
-    mainLayout->addWidget(permGroup, 1);
+    // 使用 QSplitter 支持拖拽调整比例，初始 1:4
+    QSplitter* splitter = new QSplitter(Qt::Vertical);
+    splitter->setHandleWidth(1);
+    splitter->setChildrenCollapsible(false);
+    splitter->addWidget(m_userTable);
+    splitter->addWidget(permGroup);
+    splitter->setSizes({ 1, 4 });  // 初始比例 1:4
+    mainLayout->addWidget(splitter, 1);
 
     connect(m_addUserBtn,    &QPushButton::clicked, this, &UserManagementWidget::onAddUser);
     connect(m_deleteUserBtn, &QPushButton::clicked, this, &UserManagementWidget::onDeleteUser);
@@ -251,9 +261,18 @@ void UserManagementWidget::refreshUserTable()
         roleCombo->addItems(roleNames);
         roleCombo->setCurrentIndex(qBound(0, u.role, 2));
         roleCombo->setEnabled(m_canEdit);
-        roleCombo->setFixedHeight(26);
-        roleCombo->setStyleSheet(
-            "QComboBox { padding: 1px 6px; border: 1px solid #bdc3c7; border-radius: 3px; }");
+        roleCombo->setFixedHeight(44);
+        roleCombo->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+
+        // 容器垂直居中，使下拉菜单与用户名在同一水平线
+        QWidget* container = new QWidget;
+        QHBoxLayout* cl = new QHBoxLayout(container);
+        cl->setContentsMargins(2, 0, 2, 0);
+        cl->setSpacing(0);
+        cl->setAlignment(Qt::AlignVCenter);
+        cl->addWidget(roleCombo);
+        m_userTable->setCellWidget(i, 2, container);
+
         int uid = u.id;
         connect(roleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged),
                 this, [this, uid](int newRole) {
@@ -270,8 +289,10 @@ void UserManagementWidget::refreshUserTable()
                 refreshPermissionMatrix();
             }
         });
-        m_userTable->setCellWidget(i, 2, roleCombo);
     }
+
+    m_userTable->resizeColumnToContents(2);
+    m_userTable->setColumnWidth(2, qMax(m_userTable->columnWidth(2), 200));
 
     if (m_userTable->rowCount() > 0)
         m_userTable->selectRow(0);
@@ -340,6 +361,8 @@ void UserManagementWidget::refreshPermissionMatrix()
 
 void UserManagementWidget::addGroupHeaderRow(int row, const QString& title)
 {
+    const auto& p = ThemeManager::instance().palette();
+
     m_permTable->insertRow(row);
     m_permTable->setRowHeight(row, 28);
 
@@ -349,14 +372,14 @@ void UserManagementWidget::addGroupHeaderRow(int row, const QString& title)
     f.setPointSize(f.pointSize() + 1);
     item->setFont(f);
     item->setFlags(Qt::NoItemFlags);
-    item->setForeground(QColor("#2c3e50"));
-    item->setBackground(QColor("#e8ecf0"));
+    item->setForeground(QColor(p.textPrimary));
+    item->setBackground(QColor(p.bgTertiary));
     m_permTable->setItem(row, 0, item);
 
     for (int col = 1; col <= 2; ++col) {
         QTableWidgetItem* emptyItem = new QTableWidgetItem;
         emptyItem->setFlags(Qt::NoItemFlags);
-        emptyItem->setBackground(QColor("#e8ecf0"));
+        emptyItem->setBackground(QColor(p.bgTertiary));
         m_permTable->setItem(row, col, emptyItem);
     }
 }

@@ -5,7 +5,9 @@
 #include <QLabel>
 #include <QStackedWidget>
 #include <QTabBar>
+#include <QShowEvent>
 #include "core/PermissionGuard.h"
+#include "core/LogMonitor.h"
 
 // =============================================================================
 // DeepLearningWidget — 深度学习模块页面（8 标签页）
@@ -18,6 +20,9 @@
 //   │                                          │
 //   │           当前标签页的空白内容区           │ ← QStackedWidget (index 0~7)
 //   │                                          │
+//   ├──────────────────────────────────────────┤
+//   │ 日志监控                              ▲   │ ← LogMonitor（可折叠）
+//   │ [10:30:12] 模型训练已启动 ...            │
 //   └──────────────────────────────────────────┘
 //
 // 8 个标签页：项目管理 / 模型管理 / 数据集管理 / 数据标注 /
@@ -34,6 +39,9 @@ class DeepLearningWidget : public QWidget
 public:
     explicit DeepLearningWidget(QWidget* parent = nullptr);
 
+protected:
+    void showEvent(QShowEvent* event) override;  // 初始化分割器比例
+
 private slots:
     void applyPermissions();          // 权限变更时刷新 UI
     void onTabChanged(int index);     // Tab 切换 → StackedWidget 翻页
@@ -45,6 +53,8 @@ private:
     PermissionGuard* m_guard          = nullptr;  // 权限代理
     QTabBar*         m_tabBar         = nullptr;  // 顶部标签栏（8 个标签）
     QStackedWidget*  m_stackedWidget  = nullptr;  // 右侧内容区（8 个空白页）
+    LogMonitor*      m_logMonitor     = nullptr;  // 底部日志面板
+    bool             m_shown          = false;     // 首次显示标记
 
     // 8 个标签页名称（与 QStackedWidget index 对应）
     static const QStringList s_tabNames;

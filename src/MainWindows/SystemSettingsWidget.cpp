@@ -1,12 +1,12 @@
 #include "SystemSettingsWidget.h"
 #include "core/Logger.h"
 #include "core/SettingsManager.h"
-#include "core/ThemeManager.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
 #include <QComboBox>
 #include <QSpinBox>
+#include <QFrame>
 #include <QFileDialog>
 #include <QCoreApplication>
 #include <QDir>
@@ -37,13 +37,8 @@ SystemSettingsWidget::SystemSettingsWidget(QWidget* parent)
 void SystemSettingsWidget::initUI()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(24, 24, 24, 24);
-    mainLayout->setSpacing(16);
-
-    // 标题
-    QLabel* titleLabel = new QLabel("系统设置");
-    titleLabel->setObjectName("widgetTitle");
-    mainLayout->addWidget(titleLabel);
+    mainLayout->setContentsMargins(24, 8, 24, 20);
+    mainLayout->setSpacing(12);
 
     // 路径配置区（QGroupBox + QFormLayout）
     QGroupBox* pathGroup = new QGroupBox("存储路径");
@@ -88,17 +83,87 @@ void SystemSettingsWidget::initUI()
 
     mainLayout->addWidget(logLevelGroup);
 
-    // 外观设置区（主题选择）
-    QGroupBox* themeGroup = new QGroupBox("外观设置");
-    QFormLayout* themeForm = new QFormLayout(themeGroup);
+    // ══════ 模块数据存储（左右双栏） ══════
+    QGroupBox* dataGroup = new QGroupBox("模块数据存储");
+    QHBoxLayout* dataLayout = new QHBoxLayout(dataGroup);
+    dataLayout->setSpacing(16);
 
-    m_themeCombo = new QComboBox;
-    m_themeCombo->addItem("跟随系统", -1);
-    m_themeCombo->addItem("浅色 (Light)", ThemeManager::Light);
-    m_themeCombo->addItem("深色 (Dark)",  ThemeManager::Dark);
-    themeForm->addRow("主题:", m_themeCombo);
+    // ── 左栏：深度学习 ──
+    QFrame* dlFrame = new QFrame;
+    dlFrame->setObjectName("sectionFrame");
+    dlFrame->setMinimumWidth(220);
 
-    mainLayout->addWidget(themeGroup);
+    QVBoxLayout* dlLayout = new QVBoxLayout(dlFrame);
+    dlLayout->setContentsMargins(8, 0, 8, 8);
+    dlLayout->setSpacing(6);
+
+    QLabel* dlTitle = new QLabel("深度学习");
+    dlTitle->setObjectName("sectionTitle");
+    dlLayout->addWidget(dlTitle);
+
+    QFormLayout* dlForm = new QFormLayout;
+    dlForm->setSpacing(8);
+
+    m_dlDataPathEdit = new QLineEdit;
+    QPushButton* browseDlDataBtn = new QPushButton("浏览...");
+    QHBoxLayout* dlDataRow = new QHBoxLayout;
+    dlDataRow->addWidget(m_dlDataPathEdit);
+    dlDataRow->addWidget(browseDlDataBtn);
+    dlForm->addRow("数据路径:", dlDataRow);
+
+    m_dlModelPathEdit = new QLineEdit;
+    QPushButton* browseDlModelBtn = new QPushButton("浏览...");
+    QHBoxLayout* dlModelRow = new QHBoxLayout;
+    dlModelRow->addWidget(m_dlModelPathEdit);
+    dlModelRow->addWidget(browseDlModelBtn);
+    dlForm->addRow("模型路径:", dlModelRow);
+
+    m_dlDatasetPathEdit = new QLineEdit;
+    QPushButton* browseDlDatasetBtn = new QPushButton("浏览...");
+    QHBoxLayout* dlDatasetRow = new QHBoxLayout;
+    dlDatasetRow->addWidget(m_dlDatasetPathEdit);
+    dlDatasetRow->addWidget(browseDlDatasetBtn);
+    dlForm->addRow("数据集路径:", dlDatasetRow);
+
+    dlLayout->addLayout(dlForm);
+    dlLayout->addStretch();
+
+    // ── 右栏：传统视觉 ──
+    QFrame* traditionalFrame = new QFrame;
+    traditionalFrame->setObjectName("sectionFrame");
+    traditionalFrame->setMinimumWidth(220);
+
+    QVBoxLayout* traditionalLayout = new QVBoxLayout(traditionalFrame);
+    traditionalLayout->setContentsMargins(8, 0, 8, 8);
+    traditionalLayout->setSpacing(6);
+
+    QLabel* traditionalTitle = new QLabel("传统视觉");
+    traditionalTitle->setObjectName("sectionTitle");
+    traditionalLayout->addWidget(traditionalTitle);
+
+    QFormLayout* traditionalForm = new QFormLayout;
+    traditionalForm->setSpacing(8);
+
+    m_traditionalDataPathEdit = new QLineEdit;
+    QPushButton* browseTradDataBtn = new QPushButton("浏览...");
+    QHBoxLayout* tradDataRow = new QHBoxLayout;
+    tradDataRow->addWidget(m_traditionalDataPathEdit);
+    tradDataRow->addWidget(browseTradDataBtn);
+    traditionalForm->addRow("数据路径:", tradDataRow);
+
+    m_traditionalCameraPathEdit = new QLineEdit;
+    QPushButton* browseTradCameraBtn = new QPushButton("浏览...");
+    QHBoxLayout* tradCameraRow = new QHBoxLayout;
+    tradCameraRow->addWidget(m_traditionalCameraPathEdit);
+    tradCameraRow->addWidget(browseTradCameraBtn);
+    traditionalForm->addRow("相机配置:", tradCameraRow);
+
+    traditionalLayout->addLayout(traditionalForm);
+    traditionalLayout->addStretch();
+
+    dataLayout->addWidget(dlFrame, 1);
+    dataLayout->addWidget(traditionalFrame, 1);
+    mainLayout->addWidget(dataGroup, 1);  // 弹性拉伸填满剩余空间
 
     // 按钮行（右对齐）
     QHBoxLayout* btnLayout = new QHBoxLayout;
@@ -115,17 +180,14 @@ void SystemSettingsWidget::initUI()
     btnLayout->addWidget(m_saveBtn);
     mainLayout->addLayout(btnLayout);
 
-    // 重启提示标签（默认隐藏，路径变更后显示）
-    m_restartLabel = new QLabel;
-    m_restartLabel->setObjectName("restartLabel");  // 匹配 QSS #restartLabel 规则
-    m_restartLabel->setVisible(false);
-    mainLayout->addWidget(m_restartLabel);
-
-    mainLayout->addStretch();
-
     // 信号连接
     connect(browseLogBtn, &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseLogPath);
     connect(browseDbBtn,  &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDbPath);
+    connect(browseDlDataBtn,    &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDlData);
+    connect(browseDlModelBtn,   &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDlModel);
+    connect(browseDlDatasetBtn, &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDlDataset);
+    connect(browseTradDataBtn,  &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseTraditionalData);
+    connect(browseTradCameraBtn,&QPushButton::clicked, this, &SystemSettingsWidget::onBrowseTraditionalCamera);
     connect(m_saveBtn,    &QPushButton::clicked, this, &SystemSettingsWidget::onSave);
     connect(m_resetBtn,   &QPushButton::clicked, this, &SystemSettingsWidget::onReset);
     connect(m_cleanBtn,   &QPushButton::clicked, this, &SystemSettingsWidget::onCleanLogs);
@@ -154,12 +216,27 @@ void SystemSettingsWidget::loadSettings()
     int idx = m_logLevelCombo->findData(savedLevel);
     if (idx >= 0) m_logLevelCombo->setCurrentIndex(idx);
 
-    // 主题：从 ThemeManager 恢复当前主题
-    int currentTheme = ThemeManager::instance().currentTheme();
-    idx = m_themeCombo->findData(currentTheme);
-    if (idx >= 0) m_themeCombo->setCurrentIndex(idx);
+    // 深度学习路径
+    QString dlData = s.dlDataPath();
+    if (dlData.isEmpty()) dlData = QCoreApplication::applicationDirPath() + "/dl_data";
+    m_dlDataPathEdit->setText(QDir::toNativeSeparators(dlData));
 
-    refreshRestartNotice();  // 检查是否有未重启生效的配置
+    QString dlModel = s.dlModelPath();
+    if (dlModel.isEmpty()) dlModel = QCoreApplication::applicationDirPath() + "/dl_models";
+    m_dlModelPathEdit->setText(QDir::toNativeSeparators(dlModel));
+
+    QString dlDataset = s.dlDatasetPath();
+    if (dlDataset.isEmpty()) dlDataset = QCoreApplication::applicationDirPath() + "/dl_datasets";
+    m_dlDatasetPathEdit->setText(QDir::toNativeSeparators(dlDataset));
+
+    // 传统视觉路径
+    QString tradData = s.traditionalDataPath();
+    if (tradData.isEmpty()) tradData = QCoreApplication::applicationDirPath() + "/traditional_data";
+    m_traditionalDataPathEdit->setText(QDir::toNativeSeparators(tradData));
+
+    QString tradCamera = s.traditionalCameraPath();
+    if (tradCamera.isEmpty()) tradCamera = QCoreApplication::applicationDirPath() + "/traditional_camera";
+    m_traditionalCameraPathEdit->setText(QDir::toNativeSeparators(tradCamera));
 }
 
 // ── 浏览目录 ─────────────────────────────────────────────────
@@ -180,6 +257,41 @@ void SystemSettingsWidget::onBrowseDbPath()
         m_dbPathEdit->setText(QDir::toNativeSeparators(dir));
 }
 
+void SystemSettingsWidget::onBrowseDlData()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, "选择 DL 数据目录",
+        m_dlDataPathEdit->text());
+    if (!dir.isEmpty()) m_dlDataPathEdit->setText(QDir::toNativeSeparators(dir));
+}
+
+void SystemSettingsWidget::onBrowseDlModel()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, "选择 DL 模型目录",
+        m_dlModelPathEdit->text());
+    if (!dir.isEmpty()) m_dlModelPathEdit->setText(QDir::toNativeSeparators(dir));
+}
+
+void SystemSettingsWidget::onBrowseDlDataset()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, "选择 DL 数据集目录",
+        m_dlDatasetPathEdit->text());
+    if (!dir.isEmpty()) m_dlDatasetPathEdit->setText(QDir::toNativeSeparators(dir));
+}
+
+void SystemSettingsWidget::onBrowseTraditionalData()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, "选择传统视觉数据目录",
+        m_traditionalDataPathEdit->text());
+    if (!dir.isEmpty()) m_traditionalDataPathEdit->setText(QDir::toNativeSeparators(dir));
+}
+
+void SystemSettingsWidget::onBrowseTraditionalCamera()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, "选择相机配置目录",
+        m_traditionalCameraPathEdit->text());
+    if (!dir.isEmpty()) m_traditionalCameraPathEdit->setText(QDir::toNativeSeparators(dir));
+}
+
 // ── 保存 / 重置 ──────────────────────────────────────────────
 
 void SystemSettingsWidget::onSave()
@@ -189,23 +301,21 @@ void SystemSettingsWidget::onSave()
     s.setLogPath(QDir::fromNativeSeparators(m_logPathEdit->text()));
     s.setDbPath(QDir::fromNativeSeparators(m_dbPathEdit->text()));
     s.setLogLevel(m_logLevelCombo->currentData().toInt());
+    s.setDlDataPath(QDir::fromNativeSeparators(m_dlDataPathEdit->text()));
+    s.setDlModelPath(QDir::fromNativeSeparators(m_dlModelPathEdit->text()));
+    s.setDlDatasetPath(QDir::fromNativeSeparators(m_dlDatasetPathEdit->text()));
+    s.setTraditionalDataPath(QDir::fromNativeSeparators(m_traditionalDataPathEdit->text()));
+    s.setTraditionalCameraPath(QDir::fromNativeSeparators(m_traditionalCameraPathEdit->text()));
     // 持久化到磁盘
     s.save();
 
-    // 日志级别立即生效（无需重启，路径变更需重启）
-    Logger::setLevel(static_cast<Logger::Level>(s.logLevel()));
-
-    // 主题立即生效
-    int themeData = m_themeCombo->currentData().toInt();
-    if (themeData >= 0)  // -1 = 跟随系统，不强制设置
-        ThemeManager::instance().setTheme(static_cast<ThemeManager::Theme>(themeData));
-
-    s.setNeedsRestart(true);
-    refreshRestartNotice();
-
+    // 日志路径 + 级别立即生效（重新初始化 Logger）
+    Logger::init(QDir::fromNativeSeparators(m_logPathEdit->text()),
+                 static_cast<Logger::Level>(s.logLevel()));
     Logger::info(QString("System settings saved (log level: %1)").arg(s.logLevel()));
     QMessageBox::information(this, "配置已保存",
-        "配置已保存。路径变更将在下次启动时生效，日志级别已立即生效。");
+        "所有配置已保存并立即生效。\n\n"
+        "注意：数据库路径变更将在下次启动时生效（当前连接已打开）。");
 }
 
 void SystemSettingsWidget::onReset()
@@ -218,22 +328,15 @@ void SystemSettingsWidget::onReset()
 
     s.setLogPath(defaultLogPath);
     s.setDbPath(defaultDbPath);
+    s.setDlDataPath(QCoreApplication::applicationDirPath() + "/dl_data");
+    s.setDlModelPath(QCoreApplication::applicationDirPath() + "/dl_models");
+    s.setDlDatasetPath(QCoreApplication::applicationDirPath() + "/dl_datasets");
+    s.setTraditionalDataPath(QCoreApplication::applicationDirPath() + "/traditional_data");
+    s.setTraditionalCameraPath(QCoreApplication::applicationDirPath() + "/traditional_camera");
     s.save();
 
     loadSettings();  // 刷新 UI 显示
     Logger::info("System settings reset to defaults");
-}
-
-// ── 重启提示 ─────────────────────────────────────────────────
-
-void SystemSettingsWidget::refreshRestartNotice()
-{
-    if (SettingsManager::instance().needsRestart()) {
-        m_restartLabel->setText("⚠ 路径变更需要重启应用才能生效");
-        m_restartLabel->setVisible(true);
-    } else {
-        m_restartLabel->setVisible(false);
-    }
 }
 
 // ── 清理旧日志 ────────────────────────────────────────────────

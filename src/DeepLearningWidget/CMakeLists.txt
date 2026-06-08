@@ -11,4 +11,5 @@ target_include_directories(FuseVisionDeepLearning
 target_link_libraries(FuseVisionDeepLearning
     PUBLIC
         Qt6::Widgets
+        FuseVisionCore
 )

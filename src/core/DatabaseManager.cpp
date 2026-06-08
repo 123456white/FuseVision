@@ -282,6 +282,17 @@ QMap<int, QMap<QString, PermissionInfo>> DatabaseManager::getAllPermissions() co
     return result;
 }
 
+void DatabaseManager::migratePermissionKey(const QString& oldKey, const QString& newKey)
+{
+    QSqlQuery q(m_db);
+    q.prepare("UPDATE user_permissions SET module_name = ? WHERE module_name = ?");
+    q.addBindValue(newKey);
+    q.addBindValue(oldKey);
+    if (q.exec() && q.numRowsAffected() > 0)
+        Logger::info(QString("Migrated permission key '%1' → '%2' (%3 rows).")
+                         .arg(oldKey, newKey).arg(q.numRowsAffected()));
+}
+
 void DatabaseManager::setPermission(int userId, const QString& moduleName,
                                     bool canRead, bool canWrite)
 {

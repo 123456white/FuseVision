@@ -46,6 +46,12 @@ private:
     QString buildGroupBoxQSS()           const;
     QString buildToolBarQSS()            const;
     QString buildDialogQSS()             const;
+    QString buildTabBarQSS()             const;
+    QString buildTreeQSS()               const;
+    QString buildToolButtonQSS()         const;
+    QString buildScrollBarQSS()          const;
+    QString buildSidebarBtnQSS()         const;
+    QString buildLogMonitorQSS()         const;
 
     Theme m_theme = Light;
 };

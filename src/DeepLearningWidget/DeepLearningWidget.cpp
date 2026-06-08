@@ -1,10 +1,12 @@
 #include "DeepLearningWidget.h"
 #include <QVBoxLayout>
+#include <QSplitter>
+#include <QFrame>
 
 // =============================================================================
 // DeepLearningWidget.cpp — 深度学习模块 8 标签页实现
 // =============================================================================
-// 布局：标题 + QTabBar(8 标签) + QStackedWidget(8 空白页)
+// 布局：QTabBar(8 标签) + QFrame 内容容器 + QStackedWidget(8 空白页)
 // 每个标签页当前仅显示"内容待开发"占位文本
 // =============================================================================
 
@@ -45,21 +47,16 @@ DeepLearningWidget::DeepLearningWidget(QWidget* parent)
 void DeepLearningWidget::initUI()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    mainLayout->setSpacing(0);
-
-    // ===== 标题 =====
-    QLabel* title = new QLabel("深度学习 - 视觉 AI 引擎");
-    title->setObjectName("widgetTitle");
-    title->setContentsMargins(24, 16, 24, 8);
-    mainLayout->addWidget(title);
+    mainLayout->setContentsMargins(24, 8, 24, 20);
+    mainLayout->setSpacing(12);
 
     // ===== 顶部标签栏 =====
     m_tabBar = new QTabBar;
     m_tabBar->setShape(QTabBar::RoundedNorth);
-    m_tabBar->setExpanding(false);        // 标签不拉伸
+    m_tabBar->setExpanding(true);         // 标签均匀拉伸，文字不截断
     m_tabBar->setDrawBase(true);          // 绘制底部基线
-    m_tabBar->setContentsMargins(24, 0, 24, 0);
+    m_tabBar->setUsesScrollButtons(false);
+    m_tabBar->setContentsMargins(0, 0, 0, 0);
 
     for (const QString& name : s_tabNames)
         m_tabBar->addTab(name);
@@ -68,6 +65,12 @@ void DeepLearningWidget::initUI()
             this, &DeepLearningWidget::onTabChanged);
 
     mainLayout->addWidget(m_tabBar);
+
+    // ===== 内容区容器（划定边界，与标签栏视觉分离） =====
+    QFrame* contentFrame = new QFrame;
+    contentFrame->setObjectName("dlContentFrame");
+    QVBoxLayout* frameLayout = new QVBoxLayout(contentFrame);
+    frameLayout->setContentsMargins(0, 0, 0, 0);
 
     // ===== 内容区（8 个空白页） =====
     m_stackedWidget = new QStackedWidget;
@@ -86,7 +89,33 @@ void DeepLearningWidget::initUI()
     }
 
     m_stackedWidget->setCurrentIndex(0);
-    mainLayout->addWidget(m_stackedWidget, 1);  // stretch=1，填充剩余空间
+    frameLayout->addWidget(m_stackedWidget);
+
+    // ===== 垂直分割器：内容区 + 日志面板（可拖拽调整高低）=====
+    QSplitter* vSplitter = new QSplitter(Qt::Vertical);
+    vSplitter->setHandleWidth(1);
+    vSplitter->setChildrenCollapsible(false);
+    vSplitter->addWidget(contentFrame);
+
+    m_logMonitor = new LogMonitor;
+    m_logMonitor->log("深度学习模块已加载");
+    vSplitter->addWidget(m_logMonitor);
+
+    mainLayout->addWidget(vSplitter, 1);
+}
+
+// ── 首次显示时按比例分配日志面板高度 ─────────────────────────
+
+void DeepLearningWidget::showEvent(QShowEvent* event)
+{
+    QWidget::showEvent(event);
+    if (m_shown) return;
+    m_shown = true;
+    if (auto* s = findChild<QSplitter*>()) {
+        int h = s->height();
+        if (h > 0 && s->count() == 2)
+            s->setSizes({ h * 3 / 4, h / 4 });
+    }
 }
 
 // ── Tab 切换 ──────────────────────────────────────────────────

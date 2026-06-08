@@ -91,11 +91,27 @@ if (Test-Path "$PSScriptRoot\..\vcpkg\vcpkg.exe") {
     $allOk = $false
 }
 
-# Halcon（可选）
+# Halcon（可选 — 自动检测系统安装版或 sdk/halcon 内置版）
 if ($env:HALCONROOT) {
-    Write-Host "[OK]   Halcon: $env:HALCONROOT (架构: $env:HALCONARCH)" -ForegroundColor Green
+    Write-Host "[OK]   Halcon（系统安装）: $env:HALCONROOT (架构: $env:HALCONARCH)" -ForegroundColor Green
 } else {
-    Write-Host "[INFO] Halcon 未配置 — 传统视觉模块的 Halcon 功能将不可用（可忽略）" -ForegroundColor Gray
+    $sdkHalconDir = Join-Path $ProjectRoot "sdk/halcon"
+    $halconHeader = Join-Path $sdkHalconDir "include/HalconCpp.h"
+    $halconLib = Join-Path $sdkHalconDir "lib/x64-win64/halcon.lib"
+    $halconcppLib = Join-Path $sdkHalconDir "lib/x64-win64/halconcpp.lib"
+    
+    if ((Test-Path $halconHeader) -and (Test-Path $halconLib) -and (Test-Path $halconcppLib)) {
+        Write-Host "[OK]   Halcon（sdk/halcon 内置）: $sdkHalconDir" -ForegroundColor Green
+    } else {
+        Write-Host "[INFO] Halcon 未配置 — 传统视觉模块的 Halcon 功能将不可用" -ForegroundColor Gray
+        if (Test-Path $sdkHalconDir) {
+            Write-Host "       sdk/halcon 目录存在但结构不完整，请检查: include/HalconCpp.h, lib/x64-win64/halcon*.lib" -ForegroundColor Yellow
+        } else {
+            Write-Host "       可通过以下方式启用 Halcon 功能：" -ForegroundColor Gray
+            Write-Host "         1. 安装 Halcon SDK 并设置 HALCONROOT / HALCONARCH 环境变量" -ForegroundColor Gray
+            Write-Host "         2. 将 Halcon SDK 文件放入 sdk/halcon/ 目录" -ForegroundColor Gray
+        }
+    }
 }
 
 # OpenCV（通过 vcpkg 管理，这里仅做提示）

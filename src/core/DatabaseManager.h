@@ -64,6 +64,9 @@ public:
     QMap<int, QMap<QString, PermissionInfo>> getAllPermissions() const;
     void setPermission(int userId, const QString& moduleName, bool canRead, bool canWrite);
 
+    /* 数据迁移（一次性） */
+    void migratePermissionKey(const QString& oldKey, const QString& newKey);
+
 private:
     DatabaseManager();
     ~DatabaseManager();

@@ -1,28 +1,27 @@
 # FuseVision
 
-智能机器视觉一体化平台 — 集成传统图像处理（Halcon / OpenCV）、深度学习（YOLO）、工业相机采集与用户权限管理的桌面应用程序。
+智能机器视觉一体化平台 — 集成深度学习（YOLO）、传统图像处理（Halcon / OpenCV）、工业相机采集与用户权限管理的桌面应用程序。
 
 ## 功能模块
 
 | 模块 | 说明 |
 |------|------|
-| **深度学习** | 模型训练、推理（基于 YOLO） |
-| **传统视觉** | 工业相机采集（海康 MVS SDK）、图像处理（Halcon / OpenCV） |
-| **用户管理** | 三档角色（用户 / 管理员 / 超级管理员）、模块级读写权限控制 |
-| **系统设置** | 日志路径、数据库路径配置 |
-| **主题切换** | 亮色 / 暗色主题自动检测与手动切换 |
-| **数据标注** | 集成 LabelMe 图像标注工具 |
+| **深度学习** | 项目管理 / 模型管理 / 数据集管理 / 数据标注 / 数据拆分 / 模型训练 / 模型预测 / 模型导出（8 标签页） |
+| **传统视觉** | 流程编辑器 / 相机采集 / 相机标定 / 相机建模 / 通讯设置 / 系统设置，三区布局（资源管理 + 编辑器 + 视觉工具） |
+| **用户管理** | 三档角色（用户 / 管理员 / 超级管理员）、模块级读写权限矩阵（QSplitter 可拖拽） |
+| **系统设置** | 日志路径 / 数据库路径 / 日志级别，DL 与传统视觉数据存储位置，保存后即时生效 |
+| **日志监控** | 页面底部可折叠日志面板（QSplitter 拖拽调整高度，最多保留 1000 行） |
+| **主题系统** | 亮色 / 暗色主题（自动检测 + 手动切换），Windows 标题栏 DWM 适配 |
 
 ## 技术栈
 
-- **UI 框架**：Qt 6.10（Widgets + SQL + Network）
+- **UI 框架**：Qt 6.10（Widgets + SQL）
 - **视觉库**：OpenCV 4.12、Halcon（可选）
-- **深度学习**：YOLO / Ultralytics
-- **相机 SDK**：海康 MVS SDK（Windows x64）
+- **工业相机**：海康 MVS SDK（Windows x64）
 - **日志**：spdlog 1.17
-- **数据库**：SQLite 3（用户 & 权限持久化）
+- **数据库**：SQLite 3（用户 & 权限持久化，SHA-256 密码哈希）
 - **构建系统**：CMake 3.21+ + Ninja
-- **包管理**：vcpkg（manifest 模式）
+- **包管理**：vcpkg（manifest 模式，项目内嵌）
 - **CI/CD**：GitHub Actions（Windows 2025 + 二进制缓存）
 
 ## 项目结构
@@ -30,30 +29,41 @@
 ```
 FuseVision/
 ├── src/
-│   ├── MainWindows/          # 主窗口、登录、用户管理、系统设置
-│   ├── DeepLearningWidget/   # 深度学习模块（训练 / 推理）
-│   ├── TraditionalWidget/    # 传统视觉模块（相机采集 / 图像处理）
-│   ├── core/                 # 核心基础设施
-│   │   ├── DatabaseManager   # SQLite 数据访问层
-│   │   ├── Logger            # 日志封装（spdlog）
-│   │   ├── PermissionGuard   # 权限门控
-│   │   ├── PermissionRegistry # 权限注册表
-│   │   ├── SessionManager    # 用户会话管理（信号驱动）
-│   │   ├── SettingsManager   # 配置持久化（QSettings）
-│   │   └── ThemeManager      # 主题管理（亮色 / 暗色）
-│   ├── MVS/                  # 海康相机 SDK（头文件 + 静态库）
-│   ├── yolo/                 # YOLO 模型 & Ultralytics 框架
-│   ├── labelme/              # LabelMe 标注工具（Python 子模块）
-│   └── VisionPro/            # VisionPro 集成 Demo（C#）
-├── res/                      # 图标资源
+│   ├── main.cpp                  # 应用入口（9 步启动流程）
+│   ├── MainWindows/
+│   │   ├── FuseVision.h/cpp      # 主窗口（侧边栏导航 + QStackedWidget）
+│   │   ├── Login.h/cpp           # 登录对话框（模态）
+│   │   ├── UserManagementWidget.h/cpp  # 用户管理 + 权限矩阵
+│   │   └── SystemSettingsWidget.h/cpp  # 系统设置
+│   ├── DeepLearningWidget/
+│   │   └── DeepLearningWidget.h/cpp    # 深度学习模块（8 标签页 + LogMonitor）
+│   ├── TraditionalWidget/
+│   │   └── TraditionalWidget.h/cpp     # 传统视觉模块（三区布局 + LogMonitor）
+│   └── core/                     # 核心基础设施
+│       ├── Logger.h/cpp          # 日志封装（spdlog，控制台 + 文件双输出）
+│       ├── DatabaseManager.h/cpp # SQLite 数据访问层（用户 CRUD + 权限 CRUD）
+│       ├── SessionManager.h/cpp  # 用户会话管理（信号驱动单例）
+│       ├── PermissionRegistry.h/cpp # 权限注册表 + 内存缓存
+│       ├── PermissionGuard.h/cpp # Widget 级权限代理（watch / canRead / canWrite）
+│       ├── PermissionInfo.h      # 权限数据结构
+│       ├── ThemeManager.h/cpp    # 主题管理（18 类 QSS 构建 + DWM 适配）
+│       ├── SettingsManager.h/cpp # 配置持久化（QSettings）
+│       └── LogMonitor.h/cpp      # 可折叠日志监控面板
+├── sdk/                          # 第三方 SDK 与工具
+│   ├── MVS/                      # 海康相机 SDK（头文件 + 静态库）
+│   ├── halcon/                   # Halcon SDK（可选）
+│   ├── yolo/                     # YOLO 模型 & Ultralytics 框架
+│   └── labelme/                  # LabelMe 标注工具（Python 子模块）
+├── res/                          # 图标资源（亮色 / 暗色双套 PNG）
 ├── scripts/
-│   └── check-env.ps1         # 开发环境自检脚本
+│   └── check-env.ps1             # 开发环境自检脚本
 ├── .github/workflows/
-│   └── build.yml             # CI/CD 构建流水线
-├── CMakePresets.json         # CMake 预设配置
-├── CMakeLists.txt            # 顶层 CMake 构建文件
-├── vcpkg.json                # vcpkg 依赖清单
-└── CmakeBuild.ps1            # 本地一键构建脚本
+│   └── build.yml                 # CI/CD 构建流水线
+├── CMakePresets.json             # CMake 预设（Win/Linux/macOS × Debug/Release）
+├── CMakeLists.txt                # 顶层 CMake 构建文件
+├── vcpkg.json                    # vcpkg 依赖清单（Qt6 / spdlog / OpenCV）
+├── CmakeBuild.ps1                # 本地一键构建脚本（交互式菜单）
+└── FuseVision.qrc                # Qt 资源文件
 ```
 
 ## 环境要求
@@ -63,19 +73,18 @@ FuseVision/
 | CMake | 3.21 | 构建系统 |
 | Ninja | 任意 | 构建生成器 |
 | MSVC | VS 2022 (17.x) | C++ 编译器 |
-| Git | 任意 | 克隆 vcpkg + 子模块 |
-| Python | 3.10+ | YOLO / LabelMe |
+| Git | 任意 | 克隆仓库 + 子模块 |
 
 可选（传统视觉模块）：
-- Halcon SDK（设置 `HALCONROOT` + `HALCONARCH` 环境变量）
-- 海康 MVS SDK（默认路径 `src/MVS/`）
+- Halcon SDK（设置 `HALCONROOT` + `HALCONARCH` 环境变量，或放入 `sdk/halcon/` 目录）
+- 海康 MVS SDK（默认路径 `sdk/MVS/`）
 
 ## 快速开始
 
 ### 1. 克隆仓库
 
 ```bash
-git clone --recurse-submodules git@github.com:your-org/FuseVision.git
+git clone --recurse-submodules https://github.com/your-org/FuseVision.git
 cd FuseVision
 ```
 
@@ -87,36 +96,34 @@ cd FuseVision
 
 确保 `[OK]` 全部通过后再继续。
 
-### 3. 安装 vcpkg
+### 3. 配置 & 编译
 
-```bash
-git clone https://github.com/microsoft/vcpkg.git vcpkg
-.\vcpkg\bootstrap-vcpkg.bat
-```
-
-### 4. 配置 & 编译
-
-Debug 模式：
-
-```powershell
-cmake --preset windows-x64-debug
-cmake --build --preset windows-debug --config Debug
-```
-
-Release 模式：
-
-```powershell
-cmake --preset windows-x64-release
-cmake --build --preset windows-release --config Release
-```
-
-或使用一键脚本：
+使用一键构建脚本：
 
 ```powershell
 .\CmakeBuild.ps1
 ```
 
-### 5. 运行
+交互式菜单选项：
+- `1` — Debug 构建并运行
+- `2` — Release 构建并运行
+- `3` — 清理 + Debug 重建
+- `4` — 清理 + Release 重建
+- `5` — 备份 src 目录
+
+或手动命令：
+
+```powershell
+# Debug
+cmake --preset windows-x64-debug
+cmake --build --preset windows-debug
+
+# Release
+cmake --preset windows-x64-release
+cmake --build --preset windows-release
+```
+
+### 4. 运行
 
 ```powershell
 .\out\build\windows-x64-debug\bin\Debug\FuseVision.exe
@@ -141,7 +148,19 @@ cmake --build --preset windows-release --config Release
 | `macos-x64-debug` | macOS x64 | Debug |
 | `macos-x64-release` | macOS x64 | Release |
 
-## 权限体系
+## 架构设计
+
+### 启动流程（9 步）
+
+```
+1. 控制台 UTF-8 编码  →  2. QApplication + Fusion 风格
+3. ThemeManager 初始化 →  4. SettingsManager + Logger（日志路径/级别从 QSettings 恢复）
+5. DatabaseManager（SQLite 建表 + 种子用户）
+6. 权限数据迁移       →  7. 注册权限模块（17 个模块点）
+8. 登录对话框（模态）→  9. 主窗口 → 事件循环
+```
+
+### 权限体系
 
 三档角色 + 模块级读写控制：
 
@@ -150,6 +169,21 @@ cmake --build --preset windows-release --config Release
 | 超级管理员 | RW | RW | RW | RW |
 | 管理员 | RW | R | RW | RW |
 | 用户 | - | - | 按配置 | 按配置 |
+
+**数据流**：`SessionManager::login()` → `PermissionRegistry::refreshPermissions(uid)` 预热缓存 → `sessionChanged` 信号 → `PermissionGuard::refresh()` → 差异对比 → `changed()` 信号 → Widget `applyPermissions()`
+
+### 主题系统
+
+- **ThemePalette**：50+ 语义化颜色变量（背景 / 文字 / 边框 / 主题色 / 语义色 / 浮层 / 菜单 / 状态栏 / 滚动条）
+- **18 类 QSS 构建方法**：Global / Widget / Button / Table / Form / Menu / StatusBar / Splitter / GroupBox / ToolBar / Dialog / TabBar / Tree / ToolButton / ScrollBar / SidebarBtn / LogMonitor
+- **Windows DWM**：标题栏 `DWMWA_USE_IMMERSIVE_DARK_MODE` + `DWMWA_CAPTION_COLOR` 跟随主题
+
+### 日志系统
+
+- **双输出**：Debug 模式输出控制台（彩色）+ 文件，Release 模式仅写文件
+- **每日滚动**：`daily_file_sink_mt` 按天切分日志，无文件数量限制
+- **运行时配置**：保存系统设置后即时切换日志路径和级别，无需重启
+- **LogMonitor**：可折叠面板，HTML 带颜色渲染，最多 1000 行
 
 ## CI/CD
 

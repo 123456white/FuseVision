@@ -11,4 +11,5 @@ target_include_directories(FuseVisionTraditional
 target_link_libraries(FuseVisionTraditional
     PUBLIC
         Qt6::Widgets
+        FuseVisionCore
 )

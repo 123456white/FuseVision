@@ -33,10 +33,19 @@ public:
     int     logLevel()   const;               // 获取日志级别（0=Trace ~ 6=Off）
     void    setLogLevel(int level);           // 设置日志级别（仅改内存）
 
-    bool needsRestart()  const;               // 是否有未生效的配置变更
-    void setNeedsRestart(bool v);             // 标记配置已变更需重启
+    QString dlDataPath()  const;              // 深度学习数据存储路径
+    void    setDlDataPath(const QString& p);  // 设置 DL 数据路径
+    QString dlModelPath() const;              // 深度学习模型存储路径
+    void    setDlModelPath(const QString& p); // 设置 DL 模型路径
+    QString dlDatasetPath() const;            // 深度学习数据集存储路径
+    void    setDlDatasetPath(const QString& p);// 设置 DL 数据集路径
 
-    void save();  // 将内存中的路径持久化到 QSettings，同时 setNeedsRestart(true)
+    QString traditionalDataPath()  const;        // 传统视觉数据存储路径
+    void    setTraditionalDataPath(const QString& p); // 设置传统视觉数据路径
+    QString traditionalCameraPath() const;       // 传统视觉相机配置存储路径
+    void    setTraditionalCameraPath(const QString& p); // 设置传统视觉相机路径
+
+    void save();  // 将内存中的路径持久化到 QSettings
     void load();  // 从 QSettings 恢复路径到内存
 
 private:
@@ -45,10 +54,14 @@ private:
     SettingsManager& operator=(const SettingsManager&) = delete;
 
     QSettings m_settings;   // 底层存储（组织名: FuseVisionTeam, 应用名: FuseVision）
-    bool      m_dirty = false;  // 脏标记：true = 路径变更后尚未重启
 
     QString   m_logPath;    // 缓存：日志路径
     QString   m_dbPath;     // 缓存：数据库路径
+    QString   m_dlDataPath;      // 缓存：DL 数据路径
+    QString   m_dlModelPath;     // 缓存：DL 模型路径
+    QString   m_dlDatasetPath;   // 缓存：DL 数据集路径
+    QString   m_traditionalDataPath;  // 缓存：传统视觉数据路径
+    QString   m_traditionalCameraPath; // 缓存：传统视觉相机配置路径
     int       m_logLevel = 2; // 缓存：日志级别（默认 Info=2）
 };
 

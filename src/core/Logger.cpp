@@ -37,6 +37,10 @@ std::unique_ptr<Logger::Impl> Logger::s_impl;
 
 void Logger::init(const QString& logPath, Level level)
 {
+    // 先释放旧 logger（从 spdlog 全局注册表移除 + 销毁 s_impl）
+    spdlog::drop("fusevision");
+    s_impl.reset();
+
     QFileInfo fileInfo(logPath);
     QString dirPath;
     QString baseName;

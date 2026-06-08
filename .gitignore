@@ -1,5 +1,6 @@
 # ========== 构建输出 ==========
 out/
+build/
 
 # ========== vcpkg（嵌入模式，31 GB — 需本地引导克隆，不入库） ==========
 vcpkg/
@@ -25,22 +26,29 @@ backup/
 *.secret
 
 # ========== 第三方 SDK / 大型资源（不入库，需本地配置） ==========
-src/labelme/.claude/
-src/labelme/.gitHub/
-src/labelme/examples/
-src/labelme/tests/
+sdk/labelme/.claude/
+sdk/labelme/.gitHub/
+sdk/labelme/examples/
+sdk/labelme/tests/
 
-src/MVS/demo/
+sdk/MVS/demo/
 
-src/VisionPro/Demo/
+sdk/VisionPro/Demo/
 
-src/yolo/weights/
-src/yolo/test/
-src/yolo/results/
-src/yolo/Services/FastAPI_test/
-src/yolo/Services/Brunotest/
-src/yolo/ultralytics-main/.github/
-src/yolo/ultralytics-main/docker/
-src/yolo/ultralytics-main/docs/
-src/yolo/ultralytics-main/examples/
-src/yolo/ultralytics-main/tests/
+sdk/yolo/weights/
+sdk/yolo/test/
+sdk/yolo/results/
+sdk/yolo/Services/FastAPI_test/
+sdk/yolo/Services/Brunotest/
+sdk/yolo/ultralytics-main/.github/
+sdk/yolo/ultralytics-main/docker/
+sdk/yolo/ultralytics-main/docs/
+sdk/yolo/ultralytics-main/examples/
+sdk/yolo/ultralytics-main/tests/
+
+# ========== Halcon SDK（大型二进制不入库，结构保留） ==========
+sdk/halcon/include/HalconC.h
+sdk/halcon/include/HalconCpp.h
+sdk/halcon/include/halconcpp/
+sdk/halcon/lib/
+sdk/halcon/bin/

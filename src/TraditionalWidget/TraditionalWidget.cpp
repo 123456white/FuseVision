@@ -1,7 +1,10 @@
 #include "TraditionalWidget.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+#include <QSplitter>
 #include <QAction>
+#include <QFrame>
+#include <QDebug>
 
 // =============================================================================
 // TraditionalWidget.cpp — 传统视觉模块三区布局实现
@@ -11,7 +14,7 @@
 const QStringList TraditionalWidget::s_permissionKeys = {
     "传统视觉.流程编辑", "传统视觉.相机采集", "传统视觉.相机标定",
     "传统视觉.相机建模", "传统视觉.通讯设置", "传统视觉.系统设置",
-    "传统视觉.图像处理"
+    "传统视觉.视觉工具区"
 };
 
 // ── 构造 ──────────────────────────────────────────────────────
@@ -38,14 +41,8 @@ TraditionalWidget::TraditionalWidget(QWidget* parent)
 void TraditionalWidget::initUI()
 {
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->setContentsMargins(0, 0, 0, 0);
-    mainLayout->setSpacing(0);
-
-    // 标题
-    QLabel* title = new QLabel("传统视觉 - 经典算法引擎");
-    title->setObjectName("widgetTitle");
-    title->setContentsMargins(24, 16, 24, 8);
-    mainLayout->addWidget(title);
+    mainLayout->setContentsMargins(24, 8, 24, 20);
+    mainLayout->setSpacing(12);
 
     // 顶部工具栏
     initToolBar();
@@ -56,19 +53,41 @@ void TraditionalWidget::initUI()
     m_mainSplitter->setHandleWidth(1);
 
     initResourcePanel();   // 左：资源管理区
-    initEditorArea();      // 中：编辑区
-    initToolPanel();       // 右：工具区
+    initEditorArea();      // 中：流程编辑器
+    initToolPanel();       // 右：视觉工具区
 
-    m_mainSplitter->addWidget(m_resourceTree);
-    m_mainSplitter->addWidget(m_editorStack);
-    m_mainSplitter->addWidget(m_toolBox);
+    m_mainSplitter->addWidget(m_resourceFrame);
+    m_mainSplitter->addWidget(m_editorFrame);
+    m_mainSplitter->addWidget(m_toolFrame);
 
-    // 默认比例：20% / 55% / 25%
-    m_mainSplitter->setStretchFactor(0, 2);
-    m_mainSplitter->setStretchFactor(1, 5);
-    m_mainSplitter->setStretchFactor(2, 3);
+    // 默认比例：资源区 / 弹性编辑区 / 工具区
+    m_mainSplitter->setSizes({ 120, 500, 110 });
 
-    mainLayout->addWidget(m_mainSplitter, 1);
+    // ===== 垂直分割器：三区 + 日志面板（可拖拽调整高低）=====
+    QSplitter* vSplitter = new QSplitter(Qt::Vertical);
+    vSplitter->setHandleWidth(1);
+    vSplitter->setChildrenCollapsible(false);
+    vSplitter->addWidget(m_mainSplitter);
+
+    m_logMonitor = new LogMonitor;
+    m_logMonitor->log("传统视觉模块已加载");
+    vSplitter->addWidget(m_logMonitor);
+
+    mainLayout->addWidget(vSplitter, 1);
+}
+
+// ── 首次显示时按比例分配日志面板高度 ─────────────────────────
+
+void TraditionalWidget::showEvent(QShowEvent* event)
+{
+    QWidget::showEvent(event);
+    if (m_shown) return;
+    m_shown = true;
+    if (auto* s = findChild<QSplitter*>("", Qt::FindDirectChildrenOnly)) {
+        int h = s->height();
+        if (h > 0 && s->count() == 2)
+            s->setSizes({ h * 3 / 4, h / 4 });
+    }
 }
 
 // ── 顶部工具栏 ───────────────────────────────────────────────
@@ -78,7 +97,7 @@ void TraditionalWidget::initToolBar()
     m_toolBar = new QToolBar;
     m_toolBar->setMovable(false);           // 不可拖拽
     m_toolBar->setIconSize(QSize(20, 20));
-    m_toolBar->setContentsMargins(24, 0, 24, 0);
+    m_toolBar->setContentsMargins(0, 0, 0, 0);
 
     QAction* actFlow  = m_toolBar->addAction("流程文件");
     QAction* actCam   = m_toolBar->addAction("相机配置");
@@ -101,9 +120,22 @@ void TraditionalWidget::initToolBar()
 
 void TraditionalWidget::initResourcePanel()
 {
+    m_resourceFrame = new QFrame;
+    m_resourceFrame->setObjectName("sectionFrame");
+
+    QVBoxLayout* resLayout = new QVBoxLayout(m_resourceFrame);
+    resLayout->setContentsMargins(8, 0, 8, 8);
+    resLayout->setSpacing(0);
+
+    // ── 资源区标题 ──
+    QLabel* resTitle = new QLabel("资源管理");
+    resTitle->setObjectName("sectionTitle");
+    resLayout->addWidget(resTitle);
+
+    // ── 资源树 ──
     m_resourceTree = new QTreeWidget;
-    m_resourceTree->setHeaderLabel("资源管理");
-    m_resourceTree->setMinimumWidth(160);
+    m_resourceTree->setHeaderHidden(true);
+    m_resourceTree->setMinimumWidth(100);
 
     // 占位节点（后续由流程文件加载/相机枚举填充）
     QTreeWidgetItem* flows = new QTreeWidgetItem({"流程文件"});
@@ -113,13 +145,31 @@ void TraditionalWidget::initResourcePanel()
     QTreeWidgetItem* cameras = new QTreeWidgetItem({"相机设备"});
     cameras->addChild(new QTreeWidgetItem({"未连接"}));
     m_resourceTree->addTopLevelItem(cameras);
+
+    resLayout->addWidget(m_resourceTree, 1);
 }
 
 // ── 中间编辑区（双模式） ─────────────────────────────────────
 
 void TraditionalWidget::initEditorArea()
 {
+    // 外框容器（划定区域边界）
+    m_editorFrame = new QFrame;
+    m_editorFrame->setObjectName("sectionFrame");
+    m_editorFrame->setFrameStyle(QFrame::StyledPanel);
+
+    QVBoxLayout* frameLayout = new QVBoxLayout(m_editorFrame);
+    frameLayout->setContentsMargins(8, 0, 8, 8);
+    frameLayout->setSpacing(8);
+
+    // 编辑器标题（三区统一标题样式）
+    QLabel* editorTitle = new QLabel("流程编辑器");
+    editorTitle->setObjectName("sectionTitle");
+    frameLayout->addWidget(editorTitle);
+
+    // 双模式 StackedWidget
     m_editorStack = new QStackedWidget;
+    m_editorStack->setObjectName("editorStack");
 
     // [0] 流程编辑模式（预留 QGraphicsView 拖拽式编辑器）
     m_flowEditPage = new QWidget;
@@ -142,14 +192,29 @@ void TraditionalWidget::initEditorArea()
     m_editorStack->addWidget(m_imageViewPage);
 
     m_editorStack->setCurrentIndex(0);  // 默认流程编辑模式
+
+    frameLayout->addWidget(m_editorStack, 1);
 }
 
-// ── 右侧工具区 ────────────────────────────────────────────────
+// ── 右侧视觉工具区 ─────────────────────────────────────────────
 
 void TraditionalWidget::initToolPanel()
 {
+    m_toolFrame = new QFrame;
+    m_toolFrame->setObjectName("sectionFrame");
+
+    QVBoxLayout* toolLayout = new QVBoxLayout(m_toolFrame);
+    toolLayout->setContentsMargins(8, 0, 8, 8);
+    toolLayout->setSpacing(0);
+
+    // ── 工具区标题 ──
+    QLabel* toolTitle = new QLabel("视觉工具");
+    toolTitle->setObjectName("sectionTitle");
+    toolLayout->addWidget(toolTitle);
+
+    // ── 工具盒 ──
     m_toolBox = new QToolBox;
-    m_toolBox->setMinimumWidth(180);
+    m_toolBox->setMinimumWidth(90);
 
     // 5 个视觉工具分类（均为空占位）
     QWidget* capPage   = new QWidget; capPage->setLayout(new QVBoxLayout);
@@ -176,6 +241,8 @@ void TraditionalWidget::initToolPanel()
     m_toolBox->addItem(locPage,  "定位");
     m_toolBox->addItem(measPage, "测量");
     m_toolBox->addItem(recPage,  "识别");
+
+    toolLayout->addWidget(m_toolBox, 1);
 }
 
 // ── 双模式切换 ────────────────────────────────────────────────
@@ -206,9 +273,9 @@ void TraditionalWidget::applyPermissions()
             act->setEnabled(m_guard->canWrite(m.key));
     }
 
-    // 图像处理权限 → 控制工具区（canRead 可见, canWrite 启用）
-    bool canReadProc  = m_guard->canRead("传统视觉.图像处理");
-    bool canWriteProc = m_guard->canWrite("传统视觉.图像处理");
+    // 视觉工具区权限 → 控制工具区（canRead 可见, canWrite 启用）
+    bool canReadProc  = m_guard->canRead("传统视觉.视觉工具区");
+    bool canWriteProc = m_guard->canWrite("传统视觉.视觉工具区");
     m_toolBox->setVisible(canReadProc);
     m_toolBox->setEnabled(canWriteProc);
 }

@@ -20,6 +20,9 @@ project(FuseVision
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# vcpkg 内部消费此变量（消除 CMake "not used" 警告）
+set(_vcpkg_bs_used "${VCPKG_BINARY_SOURCES}")
+
 # 64位编译器检测（变量已初始化，检测有效）
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
     message(FATAL_ERROR "
@@ -54,24 +57,54 @@ else()
     message(FATAL_ERROR "OpenCV not found! Please make sure OpenCV is installed via vcpkg.")
 endif()
 
-# ========== Halcon 配置 ==========
-# ========== Halcon 配置（可选 — CI 环境或未安装 Halcon 时可安全跳过） ==========
+# ========== Halcon 配置（自动切换：系统安装版 → sdk/halcon 内置版 → 禁用） ==========
+# 检测优先级：
+#   1. 系统安装的 Halcon（HALCONROOT / HALCONARCH 环境变量）
+#   2. 项目自带的 sdk/halcon 目录（CI / 无 Halcon 环境时使用）
+#   3. 均未找到 → 禁用 Halcon 功能，编译时跳过相关代码
 set(HALCON_FOUND OFF)
+set(HALCON_SOURCE "none")
+
+# ── 优先检测系统安装的 Halcon ──
 if(DEFINED ENV{HALCONROOT} AND DEFINED ENV{HALCONARCH})
     set(HALCON_INCLUDE_DIR "$ENV{HALCONROOT}/include")
     set(HALCONCPP_INCLUDE_DIR "$ENV{HALCONROOT}/include/halconcpp")
     set(HALCON_LIB_DIR "$ENV{HALCONROOT}/lib/$ENV{HALCONARCH}")
+    set(HALCON_BIN_DIR "$ENV{HALCONROOT}/bin/$ENV{HALCONARCH}")
     set(HALCON_FOUND ON)
-    message(STATUS "Halcon 已检测到: $ENV{HALCONROOT} (架构: $ENV{HALCONARCH})")
+    set(HALCON_SOURCE "system")
+    message(STATUS "✅ Halcon 已检测到（系统安装）: $ENV{HALCONROOT} (架构: $ENV{HALCONARCH})")
+
+# ── 回退到 sdk/halcon 内置 SDK ──
 else()
-    set(HALCON_INCLUDE_DIR "")
-    set(HALCONCPP_INCLUDE_DIR "")
-    set(HALCON_LIB_DIR "")
-    message(WARNING "Halcon 未检测到: HALCONROOT / HALCONARCH 环境变量未设置。传统视觉模块的 Halcon 功能将不可用。")
+    set(HALCON_SDK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/sdk/halcon")
+    set(HALCON_SDK_INCLUDE "${HALCON_SDK_DIR}/include")
+    set(HALCON_SDK_LIB "${HALCON_SDK_DIR}/lib")
+    set(HALCON_SDK_BIN "${HALCON_SDK_DIR}/bin")
+
+    if(EXISTS "${HALCON_SDK_INCLUDE}/HalconCpp.h" AND
+       EXISTS "${HALCON_SDK_LIB}/halcon.lib" AND
+       EXISTS "${HALCON_SDK_LIB}/halconcpp.lib")
+        set(HALCON_INCLUDE_DIR "${HALCON_SDK_INCLUDE}")
+        set(HALCONCPP_INCLUDE_DIR "${HALCON_SDK_INCLUDE}/halconcpp")
+        set(HALCON_LIB_DIR "${HALCON_SDK_LIB}")
+        set(HALCON_BIN_DIR "${HALCON_SDK_BIN}")
+        set(HALCON_FOUND ON)
+        set(HALCON_SOURCE "sdk/halcon")
+        message(STATUS "✅ Halcon 已检测到（sdk/halcon 内置 SDK）: ${HALCON_SDK_DIR}")
+    else()
+        # 结构不完整时报告缺失的组件
+        set(HALCON_INCLUDE_DIR "")
+        set(HALCONCPP_INCLUDE_DIR "")
+        set(HALCON_LIB_DIR "")
+        set(HALCON_BIN_DIR "")
+        message(WARNING "⚠️  Halcon 未检测到：系统未安装且 sdk/halcon 目录不完整。传统视觉模块的 Halcon 功能将不可用。")
+        message(STATUS "   期望的 sdk/halcon 结构: include/HalconCpp.h, lib/halcon.lib, lib/halconcpp.lib")
+    endif()
 endif()
 
-# 设置MVS SDK路径
-set(MVS_SDK_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/src/MVS")
+# 设置MVS SDK路径（已从 src/ 迁移至 sdk/）
+set(MVS_SDK_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/sdk/MVS")
 set(MVS_INCLUDE_DIR "${MVS_SDK_ROOT}/Includes")
 set(MVS_LIBRARY_DIR "${MVS_SDK_ROOT}/Libraries/win64")
 
@@ -94,6 +127,7 @@ add_subdirectory(src)
 add_executable(${PROJECT_NAME}
     "src/main.cpp"
     ${QT_RESOURCES}
+    "FuseVision.rc"
 )
 
 # Windows 控制台配置
@@ -130,6 +164,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     FuseVisionCore
     FuseVisionDeepLearning
     FuseVisionTraditional
+    dwmapi
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets
@@ -174,19 +209,18 @@ if(WIN32)
         VERBATIM
     )
 
-    # ========== 复制 Halcon 运行时 DLL（仅在 Halcon 可用时） ==========
+    # ========== 复制 Halcon 运行时 DLL（系统安装版 / sdk/halcon 内置版） ==========
     if(HALCON_FOUND)
-        set(HALCON_DLL_DIR "$ENV{HALCONROOT}/bin/$ENV{HALCONARCH}")
         set(OUTPUT_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
         
         add_custom_command(
             TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_DIR}
             COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-                "${HALCON_DLL_DIR}/halcon.dll" ${OUTPUT_DIR}
+                "${HALCON_BIN_DIR}/halcon.dll" ${OUTPUT_DIR}
             COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-                "${HALCON_DLL_DIR}/hdevenginecpp.dll" ${OUTPUT_DIR}
-            COMMENT "✅ 复制 Halcon 运行时 DLL 到输出目录"
+                "${HALCON_BIN_DIR}/hdevenginecpp.dll" ${OUTPUT_DIR}
+            COMMENT "✅ 复制 Halcon 运行时 DLL (${HALCON_SOURCE}) 到输出目录"
             VERBATIM
         )
     endif() 
@@ -204,8 +238,11 @@ message(STATUS "Qt 版本：${Qt6_VERSION}")
 message(STATUS "Qt 库路径：${Qt6_DIR}")
 
 message(STATUS "vcpkg 三元组：${VCPKG_TARGET_TRIPLET}")
-message(STATUS "Halcon 根目录：$ENV{HALCONROOT}")
-message(STATUS "Halcon 架构：$ENV{HALCONARCH}")
+message(STATUS "Halcon 来源：${HALCON_SOURCE}")
+if(HALCON_FOUND)
+    message(STATUS "Halcon 头文件目录：${HALCON_INCLUDE_DIR}")
+    message(STATUS "Halcon 库目录：${HALCON_LIB_DIR}")
+endif()
 message(STATUS "MVS SDK 根目录：${MVS_SDK_ROOT}")
 message(STATUS "OpenCV 版本：${OpenCV_VERSION}") 
 message(STATUS "spdlog 版本：${spdlog_VERSION}")

@@ -40,12 +40,15 @@ LoginDialog::LoginDialog(QWidget* parent)
     , m_settings("FuseVisionTeam", "FuseVisionLogin")  // 独立的 QSettings 命名空间
 {
     setupUI();     // 构建控件树
+
+    // 必须在 setupStyle 之前设置固定大小，否则渐变计算时 height() 为 0
+    setFixedSize(420, 280);
+
     setupStyle();  // 应用渐变背景 + 全局 QSS
     loadSettings(); // 恢复"记住密码"状态
 
     // 对话框属性
     setWindowTitle("登录 FuseVision");
-    setFixedSize(420, 280);
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     setModal(true);  // 模态对话框，阻塞主事件循环
 }
@@ -129,11 +132,12 @@ void LoginDialog::setupUI()
 
 void LoginDialog::setupStyle()
 {
-    // 自定义渐变背景（淡蓝色渐变）
+    // 渐变背景（跟随主题）
+    const auto& p = ThemeManager::instance().palette();
     QPalette pal = palette();
     QLinearGradient gradient(0, 0, 0, height());
-    gradient.setColorAt(0.0, QColor(240, 248, 255));
-    gradient.setColorAt(1.0, QColor(230, 242, 255));
+    gradient.setColorAt(0.0, QColor(p.bgSecondary));
+    gradient.setColorAt(1.0, QColor(p.bgPrimary));
     pal.setBrush(QPalette::Window, QBrush(gradient));
     setPalette(pal);
     setAutoFillBackground(true);

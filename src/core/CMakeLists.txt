@@ -14,6 +14,8 @@ add_library(FuseVisionCore STATIC
     PermissionGuard.cpp
     ThemeManager.h
     ThemeManager.cpp
+    LogMonitor.h
+    LogMonitor.cpp
 )
 
 target_include_directories(FuseVisionCore
@@ -24,6 +26,7 @@ target_include_directories(FuseVisionCore
 target_link_libraries(FuseVisionCore
     PUBLIC
         Qt6::Core
+        Qt6::Widgets
         Qt6::Sql
         spdlog::spdlog
 )
