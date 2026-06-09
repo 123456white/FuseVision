@@ -9,5 +9,11 @@
         <file>res/SystemSettings_D.png</file>
         <file>res/TraditionalWidget_D.png</file>
         <file>res/UserManagement_D.png</file>
+        <file>res/FuseVisionProject_D.png</file>
+        <file>res/NewProject.png</file>
+        <file>res/NewProject_D.png</file>
+        <file>res/FuseVisionProject.png</file>
+        <file>res/OpenProject_D.png</file>
+        <file>res/OpenProject.png</file>
     </qresource>
 </RCC>

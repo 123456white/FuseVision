@@ -1,6 +1,10 @@
 add_library(FuseVisionDeepLearning STATIC
     DeepLearningWidget.h
     DeepLearningWidget.cpp
+    ProjectManagement.h
+    ProjectManagement.cpp
+    ProjectConfig.h
+    ProjectConfig.cpp
 )
 
 target_include_directories(FuseVisionDeepLearning

@@ -1,4 +1,5 @@
 #include "DeepLearningWidget.h"
+#include "ProjectManagement.h"
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QFrame>
@@ -6,8 +7,8 @@
 // =============================================================================
 // DeepLearningWidget.cpp — 深度学习模块 8 标签页实现
 // =============================================================================
-// 布局：QTabBar(8 标签) + QFrame 内容容器 + QStackedWidget(8 空白页)
-// 每个标签页当前仅显示"内容待开发"占位文本
+// 布局：QTabBar(8 标签) + QFrame 内容容器 + QStackedWidget(8 页)
+// Tab 0 = ProjectManagement（已实现），Tab 1~7 = 占位页面
 // =============================================================================
 
 // 8 个标签页的名称（与 s_permissionKeys 一一对应）
@@ -72,15 +73,20 @@ void DeepLearningWidget::initUI()
     QVBoxLayout* frameLayout = new QVBoxLayout(contentFrame);
     frameLayout->setContentsMargins(0, 0, 0, 0);
 
-    // ===== 内容区（8 个空白页） =====
+    // ===== 内容区（Tab 0 = ProjectManagement，Tab 1~7 = 占位页）=====
     m_stackedWidget = new QStackedWidget;
 
-    for (int i = 0; i < s_tabNames.size(); ++i) {
+    // Page 0 — 项目管理（已实现）
+    m_projectManagement = new ProjectManagement;
+    m_stackedWidget->addWidget(m_projectManagement);
+
+    // Page 1~7 — 占位页面
+    for (int i = 1; i < s_tabNames.size(); ++i) {
         QWidget* page = new QWidget;
         QVBoxLayout* pageLayout = new QVBoxLayout(page);
         pageLayout->setAlignment(Qt::AlignCenter);
 
-        QLabel* placeholder = new QLabel("内容待开发");
+        QLabel* placeholder = new QLabel(QString::fromUtf8("%1 — 内容待开发").arg(s_tabNames[i]));
         placeholder->setAlignment(Qt::AlignCenter);
         placeholder->setObjectName("placeholderLabel");
         pageLayout->addWidget(placeholder);
@@ -90,6 +96,14 @@ void DeepLearningWidget::initUI()
 
     m_stackedWidget->setCurrentIndex(0);
     frameLayout->addWidget(m_stackedWidget);
+
+    // ── 信号连接：项目打开/关闭/预览 → 日志 + 信号转发 ──
+    connect(m_projectManagement, &ProjectManagement::projectOpened,
+            this, &DeepLearningWidget::onProjectOpened);
+    connect(m_projectManagement, &ProjectManagement::projectClosed,
+            this, &DeepLearningWidget::onProjectClosed);
+    connect(m_projectManagement, &ProjectManagement::projectPreviewed,
+            this, [this](const QString& name) { emit dlProjectChanged(name); });
 
     // ===== 垂直分割器：内容区 + 日志面板（可拖拽调整高低）=====
     QSplitter* vSplitter = new QSplitter(Qt::Vertical);
@@ -144,4 +158,29 @@ void DeepLearningWidget::applyPermissions()
             }
         }
     }
+}
+
+// ── 项目信号中转 ─────────────────────────────────────────────
+
+QString DeepLearningWidget::currentProjectName() const
+{
+    return m_projectManagement ? m_projectManagement->currentProjectName() : QString();
+}
+
+void DeepLearningWidget::onProjectOpened(const QString& name, const QString& path)
+{
+    m_logMonitor->log(QString::fromUtf8("项目已打开: %1 (%2)").arg(name, path));
+    emit dlProjectChanged(name);
+
+    // 自动跳转到"模型管理"标签页
+    if (m_tabBar->isTabVisible(1)) {
+        m_tabBar->setCurrentIndex(1);
+        m_stackedWidget->setCurrentIndex(1);
+    }
+}
+
+void DeepLearningWidget::onProjectClosed()
+{
+    m_logMonitor->log(QString::fromUtf8("项目已关闭"));
+    emit dlProjectChanged(QString());
 }
