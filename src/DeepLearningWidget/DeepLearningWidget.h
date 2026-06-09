@@ -37,6 +37,7 @@
 // =============================================================================
 
 class ProjectManagement;  // 前向声明
+class ModelManagement;     // 前向声明
 
 class DeepLearningWidget : public QWidget
 {
@@ -70,6 +71,7 @@ private:
 
     // ── 子页面 ──────────────────────────────────────────────
     ProjectManagement* m_projectManagement = nullptr;  // Tab 0：项目管理
+    ModelManagement*   m_modelManagement   = nullptr;  // Tab 1：模型管理
 
     // 8 个标签页名称（与 QStackedWidget index 对应）
     static const QStringList s_tabNames;

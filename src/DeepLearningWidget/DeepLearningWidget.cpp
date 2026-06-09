@@ -1,5 +1,6 @@
 #include "DeepLearningWidget.h"
 #include "ProjectManagement.h"
+#include "ModelManagement.h"
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QFrame>
@@ -80,8 +81,12 @@ void DeepLearningWidget::initUI()
     m_projectManagement = new ProjectManagement;
     m_stackedWidget->addWidget(m_projectManagement);
 
-    // Page 1~7 — 占位页面
-    for (int i = 1; i < s_tabNames.size(); ++i) {
+    // Page 1 — 模型管理
+    m_modelManagement = new ModelManagement;
+    m_stackedWidget->addWidget(m_modelManagement);
+
+    // Page 2~7 — 占位页面
+    for (int i = 2; i < s_tabNames.size(); ++i) {
         QWidget* page = new QWidget;
         QVBoxLayout* pageLayout = new QVBoxLayout(page);
         pageLayout->setAlignment(Qt::AlignCenter);
@@ -97,7 +102,20 @@ void DeepLearningWidget::initUI()
     m_stackedWidget->setCurrentIndex(0);
     frameLayout->addWidget(m_stackedWidget);
 
-    // ── 信号连接：项目打开/关闭/预览 → 日志 + 信号转发 ──
+    // ===== 垂直分割器：内容区 + 日志面板（可拖拽调整高低）=====
+    QSplitter* vSplitter = new QSplitter(Qt::Vertical);
+    vSplitter->setHandleWidth(1);
+    vSplitter->setChildrenCollapsible(false);
+    vSplitter->addWidget(contentFrame);
+
+    // m_logMonitor 必须在 connect 调用之前创建
+    m_logMonitor = new LogMonitor;
+    vSplitter->addWidget(m_logMonitor);
+
+    mainLayout->addWidget(vSplitter, 1);
+
+    // ── 信号连接（m_logMonitor 已就绪）─────────────────────
+    // 项目打开/关闭/预览 → 日志 + 信号转发
     connect(m_projectManagement, &ProjectManagement::projectOpened,
             this, &DeepLearningWidget::onProjectOpened);
     connect(m_projectManagement, &ProjectManagement::projectClosed,
@@ -105,17 +123,39 @@ void DeepLearningWidget::initUI()
     connect(m_projectManagement, &ProjectManagement::projectPreviewed,
             this, [this](const QString& name) { emit dlProjectChanged(name); });
 
-    // ===== 垂直分割器：内容区 + 日志面板（可拖拽调整高低）=====
-    QSplitter* vSplitter = new QSplitter(Qt::Vertical);
-    vSplitter->setHandleWidth(1);
-    vSplitter->setChildrenCollapsible(false);
-    vSplitter->addWidget(contentFrame);
+    // ProjectManagement → ModelManagement 项目绑定
+    connect(m_projectManagement, &ProjectManagement::projectOpened,
+            this, [this](const QString&, const QString&) {
+                m_modelManagement->setCurrentProject(m_projectManagement->currentProject());
+            });
+    connect(m_projectManagement, &ProjectManagement::projectClosed,
+            this, [this]() { m_modelManagement->setCurrentProject(FvprojInfo()); });
 
-    m_logMonitor = new LogMonitor;
+    // ModelManagement 信号 → 日志
+    connect(m_modelManagement, &ModelManagement::modelCreated,
+            m_logMonitor, [this](const QString& name) {
+                m_logMonitor->log(QString::fromUtf8("模型已创建: %1").arg(name));
+            });
+    connect(m_modelManagement, &ModelManagement::modelOpened,
+            m_logMonitor, [this](const QString& name) {
+                m_logMonitor->log(QString::fromUtf8("模型已打开: %1").arg(name));
+            });
+    connect(m_modelManagement, &ModelManagement::currentModelChanged,
+            m_logMonitor, [this](const QString& name) {
+                m_logMonitor->log(QString::fromUtf8("当前模型切换至: %1").arg(name));
+            });
+
+    // ModelManagement 双击卡片 → 跳数据集管理
+    connect(m_modelManagement, &ModelManagement::openDatasetRequested,
+            this, [this](const QString& modelId) {
+                m_logMonitor->log(QString::fromUtf8("跳转数据集管理: %1").arg(modelId));
+                if (m_tabBar->isTabVisible(2)) {
+                    m_tabBar->setCurrentIndex(2);
+                    m_stackedWidget->setCurrentIndex(2);
+                }
+            });
+
     m_logMonitor->log("深度学习模块已加载");
-    vSplitter->addWidget(m_logMonitor);
-
-    mainLayout->addWidget(vSplitter, 1);
 }
 
 // ── 首次显示时按比例分配日志面板高度 ─────────────────────────

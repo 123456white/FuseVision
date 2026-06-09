@@ -5,6 +5,10 @@ add_library(FuseVisionDeepLearning STATIC
     ProjectManagement.cpp
     ProjectConfig.h
     ProjectConfig.cpp
+    ModelConfig.h
+    ModelConfig.cpp
+    ModelManagement.h
+    ModelManagement.cpp
 )
 
 target_include_directories(FuseVisionDeepLearning

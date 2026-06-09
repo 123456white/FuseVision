@@ -114,6 +114,7 @@ public:
     QString currentProjectName() const { return m_currentProjectName; }
     QString currentProjectPath() const { return m_currentProjectPath; }
     bool    hasProject()         const { return m_hasProject; }
+    FvprojInfo currentProject()  const { return m_hasProject ? m_currentProject : m_previewProject; }
 
 public slots:
     void refreshCards();           // 重新扫描并刷新卡片网格

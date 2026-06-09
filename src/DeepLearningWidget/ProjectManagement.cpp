@@ -57,7 +57,14 @@ void StepGuideBar::buildSteps()
     layout->setContentsMargins(16, 6, 16, 6);
     layout->setSpacing(0);
 
+    // 先添加所有步骤，让它们均匀分布
     for (int i = 0; i < s_stepCount; ++i) {
+        // 每个步骤用 QWidget 包裹，以便设置 stretch
+        QWidget* stepWidget = new QWidget;
+        QVBoxLayout* stepLayout = new QVBoxLayout(stepWidget);
+        stepLayout->setContentsMargins(0, 0, 0, 0);
+        stepLayout->setSpacing(4);
+
         QLabel* dot = new QLabel;
         dot->setFixedSize(18, 18);
         dot->setAlignment(Qt::AlignCenter);
@@ -66,13 +73,13 @@ void StepGuideBar::buildSteps()
         QLabel* label = new QLabel(QString::fromUtf8(s_stepNames[i]));
         label->setAlignment(Qt::AlignCenter);
 
-        QVBoxLayout* stepLayout = new QVBoxLayout;
-        stepLayout->setSpacing(4);
         stepLayout->addWidget(dot, 0, Qt::AlignHCenter);
         stepLayout->addWidget(label, 0, Qt::AlignHCenter);
 
-        layout->addLayout(stepLayout);
+        // 每个步骤等宽分布
+        layout->addWidget(stepWidget, 1);
 
+        // 连接线
         QFrame* line = nullptr;
         if (i < s_stepCount - 1) {
             line = new QFrame;
@@ -84,7 +91,6 @@ void StepGuideBar::buildSteps()
         m_steps.append({dot, label, line});
     }
 
-    layout->addStretch();
     refreshTheme();
 }
 
@@ -106,8 +112,9 @@ void StepGuideBar::refreshTheme()
 {
     const auto& p = ThemeManager::instance().palette();
 
-    // 容器背景
-    setStyleSheet(QString("QWidget { background-color: %1; }").arg(p.bgSecondary));
+    // 容器背景 + 顶部分割线
+    setStyleSheet(QString("QWidget { background-color: %1; border-top: 1px solid %2; }")
+                      .arg(p.bgSecondary, p.borderLight));
 
     // 连接线颜色
     for (auto& s : m_steps) {
@@ -442,16 +449,9 @@ void ProjectManagement::initRightPanel()
     m_scrollArea->setWidget(stackWidget);
     layout->addWidget(m_scrollArea, 1);
 
-    // 步骤引导条
-    QFrame* guideFrame = new QFrame;
-    guideFrame->setObjectName("pmStepGuideFrame");
-    QVBoxLayout* guideLayout = new QVBoxLayout(guideFrame);
-    guideLayout->setContentsMargins(0, 0, 0, 0);
-
+    // 步骤引导条（直接占满宽度）
     m_stepGuideBar = new StepGuideBar;
-    guideLayout->addWidget(m_stepGuideBar);
-
-    layout->addWidget(guideFrame);
+    layout->addWidget(m_stepGuideBar);
 }
 
 // ── 主题刷新 ──────────────────────────────────────────────────
@@ -536,13 +536,6 @@ void ProjectManagement::applyTheme()
         QString("QLabel#pmEmptyHint { color: %1; font-size: 15px; }")
             .arg(p.textMuted));
 
-    // ── 步骤引导条外框 ──
-    if (auto* f = findChild<QFrame*>("pmStepGuideFrame"))
-        f->setStyleSheet(
-            QString("QFrame#pmStepGuideFrame { border-top: 1px solid %1;"
-                    " background-color: %2; }")
-                .arg(p.borderLight, p.bgSecondary));
-
     // ── 右侧容器背景 ──
     m_rightContainer->setStyleSheet(
         QString("QWidget { background-color: %1; }").arg(p.bgPrimary));
@@ -600,7 +593,7 @@ void ProjectManagement::onNewProject()
 
     QDialog dlg(this);
     dlg.setWindowTitle(QString::fromUtf8("新建项目"));
-    dlg.setMinimumWidth(420);
+    dlg.setMinimumSize(420, 320);
     dlg.setStyleSheet(
         QString("QDialog { background-color: %1; }"
                 "QLabel { color: %2; }")
