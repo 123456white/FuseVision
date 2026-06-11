@@ -15,30 +15,19 @@ env:
 
 jobs:
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup MSVC
+      - name: Setup MSVC + Ninja
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
 
-      - name: Install CMake & Ninja
-        uses: lukka/get-cmake@latest
-
-      - name: Ensure Ninja available (fallback)
+      - name: Install Ninja (choco)
         shell: pwsh
         run: |
-          if (-not (Get-Command ninja -ErrorAction SilentlyContinue)) {
-            Write-Host "Ninja not found, installing via pip..."
-            pip install ninja
-            $pyScripts = python -c "import sysconfig; print(sysconfig.get_path('scripts'))"
-            if ($pyScripts) {
-              echo "$pyScripts" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
-              Write-Host "Added to PATH: $pyScripts"
-            }
-          }
+          choco install ninja --no-progress -y
           ninja --version
 
       - name: Restore vcpkg tool cache
@@ -115,6 +104,7 @@ jobs:
             vcpkg-binary-${{ runner.os }}-x64-windows-
 
       - name: Ensure binary cache directory
+        shell: pwsh
         run: |
           if (-not (Test-Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}")) {
             New-Item -ItemType Directory -Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}" -Force | Out-Null
