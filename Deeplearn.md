@@ -356,77 +356,180 @@ ProjectCard::clicked -> onCardClicked -> emit projectPreviewed(name)
 
 ---
 
-## 五、数据集管理模块（优化界面设计）
+## 五、数据集管理模块（✅已实现）
 
 ### 5.1 整体布局
 
 - 主窗口左右可调分栏（默认比例 **1:5**）。
-- 左侧为属性面板（四个固定面板），右侧为图像画廊。
-- 底部固定横向引导栏。
+- 左侧为属性侧边栏（三个固定面板），右侧为图像画廊（含内嵌 `QStackedWidget` 空态/内容态切换）。
+- 底部固定横向 `StepGuideBar` 步骤引导条。
+- 右侧双层 `QScrollArea`：外层包裹 `QStackedWidget`，内层包裹网格画廊容器，解决多图滚动问题。
 
 ### 5.2 左侧属性侧边栏
 
 #### 面板1：当前绑定模型信息区（顶部固定）
 
-- 展示：绑定模型名称、任务类型（带图标）。
-- 关联数据集目录完整路径（可点击复制）。
-- 数据集全局状态标签：🟡 未导入图像 / 🟢 已导入未标注 / 🔵 已标注未拆分 / 🟣 拆分完成。
+- 展示：绑定模型名称、任务类型、数据集完整路径（可点击复制，复制时记录日志）、标签格式类型。
+- 组件：`m_modelNameLabel` / `m_modelTypeLabel` / `m_datasetPathLabel` / `m_labelTypeLabel`。
 
 #### 面板2：图像信息面板
 
-- 无选中图像时置灰，提示“请选择右侧预览图像”。
-- 选中画廊任意图像后刷新内容：
-  - 图像文件名
-  - 本地绝对路径
-  - 图像分辨率（宽 × 高）
-  - 标签实例数量（当前图标注实例总数）
+- 无选中图像时置灰提示"请选择右侧预览图像"（`m_imageInfoHint` / `m_imageInfoPanel` 显隐切换）。
+- 选中画廊任意图像后刷新：
+  - 图像文件名（`m_imageFileName`）
+  - 本地绝对路径（`m_imagePathLabel`，可点击复制）
+  - 图像分辨率（宽 × 高，通过 `QImageReader::size()` 读取）
+  - 标注实例数（从 annotations JSON 中 `shapes` 数组统计）
 - 配套功能按钮：
-  - 🔄 刷新单图（重新读取标注文件）
-  - 📂 打开图像所在文件夹
+  - 🔄 刷新（重新加载数据集配置并刷新画廊）
+  - 📂 打开图像所在文件夹（`QDesktopServices::openUrl`）
 
-#### 面板3：拆分映射面板（数据集拆分管理）
+#### 面板3：标签类别管理（原面板4）
 
-- **未拆分时**：显示“⚡ 尚未拆分数据集” + 提示文案，按钮“前往拆分页”。
-- **已拆分时**：显示条形图（训练/验证/测试比例及数量），按钮“查看拆分详情”、“重置拆分记录”。
-- 查看拆分详情 → 跳转【数据拆分】模块。
-- 重置拆分 → 清空 `splits/` 目录，重置 `split_done=false`。
+- 列表展示所有标签（`m_labelListWidget`），每项含：
+  - 颜色方块（14×14，空标签虚线边框 + 半透明）
+  - 编号（0-based 右对齐）
+  - 名称（空标签灰显 + "(空)" 后缀 + 斜体）
+- **拖拽重排**：`InternalMove` 模式 → `onLabelOrderChanged()` 重排列表 + 同步更新所有图像的 `categoryId` 映射。
+- 操作按钮：添加（`QInputDialog` + `QColorDialog`）、编辑、删除、导入（从 COCO JSON）。
+- 快速导入：从 COCO JSON 文件导入 categories（`onImportLabels`）。
 
-#### 面板4：标签类别管理（可折叠）
+### 5.3 标签格式类型
 
-- 列表展示所有标签（名称、颜色、实例数）。
-- 支持添加、修改、删除（锁定状态：仅在数据集导入后、标注前可编辑）。
-- 快速导入：从 labelme labels.txt 或 COCO json 导入。
+系统支持 4 种标签格式，存储在 `dataset_config.json` 的 `label_type` 字段：
 
-### 5.3 右侧图像画廊主体区
+| 格式 | 中文标签 | 适用场景 | 文件格式 |
+|------|---------|---------|---------|
+| `GrayscaleMask` | 灰度掩码PNG | 实例分割 | 单通道PNG，灰度值 1=类别1... |
+| `BinaryMask` | 二值掩码PNG | 异常检测 | 黑白PNG，0=正常, 1=异常 |
+| `CocoBBox` | COCO边界框JSON | 物体检测(非自由矩形) | JSON 含 bbox 字段 |
+| `CocoRotated` | COCO旋转框JSON | 物体检测(自由矩形) | JSON 含 bbox + angle |
+
+**背景处理**：PNG 掩码读取默认跳过灰度值 0（`if (pixel > 0)`），不将其作为类别。`loadDatasetConfig()` / `detectLabelsFromAnnotations()` / `validateLabelCount()` 三处保持一致。
+
+**空标签支持**：允许配置的标签数多于实际数据中存在的类别。空标签实例数为 0，`validateLabelCount()` 在 `actual <= configured` 时静默通过，仅在 `actual > configured` 时弹窗确认是否补充。
+
+**按序填充**：扫描 PNG 掩码时按 `QMap<int,int>` 自动排序的灰度值依次填充标签，缺失灰度值自动生成 `class_N` 空标签占位。已有标签保留不覆盖，仅追加新类别。
+
+### 5.4 右侧图像画廊
 
 #### 顶部工具栏
 
-- **导入图像**按钮（核心入口，未导入时高亮引导）。
-  - 弹窗支持多选本地图片 / 文件夹批量导入。
-  - 自动过滤非图片文件（png/jpg/bmp/tif）。
-  - 导入完成自动写入数据集目录，置 `data_imported = true`，解锁【数据标注】模块。
-  - 批量刷新画廊。
-- **数据集统计面板**：显示总图像数、已标注图像数、实例总数、标签类别总数。
-- **视图切换**：网格视图 / 列表视图。
-- **筛选**：全部 / 未标注 / 已标注。
+- **导入按钮**（常驻左侧醒目）：
+  - "导入数据集文件" — 两步流程：格式说明 → 选择原图 → 确认是否导入标签
+  - "导入数据集文件夹" — 三步流程：格式说明 → 确认标签格式 → 选择含 images/ + labels/ 目录
+  - 支持 Qt 可解码的全部图像格式（`QImageReader::supportedImageFormats()`，含 png/jpg/bmp/tif/webp 等）
+  - 导入前检测同名冲突弹窗，支持覆盖/跳过选择
+  - 文件夹导入含 `QProgressDialog` 进度条
+  - 导入后自动：`loadDatasetConfig()` → `parseCocoJson()`（COCO 拆分）→ `detectLabelsFromAnnotations()` → `validateLabelCount()`
+- **数据集统计面板**：总图像数、已标注数、实例总数、类别数（4 个 stat label）
+- **质量告警指示器**：自动检测缺失标注/冗余标注/损坏文件/空标注，点击弹出详情
+- **全选复选框**：仅选当前筛选可见图像，三态样式（未选灰/全选绿加粗/部分选橙加粗）
+- **已选计数 + 删除选中按钮**：仅当有选中时可用
+- **视图切换**：`QComboBox` — 网格视图 / 列表视图
+- **筛选**：`QComboBox` — 全部 / 未标注 / 已标注
+- **占位按钮**：预处理、数据增强（灰显）
+- **导出按钮**：支持多选导出 COCO JSON / YOLO 格式
 
 #### 画廊网格
 
-- 缩略图统一尺寸（如 200x200），缩略图下方显示文件名（名称区域高度比例 4:1）。
-- 状态叠加标识：
-  - 已标注图像：右上角绿色勾选标志 ✓
-  - 未标注图像：右上角灰色圆圈 ●
+- 缩略图：QFrame 200×220，图片 190×160。
+- **高效加载**：`QImageReader::setScaledSize(190, 160)` 直接在解码阶段缩放，大图（如 4000×3000）内存占用降低 ~400 倍。
+- 状态标识：
+  - 已标注：右下角标签色块（`QLabel#dsThumbChip`），显示类别编号 + 颜色
+  - 未标注：无色块
+- 左上角复选框支持多选。
+- 选中高亮：2px solid accentPrimary 边框 + bgSelected 背景，保持直到手动取消。
 - 交互：
-  - **单击缩略图**：左侧属性面板刷新对应图像元数据。
-  - **双击缩略图**：跳转【数据标注】模块，直接打开当前图像进行掩码标注（若未导入图像则禁用）。
-  - **右键菜单**：删除当前图像、打开文件目录、复制图像路径、重新标注。
+  - **单击**：`updateImageInfoPanel(idx)` 刷新左侧图像信息面板
+  - **双击**：emit `openAnnotationRequested` → 跳转数据标注模块
+  - **右键菜单**：删除、打开目录、复制路径、重新标注
 
-### 5.4 底部引导步骤栏
+#### 列表视图
 
-- 横向展示完整工作流步骤：📥 数据集导入 → 🏷️ 标签定义 → ✏️ 像素级标注 → 🔀 数据集拆分。
-- 未完成步骤置灰锁定，鼠标悬停显示阻断提示文案（如“请先导入图像”）。
-- 当前步骤高亮，已完成步骤显示绿色对勾。
-- 全局进度条：显示当前阶段完成百分比（如 3/4 步骤完成）。
+- `QListWidget` 实现，每项含 48×48 缩略图标（同样用 `setScaledSize` 高效加载）。
+- 列表项格式：`文件名  [标签名]`，标签色块通过 `setForeground(color)` 装饰。
+- 复选框同步选中状态，切换视图不丢失。
+
+#### 空态页面
+
+- `QStackedWidget` index 0：居中展示图标 + "暂无数据集" + 两个大导入按钮。
+- 导入后自动切换到 index 1（画廊页）。
+
+### 5.5 导入流程详解
+
+**文件导入** (`onImportImages`)：
+```
+格式说明弹窗 → 确认标签格式 → 选择原图（QFileDialog 多选）
+  → 是否导入标签？→ 选择标签文件 → 同名冲突检测弹窗
+  → 复制到 images/ + annotations/ → loadDatasetConfig()
+  → detectLabelsFromAnnotations() → validateLabelCount()
+  → refreshGallery() → data_imported = true
+```
+
+**文件夹导入** (`onImportFolder`)：
+```
+格式说明弹窗 → 确认标签格式 → 选择含 images/ + labels/ 的根目录
+  → 校验子目录存在 → 同名冲突检测弹窗 → 进度条复制
+  → parseCocoJson()（自动拆分为每图独立 JSON）
+  → loadDatasetConfig()（在 COCO 拆分后执行，确保扫描到全部图像）
+  → detectLabelsFromAnnotations() → validateLabelCount()
+  → refreshGallery() → data_imported = true
+```
+
+**COCO JSON 自动处理**：文件夹导入后自动扫描 labels/ 中 COCO 格式 JSON（含 images + annotations + categories），拆分为每图独立 labelme 兼容 JSON，categories 并入标签列表，images 从 JSON 同级目录尝试复制。
+
+### 5.6 选择与删除
+
+- 全选仅选当前筛选可见图像（遵循视图/筛选过滤）。
+- 多选删除：从高索引到低索引批量删除图像文件 + 关联标注文件，避免索引偏移。
+- 选中状态通过 `m_selectedIndices`（QSet<int>）维护，切换视图、筛选、刷新均不丢失。
+
+### 5.7 数据集导出
+
+- COCO JSON 导出：完整 `info` / `licenses` / `categories` / `images` / `annotations`。
+- YOLO 导出：`data.yaml` + `images/train/` + `labels/train/`，bbox 归一化。
+- 多选导出：有选中项时仅导出选中图像及其标注。
+
+### 5.8 数据结构
+
+**DatasetSample**：
+```cpp
+struct DatasetSample {
+    int    id = -1;           // COCO 兼容 image_id
+    QString fileName, absolutePath;
+    int    width = 0, height = 0;
+    bool   annotated = false;
+    int    categoryId = -1;   // 0-based 标签索引
+    int    instanceCount = 0;
+    bool   selected = false;
+    enum Split { None, Train, Val, Test };
+    Split  split = None;
+};
+```
+
+**dataset_config.json**：
+```json
+{
+  "label_type": "灰度掩码PNG",
+  "image_count": 12,
+  "categories": [
+    { "id": 1, "name": "defect_a", "color": "#FF6B6B", "instance_count": 5 },
+    { "id": 2, "name": "defect_b", "color": "#4ECDC4", "instance_count": 0 }
+  ]
+}
+```
+
+### 5.9 底部引导步骤栏
+
+- StepGuideBar 横向展示：📥 数据集导入 → 🏷️ 标签定义 → ✏️ 像素级标注 → 🔀 数据集拆分。
+- 数据集导入后 `setStepCompleted(2)`。
+
+### 5.10 数据集统计与质量检查
+
+- `computeStats()`：遍历 `m_samples` + annotations 目录统计。
+- `runQualityCheck()`：检测缺失标注/冗余标注/损坏文件/空标注。
+- 质量告警通过统计栏旁 `m_lblQualityWarn` 指示器展示。
 
 ---
 
@@ -741,7 +844,7 @@ src/DeepLearningWidget/
 ├── DeepLearningWidget.h/cpp          # 顶层容器（8标签页 + LogMonitor）✅已实现
 ├── ProjectManagement.h/cpp           # 标签1：项目管理（卡片视图 + .fvproj 解析）✅已实现
 ├── ModelManagement.h/cpp             # 标签2：模型管理（.fvdl 创建/切换）🆕待实现
-├── DatasetManagement.h/cpp           # 标签3：数据集管理（画廊 + 标签类别）🆕待实现
+├── DatasetManagement.h/cpp           # 标签3：数据集管理（画廊 + 标签类别 + 导入/导出）✅已实现
 ├── DataAnnotation.h/cpp              # 标签4：数据标注（labelme 进程调度）🆕待实现
 ├── DataSplit.h/cpp                   # 标签5：数据拆分（比例配置 + 分层采样）🆕待实现
 ├── ModelTraining.h/cpp               # 标签6：模型训练（参数配置 + WebSocket 监控）🆕待实现
@@ -750,7 +853,7 @@ src/DeepLearningWidget/
 ├── ProjectConfig.h/cpp               # .fvproj JSON 读写工具类 ✅已实现
 ├── ProjectCard.h/cpp                 # 项目卡片组件（QFrame 子类）✅已实现
 ├── StepGuideBar.h/cpp                # 底部步骤引导条组件 ✅已实现
-└── DatasetConfig.h/cpp               # dataset_config.json 读写 + 统计 🆕待实现
+└── DatasetConfig.h/cpp               # dataset_config.json 读写 + 统计 ✅已实现
 ```
 
 ---
@@ -813,7 +916,7 @@ add_library(FuseVisionDeepLearning STATIC
     DeepLearningWidget.h/cpp      # ✅已有
     ProjectManagement.h/cpp       # ✅已实现
     ModelManagement.h/cpp         # 🆕待实现
-    DatasetManagement.h/cpp       # 🆕待实现
+    DatasetManagement.h/cpp       # ✅已实现
     DataAnnotation.h/cpp          # 🆕待实现
     DataSplit.h/cpp               # 🆕待实现
     ModelTraining.h/cpp           # 🆕待实现
@@ -822,7 +925,7 @@ add_library(FuseVisionDeepLearning STATIC
     ProjectConfig.h/cpp           # ✅已实现
     ProjectCard.h/cpp             # ✅已实现
     StepGuideBar.h/cpp            # ✅已实现
-    DatasetConfig.h/cpp           # 🆕待实现
+    DatasetConfig.h/cpp           # ✅已实现
 )
 target_link_libraries(FuseVisionDeepLearning PUBLIC Qt6::Widgets FuseVisionCore)
 ```
@@ -853,13 +956,18 @@ target_link_libraries(FuseVisionDeepLearning PUBLIC Qt6::Widgets FuseVisionCore)
 - [ ] `ModelManagement`：模型列表 + 新建模型对话框（4 种任务类型）
 - [ ] `QSettings` 持久化最近打开的项目列表
 
-### 阶段 2：数据集与标注（第 3-4 周）
+### 阶段 2：数据集与标注（进行中）
 
-- [ ] `DatasetManagement`：图像画廊（网格/列表视图）+ 导入/筛选
-- [ ] `DatasetConfig`：`dataset_config.json` 读写 + 类别管理
+- [x] `DatasetManagement`：图像画廊（网格/列表视图）+ 多格式导入 + QStackedWidget 空态
+- [x] `DatasetConfig`：`dataset_config.json` 读写 + 类别管理（拖拽重排 + 空标签支持）
+- [x] 画廊网格高效加载（`QImageReader::setScaledSize` 解码时缩放）
+- [x] 全选仅选可见、多选删除、多选导出（COCO / YOLO）
+- [x] 同名冲突检测及确认弹窗
+- [x] COCO JSON 自动拆分（统一 JSON → 每图独立标注）
+- [x] PNG 掩码背景跳过（灰度值 0 不作为类别）
+- [x] 标签按灰度值顺序填充 + 缺失索引空标签占位
+- [x] 底部引导步骤栏联动
 - [ ] `DataAnnotation`：`QProcess` 启动 labelme + `QFileSystemWatcher` 监听标注输出
-- [ ] 画廊标注状态叠加标识（已标注 ✓ / 未标注 ○）
-- [ ] 底部引导步骤栏（步骤 1→4 可视化）
 
 ### 阶段 3：数据拆分（第 5 周）
 

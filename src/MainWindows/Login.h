@@ -8,6 +8,8 @@
 #include <QPushButton>
 #include <QCheckBox>
 #include <QSettings>
+#include <QTimer>
+#include <QGraphicsOpacityEffect>
 
 // =============================================================================
 // LoginDialog — 用户登录对话框（模态）
@@ -47,15 +49,19 @@ public:
     UserRole getUserRole() const { return m_userRole; }    // 登录成功后的角色枚举
 
 private slots:
-    void onLoginClicked();         // 点击"登录" → 验证 → SessionManager::login
+    void onLoginClicked();         // 点击"登录" → 显示加载动画 → 验证
     void onCancelClicked();        // 点击"取消" → reject()
     void onUserChanged(int index); // ComboBox 角色切换 → 自动填充/清空密码
+    void doLogin();                // 实际执行登录验证（由 QTimer 延迟调用）
+    void tickSpinner();            // 加载动画帧推进
 
 private:
     void loadSettings();           // 从 QSettings 恢复记住的用户名密码
     void saveSettings();           // 保存当前用户名密码到 QSettings
     void setupUI();                // 构建 UI 控件树
     void setupStyle();             // 设置渐变背景 + QSS 样式表
+    void showLoading();            // 显示加载动画遮罩
+    void hideLoading();            // 隐藏加载动画遮罩
 
     // ── UI 控件 ────────────────────────────────────────────────
     QComboBox*   m_userCombo;      // 角色下拉（用户/管理员/超级管理员）
@@ -63,6 +69,12 @@ private:
     QCheckBox*   m_rememberCheck;  // "记住密码"复选框
     QPushButton* m_loginBtn;       // "登 录"按钮
     QPushButton* m_cancelBtn;      // "取 消"按钮
+
+    // ── 加载动画 ────────────────────────────────────────────────
+    QWidget*    m_loadingOverlay = nullptr;  // 半透明遮罩
+    QLabel*     m_spinnerLabel   = nullptr;  // 旋转动画文本
+    QTimer*     m_spinTimer      = nullptr;  // 动画定时器
+    int         m_spinFrame      = 0;        // 当前帧 (0-7)
 
     QString  m_username;           // 登录成功后的显示名
     UserRole m_userRole = User;    // 登录成功后的角色

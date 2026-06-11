@@ -26,7 +26,9 @@
 //   └──────────────────────────────────────────┘
 //
 // Tab 0（项目管理）已实现 ProjectManagement 组件，
-// Tab 1~7 为占位页面。
+// Tab 1（模型管理）已实现 ModelManagement 组件，
+// Tab 2（数据集管理）已实现 DatasetManagement 组件，
+// Tab 3~7 为占位页面。
 //
 // 权限控制：每个标签页独立 watch("深度学习.xxxx")
 //   canRead  → 控制 Tab 是否可见
@@ -34,10 +36,12 @@
 //
 // 信号：
 //   dlProjectChanged(projectName) → FuseVision 状态栏更新项目名
+//   dlModelChanged(modelName) → FuseVision 状态栏追加模型名
 // =============================================================================
 
 class ProjectManagement;  // 前向声明
 class ModelManagement;     // 前向声明
+class DatasetManagement;   // 前向声明
 
 class DeepLearningWidget : public QWidget
 {
@@ -49,6 +53,7 @@ public:
 
 signals:
     void dlProjectChanged(const QString& projectName);  // 项目切换时通知主窗口
+    void dlModelChanged(const QString& modelName);      // 模型切换时通知主窗口
 
 protected:
     void showEvent(QShowEvent* event) override;  // 初始化分割器比例
@@ -72,6 +77,7 @@ private:
     // ── 子页面 ──────────────────────────────────────────────
     ProjectManagement* m_projectManagement = nullptr;  // Tab 0：项目管理
     ModelManagement*   m_modelManagement   = nullptr;  // Tab 1：模型管理
+    DatasetManagement* m_datasetManagement = nullptr;  // Tab 2：数据集管理
 
     // 8 个标签页名称（与 QStackedWidget index 对应）
     static const QStringList s_tabNames;

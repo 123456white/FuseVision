@@ -9,6 +9,8 @@ add_library(FuseVisionDeepLearning STATIC
     ModelConfig.cpp
     ModelManagement.h
     ModelManagement.cpp
+    DatasetManagement.h
+    DatasetManagement.cpp
 )
 
 target_include_directories(FuseVisionDeepLearning

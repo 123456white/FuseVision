@@ -71,6 +71,13 @@ public:
     // 遍历 dlDataPath 下所有子文件夹，收集包含 project.fvproj 的项目信息。
     static QList<ProjectCardInfo> scanProjects(const QString& dlDataPath);
 
+    // ── 更新模型状态 ──────────────────────────────────────────
+    // 设置 .fvproj 中 models[modelId].status[key] = value
+    static bool setModelStatus(const QString& fvprojPath,
+                               const QString& modelId,
+                               const QString& statusKey,
+                               bool value);
+
     // ── 校验项目名称 ──────────────────────────────────────────
     // 仅允许英文字母、数字、下划线，长度 1~64。
     static bool isValidProjectName(const QString& name);

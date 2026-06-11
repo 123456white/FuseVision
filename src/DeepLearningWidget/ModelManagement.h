@@ -93,6 +93,7 @@ public:
 
     QString currentModelName() const { return m_currentModel.modelName; }
     QString currentModelId()   const { return m_currentModelId; }
+    FvdlInfo currentModelInfo() const { return m_currentModel; }
     bool    hasModel()         const { return !m_currentModelId.isEmpty(); }
 
 signals:

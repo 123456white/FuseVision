@@ -217,6 +217,42 @@ bool ProjectConfig::isValidProjectName(const QString& name)
     return re.match(name).hasMatch();
 }
 
+// ── 更新模型状态 ──────────────────────────────────────────────
+
+bool ProjectConfig::setModelStatus(const QString& fvprojPath,
+                                   const QString& modelId,
+                                   const QString& statusKey,
+                                   bool value)
+{
+    QFile file(fvprojPath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
+    file.close();
+
+    QJsonObject root     = doc.object();
+    QJsonObject models   = root.value("models").toObject();
+    QJsonObject modelObj = models.value(modelId).toObject();
+    QJsonObject status   = modelObj.value("status").toObject();
+
+    status[statusKey] = value;
+    modelObj["status"] = status;
+    models[modelId] = modelObj;
+    root["models"] = models;
+    root["modified_time"] = QDateTime::currentDateTime().toString(Qt::ISODate);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
+        return false;
+
+    file.write(QJsonDocument(root).toJson(QJsonDocument::Indented));
+    file.close();
+
+    Logger::debug(QString::fromUtf8("模型状态更新: %1.%2 = %3")
+        .arg(modelId, statusKey).arg(value ? "true" : "false"));
+    return true;
+}
+
 // ── 构建默认 .fvproj JSON ─────────────────────────────────────
 
 QJsonObject ProjectConfig::buildDefaultFvproj(const QString& projectName,

@@ -62,6 +62,7 @@ private:
     void logSystemInfo();               // 系统信息日志
     void refreshStatusBar();            // 更新状态栏用户名/角色
     void setProjectName(int page, const QString& name); // 更新状态栏项目名
+    void setDlModelName(const QString& name);           // 更新状态栏深度学习模型名
 
     // ── 布局容器 ──────────────────────────────────────────────
     QWidget*        m_centralWidget  = nullptr;
@@ -80,6 +81,8 @@ private:
     QLabel*     m_versionLabel   = nullptr;
     QLabel*     m_readyLabel     = nullptr;
     QLabel*     m_dlProjectLabel = nullptr;         // 深度学习项目名
+    QString     m_dlProjectName;                    // 缓存项目名，便于拼接模型名
+    QString     m_dlModelName;                      // 缓存模型名，便于拼接
     QLabel*     m_traditionalProjectLabel = nullptr; // 传统视觉项目名
 
     // ── 功能页面 ───────────────────────────────────────────────

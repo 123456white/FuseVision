@@ -1,6 +1,7 @@
 #include "DeepLearningWidget.h"
 #include "ProjectManagement.h"
 #include "ModelManagement.h"
+#include "DatasetManagement.h"
 #include <QVBoxLayout>
 #include <QSplitter>
 #include <QFrame>
@@ -9,7 +10,8 @@
 // DeepLearningWidget.cpp — 深度学习模块 8 标签页实现
 // =============================================================================
 // 布局：QTabBar(8 标签) + QFrame 内容容器 + QStackedWidget(8 页)
-// Tab 0 = ProjectManagement（已实现），Tab 1~7 = 占位页面
+// Tab 0 = ProjectManagement，Tab 1 = ModelManagement，Tab 2 = DatasetManagement
+// Tab 3~7 = 占位页面
 // =============================================================================
 
 // 8 个标签页的名称（与 s_permissionKeys 一一对应）
@@ -85,8 +87,12 @@ void DeepLearningWidget::initUI()
     m_modelManagement = new ModelManagement;
     m_stackedWidget->addWidget(m_modelManagement);
 
-    // Page 2~7 — 占位页面
-    for (int i = 2; i < s_tabNames.size(); ++i) {
+    // Page 2 — 数据集管理
+    m_datasetManagement = new DatasetManagement;
+    m_stackedWidget->addWidget(m_datasetManagement);
+
+    // Page 3~7 — 占位页面
+    for (int i = 3; i < s_tabNames.size(); ++i) {
         QWidget* page = new QWidget;
         QVBoxLayout* pageLayout = new QVBoxLayout(page);
         pageLayout->setAlignment(Qt::AlignCenter);
@@ -144,6 +150,11 @@ void DeepLearningWidget::initUI()
             m_logMonitor, [this](const QString& name) {
                 m_logMonitor->log(QString::fromUtf8("当前模型切换至: %1").arg(name));
             });
+    // 模型切换 → 通知主窗口状态栏
+    connect(m_modelManagement, &ModelManagement::currentModelChanged,
+            this, [this](const QString&) {
+                emit dlModelChanged(m_modelManagement->currentModelName());
+            });
 
     // ModelManagement 双击卡片 → 跳数据集管理
     connect(m_modelManagement, &ModelManagement::openDatasetRequested,
@@ -152,6 +163,48 @@ void DeepLearningWidget::initUI()
                 if (m_tabBar->isTabVisible(2)) {
                     m_tabBar->setCurrentIndex(2);
                     m_stackedWidget->setCurrentIndex(2);
+                }
+            });
+
+    // ── DatasetManagement 信号连接 ──────────────────────────
+    // 项目绑定 → DatasetManagement
+    connect(m_projectManagement, &ProjectManagement::projectOpened,
+            this, [this](const QString&, const QString&) {
+                m_datasetManagement->setCurrentProject(m_projectManagement->currentProject());
+            });
+    connect(m_projectManagement, &ProjectManagement::projectClosed,
+            this, [this]() { m_datasetManagement->setCurrentProject(FvprojInfo()); });
+
+    // ModelManagement 模型切换 → DatasetManagement
+    connect(m_modelManagement, &ModelManagement::currentModelChanged,
+            this, [this](const QString& modelId) {
+                m_datasetManagement->setCurrentModel(
+                    modelId,
+                    m_modelManagement->currentModelInfo());
+            });
+
+    // ModelManagement 模型打开 → 同步到 DatasetManagement
+    connect(m_modelManagement, &ModelManagement::modelOpened,
+            this, [this](const QString&) {
+                m_datasetManagement->setCurrentModel(
+                    m_modelManagement->currentModelId(),
+                    m_modelManagement->currentModelInfo());
+            });
+
+    // DatasetManagement 数据导入 → 日志
+    connect(m_datasetManagement, &DatasetManagement::dataImported,
+            m_logMonitor, [this](const QString& modelId) {
+                m_logMonitor->log(QString::fromUtf8("数据集已导入: %1").arg(modelId));
+            });
+
+    // DatasetManagement 双击图像 → 跳数据标注
+    connect(m_datasetManagement, &DatasetManagement::openAnnotationRequested,
+            this, [this](const QString& modelId, const QString& imagePath) {
+                m_logMonitor->log(QString::fromUtf8("跳转数据标注: %1 → %2")
+                    .arg(modelId, imagePath));
+                if (m_tabBar->isTabVisible(3)) {
+                    m_tabBar->setCurrentIndex(3);
+                    m_stackedWidget->setCurrentIndex(3);
                 }
             });
 

@@ -47,6 +47,11 @@ LoginDialog::LoginDialog(QWidget* parent)
     setupStyle();  // 应用渐变背景 + 全局 QSS
     loadSettings(); // 恢复"记住密码"状态
 
+    // 加载动画定时器
+    m_spinTimer = new QTimer(this);
+    m_spinTimer->setInterval(80);
+    connect(m_spinTimer, &QTimer::timeout, this, &LoginDialog::tickSpinner);
+
     // 对话框属性
     setWindowTitle("登录 FuseVision");
     setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
@@ -126,6 +131,30 @@ void LoginDialog::setupUI()
             this, &LoginDialog::onUserChanged);
 
     onUserChanged(0);  // 初始触发，填充默认密码
+
+    // ── 加载动画遮罩（初始隐藏）──
+    m_loadingOverlay = new QWidget(this);
+    m_loadingOverlay->setFixedSize(420, 280);
+    m_loadingOverlay->move(0, 0);
+    m_loadingOverlay->setStyleSheet("background: rgba(0,0,0,120);");
+    m_loadingOverlay->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+
+    // 旋转 spinner + 文字
+    QVBoxLayout* spinLayout = new QVBoxLayout(m_loadingOverlay);
+    spinLayout->setAlignment(Qt::AlignCenter);
+    spinLayout->setSpacing(10);
+
+    m_spinnerLabel = new QLabel(m_loadingOverlay);
+    m_spinnerLabel->setAlignment(Qt::AlignCenter);
+    m_spinnerLabel->setStyleSheet("color: white; font-size: 28px; background: transparent;");
+    spinLayout->addWidget(m_spinnerLabel);
+
+    QLabel* loadingText = new QLabel("正在登录...", m_loadingOverlay);
+    loadingText->setAlignment(Qt::AlignCenter);
+    loadingText->setStyleSheet("color: rgba(255,255,255,200); font-size: 13px; background: transparent;");
+    spinLayout->addWidget(loadingText);
+
+    m_loadingOverlay->hide();  // 初始隐藏
 }
 
 // ── 样式设置 ─────────────────────────────────────────────────
@@ -175,14 +204,33 @@ void LoginDialog::onUserChanged(int index)
     }
 }
 
-// ── 登录验证 ─────────────────────────────────────────────────
+// ── 登录验证（先显示动画，再异步执行）─────────────────────
 
 void LoginDialog::onLoginClicked()
 {
-    QString displayName = m_userCombo->currentText();  // "用户"/"管理员"/"超级管理员"
+    // 输入校验
+    if (m_passwordEdit->text().trimmed().isEmpty()) {
+        QMessageBox::warning(this, "提示", "请输入密码！");
+        m_passwordEdit->setFocus();
+        return;
+    }
+
+    // 显示加载动画 + 禁用输入
+    showLoading();
+    m_loginBtn->setEnabled(false);
+    m_cancelBtn->setEnabled(false);
+    m_userCombo->setEnabled(false);
+    m_passwordEdit->setEnabled(false);
+
+    // 延迟 120ms 让动画先渲染，再执行实际登录
+    QTimer::singleShot(120, this, &LoginDialog::doLogin);
+}
+
+void LoginDialog::doLogin()
+{
+    QString displayName = m_userCombo->currentText();
     QString password    = m_passwordEdit->text();
 
-    // 将 UI 显示名映射为数据库中的 username
     QString dbUsername;
     if (displayName == "用户") {
         dbUsername = "user";
@@ -192,18 +240,21 @@ void LoginDialog::onLoginClicked()
         dbUsername = "superadmin";
     }
 
-    // 调用数据库验证
     LoginResult result = DatabaseManager::instance().validateLogin(dbUsername, password);
 
     if (!result.success) {
+        hideLoading();
+        m_loginBtn->setEnabled(true);
+        m_cancelBtn->setEnabled(true);
+        m_userCombo->setEnabled(true);
+        m_passwordEdit->setEnabled(true);
         QMessageBox::warning(this, "登录失败", "用户名或密码错误，请重试！");
         Logger::warn(QString("Login failed for user: %1").arg(displayName));
-        m_passwordEdit->selectAll();  // 密码框全选，方便重新输入
+        m_passwordEdit->selectAll();
         m_passwordEdit->setFocus();
         return;
     }
 
-    // 根据 DB 中的 role 映射回枚举
     switch (result.role) {
     case 2: m_userRole = SuperAdmin; break;
     case 1: m_userRole = Admin;      break;
@@ -211,16 +262,42 @@ void LoginDialog::onLoginClicked()
     }
 
     m_username = displayName;
-    saveSettings();  // 保存"记住密码"状态
+    saveSettings();
 
-    // 启动会话（核心：登录成功 → SessionManager 通知所有监听方）
     SessionManager::instance().login(result.userId, displayName, result.role);
 
     Logger::info(QString("User logged in: %1 (role: %2)")
         .arg(m_username)
         .arg(m_userRole == SuperAdmin ? "SuperAdmin" :
              (m_userRole == Admin ? "Admin" : "User")));
-    accept();  // 关闭对话框，返回 QDialog::Accepted
+
+    hideLoading();
+    accept();
+}
+
+// ── 加载动画 ─────────────────────────────────────────────────
+
+void LoginDialog::showLoading()
+{
+    m_spinFrame = 0;
+    m_spinnerLabel->setText("◌");
+    m_loadingOverlay->raise();
+    m_loadingOverlay->show();
+    m_spinTimer->start();
+}
+
+void LoginDialog::hideLoading()
+{
+    m_spinTimer->stop();
+    m_loadingOverlay->hide();
+}
+
+void LoginDialog::tickSpinner()
+{
+    // 8 帧旋转：◌ ◔ ◑ ◕ ● ◕ ◑ ◔
+    static const QStringList frames = {"◌", "◔", "◑", "◕", "●", "◕", "◑", "◔"};
+    m_spinFrame = (m_spinFrame + 1) % frames.size();
+    m_spinnerLabel->setText(frames[m_spinFrame]);
 }
 
 // ── 取消 ─────────────────────────────────────────────────────

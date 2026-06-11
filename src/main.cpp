@@ -3,6 +3,11 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QStyleFactory>
+#include <QRegularExpression>
+#include <QSplashScreen>
+#include <QPainter>
+#include <QFont>
+#include <QTimer>
 #include "MainWindows/FuseVision.h"
 #include "core/Logger.h"
 #include "core/DatabaseManager.h"
@@ -14,6 +19,54 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
+
+// =============================================================================
+// Qt 消息过滤器 — 静默内部平台日志（setGeometry 等）
+// =============================================================================
+// Qt 平台层会输出大量无意义的几何调整日志，将其丢弃。
+// Debug 模式下保留所有其他 Qt 日志（转发到 spdlog），
+// Release 模式下仅转发 Warning 及以上。
+
+static const QRegularExpression s_noisyPatterns[] = {
+    QRegularExpression("QWindowsWindow::setGeometry"),
+    QRegularExpression("QWindowsWindow::setWindowState"),
+    QRegularExpression("QWindowsContext::windowsProc"),
+};
+
+static bool isNoisyQtMessage(const QString& text)
+{
+    for (const auto& re : s_noisyPatterns) {
+        if (re.match(text).hasMatch())
+            return true;
+    }
+    return false;
+}
+
+static void qtMessageHandler(QtMsgType type, const QMessageLogContext& ctx, const QString& msg)
+{
+    if (isNoisyQtMessage(msg))
+        return;  // 丢弃平台噪音
+
+    switch (type) {
+    case QtDebugMsg:
+#ifndef NDEBUG
+        Logger::debug(QString("[Qt] %1").arg(msg));
+#endif
+        break;
+    case QtInfoMsg:
+        Logger::info(QString("[Qt] %1").arg(msg));
+        break;
+    case QtWarningMsg:
+        Logger::warn(QString("[Qt] %1").arg(msg));
+        break;
+    case QtCriticalMsg:
+        Logger::error(QString("[Qt] %1").arg(msg));
+        break;
+    case QtFatalMsg:
+        Logger::critical(QString("[Qt] FATAL: %1").arg(msg));
+        break;
+    }
+}
 
 // =============================================================================
 // main.cpp — 应用入口 & 启动流程编排
@@ -80,6 +133,9 @@ int main(int argc, char* argv[])
     // 应用用户配置的日志级别（覆盖编译时默认值）
     Logger::setLevel(static_cast<Logger::Level>(settings.logLevel()));
 
+    // 安装 Qt 消息过滤器（静默平台噪音日志）
+    qInstallMessageHandler(qtMessageHandler);
+
     Logger::info("=== Application started ===");
 
     // ── 步骤 5：初始化数据库 ───────────────────────────────────
@@ -131,12 +187,46 @@ int main(int argc, char* argv[])
         return 0;  // 用户取消登录，正常退出
     }
 
-    // ── 步骤 9：创建主窗口 & 进入事件循环 ───────────────────────
-    // 创建主窗口（构造函数中自动初始化 UI、连接信号）
+    // ── 步骤 9：启动画面（登录成功 → 主界面就绪）──────────────
+    // FuseVision 构造函数较重（初始化 UI/模块/数据库连接），
+    // 这段时间用户看不到任何界面。用 QSplashScreen 填补空白。
+    QPixmap splashBg(400, 200);
+    splashBg.fill(QColor(30, 30, 40));
+    QPainter sp(&splashBg);
+    sp.setRenderHint(QPainter::Antialiasing, true);
+    // 品牌标题
+    sp.setPen(Qt::white);
+    QFont titleF = sp.font();
+    titleF.setPointSize(18);
+    titleF.setBold(true);
+    sp.setFont(titleF);
+    sp.drawText(QRect(0, 40, 400, 40), Qt::AlignCenter, "FuseVision");
+    // 加载提示
+    QFont hintF = sp.font();
+    hintF.setPointSize(11);
+    sp.setFont(hintF);
+    sp.setPen(QColor(180, 180, 200));
+    sp.drawText(QRect(0, 110, 400, 30), Qt::AlignCenter, "正在加载主界面...");
+    // 版本
+    QFont verF = sp.font();
+    verF.setPointSize(9);
+    sp.setFont(verF);
+    sp.setPen(QColor(100, 100, 120));
+    sp.drawText(QRect(0, 170, 400, 20), Qt::AlignCenter, "v1.0.0");
+    sp.end();
+
+    QSplashScreen splash(splashBg);
+    splash.setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    splash.show();
+    QApplication::processEvents();
+
+    // ── 步骤 10：创建主窗口 ────────────────────────────────────
     FuseVision w;
     w.setWindowTitle("FuseVision - 智能视觉系统");
-    w.show();
-    w.showMaximized();  // 启动时最大化
+    w.showMaximized();
+
+    // 主界面已显示 → 关闭启动画面
+    splash.finish(&w);
 
     // 进入 Qt 事件循环（阻塞直到所有窗口关闭）
     int ret = app.exec();
