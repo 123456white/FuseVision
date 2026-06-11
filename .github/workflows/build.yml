@@ -65,7 +65,15 @@ jobs:
 
       - name: Clone vcpkg (if cache miss)
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
-        run: git clone https://github.com/microsoft/vcpkg.git vcpkg
+        shell: pwsh
+        run: |
+          if (Test-Path vcpkg/.git) {
+            Write-Host "vcpkg already cloned, pulling latest..."
+            git -C vcpkg pull --ff-only
+          } else {
+            Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
+            git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
+          }
 
       - name: Bootstrap vcpkg (if cache miss)
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
