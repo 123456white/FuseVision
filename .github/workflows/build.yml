@@ -19,17 +19,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup MSVC + Ninja
-        uses: ilammy/msvc-dev-cmd@v1
-        with:
-          arch: amd64
-
-      - name: Install Ninja (choco)
-        shell: pwsh
-        run: |
-          choco install ninja --no-progress -y
-          ninja --version
-
       - name: Restore vcpkg tool cache
         id: cache-vcpkg-tool
         uses: actions/cache@v4
@@ -47,7 +36,7 @@ jobs:
             vcpkg/ports
             vcpkg/triplets
             vcpkg/versions
-          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-v2
+          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-v3
           restore-keys: |
             vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-
             vcpkg-tool-${{ runner.os }}-
@@ -56,13 +45,8 @@ jobs:
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
-          if (Test-Path vcpkg/.git) {
-            Write-Host "vcpkg already cloned, pulling latest..."
-            git -C vcpkg pull --ff-only
-          } else {
-            Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
-            git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
-          }
+          Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
+          git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
 
       - name: Bootstrap vcpkg (if cache miss)
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
@@ -77,29 +61,20 @@ jobs:
           if (-not (Test-Path "vcpkg/vcpkg.exe"))   { $missing += "vcpkg.exe" }
           if (-not (Test-Path "vcpkg/scripts/buildsystems/vcpkg.cmake")) { $missing += "vcpkg.cmake" }
           if ($missing.Count -gt 0) {
-            Write-Host "::warning::vcpkg tool cache corrupted, missing: $($missing -join ', '). Falling back to fresh install."
-            git clone https://github.com/microsoft/vcpkg.git vcpkg-temp
-            robocopy vcpkg-temp vcpkg /E /MOVE /NFL /NDL /NJH /NJS
+            Write-Host "::warning::vcpkg tool cache corrupted. Re-cloning..."
+            Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
+            git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
             .\vcpkg\bootstrap-vcpkg.bat
           } else {
             Write-Host "vcpkg tool cache verified OK"
           }
-
-      - name: Restore vcpkg downloads cache
-        id: cache-vcpkg-downloads
-        uses: actions/cache@v4
-        with:
-          path: vcpkg/downloads
-          key: vcpkg-downloads-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
-          restore-keys: |
-            vcpkg-downloads-${{ runner.os }}-
 
       - name: Restore vcpkg binary cache
         id: cache-vcpkg-binary
         uses: actions/cache@v4
         with:
           path: vcpkg/bincache
-          key: vcpkg-binary-${{ runner.os }}-x64-windows-${{ hashFiles('vcpkg.json') }}-v1
+          key: vcpkg-binary-${{ runner.os }}-x64-windows-${{ hashFiles('vcpkg.json') }}-v2
           restore-keys: |
             vcpkg-binary-${{ runner.os }}-x64-windows-
 
@@ -108,14 +83,15 @@ jobs:
         run: |
           if (-not (Test-Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}")) {
             New-Item -ItemType Directory -Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}" -Force | Out-Null
-            Write-Host "Created binary cache directory: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           }
 
-      - name: Configure
-        run: cmake --preset windows-x64-debug
-
-      - name: Build
-        run: cmake --build --preset windows-debug --config Debug
+      - name: Configure & Build (VS 2022 Native)
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          choco install ninja --no-progress -y
+          cmake --preset windows-x64-debug
+          cmake --build --preset windows-debug --config Debug
 
       - name: Test (预留)
         if: false
