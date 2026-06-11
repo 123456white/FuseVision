@@ -36,7 +36,7 @@ jobs:
             vcpkg/ports
             vcpkg/triplets
             vcpkg/versions
-          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-v3
+          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-v4
           restore-keys: |
             vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-
             vcpkg-tool-${{ runner.os }}-
@@ -46,7 +46,7 @@ jobs:
         shell: pwsh
         run: |
           Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
-          git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
+          git clone https://github.com/microsoft/vcpkg.git vcpkg
 
       - name: Bootstrap vcpkg (if cache miss)
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
@@ -63,7 +63,7 @@ jobs:
           if ($missing.Count -gt 0) {
             Write-Host "::warning::vcpkg tool cache corrupted. Re-cloning..."
             Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
-            git clone --depth 1 https://github.com/microsoft/vcpkg.git vcpkg
+            git clone https://github.com/microsoft/vcpkg.git vcpkg
             .\vcpkg\bootstrap-vcpkg.bat
           } else {
             Write-Host "vcpkg tool cache verified OK"
