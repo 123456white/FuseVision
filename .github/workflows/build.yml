@@ -85,6 +85,15 @@ jobs:
             New-Item -ItemType Directory -Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}" -Force | Out-Null
           }
 
+      - name: Fetch vcpkg baseline commit
+        shell: pwsh
+        run: |
+          $baseline = (Get-Content vcpkg.json | ConvertFrom-Json)."builtin-baseline"
+          if ($baseline) {
+            Write-Host "Fetching vcpkg baseline commit: $baseline"
+            git -C vcpkg fetch --depth=1 origin $baseline 2>&1
+          }
+
       - name: Configure & Build (VS 2022)
         shell: cmd
         run: |
