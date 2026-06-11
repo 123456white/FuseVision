@@ -8,6 +8,10 @@
       "version>=": "6.8.3"
     },
     {
+      "name": "qtimageformats",
+      "version>=": "6.8.3"
+    },
+    {
       "name": "spdlog",
       "version>=": "1.16.0"
     },

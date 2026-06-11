@@ -9,5 +9,19 @@
         <file>res/SystemSettings_D.png</file>
         <file>res/TraditionalWidget_D.png</file>
         <file>res/UserManagement_D.png</file>
+        <file>res/FuseVisionProject_D.png</file>
+        <file>res/NewProject.png</file>
+        <file>res/NewProject_D.png</file>
+        <file>res/FuseVisionProject.png</file>
+        <file>res/OpenProject_D.png</file>
+        <file>res/OpenProject.png</file>
+        <file>res/TaskDetectionAxis.png</file>
+        <file>res/TaskDetectionAxis_D.png</file>
+        <file>res/TaskAnomaly.png</file>
+        <file>res/TaskAnomaly_D.png</file>
+        <file>res/TaskDetectionRotated_D.png</file>
+        <file>res/TaskDetectionRotated.png</file>
+        <file>res/TaskSegmentation.png</file>
+        <file>res/TaskSegmentation_D.png</file>
     </qresource>
 </RCC>

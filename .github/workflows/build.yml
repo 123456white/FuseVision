@@ -15,29 +15,9 @@ env:
 
 jobs:
   build-windows:
-    runs-on: windows-2025
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup MSVC
-        uses: ilammy/msvc-dev-cmd@v1
-
-      - name: Install CMake & Ninja
-        uses: lukka/get-cmake@latest
-
-      - name: Ensure Ninja available (fallback)
-        shell: pwsh
-        run: |
-          if (-not (Get-Command ninja -ErrorAction SilentlyContinue)) {
-            Write-Host "Ninja not found, installing via pip..."
-            pip install ninja
-            $pyScripts = python -c "import sysconfig; print(sysconfig.get_path('scripts'))"
-            if ($pyScripts) {
-              echo "$pyScripts" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
-              Write-Host "Added to PATH: $pyScripts"
-            }
-          }
-          ninja --version
 
       - name: Restore vcpkg tool cache
         id: cache-vcpkg-tool
@@ -56,14 +36,17 @@ jobs:
             vcpkg/ports
             vcpkg/triplets
             vcpkg/versions
-          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-v2
+          key: vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-v4
           restore-keys: |
             vcpkg-tool-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}-
             vcpkg-tool-${{ runner.os }}-
 
       - name: Clone vcpkg (if cache miss)
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
-        run: git clone https://github.com/microsoft/vcpkg.git vcpkg
+        shell: pwsh
+        run: |
+          Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
+          git clone https://github.com/microsoft/vcpkg.git vcpkg
 
       - name: Bootstrap vcpkg (if cache miss)
         if: steps.cache-vcpkg-tool.outputs.cache-hit != 'true'
@@ -78,44 +61,46 @@ jobs:
           if (-not (Test-Path "vcpkg/vcpkg.exe"))   { $missing += "vcpkg.exe" }
           if (-not (Test-Path "vcpkg/scripts/buildsystems/vcpkg.cmake")) { $missing += "vcpkg.cmake" }
           if ($missing.Count -gt 0) {
-            Write-Host "::warning::vcpkg tool cache corrupted, missing: $($missing -join ', '). Falling back to fresh install."
-            git clone https://github.com/microsoft/vcpkg.git vcpkg-temp
-            robocopy vcpkg-temp vcpkg /E /MOVE /NFL /NDL /NJH /NJS
+            Write-Host "::warning::vcpkg tool cache corrupted. Re-cloning..."
+            Remove-Item -Recurse -Force vcpkg -ErrorAction SilentlyContinue
+            git clone https://github.com/microsoft/vcpkg.git vcpkg
             .\vcpkg\bootstrap-vcpkg.bat
           } else {
             Write-Host "vcpkg tool cache verified OK"
           }
-
-      - name: Restore vcpkg downloads cache
-        id: cache-vcpkg-downloads
-        uses: actions/cache@v4
-        with:
-          path: vcpkg/downloads
-          key: vcpkg-downloads-${{ runner.os }}-${{ hashFiles('vcpkg.json') }}
-          restore-keys: |
-            vcpkg-downloads-${{ runner.os }}-
 
       - name: Restore vcpkg binary cache
         id: cache-vcpkg-binary
         uses: actions/cache@v4
         with:
           path: vcpkg/bincache
-          key: vcpkg-binary-${{ runner.os }}-x64-windows-${{ hashFiles('vcpkg.json') }}-v1
+          key: vcpkg-binary-${{ runner.os }}-x64-windows-${{ hashFiles('vcpkg.json') }}-v2
           restore-keys: |
             vcpkg-binary-${{ runner.os }}-x64-windows-
 
       - name: Ensure binary cache directory
+        shell: pwsh
         run: |
           if (-not (Test-Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}")) {
             New-Item -ItemType Directory -Path "${{ env.VCPKG_DEFAULT_BINARY_CACHE }}" -Force | Out-Null
-            Write-Host "Created binary cache directory: ${{ env.VCPKG_DEFAULT_BINARY_CACHE }}"
           }
 
-      - name: Configure
-        run: cmake --preset windows-x64-debug
+      - name: Fetch vcpkg baseline commit
+        shell: pwsh
+        run: |
+          $baseline = (Get-Content vcpkg.json | ConvertFrom-Json)."builtin-baseline"
+          if ($baseline) {
+            Write-Host "Fetching vcpkg baseline commit: $baseline"
+            git -C vcpkg fetch --depth=1 origin $baseline 2>&1
+          }
 
-      - name: Build
-        run: cmake --build --preset windows-debug --config Debug
+      - name: Configure & Build (VS 2022)
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" || call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+          pip install ninja
+          cmake --preset windows-x64-debug
+          cmake --build --preset windows-debug --config Debug
 
       - name: Test (预留)
         if: false

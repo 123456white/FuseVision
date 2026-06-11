@@ -103,9 +103,34 @@ void FuseVision::setProjectName(int page, const QString& name)
 {
     QString text = name.isEmpty() ? "无" : name;
     switch (page) {
-    case 0: m_dlProjectLabel->setText("深度学习项目: " + text);          break;
-    case 1: m_traditionalProjectLabel->setText("传统视觉项目: " + text); break;
+    case 0:
+        m_dlProjectName = text;
+        {
+            QString full = "深度学习项目: " + text;
+            if (!m_dlModelName.isEmpty())
+                full += " | 模型: " + m_dlModelName;
+            m_dlProjectLabel->setText(full);
+        }
+        m_dlProjectLabel->update();
+        m_statusBar->update();
+        break;
+    case 1:
+        m_traditionalProjectLabel->setText("传统视觉项目: " + text);
+        m_traditionalProjectLabel->update();
+        m_statusBar->update();
+        break;
     }
+}
+
+void FuseVision::setDlModelName(const QString& name)
+{
+    m_dlModelName = name;
+    QString full = "深度学习项目: " + m_dlProjectName;
+    if (!name.isEmpty())
+        full += " | 模型: " + name;
+    m_dlProjectLabel->setText(full);
+    m_dlProjectLabel->update();
+    m_statusBar->update();
 }
 
 // ── 主题应用 ─────────────────────────────────────────────────
@@ -331,6 +356,13 @@ void FuseVision::initMainContent()
     m_traditionalWidget     = new TraditionalWidget(this);
     m_userManagementWidget  = new UserManagementWidget(this);
     m_systemSettingsWidget  = new SystemSettingsWidget(this);
+
+    // DL 项目变更 → 状态栏更新
+    connect(m_deepLearningWidget, &DeepLearningWidget::dlProjectChanged,
+            this, [this](const QString& name) { setProjectName(0, name); });
+    // DL 模型变更 → 状态栏追加模型名
+    connect(m_deepLearningWidget, &DeepLearningWidget::dlModelChanged,
+            this, [this](const QString& name) { setDlModelName(name); });
 
     m_stackedWidget->addWidget(m_deepLearningWidget);     // index 0
     m_stackedWidget->addWidget(m_traditionalWidget);      // index 1

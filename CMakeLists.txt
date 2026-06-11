@@ -208,6 +208,36 @@ if(WIN32)
         VERBATIM
     )
 
+    # ========== 复制 Qt 图像格式插件（JPG/PNG/GIF/ICO 等） ==========
+    # 项目使用本地 vcpkg 子模块，vcpkg_installed 在 build 目录下
+    set(QT_IMAGE_PLUGIN_SRC "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/$<IF:$<CONFIG:Debug>,debug/,>Qt6/plugins/imageformats")
+    set(QT_IMAGE_PLUGIN_DST "$<TARGET_FILE_DIR:${PROJECT_NAME}>/imageformats")
+    
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${QT_IMAGE_PLUGIN_DST}"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${QT_IMAGE_PLUGIN_SRC}"
+            "${QT_IMAGE_PLUGIN_DST}"
+        COMMENT "Copy Qt imageformats plugins ($<CONFIG>) -> imageformats/"
+        VERBATIM
+    )
+
+    # ========== 复制 JPEG 运行时依赖 ==========
+    # qjpegd.dll 依赖 jpeg62.dll / turbojpeg.dll，vcpkg 自动部署可能遗漏
+    set(VCPKG_DEBUG_BIN "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/debug/bin")
+    set(OUTPUT_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
+    add_custom_command(
+        TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${VCPKG_DEBUG_BIN}/jpeg62.dll"
+            "${OUTPUT_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${VCPKG_DEBUG_BIN}/turbojpeg.dll"
+            "${OUTPUT_DIR}"
+        COMMENT "Copy JPEG runtime DLLs -> ${OUTPUT_DIR}"
+        VERBATIM
+    )
     # ========== 复制 Halcon 运行时 DLL（系统安装版 / sdk/halcon 内置版） ==========
     if(HALCON_FOUND)
         set(OUTPUT_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
