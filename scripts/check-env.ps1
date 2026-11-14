@@ -105,7 +105,7 @@ if (Test-Path "$PSScriptRoot\..\vcpkg\vcpkg.exe") {
 } elseif (Test-Path "$PSScriptRoot\..\vcpkg\bootstrap-vcpkg.bat") {
     Write-Host "[INFO] vcpkg 需要引导 — 运行 .\vcpkg\bootstrap-vcpkg.bat" -ForegroundColor Yellow
 } else {
-    Write-Host "[FAIL] vcpkg 子模块未初始化 — 运行 git submodule update --init" -ForegroundColor Red
+    Write-Host "[FAIL] vcpkg 未初始化 — 先执行 git clone https://github.com/microsoft/vcpkg.git vcpkg，再运行 ./vcpkg/bootstrap-vcpkg.bat" -ForegroundColor Red
     $allOk = $false
 }
 
