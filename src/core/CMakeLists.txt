@@ -1,4 +1,4 @@
-add_library(FuseVisionCore STATIC
+qt_add_library(FuseVisionCore STATIC
     Logger.h
     Logger.cpp
     PermissionInfo.h

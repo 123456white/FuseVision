@@ -102,9 +102,13 @@ jobs:
         shell: pwsh
         run: ./scripts/check-env.ps1
 
-      - name: Configure, build and test
+      - name: Configure, build and test (Ninja)
         shell: pwsh
         run: ./CmakeBuild.ps1 -Configuration Debug -NoRun -Test
+
+      - name: Configure, build and test (Visual Studio)
+        shell: pwsh
+        run: ./CmakeBuild.ps1 -Generator VisualStudio -Configuration Debug -NoRun -Test
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -113,9 +117,18 @@ jobs:
           path: out/build/windows-x64-debug/bin/Debug/
           if-no-files-found: error
 
+      - name: Upload Visual Studio Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FuseVision-VS2022-Windows-Debug
+          path: out/build/windows-vs2022-x64/bin/Debug/
+          if-no-files-found: error
+
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: FuseVision-Test-Results
-          path: out/build/windows-x64-debug/Testing/
+          path: |
+            out/build/windows-x64-debug/Testing/
+            out/build/windows-vs2022-x64/Testing/

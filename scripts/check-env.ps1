@@ -2,6 +2,10 @@
 FuseVision 开发环境自检脚本
 在 git clone 后运行一次，确认所有必需工具已就绪。
 #>
+param(
+    [ValidateSet("Ninja", "VisualStudio")]
+    [string]$Generator = "Ninja"
+)
 $ErrorActionPreference = "Continue"
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 
@@ -9,6 +13,12 @@ Write-Host "===== FuseVision 开发环境检查 =====" -ForegroundColor Cyan
 Write-Host ""
 
 $allOk = $true
+$minimumCMakeVersion = [version]"3.21.0"
+$vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+if ($Generator -eq "VisualStudio" -and (Test-Path -LiteralPath $vsWherePath)) {
+    $vsVersion = & $vsWherePath -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationVersion
+    if ($vsVersion -and ([version]$vsVersion).Major -ge 18) { $minimumCMakeVersion = [version]"4.2.0" }
+}
 
 function Check-Tool {
     param(
@@ -37,10 +47,10 @@ function Check-Tool {
 # CMake
 $cmakeOutput = cmake --version 2>$null | Select-Object -First 1
 if ($cmakeOutput -match "(\d+\.\d+\.\d+)") {
-    if ([version]$matches[1] -ge [version]"3.21.0") {
+    if ([version]$matches[1] -ge $minimumCMakeVersion) {
         Write-Host "[OK]   CMake v$($matches[1])" -ForegroundColor Green
     } else {
-        Write-Host "[FAIL] CMake 版本过低 (v$($matches[1]))，需要 >= 3.21" -ForegroundColor Red
+        Write-Host "[FAIL] CMake 版本过低 (v$($matches[1]))，$Generator 入口需要 >= $minimumCMakeVersion" -ForegroundColor Red
         $allOk = $false
     }
 } else {
@@ -57,17 +67,18 @@ if ($gitOutput -match "(\d+\.\d+\.\d+)") {
     $allOk = $false
 }
 
-# Ninja
-$ninjaOutput = ninja --version 2>$null
-if ($ninjaOutput -match "(\d+\.\d+\.\d+)") {
-    Write-Host "[OK]   Ninja v$($matches[1])" -ForegroundColor Green
-} else {
-    Write-Host "[FAIL] Ninja 未找到 — 现有 CMake 预设要求 Ninja，请加入 PATH" -ForegroundColor Red
-    $allOk = $false
+# Ninja is needed on PATH only for the Ninja presets.
+if ($Generator -eq "Ninja") {
+    $ninjaOutput = ninja --version 2>$null
+    if ($ninjaOutput -match "(\d+\.\d+\.\d+)") {
+        Write-Host "[OK]   Ninja v$($matches[1])" -ForegroundColor Green
+    } else {
+        Write-Host "[FAIL] Ninja 未找到 — Ninja 预设要求此工具加入 PATH" -ForegroundColor Red
+        $allOk = $false
+    }
 }
 
 # Visual Studio / MSVC
-$vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
 if (Test-Path $vsWherePath) {
     $vsInfo = & $vsWherePath -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath 2>$null
     if ($vsInfo) {
@@ -128,8 +139,7 @@ Write-Host "[INFO] OpenCV 通过 vcpkg manifest 管理，将在 cmake configure 
 Write-Host ""
 if ($allOk) {
     Write-Host "===== 环境检查通过！可以开始构建 =====" -ForegroundColor Green
-    Write-Host "  运行:  cmake --preset windows-x64-debug"
-    Write-Host "  然后:  cmake --build --preset windows-debug"
+    Write-Host "  运行:  ./CmakeBuild.ps1 -Generator $Generator -Configuration Debug -NoRun -Test"
     # Optional native probes (for example where.exe cl.exe) may leave exit code 1.
     # GitHub Actions propagates LASTEXITCODE, so return the aggregate result explicitly.
     exit 0

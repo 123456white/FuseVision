@@ -1,4 +1,4 @@
-add_library(FuseVisionDeepLearning STATIC
+qt_add_library(FuseVisionDeepLearning STATIC
     DeepLearningWidget.h
     DeepLearningWidget.cpp
     ProjectManagement.h

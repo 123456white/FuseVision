@@ -1,4 +1,4 @@
-add_library(FuseVisionUI STATIC
+qt_add_library(FuseVisionUI STATIC
     FuseVision.h
     FuseVision.cpp
     Login.h

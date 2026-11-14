@@ -1,10 +1,13 @@
 ﻿<#
-FuseVision 构建脚本（Windows + Ninja）
+FuseVision 构建脚本（Windows + Ninja / Visual Studio）
 自动检测 VS 环境，无需手动打开开发者命令行
 #>
 param(
     [ValidateSet("Debug", "Release")]
     [string]$Configuration,
+    [ValidateSet("Ninja", "VisualStudio")]
+    [string]$Generator = "Ninja",
+    [switch]$ConfigureOnly,
     [switch]$NoRun,
     [switch]$Test,
     [switch]$Clean
@@ -18,6 +21,22 @@ $ProjectRoot = $PSScriptRoot
 $DebugBuildDir  = Join-Path $ProjectRoot "out/build/windows-x64-debug"
 $ReleaseBuildDir = Join-Path $ProjectRoot "out/build/windows-x64-release"
 $ExeName = "FuseVision.exe"
+$VisualStudioPreset = $null
+
+if ($ConfigureOnly -and $Test) { throw "-ConfigureOnly 不能与 -Test 同时使用。" }
+if ($Generator -eq "VisualStudio") {
+    $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+    if (-not (Test-Path -LiteralPath $vsWhere)) { throw "未找到 vswhere，请安装 Visual Studio C++ 工作负载。" }
+    $vsVersion = & $vsWhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationVersion
+    if (-not $vsVersion) { throw "未找到 Visual Studio x64 C++ 编译工具。" }
+    switch (([version]$vsVersion).Major) {
+        17 { $VisualStudioPreset = "windows-vs2022" }
+        18 { $VisualStudioPreset = "windows-vs2026" }
+        default { throw "当前 VS 版本未提供解决方案预设: $vsVersion" }
+    }
+    $DebugBuildDir = Join-Path $ProjectRoot "out/build/$VisualStudioPreset-x64"
+    $ReleaseBuildDir = $DebugBuildDir
+}
 
 function Initialize-VSEnv {
     param([string]$BuildDir)
@@ -118,7 +137,7 @@ function Invoke-Backup {
 function Invoke-Build {
     param([string]$BuildType, [string]$BuildDir, [bool]$Clean = $false)
     
-    Initialize-VSEnv -BuildDir $BuildDir
+    if ($Generator -eq "Ninja") { Initialize-VSEnv -BuildDir $BuildDir }
     
     if ($Clean -and (Test-Path $BuildDir)) {
         Write-Host "清理: $BuildDir" -ForegroundColor Yellow
@@ -133,12 +152,22 @@ function Invoke-Build {
     
     $configPreset = "windows-x64-$($BuildType.ToLower())"
     $buildPreset = "windows-$($BuildType.ToLower())"
+    if ($Generator -eq "VisualStudio") {
+        $configPreset = "$VisualStudioPreset-x64"
+        $buildPreset = "$VisualStudioPreset-$($BuildType.ToLower())"
+    }
     
     Push-Location -LiteralPath $ProjectRoot
     try {
         Write-Host "配置: $configPreset" -ForegroundColor Cyan
         cmake --preset $configPreset
         if ($LASTEXITCODE -ne 0) { throw "配置失败 (exit $LASTEXITCODE)" }
+        if ($Generator -eq "VisualStudio") {
+            $solution = Get-ChildItem -LiteralPath $BuildDir -Filter "FuseVision.sln*" -File | Select-Object -First 1
+            if (-not $solution) { throw "未生成 Visual Studio 解决方案: $BuildDir" }
+            Write-Host "解决方案: $($solution.FullName)" -ForegroundColor Green
+        }
+        if ($ConfigureOnly) { return }
 
         Write-Host "构建: $buildPreset" -ForegroundColor Cyan
         cmake --build --preset $buildPreset
@@ -146,6 +175,7 @@ function Invoke-Build {
 
         if ($Test) {
             $reportDir = Join-Path $BuildDir "Testing"
+            if ($Generator -eq "VisualStudio") { $reportDir = Join-Path $reportDir $BuildType }
             New-Item -ItemType Directory -Path $reportDir -Force | Out-Null
             ctest --test-dir $BuildDir --build-config $BuildType --output-on-failure --no-tests=error --output-junit (Join-Path $reportDir "junit.xml")
             if ($LASTEXITCODE -ne 0) { throw "测试失败 (exit $LASTEXITCODE)" }
@@ -170,10 +200,10 @@ if ($Configuration) {
     Invoke-Build -BuildType $Configuration -BuildDir $buildDir -Clean $Clean.IsPresent
     exit 0
 }
-if ($NoRun -or $Test -or $Clean) { throw "非交互选项需要同时指定 -Configuration Debug 或 Release。" }
+if ($NoRun -or $Test -or $Clean -or $ConfigureOnly) { throw "非交互选项需要同时指定 -Configuration Debug 或 Release。" }
 
 do {
-    Write-Host "`n===== FuseVision 构建菜单 =====" -ForegroundColor Cyan
+    Write-Host "`n===== FuseVision 构建菜单 ($Generator) =====" -ForegroundColor Cyan
     Write-Host "1. Debug 构建并运行"
     Write-Host "2. Release 构建并运行"
     Write-Host "3. 清理 + Debug 重建"

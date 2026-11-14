@@ -20,7 +20,13 @@ project(FuseVision
 
 include(CTest)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
 
 # vcpkg 内部消费此变量（消除 CMake "not used" 警告）
 set(_vcpkg_bs_used "${VCPKG_BINARY_SOURCES}")
@@ -41,13 +47,12 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/$<CONFIG>)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<CONFIG>)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<CONFIG>)
 # Qt 自动编译配置
-set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
 
 
 # 查找依赖
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql)
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Sql)
+qt_standard_project_setup(REQUIRES 6.8)
 find_package(spdlog REQUIRED)
 find_package(OpenCV REQUIRED)
 
@@ -67,7 +72,7 @@ include(cmake/FindMVS.cmake)
 add_subdirectory(src)
 
 # 创建可执行目标【关键：必须先创建目标，再设置属性】
-add_executable(${PROJECT_NAME}
+qt_add_executable(${PROJECT_NAME}
     "src/main.cpp"
     ${QT_RESOURCES}
     "FuseVision.rc"
@@ -77,7 +82,9 @@ add_executable(${PROJECT_NAME}
 if(WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES
         WIN32_EXECUTABLE $<IF:$<CONFIG:Release>,ON,OFF>
+        VS_DEBUGGER_WORKING_DIRECTORY "$<TARGET_FILE_DIR:${PROJECT_NAME}>"
     )
+    set_property(DIRECTORY PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
     # Windows 编码修复
     if(DEFINED ENV{CHCP})
         execute_process(COMMAND chcp 65001 OUTPUT_QUIET)

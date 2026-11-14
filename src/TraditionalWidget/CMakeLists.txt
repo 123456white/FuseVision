@@ -1,4 +1,4 @@
-add_library(FuseVisionTraditional STATIC
+qt_add_library(FuseVisionTraditional STATIC
     TraditionalWidget.h
     TraditionalWidget.cpp
 )
