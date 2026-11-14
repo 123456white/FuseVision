@@ -104,26 +104,12 @@ void SystemSettingsWidget::initUI()
     QFormLayout* dlForm = new QFormLayout;
     dlForm->setSpacing(8);
 
-    m_dlDataPathEdit = new QLineEdit;
+    m_projectDataPathEdit = new QLineEdit;
     QPushButton* browseDlDataBtn = new QPushButton("浏览...");
     QHBoxLayout* dlDataRow = new QHBoxLayout;
-    dlDataRow->addWidget(m_dlDataPathEdit);
+    dlDataRow->addWidget(m_projectDataPathEdit);
     dlDataRow->addWidget(browseDlDataBtn);
-    dlForm->addRow("数据路径:", dlDataRow);
-
-    m_dlModelPathEdit = new QLineEdit;
-    QPushButton* browseDlModelBtn = new QPushButton("浏览...");
-    QHBoxLayout* dlModelRow = new QHBoxLayout;
-    dlModelRow->addWidget(m_dlModelPathEdit);
-    dlModelRow->addWidget(browseDlModelBtn);
-    dlForm->addRow("模型路径:", dlModelRow);
-
-    m_dlDatasetPathEdit = new QLineEdit;
-    QPushButton* browseDlDatasetBtn = new QPushButton("浏览...");
-    QHBoxLayout* dlDatasetRow = new QHBoxLayout;
-    dlDatasetRow->addWidget(m_dlDatasetPathEdit);
-    dlDatasetRow->addWidget(browseDlDatasetBtn);
-    dlForm->addRow("数据集路径:", dlDatasetRow);
+    dlForm->addRow("项目数据:", dlDataRow);
 
     dlLayout->addLayout(dlForm);
     dlLayout->addStretch();
@@ -184,8 +170,6 @@ void SystemSettingsWidget::initUI()
     connect(browseLogBtn, &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseLogPath);
     connect(browseDbBtn,  &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDbPath);
     connect(browseDlDataBtn,    &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDlData);
-    connect(browseDlModelBtn,   &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDlModel);
-    connect(browseDlDatasetBtn, &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseDlDataset);
     connect(browseTradDataBtn,  &QPushButton::clicked, this, &SystemSettingsWidget::onBrowseTraditionalData);
     connect(browseTradCameraBtn,&QPushButton::clicked, this, &SystemSettingsWidget::onBrowseTraditionalCamera);
     connect(m_saveBtn,    &QPushButton::clicked, this, &SystemSettingsWidget::onSave);
@@ -216,18 +200,10 @@ void SystemSettingsWidget::loadSettings()
     int idx = m_logLevelCombo->findData(savedLevel);
     if (idx >= 0) m_logLevelCombo->setCurrentIndex(idx);
 
-    // 深度学习路径
-    QString dlData = s.dlDataPath();
-    if (dlData.isEmpty()) dlData = QCoreApplication::applicationDirPath() + "/dl_data";
-    m_dlDataPathEdit->setText(QDir::toNativeSeparators(dlData));
-
-    QString dlModel = s.dlModelPath();
-    if (dlModel.isEmpty()) dlModel = QCoreApplication::applicationDirPath() + "/dl_models";
-    m_dlModelPathEdit->setText(QDir::toNativeSeparators(dlModel));
-
-    QString dlDataset = s.dlDatasetPath();
-    if (dlDataset.isEmpty()) dlDataset = QCoreApplication::applicationDirPath() + "/dl_datasets";
-    m_dlDatasetPathEdit->setText(QDir::toNativeSeparators(dlDataset));
+    // 项目数据路径
+    QString projectData = s.projectDataPath();
+    if (projectData.isEmpty()) projectData = QCoreApplication::applicationDirPath() + "/project_data";
+    m_projectDataPathEdit->setText(QDir::toNativeSeparators(projectData));
 
     // 传统视觉路径
     QString tradData = s.traditionalDataPath();
@@ -259,23 +235,9 @@ void SystemSettingsWidget::onBrowseDbPath()
 
 void SystemSettingsWidget::onBrowseDlData()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, "选择 DL 数据目录",
-        m_dlDataPathEdit->text());
-    if (!dir.isEmpty()) m_dlDataPathEdit->setText(QDir::toNativeSeparators(dir));
-}
-
-void SystemSettingsWidget::onBrowseDlModel()
-{
-    QString dir = QFileDialog::getExistingDirectory(this, "选择 DL 模型目录",
-        m_dlModelPathEdit->text());
-    if (!dir.isEmpty()) m_dlModelPathEdit->setText(QDir::toNativeSeparators(dir));
-}
-
-void SystemSettingsWidget::onBrowseDlDataset()
-{
-    QString dir = QFileDialog::getExistingDirectory(this, "选择 DL 数据集目录",
-        m_dlDatasetPathEdit->text());
-    if (!dir.isEmpty()) m_dlDatasetPathEdit->setText(QDir::toNativeSeparators(dir));
+    QString dir = QFileDialog::getExistingDirectory(this, "选择项目数据根目录",
+        m_projectDataPathEdit->text());
+    if (!dir.isEmpty()) m_projectDataPathEdit->setText(QDir::toNativeSeparators(dir));
 }
 
 void SystemSettingsWidget::onBrowseTraditionalData()
@@ -301,9 +263,7 @@ void SystemSettingsWidget::onSave()
     s.setLogPath(QDir::fromNativeSeparators(m_logPathEdit->text()));
     s.setDbPath(QDir::fromNativeSeparators(m_dbPathEdit->text()));
     s.setLogLevel(m_logLevelCombo->currentData().toInt());
-    s.setDlDataPath(QDir::fromNativeSeparators(m_dlDataPathEdit->text()));
-    s.setDlModelPath(QDir::fromNativeSeparators(m_dlModelPathEdit->text()));
-    s.setDlDatasetPath(QDir::fromNativeSeparators(m_dlDatasetPathEdit->text()));
+    s.setProjectDataPath(QDir::fromNativeSeparators(m_projectDataPathEdit->text()));
     s.setTraditionalDataPath(QDir::fromNativeSeparators(m_traditionalDataPathEdit->text()));
     s.setTraditionalCameraPath(QDir::fromNativeSeparators(m_traditionalCameraPathEdit->text()));
     // 持久化到磁盘
@@ -328,9 +288,7 @@ void SystemSettingsWidget::onReset()
 
     s.setLogPath(defaultLogPath);
     s.setDbPath(defaultDbPath);
-    s.setDlDataPath(QCoreApplication::applicationDirPath() + "/dl_data");
-    s.setDlModelPath(QCoreApplication::applicationDirPath() + "/dl_models");
-    s.setDlDatasetPath(QCoreApplication::applicationDirPath() + "/dl_datasets");
+    s.setProjectDataPath(QCoreApplication::applicationDirPath() + "/project_data");
     s.setTraditionalDataPath(QCoreApplication::applicationDirPath() + "/traditional_data");
     s.setTraditionalCameraPath(QCoreApplication::applicationDirPath() + "/traditional_camera");
     s.save();

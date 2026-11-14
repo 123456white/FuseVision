@@ -15,6 +15,7 @@
 #include "ProjectConfig.h"
 #include "ModelConfig.h"
 #include "core/ThemeManager.h"
+#include "core/LoadingOverlay.h"
 
 // =============================================================================
 // ModelCard — 紧凑模型卡片（图标 + 合并的名称/类型，单击选中/双击进入数据集）
@@ -58,8 +59,6 @@ private:
     bool    m_hovered    = false;
     QTimer* m_clickTimer = nullptr;
 };
-
-class StepGuideBar;  // 前向声明（定义在 ProjectManagement.h）
 
 // =============================================================================
 // ModelManagement — 模型管理标签页（DeepLearningWidget Tab 1）
@@ -108,6 +107,7 @@ protected:
 private slots:
     void onNewModel();
     void onOpenModel();
+    void onDeleteModel();
 
 private:
     void onCardClicked(ModelCard* card);
@@ -118,21 +118,19 @@ private:
     void initRightPanel();
     void applyTheme();
     void updateLeftInfo();         // 刷新左侧下栏模型详情
-    void updateStepGuide();        // 根据模型 status 刷新步骤引导条
     void refreshCards();
     void relayoutCards();
 
     // ── 项目上下文 ─────────────────────────────────────────────
     FvprojInfo m_project;
-    QString    m_dataRoot;
-    QString    m_datasetRoot;
-    QString    m_modelRoot;
+    QString    m_projectRoot;
     QString    m_currentModelId;
     FvdlInfo   m_currentModel;
 
     // ── 左侧边栏 ──────────────────────────────────────────────
     QPushButton* m_newModelBtn   = nullptr;
     QPushButton* m_openModelBtn  = nullptr;
+    QPushButton* m_deleteModelBtn = nullptr;
     QLabel*      m_detailLabel   = nullptr;   // 当前模型详细信息（文件路径/目录/标签/时间）
 
     // ── 右侧主体 ──────────────────────────────────────────────
@@ -141,7 +139,7 @@ private:
     QWidget*     m_cardContainer  = nullptr;
     QGridLayout* m_cardLayout     = nullptr;
     QLabel*      m_emptyHint      = nullptr;   // 无模型时提示
-    StepGuideBar* m_stepGuideBar   = nullptr;   // 底部步骤引导条
+    LoadingOverlay* m_loadingOverlay = nullptr;  // 模型卡片加载动画
 
     // ── 卡片状态 ──────────────────────────────────────────────
     QList<ModelCard*> m_cards;

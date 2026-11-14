@@ -208,22 +208,13 @@ void LoginDialog::onUserChanged(int index)
 
 void LoginDialog::onLoginClicked()
 {
-    // 输入校验
     if (m_passwordEdit->text().trimmed().isEmpty()) {
         QMessageBox::warning(this, "提示", "请输入密码！");
         m_passwordEdit->setFocus();
         return;
     }
 
-    // 显示加载动画 + 禁用输入
-    showLoading();
-    m_loginBtn->setEnabled(false);
-    m_cancelBtn->setEnabled(false);
-    m_userCombo->setEnabled(false);
-    m_passwordEdit->setEnabled(false);
-
-    // 延迟 120ms 让动画先渲染，再执行实际登录
-    QTimer::singleShot(120, this, &LoginDialog::doLogin);
+    doLogin();
 }
 
 void LoginDialog::doLogin()
@@ -243,7 +234,6 @@ void LoginDialog::doLogin()
     LoginResult result = DatabaseManager::instance().validateLogin(dbUsername, password);
 
     if (!result.success) {
-        hideLoading();
         m_loginBtn->setEnabled(true);
         m_cancelBtn->setEnabled(true);
         m_userCombo->setEnabled(true);
@@ -271,7 +261,6 @@ void LoginDialog::doLogin()
         .arg(m_userRole == SuperAdmin ? "SuperAdmin" :
              (m_userRole == Admin ? "Admin" : "User")));
 
-    hideLoading();
     accept();
 }
 

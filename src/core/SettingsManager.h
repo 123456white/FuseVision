@@ -33,17 +33,16 @@ public:
     int     logLevel()   const;               // 获取日志级别（0=Trace ~ 6=Off）
     void    setLogLevel(int level);           // 设置日志级别（仅改内存）
 
-    QString dlDataPath()  const;              // 深度学习数据存储路径
-    void    setDlDataPath(const QString& p);  // 设置 DL 数据路径
-    QString dlModelPath() const;              // 深度学习模型存储路径
-    void    setDlModelPath(const QString& p); // 设置 DL 模型路径
-    QString dlDatasetPath() const;            // 深度学习数据集存储路径
-    void    setDlDatasetPath(const QString& p);// 设置 DL 数据集路径
+    QString projectDataPath()  const;              // 项目数据统一根路径
+    void    setProjectDataPath(const QString& p);   // 设置项目数据根路径
 
     QString traditionalDataPath()  const;        // 传统视觉数据存储路径
     void    setTraditionalDataPath(const QString& p); // 设置传统视觉数据路径
     QString traditionalCameraPath() const;       // 传统视觉相机配置存储路径
     void    setTraditionalCameraPath(const QString& p); // 设置传统视觉相机路径
+
+    QString labelmePythonPath() const;           // LabelMe 外部工具的 Python 解释器路径
+    void    setLabelmePythonPath(const QString& p);
 
     void save();  // 将内存中的路径持久化到 QSettings
     void load();  // 从 QSettings 恢复路径到内存
@@ -57,11 +56,10 @@ private:
 
     QString   m_logPath;    // 缓存：日志路径
     QString   m_dbPath;     // 缓存：数据库路径
-    QString   m_dlDataPath;      // 缓存：DL 数据路径
-    QString   m_dlModelPath;     // 缓存：DL 模型路径
-    QString   m_dlDatasetPath;   // 缓存：DL 数据集路径
+    QString   m_projectDataPath;      // 缓存：项目数据统一根路径
     QString   m_traditionalDataPath;  // 缓存：传统视觉数据路径
     QString   m_traditionalCameraPath; // 缓存：传统视觉相机配置路径
+    QString   m_labelmePythonPath;     // 缓存：LabelMe Python 解释器路径
     int       m_logLevel = 2; // 缓存：日志级别（默认 Info=2）
 };
 

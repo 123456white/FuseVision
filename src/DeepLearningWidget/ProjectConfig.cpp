@@ -16,9 +16,7 @@
 
 bool ProjectConfig::createProject(const QString& projectName,
                                   const QString& description,
-                                  const QString& dlDataPath,
-                                  const QString& dlDatasetPath,
-                                  const QString& dlModelPath,
+                                  const QString& projectDataPath,
                                   QString* errorOut)
 {
     if (!isValidProjectName(projectName)) {
@@ -27,35 +25,25 @@ bool ProjectConfig::createProject(const QString& projectName,
         return false;
     }
 
-    const QString dataRoot    = QDir(dlDataPath).absoluteFilePath(projectName);
-    const QString datasetRoot = QDir(dlDatasetPath).absoluteFilePath(projectName);
-    const QString modelRoot   = QDir(dlModelPath).absoluteFilePath(projectName);
+    const QString projectRoot = QDir(projectDataPath).absoluteFilePath(projectName);
 
     // 检查是否已存在
-    if (QDir(dataRoot).exists() || QDir(datasetRoot).exists() || QDir(modelRoot).exists()) {
+    if (QDir(projectRoot).exists()) {
         if (errorOut)
             *errorOut = QString::fromUtf8("项目 \"%1\" 已存在，请使用其他名称").arg(projectName);
         return false;
     }
 
-    // 创建三个根目录
+    // 创建项目根目录
     QDir dir;
-    if (!dir.mkpath(dataRoot)) {
-        if (errorOut) *errorOut = QString::fromUtf8("无法创建数据目录: %1").arg(dataRoot);
-        return false;
-    }
-    if (!dir.mkpath(datasetRoot)) {
-        if (errorOut) *errorOut = QString::fromUtf8("无法创建数据集目录: %1").arg(datasetRoot);
-        return false;
-    }
-    if (!dir.mkpath(modelRoot)) {
-        if (errorOut) *errorOut = QString::fromUtf8("无法创建模型目录: %1").arg(modelRoot);
+    if (!dir.mkpath(projectRoot)) {
+        if (errorOut) *errorOut = QString::fromUtf8("无法创建项目目录: %1").arg(projectRoot);
         return false;
     }
 
     // 生成 .fvproj
-    const QString fvprojPath = QDir(dataRoot).absoluteFilePath("project.fvproj");
-    QJsonObject root = buildDefaultFvproj(projectName, description, dataRoot, datasetRoot, modelRoot);
+    const QString fvprojPath = QDir(projectRoot).absoluteFilePath("project.fvproj");
+    QJsonObject root = buildDefaultFvproj(projectName, description, projectRoot);
 
     QJsonDocument doc(root);
     QFile file(fvprojPath);
@@ -104,30 +92,11 @@ FvprojInfo ProjectConfig::loadProject(const QString& fvprojPath, QString* errorO
     info.modifiedTime = QDateTime::fromString(root.value("modified_time").toString(), Qt::ISODate);
 
     QJsonObject paths = root.value("paths").toObject();
-    info.dataRoot    = paths.value("data_root").toString();
-    info.datasetRoot = paths.value("dataset_root").toString();
-    info.modelRoot   = paths.value("model_root").toString();
+    info.projectRoot = paths.value("project_root").toString();
 
-    // 路径不存在时，尝试基于 fvprojPath 推断
-    QDir fvprojDir = QFileInfo(fvprojPath).absoluteDir();
-    if (info.dataRoot.isEmpty())
-        info.dataRoot = fvprojDir.absolutePath();
-    if (info.datasetRoot.isEmpty()) {
-        // 尝试根据 dataRoot 推断 datasetRoot（同级目录替换）
-        QString dataParent = QFileInfo(info.dataRoot).absolutePath();   // .../dl_data
-        info.datasetRoot = QDir(dataParent).absoluteFilePath(
-            QFileInfo(info.dataRoot).fileName());  // .../dl_datasets/ProjectA
-        // 更准确的推断：向上两级再找 dl_datasets
-        QDir d(dataParent);
-        d.cdUp();
-        info.datasetRoot = d.absoluteFilePath("dl_datasets/" + info.projectName);
-    }
-    if (info.modelRoot.isEmpty()) {
-        QString dataParent = QFileInfo(info.dataRoot).absolutePath();
-        QDir d(dataParent);
-        d.cdUp();
-        info.modelRoot = d.absoluteFilePath("dl_models/" + info.projectName);
-    }
+    // 路径不存在时，基于 fvprojPath 推断（fvproj 所在目录即为项目根目录）
+    if (info.projectRoot.isEmpty())
+        info.projectRoot = QFileInfo(fvprojPath).absolutePath();
 
     Logger::info(QString::fromUtf8("项目已加载: %1 (%2 个模型)")
                      .arg(info.projectName)
@@ -140,9 +109,7 @@ FvprojInfo ProjectConfig::loadProject(const QString& fvprojPath, QString* errorO
 bool ProjectConfig::saveProject(const FvprojInfo& info, QString* errorOut)
 {
     QJsonObject paths;
-    paths["data_root"]    = info.dataRoot;
-    paths["dataset_root"] = info.datasetRoot;
-    paths["model_root"]   = info.modelRoot;
+    paths["project_root"] = info.projectRoot;
 
     QJsonObject root;
     root["project_name"]     = info.projectName;
@@ -169,10 +136,10 @@ bool ProjectConfig::saveProject(const FvprojInfo& info, QString* errorOut)
 
 // ── 扫描项目列表 ──────────────────────────────────────────────
 
-QList<ProjectCardInfo> ProjectConfig::scanProjects(const QString& dlDataPath)
+QList<ProjectCardInfo> ProjectConfig::scanProjects(const QString& projectDataPath)
 {
     QList<ProjectCardInfo> result;
-    QDir dataDir(dlDataPath);
+    QDir dataDir(projectDataPath);
     if (!dataDir.exists()) return result;
 
     const QFileInfoList subDirs = dataDir.entryInfoList(
@@ -257,14 +224,10 @@ bool ProjectConfig::setModelStatus(const QString& fvprojPath,
 
 QJsonObject ProjectConfig::buildDefaultFvproj(const QString& projectName,
                                               const QString& description,
-                                              const QString& dataRoot,
-                                              const QString& datasetRoot,
-                                              const QString& modelRoot)
+                                              const QString& projectRoot)
 {
     QJsonObject paths;
-    paths["data_root"]    = dataRoot;
-    paths["dataset_root"] = datasetRoot;
-    paths["model_root"]   = modelRoot;
+    paths["project_root"] = projectRoot;
 
     QString now = QDateTime::currentDateTime().toString(Qt::ISODate);
 

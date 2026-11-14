@@ -12,8 +12,7 @@
 #include "TraditionalWidget/TraditionalWidget.h"
 #include "MainWindows/UserManagementWidget.h"
 #include "MainWindows/SystemSettingsWidget.h"
-#include "core/Logger.h"
-#include "core/ThemeManager.h"
+
 
 // =============================================================================
 // FuseVision — 应用主窗口（QMainWindow）
@@ -45,6 +44,7 @@ public:
     ~FuseVision();
 
     void setReadyStatus(bool ready);  // 设置状态栏"就绪"/"繁忙"
+    void initPagesAsync();            // 延迟创建 4 个功能页面
 
 private slots:
     void onSessionChanged();            // 登录/登出 → 刷新状态栏
@@ -56,7 +56,7 @@ private:
     void initUI();                      // UI 总入口
     void initSidebar();                 // 构建 44px PNG 图标侧边栏
     void updateNavIcons(bool isDark);   // 根据主题切换导航图标（亮色/暗色）
-    void initMainContent();             // QStackedWidget + 4 页面
+    void initMainContent();             // QStackedWidget 容器（不含页面）
     void initStatusBar();               // 底部状态栏
     void applyTheme();                  // 主题变更时重绘
     void logSystemInfo();               // 系统信息日志

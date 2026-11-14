@@ -3,6 +3,7 @@ FuseVision 开发环境自检脚本
 在 git clone 后运行一次，确认所有必需工具已就绪。
 #>
 $ErrorActionPreference = "Continue"
+$ProjectRoot = Split-Path -Parent $PSScriptRoot
 
 Write-Host "===== FuseVision 开发环境检查 =====" -ForegroundColor Cyan
 Write-Host ""
@@ -61,14 +62,20 @@ $ninjaOutput = ninja --version 2>$null
 if ($ninjaOutput -match "(\d+\.\d+\.\d+)") {
     Write-Host "[OK]   Ninja v$($matches[1])" -ForegroundColor Green
 } else {
-    Write-Host "[WARN] Ninja 未找到 — 构建可能失败，请确保 PATH 中包含 Ninja 或使用 MSVC 生成器" -ForegroundColor Yellow
+    Write-Host "[FAIL] Ninja 未找到 — 现有 CMake 预设要求 Ninja，请加入 PATH" -ForegroundColor Red
+    $allOk = $false
 }
 
 # Visual Studio / MSVC
 $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
 if (Test-Path $vsWherePath) {
-    $vsInfo = & $vsWherePath -latest -property installationPath 2>$null
-    Write-Host "[OK]   Visual Studio 已安装: $vsInfo" -ForegroundColor Green
+    $vsInfo = & $vsWherePath -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath 2>$null
+    if ($vsInfo) {
+        Write-Host "[OK]   Visual Studio C++ 工具已安装: $vsInfo" -ForegroundColor Green
+    } else {
+        Write-Host "[FAIL] 未找到 Visual Studio x64 C++ 工具" -ForegroundColor Red
+        $allOk = $false
+    }
 } else {
     Write-Host "[WARN] 未检测到 Visual Studio（如仅使用 VS Code + Ninja + MSVC BuildTools 可忽略）" -ForegroundColor Yellow
 }
@@ -97,15 +104,16 @@ if ($env:HALCONROOT) {
 } else {
     $sdkHalconDir = Join-Path $ProjectRoot "sdk/halcon"
     $halconHeader = Join-Path $sdkHalconDir "include/HalconCpp.h"
-    $halconLib = Join-Path $sdkHalconDir "lib/x64-win64/halcon.lib"
-    $halconcppLib = Join-Path $sdkHalconDir "lib/x64-win64/halconcpp.lib"
+    $halconCppHeader = Join-Path $sdkHalconDir "include/halconcpp/HalconCpp.h"
+    $halconLib = Join-Path $sdkHalconDir "lib/halcon.lib"
+    $halconcppLib = Join-Path $sdkHalconDir "lib/halconcpp.lib"
     
-    if ((Test-Path $halconHeader) -and (Test-Path $halconLib) -and (Test-Path $halconcppLib)) {
+    if (((Test-Path $halconHeader) -or (Test-Path $halconCppHeader)) -and (Test-Path $halconLib) -and (Test-Path $halconcppLib)) {
         Write-Host "[OK]   Halcon（sdk/halcon 内置）: $sdkHalconDir" -ForegroundColor Green
     } else {
         Write-Host "[INFO] Halcon 未配置 — 传统视觉模块的 Halcon 功能将不可用" -ForegroundColor Gray
         if (Test-Path $sdkHalconDir) {
-            Write-Host "       sdk/halcon 目录存在但结构不完整，请检查: include/HalconCpp.h, lib/x64-win64/halcon*.lib" -ForegroundColor Yellow
+            Write-Host "       sdk/halcon 目录存在但结构不完整，请检查: include/HalconCpp.h 或 include/halconcpp/HalconCpp.h，以及 lib/halcon*.lib" -ForegroundColor Yellow
         } else {
             Write-Host "       可通过以下方式启用 Halcon 功能：" -ForegroundColor Gray
             Write-Host "         1. 安装 Halcon SDK 并设置 HALCONROOT / HALCONARCH 环境变量" -ForegroundColor Gray
@@ -124,4 +132,5 @@ if ($allOk) {
     Write-Host "  然后:  cmake --build --preset windows-debug"
 } else {
     Write-Host "===== 存在 [FAIL] 项，请先修复后再构建 =====" -ForegroundColor Red
+    exit 1
 }

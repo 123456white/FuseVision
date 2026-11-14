@@ -13,35 +13,7 @@
 #include <QEnterEvent>
 #include "ProjectConfig.h"
 #include "core/ThemeManager.h"
-
-// =============================================================================
-// StepGuideBar — 底部工作流步骤引导条
-// =============================================================================
-// 横向展示 6 个固定步骤（每步骤一个圆点 + 步骤名）：
-//   项目管理 → 模型管理 → 数据集管理 → 数据标注 → 数据拆分 → 模型训练
-// 当前所在步骤高亮，行进方向为从左到右。
-class StepGuideBar : public QWidget
-{
-    Q_OBJECT
-public:
-    explicit StepGuideBar(QWidget* parent = nullptr);
-    void setCurrentStep(int step);          // 0~5，设置当前高亮步骤
-    void setStepCompleted(int step);        // 标记某步骤为已完成
-
-private:
-    void buildSteps();
-    void refreshTheme();                    // 主题切换时重绘样式
-    void applyStepStyles();                 // 根据当前步/完成状态刷颜色
-
-    struct StepDot {
-        QLabel* dot   = nullptr;
-        QLabel* label = nullptr;
-        QFrame* line  = nullptr;
-    };
-    QList<StepDot> m_steps;
-    int            m_currentStep = 0;
-    QList<bool>    m_completed;  // size = 6
-};
+#include "core/LoadingOverlay.h"
 
 // =============================================================================
 // ProjectCard — 项目卡片（图片 + 名称，点击可选中/打开）
@@ -82,18 +54,22 @@ private:
 // ProjectManagement — 项目管理标签页（DeepLearningWidget Tab 0）
 // =============================================================================
 // 布局（左右 1:5）：
-//   左侧边栏（上下 1:9）：
+//   左侧边栏（上下三栏：按钮固定 | 模型列表 1/2 | 项目说明 1/2）：
 //     ┌────────────────────┐
-//     │ 新建项目│打开项目   │ ← 圆角按钮（左图标右文字）
+//     │ 新建项目│打开项目   │ ← 固定大小
+//     │   删除项目           │
 //     ├────────────────────┤
-//     │ 模型列表           │
+//     │ 模型列表           │ ← 占剩余 1/2
 //     │ ┌────────────────┐ │
-//     │ │ model1 (分割)  │ │ ← 当前项目的所有模型
+//     │ │ model1 (分割)  │ │
 //     │ │ model2 (检测)  │ │
 //     │ └────────────────┘ │
-//     │ 创建/修改时间       │
-//     │ ─────────────────  │
-//     │ 逻辑说明文字       │
+//     ├────────────────────┤
+//     │ 项目说明           │ ← 占剩余 1/2（可滚动）
+//     │ 项目文件: ...      │
+//     │ 创建时间: ...      │
+//     │ 修改时间: ...      │
+//     │ 项目描述: ...      │
 //     └────────────────────┘
 //   右侧主体：
 //     ┌────────────────────┐
@@ -101,8 +77,6 @@ private:
 //     │ │图│ │图│ │图│    │ ← 项目卡片网格（3 列）
 //     │ │名│ │名│ │名│    │
 //     │ └──┘ └──┘ └──┘    │
-//     ├────────────────────┤
-//     │ ○→○→○→○→○→○     │ ← 步骤引导条
 //     └────────────────────┘
 // =============================================================================
 class ProjectManagement : public QWidget
@@ -115,6 +89,8 @@ public:
     QString currentProjectPath() const { return m_currentProjectPath; }
     bool    hasProject()         const { return m_hasProject; }
     FvprojInfo currentProject()  const { return m_hasProject ? m_currentProject : m_previewProject; }
+
+    static bool copyDirectory(const QString& src, const QString& dst); // 递归复制目录
 
 public slots:
     void refreshCards();           // 重新扫描并刷新卡片网格
@@ -130,6 +106,7 @@ protected:
 private slots:
     void onNewProject();                                                // 新建项目对话框
     void onOpenProject();                                               // 打开项目对话框
+    void onDeleteProject();                                             // 删除项目
     void onCardClicked(ProjectCard* card);                              // 单击选中卡片
     void onCardDoubleClicked(ProjectCard* card);                        // 双击打开项目
     void onModelSelected(QListWidgetItem* item);                        // 切换当前模型
@@ -137,11 +114,10 @@ private slots:
 private:
     void initUI();                     // 构建整体布局
     void initLeftPanel();              // 左侧边栏（按钮 + 模型列表 + 信息）
-    void initRightPanel();             // 右侧主体（卡片网格 + 步骤引导条）
+    void initRightPanel();             // 右侧主体（卡片网格）
     void applyTheme();                 // 主题切换时刷新所有子控件样式
     void updateLeftPanel();            // 随项目状态刷新左侧面板
     void refreshModelList();           // 刷新模型列表
-    void updateStepGuide();            // 刷新步骤引导条高亮
     void relayoutCards();              // 根据当前可用宽度重排卡片网格
     void clearSelection();             // 清除卡片选中
 
@@ -153,18 +129,19 @@ private:
     bool       m_hasProject = false;
 
     // ── 全局路径 ──────────────────────────────────────────────
-    QString    m_dlDataPath;
-    QString    m_dlDatasetPath;
-    QString    m_dlModelPath;
+    QString    m_projectDataPath;
 
     // ── 左侧边栏控件 ──────────────────────────────────────────
     QPushButton*  m_newProjectBtn   = nullptr;
     QPushButton*  m_openProjectBtn  = nullptr;
+    QPushButton*  m_deleteProjectBtn = nullptr;
     QLabel*       m_modelListTitle  = nullptr;
     QListWidget*  m_modelList       = nullptr;
-    QLabel*       m_projectTimeLabel = nullptr;
-    QLabel*       m_projectDescLabel = nullptr;   // 项目描述
-    QLabel*       m_logicDescLabel  = nullptr;
+    QLabel*       m_projectFileLabel    = nullptr;  // 项目文件路径
+    QLabel*       m_projectCreatedLabel = nullptr;  // 创建时间
+    QLabel*       m_projectModifiedLabel = nullptr; // 修改时间
+    QLabel*       m_projectDescLabel    = nullptr;  // 项目描述
+    QScrollArea*  m_infoScrollArea      = nullptr;  // 项目信息滚动区域
 
     // ── 右侧主体控件 ──────────────────────────────────────────
     QWidget*       m_rightContainer = nullptr;  // 右侧整体容器
@@ -172,7 +149,7 @@ private:
     QWidget*       m_cardContainer = nullptr;
     QGridLayout*   m_cardLayout    = nullptr;
     QLabel*        m_emptyHint     = nullptr;
-    StepGuideBar*  m_stepGuideBar  = nullptr;
+    LoadingOverlay* m_loadingOverlay = nullptr;  // 项目卡片加载动画
 
     // ── 卡片选中状态 ──────────────────────────────────────────
     QList<ProjectCard*> m_cards;

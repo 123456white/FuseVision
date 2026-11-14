@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>res/FuseVision.png</file>
+        <file>res/FuseVision.ico</file>
+        <file>res/Del.png</file>
+        <file>res/Del_D.png</file>
         <file>res/DeepLearningWidget.png</file>
         <file>res/TraditionalWidget.png</file>
         <file>res/SystemSettings.png</file>
@@ -23,5 +26,40 @@
         <file>res/TaskDetectionRotated.png</file>
         <file>res/TaskSegmentation.png</file>
         <file>res/TaskSegmentation_D.png</file>
+        <!-- 标注工具图标 -->
+        <file>res/AnnoBrush.png</file>
+        <file>res/AnnoBrush_D.png</file>
+        <file>res/AnnoEraser.png</file>
+        <file>res/AnnoEraser_D.png</file>
+        <file>res/AnnoPolygon.png</file>
+        <file>res/AnnoPolygon_D.png</file>
+        <file>res/AnnoRectangle.png</file>
+        <file>res/AnnoRectangle_D.png</file>
+        <file>res/AnnoFill.png</file>
+        <file>res/AnnoFill_D.png</file>
+        <file>res/AnnoSelect.png</file>
+        <file>res/AnnoSelect_D.png</file>
+        <file>res/AnnoSave.png</file>
+        <file>res/AnnoSave_D.png</file>
+        <file>res/AnnoUndo.png</file>
+        <file>res/AnnoUndo_D.png</file>
+        <file>res/AnnoRedo.png</file>
+        <file>res/AnnoRedo_D.png</file>
+        <file>res/AnnoFit.png</file>
+        <file>res/AnnoFit_D.png</file>
+        <file>res/AnnoZoom1.png</file>
+        <file>res/AnnoZoom1_D.png</file>
+        <file>res/AnnoBack.png</file>
+        <file>res/AnnoBack_D.png</file>
+        <file>res/AnnoNavFirst.png</file>
+        <file>res/AnnoNavFirst_D.png</file>
+        <file>res/AnnoNavPrev.png</file>
+        <file>res/AnnoNavPrev_D.png</file>
+        <file>res/AnnoNavNext.png</file>
+        <file>res/AnnoNavNext_D.png</file>
+        <file>res/AnnoNavLast.png</file>
+        <file>res/AnnoNavLast_D.png</file>
+        <file>res/AnnoLabelMe.png</file>
+        <file>res/AnnoLabelMe_D.png</file>
     </qresource>
 </RCC>

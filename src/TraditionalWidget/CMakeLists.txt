@@ -13,3 +13,7 @@ target_link_libraries(FuseVisionTraditional
         Qt6::Widgets
         FuseVisionCore
 )
+
+target_compile_definitions(FuseVisionTraditional PRIVATE
+    FUSEVISION_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+)

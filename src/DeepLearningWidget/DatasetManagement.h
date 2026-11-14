@@ -18,9 +18,8 @@
 #include <QSet>
 #include "ProjectConfig.h"
 #include "ModelConfig.h"
-#include "core/ThemeManager.h"
+#include "core/LoadingOverlay.h"
 
-class StepGuideBar;
 
 // ── 标签格式类型 ──────────────────────────────────────────────
 // 不同模型类型对应不同的标签格式：
@@ -105,8 +104,6 @@ struct DatasetSample {
 //     │ 工具栏: 导入/统计/视图 │
 //     ├──────────────────────┤
 //     │ 缩略图网格画廊        │ ← 单击选中/双击标注
-//     ├──────────────────────┤
-//     │ StepGuideBar 步骤引导 │
 //     └──────────────────────┘
 // =============================================================================
 
@@ -123,8 +120,31 @@ public:
     QString currentModelId() const { return m_currentModelId; }
     bool    hasModel()       const { return !m_currentModelId.isEmpty(); }
 
+    // ── 数据集属性访问器（供标注模块使用）──
+    QStringList currentLabelNames() const         { return m_labelNames; }
+    QStringList currentLabelColors() const        { return m_labelColors; }
+    QString     currentLabelType() const          { return m_labelType; }
+    QList<int>  currentLabelInstanceCounts() const { return m_labelInstanceCounts; }
+    QVector<DatasetSample> allSamples() const     { return m_samples; }
+    int         currentLabelOffset() const;        // Halcon 兼容：GrayMask minGray 偏移
+
+    // ── 标注集成 ──────────────────────────────────────────
+    int  findSampleIndex(const QString& imagePath) const;
+    void onAnnotationUpdated(const QString& imagePath,
+                             const QList<int>& categoryIds,
+                             int instanceCount);
+    void detectLabelsFromAnnotations(); // 扫描 annotations 自动识别标签类别（公开：外部需在标注返回时触发）
+
+    // ── 数据集路径工具 ────────────────────────────────────────
+    QString datasetDir()   const;      // projectRoot/ModelName/
+    QString imagesDir()    const;      // .../images/
+    QString labelsDir()    const;      // .../labels/
+    QString annotationsDir() const;   // .../labels/ (兼容旧接口)
+
 signals:
     void dataImported(const QString& modelId);                      // 图像导入完成
+    void annotationSaved(const QString& modelId);                   // 标注保存完成
+    void labelsChanged();                                          // 标签类别变动（增/删/改/重排/导入）
     void openAnnotationRequested(const QString& modelId,
                                  const QString& imagePath);         // 双击 → 标注
     void currentModelChanged(const QString& modelId);              // 状态更新通知
@@ -146,7 +166,7 @@ private slots:
     void onImportLabels();             // 从 labels.txt / COCO 导入标签
     void onRefreshImageInfo();         // 刷新单图信息
     void onLabelOrderChanged();        // 标签拖拽重排后更新映射
-    void onPreprocessClicked();        // 预处理占位按钮
+    void onFormatConvert();             // 标注格式转换（YOLO txt / PNG掩码 / LabelMe JSON → 目标格式）
     void onAugmentClicked();           // 数据增强占位按钮
     void onExportDataset();            // 导出数据集（COCO / YOLO）
 
@@ -166,9 +186,7 @@ private:
     void refreshGallery();             // 刷新画廊
     void loadDatasetConfig();          // 加载 dataset_config.json
     void saveDatasetConfig();          // 保存 dataset_config.json
-    void updateStepGuide();            // 更新步骤引导条
     void setPanelEnabled(QWidget* panel, bool enabled);  // 面板启用/禁用
-    void detectLabelsFromAnnotations(); // 扫描 annotations 自动识别标签类别
     bool ensureLabelTypeBeforeImport(); // 导入前确认标签类型
     bool validateLabelCount();          // 校验 labels 目录标签数与配置一致
     void updateSelectionUI();          // 更新全选框/已选计数/删除按钮状态
@@ -198,10 +216,32 @@ private:
     void runQualityCheck(DatasetStats& stats) const;    // 质量检查
     void updateStatsDisplay(const DatasetStats& stats); // 刷新统计显示
 
+    // ── 标注格式转换 ────────────────────────────────────────
+    enum InputFormat { Fmt_YOLO_Txt, Fmt_PNG_Mask, Fmt_LabelMe_JSON, Fmt_Unknown };
+    InputFormat detectInputFormat() const;               // 自动检测 labels/ 下的标注格式
+
+    struct ConvertResult {
+        QString file;       // 文件名
+        int     line   = -1;
+        enum { Pass, Warning, Error } status = Pass;
+        QString message;
+    };
+
+    // 检测当前标注是否符合目标格式（转换前的校验）
+    QList<ConvertResult> validateCurrentFormat() const;
+
+    // 三种输入格式 → 目标 YOLO txt 转换
+    bool convertYoloTxtToTarget();      // YOLO txt 格式校验/修正
+    bool convertPngMaskToTarget();      // PNG 掩码 → YOLO txt
+    bool convertLabelMeJsonToTarget();  // LabelMe JSON → YOLO txt
+
+    // 异常检测：引导导入 OK/NG 图像
+    bool convertAnomalyClassification();
+
+    // 转换结果展示
+    void showConvertResultDialog(const QList<ConvertResult>& results, int converted, int failed);
+
     // ── 数据集路径工具 ────────────────────────────────────────
-    QString datasetDir()   const;      // dl_datasets/Project/Model_dataset/
-    QString imagesDir()    const;      // .../images/
-    QString annotationsDir() const;   // .../annotations/
     static QString imageFileFilter();       // "图像文件 (*.png *.jpg ...);;所有文件 (*.*)"
     QString configPath()   const;      // .../dataset_config.json
 
@@ -209,9 +249,7 @@ private:
     FvprojInfo    m_project;
     FvdlInfo      m_currentModel;
     QString       m_currentModelId;
-    QString       m_dataRoot;
-    QString       m_datasetRoot;
-    QString       m_modelRoot;
+    QString       m_projectRoot;
 
     // ── 数据集配置（内存缓存）──────────────────────────────────
     QJsonObject   m_datasetConfig;        // dataset_config.json 完整内容
@@ -225,6 +263,7 @@ private:
     bool          m_galleryDeferred = false;  // refreshGallery 延迟重试防重入
     bool          m_inRefresh = false;        // refreshGallery 重入锁（防 processEvents 触发 resize 递归）
     QTimer*       m_loadDeferTimer = nullptr; // setCurrentModel 延迟加载定时器（可取消）
+    QTimer*       m_resizeDebounce = nullptr; // 防抖：窗口缩放结束后再刷新画廊
 
     // ── UI 组件
     // 主分割器
@@ -269,8 +308,8 @@ private:
     QComboBox*    m_filterCombo        = nullptr;
     QScrollArea*  m_galleryScrollArea  = nullptr;
 
-    // ── 占位按钮（Phase 1：UI 预留，功能待后续实现）──
-    QPushButton*  m_btnPreprocess      = nullptr;
+    // ── 工具栏按钮 ──
+    QPushButton*  m_btnFormatConvert   = nullptr;
     QPushButton*  m_btnAugment         = nullptr;
 
     // ── 导入/导出按钮 ──
@@ -286,14 +325,12 @@ private:
     QWidget*      m_galleryContainer   = nullptr;
     QGridLayout*  m_galleryLayout      = nullptr;
     QLabel*       m_galleryEmptyHint   = nullptr;
+    LoadingOverlay* m_loadingOverlay    = nullptr;  // 画廊加载动画
     QList<QFrame*> m_thumbnailFrames;  // 缩略图 Frame 列表
     int           m_lastGalleryWidth   = 0;       // 上次宽度，用于防抖列数重排
 
     // ── 列表视图 ──
     QListWidget*  m_galleryListView    = nullptr;
-
-    // ── 步骤引导条 ──
-    StepGuideBar* m_stepGuideBar       = nullptr;
 };
 
 #endif // DATASETMANAGEMENT_H

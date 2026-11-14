@@ -42,10 +42,13 @@ QString DatabaseManager::hashPassword(const QString& password)
 
 /* ── 生命周期 ─────────────────────────────────────────────────── */
 
-bool DatabaseManager::initDatabase()
+bool DatabaseManager::initDatabase(const QString& databasePath)
 {
-    const QString dbPath = QCoreApplication::applicationDirPath() + "/data/fusevision.db";
-    QDir().mkpath(QFileInfo(dbPath).absolutePath());
+    const QString dbPath = databasePath.isEmpty()
+        ? QCoreApplication::applicationDirPath() + "/data/fusevision.db"
+        : databasePath;
+    if (dbPath != ":memory:")
+        QDir().mkpath(QFileInfo(dbPath).absolutePath());
 
     m_db = QSqlDatabase::addDatabase("QSQLITE", "fusevision_conn");
     m_db.setDatabaseName(dbPath);

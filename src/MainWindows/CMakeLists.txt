@@ -21,3 +21,7 @@ target_link_libraries(FuseVisionUI
         FuseVisionDeepLearning
         FuseVisionTraditional
 )
+
+target_compile_definitions(FuseVisionUI PRIVATE
+    FUSEVISION_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
+)

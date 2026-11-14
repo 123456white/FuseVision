@@ -71,8 +71,8 @@ void LogMonitor::toggle()
                 ? splitter->height() : splitter->width();
             splitter->setSizes({ total * 3 / 4, total / 4 });
         } else {
-            // 折叠态：日志面板仅保留标题栏高度 (~28px)
-            int headerH = m_titleLabel->sizeHint().height() + 10;
+            // 折叠态：日志面板仅保留标题栏高度
+            int headerH = m_titleLabel->sizeHint().height() + 16;
             int total = splitter->orientation() == Qt::Vertical
                 ? splitter->height() : splitter->width();
             splitter->setSizes({ total - headerH, headerH });
@@ -96,13 +96,16 @@ QSize LogMonitor::sizeHint() const
 {
     if (m_expanded)
         return QFrame::sizeHint();
-    int h = m_titleLabel ? m_titleLabel->sizeHint().height() + 10 : 30;
+    int h = m_titleLabel ? m_titleLabel->sizeHint().height() + 16 : 36;
     return QSize(200, h);
 }
 
 QSize LogMonitor::minimumSizeHint() const
 {
-    return sizeHint();
+    if (m_expanded)
+        return QSize(200, 80);        // 展开态最小 80px
+    int h = m_titleLabel ? m_titleLabel->sizeHint().height() + 16 : 36;
+    return QSize(200, h);             // 折叠态仅标题栏
 }
 
 // ── 日志输出 ─────────────────────────────────────────────────

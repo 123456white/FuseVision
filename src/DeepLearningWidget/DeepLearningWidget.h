@@ -6,82 +6,100 @@
 #include <QStackedWidget>
 #include <QTabBar>
 #include <QShowEvent>
+#include <QPushButton>
+#include <QProcess>
 #include "core/PermissionGuard.h"
 #include "core/LogMonitor.h"
+#include "core/LoadingOverlay.h"
 
 // =============================================================================
-// DeepLearningWidget — 深度学习模块页面（8 标签页）
+// DeepLearningWidget — 深度学习模块页面（9 标签页 + LabelMe 嵌入模式）
 // =============================================================================
-// 采用顶部 QTabBar + 右侧 QStackedWidget 的布局：
-//
+// 正常模式：
 //   ┌──────────────────────────────────────────┐
-//   │ [项目管理] [模型管理] [数据集] ... [导出]  │ ← QTabBar（水平标签栏）
+//   │ [项目管理] [模型管理] [数据集] ... [导出]  │ ← QTabBar
 //   ├──────────────────────────────────────────┤
-//   │                                          │
-//   │           当前标签页内容区                  │ ← QStackedWidget (index 0~7)
-//   │                                          │
+//   │        QStackedWidget (9 个标签页)        │
 //   ├──────────────────────────────────────────┤
-//   │ 日志监控                              ▲   │ ← LogMonitor（可折叠）
-//   │ [10:30:12] 模型训练已启动 ...            │
+//   │ 日志监控                              ▲   │ ← LogMonitor（始终可见）
 //   └──────────────────────────────────────────┘
 //
-// Tab 0（项目管理）已实现 ProjectManagement 组件，
-// Tab 1（模型管理）已实现 ModelManagement 组件，
-// Tab 2（数据集管理）已实现 DatasetManagement 组件，
-// Tab 3~7 为占位页面。
-//
-// 权限控制：每个标签页独立 watch("深度学习.xxxx")
-//   canRead  → 控制 Tab 是否可见
-//   canWrite → 控制页内操作按钮（预留）
-//
-// 信号：
-//   dlProjectChanged(projectName) → FuseVision 状态栏更新项目名
-//   dlModelChanged(modelName) → FuseVision 状态栏追加模型名
+// LabelMe 嵌入模式：
+//   ┌──────────────────────────────────────────┐
+//   │  ← 退出 LabelMe                          │ ← 退出按钮栏
+//   ├──────────────────────────────────────────┤
+//   │                                          │
+//   │         LabelMe (PyQt5 嵌入)              │
+//   │                                          │
+//   ├──────────────────────────────────────────┤
+//   │ 日志监控                              ▲   │ ← LogMonitor（始终可见）
+//   └──────────────────────────────────────────┘
 // =============================================================================
 
-class ProjectManagement;  // 前向声明
-class ModelManagement;     // 前向声明
-class DatasetManagement;   // 前向声明
+class ProjectManagement;
+class ModelManagement;
+class DatasetManagement;
+class AnnotationManagement;
 
 class DeepLearningWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit DeepLearningWidget(QWidget* parent = nullptr);
+    ~DeepLearningWidget() override;
 
-    QString currentProjectName() const;   // 获取当前项目管理模块中的项目名
+    QString currentProjectName() const;
+
+    // LabelMe 嵌入
+    void enterLabelMeMode(const QString& imageDir, const QString& currentFile,
+                          const QString& pythonExe, const QString& sdkPath,
+                          const QStringList& labels, const QString& outputDir);
+    void exitLabelMeMode();
 
 signals:
-    void dlProjectChanged(const QString& projectName);  // 项目切换时通知主窗口
-    void dlModelChanged(const QString& modelName);      // 模型切换时通知主窗口
+    void dlProjectChanged(const QString& projectName);
+    void dlModelChanged(const QString& modelName);
 
 protected:
-    void showEvent(QShowEvent* event) override;  // 初始化分割器比例
+    void showEvent(QShowEvent* event) override;
+    bool eventFilter(QObject* obj, QEvent* event) override;
 
 private slots:
-    void applyPermissions();          // 权限变更时刷新 UI
-    void onTabChanged(int index);     // Tab 切换 → StackedWidget 翻页
-    void onProjectOpened(const QString& name, const QString& path);  // 项目打开回调
-    void onProjectClosed();           // 项目关闭回调
+    void applyPermissions();
+    void onTabChanged(int index);
+    void onProjectOpened(const QString& name, const QString& path);
+    void onProjectClosed();
 
 private:
     void initUI();
+    void embedLabelMeWindow();
+    void finishLabelMeCleanup();
 
     // ── 成员变量 ──────────────────────────────────────────────
-    PermissionGuard* m_guard          = nullptr;  // 权限代理
-    QTabBar*         m_tabBar         = nullptr;  // 顶部标签栏（8 个标签）
-    QStackedWidget*  m_stackedWidget  = nullptr;  // 右侧内容区（8 个页面）
-    LogMonitor*      m_logMonitor     = nullptr;  // 底部日志面板
-    bool             m_shown          = false;     // 首次显示标记
+    PermissionGuard* m_guard          = nullptr;
+    QTabBar*         m_tabBar         = nullptr;
+    QStackedWidget*  m_stackedWidget  = nullptr;
+    LogMonitor*      m_logMonitor     = nullptr;
+    bool             m_shown          = false;
+
+    // ── LabelMe 嵌入 ──
+    QStackedWidget*  m_topStack        = nullptr;  // 0=正常, 1=LabelMe
+    QWidget*         m_labelmeContainer = nullptr;
+    QPushButton*     m_btnExitLabelMe   = nullptr;
+    LoadingOverlay*  m_loadingOverlay   = nullptr;
+    QProcess*        m_labelmeProcess   = nullptr;
+    WId              m_labelmeWinId     = 0;
+    bool             m_labelmeEmbedded  = false;
+    bool             m_exitingLabelMe   = false;
 
     // ── 子页面 ──────────────────────────────────────────────
-    ProjectManagement* m_projectManagement = nullptr;  // Tab 0：项目管理
-    ModelManagement*   m_modelManagement   = nullptr;  // Tab 1：模型管理
-    DatasetManagement* m_datasetManagement = nullptr;  // Tab 2：数据集管理
+    ProjectManagement*   m_projectManagement   = nullptr;
+    ModelManagement*     m_modelManagement     = nullptr;
+    DatasetManagement*   m_datasetManagement   = nullptr;
+    AnnotationManagement* m_annotationManagement = nullptr;
 
-    // 8 个标签页名称（与 QStackedWidget index 对应）
+    // 8 个标签页名称
     static const QStringList s_tabNames;
-    // 8 个权限键（与 PermissionRegistry 注册名对应）
     static const QStringList s_permissionKeys;
 };
 

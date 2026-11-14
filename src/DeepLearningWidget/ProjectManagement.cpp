@@ -20,146 +20,23 @@
 #include <QTextEdit>
 #include <QFormLayout>
 #include <QDialogButtonBox>
-#include <QResizeEvent>
 
-// =============================================================================
-// 步骤引导条常量
-// =============================================================================
-static const char* s_stepNames[] = {
-    "项目管理", "模型管理", "数据集管理",
-    "数据标注", "数据拆分", "模型训练"
-};
-static const int s_stepCount = 6;
-
-static const char* s_logicDescText =
-    "单项目管多模型，单模型管单数据集，单数据集管单数据标注，"
-    "单数据集管单数据拆分，单数据集管多版本模型训练，"
-    "单数据集管多版本模型预测，单数据集管多版本模型导出，"
-    "模型训练对应模型预测与导出，界面刷新或操作执行前，须校验。";
-
-// =============================================================================
-// StepGuideBar 实现
-// =============================================================================
-
-StepGuideBar::StepGuideBar(QWidget* parent)
-    : QWidget(parent)
+// ── 辅助函数：长单词插入零宽空格，确保 QLabel wordWrap 可在任意处换行 ──
+static QString breakLongWords(const QString& text, int maxLen = 25)
 {
-    m_completed = QList<bool>(s_stepCount, false);
-    buildSteps();
-
-    connect(&ThemeManager::instance(), &ThemeManager::themeChanged,
-            this, &StepGuideBar::refreshTheme);
-}
-
-void StepGuideBar::buildSteps()
-{
-    QHBoxLayout* layout = new QHBoxLayout(this);
-    layout->setContentsMargins(16, 6, 16, 6);
-    layout->setSpacing(0);
-
-    // 先添加所有步骤，让它们均匀分布
-    for (int i = 0; i < s_stepCount; ++i) {
-        // 每个步骤用 QWidget 包裹，以便设置 stretch
-        QWidget* stepWidget = new QWidget;
-        QVBoxLayout* stepLayout = new QVBoxLayout(stepWidget);
-        stepLayout->setContentsMargins(0, 0, 0, 0);
-        stepLayout->setSpacing(4);
-
-        QLabel* dot = new QLabel;
-        dot->setFixedSize(18, 18);
-        dot->setAlignment(Qt::AlignCenter);
-        dot->setText(QString::number(i + 1));
-
-        QLabel* label = new QLabel(QString::fromUtf8(s_stepNames[i]));
-        label->setAlignment(Qt::AlignCenter);
-
-        stepLayout->addWidget(dot, 0, Qt::AlignHCenter);
-        stepLayout->addWidget(label, 0, Qt::AlignHCenter);
-
-        // 每个步骤等宽分布
-        layout->addWidget(stepWidget, 1);
-
-        // 连接线
-        QFrame* line = nullptr;
-        if (i < s_stepCount - 1) {
-            line = new QFrame;
-            line->setFrameShape(QFrame::HLine);
-            line->setFixedHeight(2);
-            line->setMinimumWidth(24);
-            layout->addWidget(line, 0, Qt::AlignVCenter);
-        }
-        m_steps.append({dot, label, line});
-    }
-
-    refreshTheme();
-}
-
-void StepGuideBar::setCurrentStep(int step)
-{
-    if (step < 0 || step >= s_stepCount) return;
-    m_currentStep = step;
-    applyStepStyles();
-}
-
-void StepGuideBar::setStepCompleted(int step)
-{
-    if (step < 0 || step >= s_stepCount) return;
-    m_completed[step] = true;
-    applyStepStyles();
-}
-
-void StepGuideBar::refreshTheme()
-{
-    const auto& p = ThemeManager::instance().palette();
-
-    // 容器背景 + 顶部分割线
-    setStyleSheet(QString("QWidget { background-color: %1; border-top: 1px solid %2; }")
-                      .arg(p.bgSecondary, p.borderLight));
-
-    // 连接线颜色
-    for (auto& s : m_steps) {
-        if (s.line)
-            s.line->setStyleSheet(QString("QFrame { color: %1; }").arg(p.borderLight));
-    }
-
-    applyStepStyles();
-}
-
-void StepGuideBar::applyStepStyles()
-{
-    const auto& p = ThemeManager::instance().palette();
-
-    for (int i = 0; i < m_steps.size(); ++i) {
-        auto& s = m_steps[i];
-        if (m_completed[i]) {
-            s.dot->setText(QString::fromUtf8("\u2713"));
-            s.dot->setStyleSheet(
-                QString("QLabel { background-color: %1; border-radius: 9px; "
-                        "color: white; font-size: 10px; font-weight: bold; }")
-                    .arg(p.success));
-            s.label->setStyleSheet(
-                QString("QLabel { color: %1; font-size: 11px; font-weight: bold; }")
-                    .arg(p.success));
-        } else if (i == m_currentStep) {
-            s.dot->setText(QString::number(i + 1));
-            s.dot->setStyleSheet(
-                QString("QLabel { background-color: %1; border-radius: 9px; "
-                        "color: white; font-size: 10px; font-weight: bold; }")
-                    .arg(p.accentPrimary));
-            s.label->setStyleSheet(
-                QString("QLabel { color: %1; font-size: 11px; font-weight: bold; }")
-                    .arg(p.accentPrimary));
-        } else {
-            s.dot->setText(QString::number(i + 1));
-            s.dot->setStyleSheet(
-                QString("QLabel { background-color: %1; border-radius: 9px; "
-                        "color: white; font-size: 10px; font-weight: bold; }")
-                    .arg(p.textMuted));
-            s.label->setStyleSheet(
-                QString("QLabel { color: %1; font-size: 11px; }")
-                    .arg(p.textMuted));
+    QStringList parts = text.split(' ');
+    for (QString& part : parts) {
+        if (part.length() > maxLen) {
+            QString broken;
+            for (int i = 0; i < part.length(); ++i) {
+                if (i > 0 && i % maxLen == 0)
+                    broken += QChar(0x200B);  // 零宽空格
+                broken += part[i];
+            }
+            part = broken;
         }
     }
+    return parts.join(' ');
 }
 
 // =============================================================================
@@ -284,16 +161,10 @@ ProjectManagement::ProjectManagement(QWidget* parent)
     : QWidget(parent)
 {
     auto& sm = SettingsManager::instance();
-    m_dlDataPath    = sm.dlDataPath();
-    m_dlDatasetPath = sm.dlDatasetPath();
-    m_dlModelPath   = sm.dlModelPath();
+    m_projectDataPath = sm.projectDataPath();
 
-    if (m_dlDataPath.isEmpty())
-        m_dlDataPath = QDir::currentPath() + "/dl_data";
-    if (m_dlDatasetPath.isEmpty())
-        m_dlDatasetPath = QDir::currentPath() + "/dl_datasets";
-    if (m_dlModelPath.isEmpty())
-        m_dlModelPath = QDir::currentPath() + "/dl_models";
+    if (m_projectDataPath.isEmpty())
+        m_projectDataPath = QApplication::applicationDirPath() + "/project_data";
 
     initUI();
     applyTheme();
@@ -303,7 +174,7 @@ ProjectManagement::ProjectManagement(QWidget* parent)
     connect(&ThemeManager::instance(), &ThemeManager::themeChanged,
             this, &ProjectManagement::applyTheme);
 
-    Logger::info(QString::fromUtf8("项目管理模块已初始化 (数据根: %1)").arg(m_dlDataPath));
+    Logger::info(QString::fromUtf8("项目管理模块已初始化 (数据根: %1)").arg(m_projectDataPath));
 }
 
 // ── UI 构建 ───────────────────────────────────────────────────
@@ -338,7 +209,7 @@ void ProjectManagement::initLeftPanel()
     m_leftSplitter->setHandleWidth(1);
     m_leftSplitter->setChildrenCollapsible(false);
 
-    // ===== 上栏：新建/打开项目按钮 =====
+    // ===== 上栏：新建/打开项目按钮（固定大小）=====
     QWidget* topPanel = new QWidget;
     topPanel->setObjectName("pmLeftTop");
     QVBoxLayout* topLayout = new QVBoxLayout(topPanel);
@@ -359,58 +230,98 @@ void ProjectManagement::initLeftPanel()
     m_openProjectBtn->setObjectName("pmOpenProjectBtn");
     connect(m_openProjectBtn, &QPushButton::clicked, this, &ProjectManagement::onOpenProject);
 
+    m_deleteProjectBtn = new QPushButton(QString::fromUtf8("  删除项目"));
+    m_deleteProjectBtn->setIcon(QIcon(":/res/Del.png"));
+    m_deleteProjectBtn->setIconSize(QSize(20, 20));
+    m_deleteProjectBtn->setCursor(Qt::PointingHandCursor);
+    m_deleteProjectBtn->setEnabled(false);
+    m_deleteProjectBtn->setObjectName("pmDeleteProjectBtn");
+    connect(m_deleteProjectBtn, &QPushButton::clicked, this, &ProjectManagement::onDeleteProject);
+
     topLayout->addWidget(m_newProjectBtn);
     topLayout->addWidget(m_openProjectBtn);
+    topLayout->addWidget(m_deleteProjectBtn);
     topLayout->addStretch();
 
-    // ===== 下栏：模型列表 + 项目信息 + 逻辑说明 =====
-    QWidget* bottomPanel = new QWidget;
-    bottomPanel->setObjectName("pmLeftBottom");
-    QVBoxLayout* bottomLayout = new QVBoxLayout(bottomPanel);
-    bottomLayout->setContentsMargins(10, 8, 10, 12);
-    bottomLayout->setSpacing(6);
+    // ===== 中栏：模型列表（占剩余空间 1/2）=====
+    QWidget* modelPanel = new QWidget;
+    modelPanel->setObjectName("pmModelPanel");
+    QVBoxLayout* modelLayout = new QVBoxLayout(modelPanel);
+    modelLayout->setContentsMargins(10, 8, 10, 4);
+    modelLayout->setSpacing(4);
 
     m_modelListTitle = new QLabel(QString::fromUtf8("模型列表"));
     QFont titleFont = m_modelListTitle->font();
     titleFont.setPointSize(11);
     titleFont.setBold(true);
     m_modelListTitle->setFont(titleFont);
-    bottomLayout->addWidget(m_modelListTitle);
+    m_modelListTitle->setWordWrap(true);
+    m_modelListTitle->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    modelLayout->addWidget(m_modelListTitle);
 
     m_modelList = new QListWidget;
-    m_modelList->setMaximumHeight(150);
     m_modelList->setObjectName("pmModelList");
     connect(m_modelList, &QListWidget::itemClicked,
             this, &ProjectManagement::onModelSelected);
-    bottomLayout->addWidget(m_modelList);
+    modelLayout->addWidget(m_modelList, 1);
 
-    m_projectTimeLabel = new QLabel;
-    m_projectTimeLabel->setWordWrap(true);
-    m_projectTimeLabel->setObjectName("pmProjectTime");
-    bottomLayout->addWidget(m_projectTimeLabel);
+    // ===== 下栏：项目说明（占剩余空间 1/2，带滚动）=====
+    QWidget* infoPanel = new QWidget;
+    infoPanel->setObjectName("pmInfoPanel");
+    QVBoxLayout* infoLayout = new QVBoxLayout(infoPanel);
+    infoLayout->setContentsMargins(10, 8, 10, 12);
+    infoLayout->setSpacing(6);
 
-    // 项目描述（打开项目后显示）
-    m_projectDescLabel = new QLabel;
-    m_projectDescLabel->setWordWrap(true);
-    m_projectDescLabel->setObjectName("pmProjectDesc");
-    bottomLayout->addWidget(m_projectDescLabel);
+    QLabel* infoTitle = new QLabel(QString::fromUtf8("项目说明"));
+    QFont infoTitleFont = infoTitle->font();
+    infoTitleFont.setPointSize(11);
+    infoTitleFont.setBold(true);
+    infoTitle->setFont(infoTitleFont);
+    infoLayout->addWidget(infoTitle);
 
     QFrame* sep = new QFrame;
     sep->setFrameShape(QFrame::HLine);
     sep->setObjectName("pmSep");
-    bottomLayout->addWidget(sep);
+    infoLayout->addWidget(sep);
 
-    // 弹簧将逻辑说明推到底部
-    bottomLayout->addStretch();
+    m_projectFileLabel = new QLabel;
+    m_projectFileLabel->setWordWrap(true);
+    m_projectFileLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    m_projectFileLabel->setObjectName("pmInfoItem");
+    infoLayout->addWidget(m_projectFileLabel);
 
-    m_logicDescLabel = new QLabel(QString::fromUtf8(s_logicDescText));
-    m_logicDescLabel->setWordWrap(true);
-    m_logicDescLabel->setObjectName("pmLogicDesc");
-    bottomLayout->addWidget(m_logicDescLabel);
+    m_projectCreatedLabel = new QLabel;
+    m_projectCreatedLabel->setWordWrap(true);
+    m_projectCreatedLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    m_projectCreatedLabel->setObjectName("pmInfoItem");
+    infoLayout->addWidget(m_projectCreatedLabel);
+
+    m_projectModifiedLabel = new QLabel;
+    m_projectModifiedLabel->setWordWrap(true);
+    m_projectModifiedLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    m_projectModifiedLabel->setObjectName("pmInfoItem");
+    infoLayout->addWidget(m_projectModifiedLabel);
+
+    m_projectDescLabel = new QLabel;
+    m_projectDescLabel->setWordWrap(true);
+    m_projectDescLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+    m_projectDescLabel->setObjectName("pmInfoDesc");
+    infoLayout->addWidget(m_projectDescLabel);
+
+    infoLayout->addStretch();
+
+    // ── 将 infoPanel 包裹在 QScrollArea 中，仅纵向滚动 ──
+    m_infoScrollArea = new QScrollArea;
+    m_infoScrollArea->setWidgetResizable(true);
+    m_infoScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    m_infoScrollArea->setFrameShape(QFrame::NoFrame);
+    m_infoScrollArea->setObjectName("pmInfoScrollArea");
+    m_infoScrollArea->setWidget(infoPanel);
 
     m_leftSplitter->addWidget(topPanel);
-    m_leftSplitter->addWidget(bottomPanel);
-    m_leftSplitter->setSizes({ 90, 810 });
+    m_leftSplitter->addWidget(modelPanel);
+    m_leftSplitter->addWidget(m_infoScrollArea);
+    m_leftSplitter->setSizes({ 90, 405, 405 });
 
     updateLeftPanel();
 }
@@ -436,7 +347,7 @@ void ProjectManagement::initRightPanel()
     m_cardLayout->setSpacing(16);
     m_cardLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-    m_emptyHint = new QLabel(QString::fromUtf8("暂无项目，请点击左上角\"新建项目\"创建第一个项目"));
+    m_emptyHint = new QLabel(QString::fromUtf8("暂无项目\n请点击「新建项目」创建项目，或点击「打开项目」导入已有项目fvproj"));
     m_emptyHint->setAlignment(Qt::AlignCenter);
     m_emptyHint->setObjectName("pmEmptyHint");
 
@@ -449,9 +360,9 @@ void ProjectManagement::initRightPanel()
     m_scrollArea->setWidget(stackWidget);
     layout->addWidget(m_scrollArea, 1);
 
-    // 步骤引导条（直接占满宽度）
-    m_stepGuideBar = new StepGuideBar;
-    layout->addWidget(m_stepGuideBar);
+    // ── 加载动画覆盖层 ──
+    m_loadingOverlay = new LoadingOverlay(m_cardContainer,
+        QString::fromUtf8("正在加载项目..."));
 }
 
 // ── 主题刷新 ──────────────────────────────────────────────────
@@ -465,10 +376,15 @@ void ProjectManagement::applyTheme()
         w->setStyleSheet(
             QString("#pmLeftTop { background-color: %1; }").arg(p.bgSecondary));
 
-    // ── 左侧下栏背景 ──
-    if (auto* w = m_leftSplitter->widget(1))  // bottomPanel
+    // ── 模型列表面板背景 ──
+    if (auto* w = m_leftSplitter->widget(1))  // modelPanel
         w->setStyleSheet(
-            QString("#pmLeftBottom { background-color: %1; }").arg(p.bgSecondary));
+            QString("#pmModelPanel { background-color: %1; }").arg(p.bgSecondary));
+
+    // ── 项目信息面板背景 ──
+    if (m_infoScrollArea && m_infoScrollArea->widget())
+        m_infoScrollArea->widget()->setStyleSheet(
+            QString("#pmInfoPanel { background-color: %1; }").arg(p.bgSecondary));
 
     // ── 新建项目按钮（主按钮）──
     m_newProjectBtn->setStyleSheet(
@@ -489,6 +405,26 @@ void ProjectManagement::applyTheme()
                 "QPushButton#pmOpenProjectBtn:hover { background-color: %3; }")
             .arg(p.accentPrimary, p.accentPrimary, p.bgHover));
 
+    // ── 删除项目按钮（危险操作，选中时红色，未选中时灰色不可用）──
+    m_deleteProjectBtn->setStyleSheet(
+        QString("QPushButton#pmDeleteProjectBtn {"
+                "  background-color: %1; color: %2;"
+                "  border: 1px solid %3; border-radius: 8px;"
+                "  padding: 10px 16px; font-size: 13px; font-weight: bold;"
+                "  text-align: left; }"
+                "QPushButton#pmDeleteProjectBtn:hover {"
+                "  background-color: %4; border-color: %5; }"
+                "QPushButton#pmDeleteProjectBtn:hover:disabled {"
+                "  background-color: %1; border-color: %3; }")
+            // enabled: red bg, white text
+            .arg(QString("#e74c3c"), QString("white"), QString("#c0392b"),
+                 QString("#c0392b"), QString("#a93226"))
+        +
+        // disabled override (must be after to take priority for disabled state)
+        QString("QPushButton#pmDeleteProjectBtn:disabled {"
+                "  background-color: transparent; color: %1; border-color: %2; }")
+            .arg(p.textMuted, p.borderLight));
+
     // ── 模型列表标题 ──
     m_modelListTitle->setStyleSheet(
         QString("QLabel { color: %1; }").arg(p.textPrimary));
@@ -503,26 +439,25 @@ void ProjectManagement::applyTheme()
             .arg(p.borderLight, p.bgSecondary, p.textPrimary,
                  p.bgSelected, p.accentPrimary, p.bgHover));
 
-    // ── 项目时间 ──
-    m_projectTimeLabel->setStyleSheet(
-        QString("QLabel#pmProjectTime { color: %1; font-size: 11px; }")
-            .arg(p.textSecondary));
+    // ── 项目信息项（文件/创建时间/修改时间）──
+    const QString infoItemStyle = QString(
+        "QLabel#pmInfoItem { color: %1; font-size: 11px;"
+        " padding: 2px 4px; }")
+        .arg(p.textSecondary);
+
+    m_projectFileLabel->setStyleSheet(infoItemStyle);
+    m_projectCreatedLabel->setStyleSheet(infoItemStyle);
+    m_projectModifiedLabel->setStyleSheet(infoItemStyle);
 
     // ── 项目描述 ──
     m_projectDescLabel->setStyleSheet(
-        QString("QLabel#pmProjectDesc { color: %1; font-size: 11px;"
-                " padding: 6px 8px; background-color: %2; border-radius: 4px; }")
+        QString("QLabel#pmInfoDesc { color: %1; font-size: 11px;"
+                " padding: 4px 6px; background-color: %2; border-radius: 4px; }")
             .arg(p.textSecondary, p.bgTertiary));
 
     // ── 分隔线 ──
-    if (auto* sep = findChild<QFrame*>("pmSep"))
+    if (auto* sep = m_leftSplitter->widget(2)->findChild<QFrame*>("pmSep"))
         sep->setStyleSheet(QString("QFrame { color: %1; }").arg(p.borderLight));
-
-    // ── 逻辑说明 ──
-    m_logicDescLabel->setStyleSheet(
-        QString("QLabel#pmLogicDesc { color: %1; font-size: 10px; line-height: 1.6;"
-                " padding: 4px; background-color: %2; border-radius: 4px; }")
-            .arg(p.textMuted, p.bgTertiary));
 
     // ── 滚动区域 ──
     m_scrollArea->setStyleSheet(
@@ -530,6 +465,13 @@ void ProjectManagement::applyTheme()
             .arg(p.bgPrimary));
     m_cardContainer->setStyleSheet(
         QString("#pmCardContainer { background-color: %1; }").arg(p.bgPrimary));
+
+    // ── 项目信息滚动区域 ──
+    if (m_infoScrollArea) {
+        m_infoScrollArea->setStyleSheet(
+            QString("QScrollArea#pmInfoScrollArea { border: none; background-color: %1; }")
+                .arg(p.bgSecondary));
+    }
 
     // ── 空状态提示 ──
     m_emptyHint->setStyleSheet(
@@ -554,6 +496,8 @@ void ProjectManagement::applyTheme()
 
 void ProjectManagement::refreshCards()
 {
+    m_loadingOverlay->showOverlay();
+
     for (ProjectCard* card : m_cards) {
         m_cardLayout->removeWidget(card);
         delete card;
@@ -561,11 +505,12 @@ void ProjectManagement::refreshCards()
     m_cards.clear();
     m_selectedCard = nullptr;
 
-    QList<ProjectCardInfo> projects = ProjectConfig::scanProjects(m_dlDataPath);
+    QList<ProjectCardInfo> projects = ProjectConfig::scanProjects(m_projectDataPath);
 
     if (projects.isEmpty()) {
         m_emptyHint->setVisible(true);
         m_cardContainer->setVisible(false);
+        m_loadingOverlay->hideOverlay();
     } else {
         m_emptyHint->setVisible(false);
         m_cardContainer->setVisible(true);
@@ -579,9 +524,8 @@ void ProjectManagement::refreshCards()
             m_cards.append(card);
         }
         relayoutCards();
+        m_loadingOverlay->hideOverlay();
     }
-
-    updateStepGuide();
 }
 
 // ── 新建项目 ──────────────────────────────────────────────────
@@ -640,14 +584,14 @@ void ProjectManagement::onNewProject()
     QString desc = descEdit->toPlainText().trimmed();
 
     QString error;
-    if (!ProjectConfig::createProject(name, desc, m_dlDataPath, m_dlDatasetPath, m_dlModelPath, &error)) {
+    if (!ProjectConfig::createProject(name, desc, m_projectDataPath, &error)) {
         QMessageBox::warning(this, QString::fromUtf8("创建失败"), error);
         return;
     }
 
     QMessageBox::information(this, QString::fromUtf8("创建成功"),
-        QString::fromUtf8("项目 \"%1\" 已创建。\n\n数据目录: %2/%1\n数据集目录: %3/%1\n模型目录: %4/%1")
-            .arg(name, m_dlDataPath, m_dlDatasetPath, m_dlModelPath));
+        QString::fromUtf8("项目 \"%1\" 已创建。\n\n项目目录: %2/%1")
+            .arg(name, m_projectDataPath));
 
     refreshCards();
 }
@@ -659,44 +603,247 @@ void ProjectManagement::onOpenProject()
     QString fvprojPath = QFileDialog::getOpenFileName(
         this,
         QString::fromUtf8("打开项目"),
-        m_dlDataPath,
+        m_projectDataPath,
         QString::fromUtf8("FuseVision 项目文件 (project.fvproj)"));
 
     if (fvprojPath.isEmpty()) return;
+
+    m_loadingOverlay->showOverlay();
 
     QString error;
     FvprojInfo info = ProjectConfig::loadProject(fvprojPath, &error);
     if (info.projectName.isEmpty()) {
         QMessageBox::warning(this, QString::fromUtf8("打开失败"), error);
+        m_loadingOverlay->hideOverlay();
         return;
     }
 
-    // 校验三个根路径
-    QStringList missing;
-    if (!QDir(info.dataRoot).exists())    missing << QString::fromUtf8("数据目录: ") + info.dataRoot;
-    if (!QDir(info.datasetRoot).exists()) missing << QString::fromUtf8("数据集目录: ") + info.datasetRoot;
-    if (!QDir(info.modelRoot).exists())   missing << QString::fromUtf8("模型目录: ") + info.modelRoot;
+    // 校验项目根路径
+    QDir srcDir(info.projectRoot);
+    QString targetRoot = QDir(m_projectDataPath).absoluteFilePath(info.projectName);
+    QString oldProjectRoot = info.projectRoot;  // 保存原始根路径，用于后续路径替换
+    bool needMigrate = false;
 
-    if (!missing.isEmpty()) {
-        QString msg = QString::fromUtf8("以下目录不存在：\n\n%1\n\n是否仍要打开此项目？\n"
-                                         "您可以稍后在系统设置中修复路径。")
-                          .arg(missing.join("\n"));
+    if (!srcDir.exists()) {
+        // 项目目录不存在，检查是否可以迁移到当前项目数据目录
+        if (!QDir(targetRoot).exists()) {
+            QString msg = QString::fromUtf8(
+                "项目目录不存在：\n\n%1\n\n"
+                "是否在当前项目存储目录中创建该项目？\n"
+                "新路径：%2")
+                .arg(info.projectRoot, targetRoot);
+            QMessageBox::StandardButton btn = QMessageBox::question(
+                this, QString::fromUtf8("路径缺失"), msg,
+                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+            if (btn != QMessageBox::Yes) {
+                m_loadingOverlay->hideOverlay();
+                return;
+            }
+            needMigrate = true;
+        } else {
+            // 目标目录已存在，直接使用
+            needMigrate = true;
+        }
+    } else if (QDir::cleanPath(info.projectRoot) != QDir::cleanPath(targetRoot)) {
+        // 项目目录存在但不在当前项目数据目录下，询问是否迁移
+        QString msg = QString::fromUtf8(
+            "该项目不在当前项目存储目录中：\n\n"
+            "当前路径：%1\n"
+            "存储目录：%2\n\n"
+            "是否将项目复制到当前项目存储目录？\n"
+            "（原项目数据将保留）")
+            .arg(info.projectRoot, targetRoot);
         QMessageBox::StandardButton btn = QMessageBox::question(
-            this, QString::fromUtf8("路径缺失"), msg,
-            QMessageBox::Yes | QMessageBox::No, QMessageBox::No);
-        if (btn != QMessageBox::Yes) return;
+            this, QString::fromUtf8("迁移项目"), msg,
+            QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+        if (btn == QMessageBox::Yes)
+            needMigrate = true;
+    }
+
+    if (needMigrate) {
+        // 如果目标目录已存在，直接使用
+        if (QDir(targetRoot).exists()) {
+            info.projectRoot = targetRoot;
+            info.fvprojPath  = QDir(targetRoot).absoluteFilePath("project.fvproj");
+        } else {
+            // 复制项目目录到当前项目数据目录
+            bool copied = false;
+            if (srcDir.exists()) {
+                // 源目录存在，递归复制
+                QDir().mkpath(targetRoot);
+                copied = copyDirectory(info.projectRoot, targetRoot);
+            } else {
+                // 源目录不存在，只创建空项目目录和新的 fvproj
+                QDir().mkpath(targetRoot);
+                copied = true;
+            }
+
+            if (!copied) {
+                QMessageBox::warning(this, QString::fromUtf8("迁移失败"),
+                    QString::fromUtf8("无法将项目复制到：%1").arg(targetRoot));
+                m_loadingOverlay->hideOverlay();
+                return;
+            }
+
+            // 更新 fvproj 中的 projectRoot 路径
+            info.projectRoot = targetRoot;
+            info.fvprojPath  = QDir(targetRoot).absoluteFilePath("project.fvproj");
+
+            // 更新 fvproj 中的路径并保存
+            ProjectConfig::saveProject(info);
+
+            // 更新 models 中的 model_file / dataset_folder 路径
+            QString oldRoot = srcDir.exists() ? QDir::cleanPath(oldProjectRoot) : QString();
+            QJsonObject models = info.models;
+            bool modelsChanged = false;
+            for (auto it = models.begin(); it != models.end(); ++it) {
+                QJsonObject modelObj = it.value().toObject();
+                bool changed = false;
+
+                // 更新 model_file 路径
+                QString oldModelPath = modelObj.value("model_file").toString();
+                if (!oldModelPath.isEmpty()) {
+                    QString fileName = QFileInfo(oldModelPath).fileName();
+                    // 如果旧路径以旧根目录开头，替换为新根目录
+                    if (!oldRoot.isEmpty() && QDir::cleanPath(oldModelPath).startsWith(oldRoot)) {
+                        QString relPath = QDir(oldRoot).relativeFilePath(oldModelPath);
+                        modelObj["model_file"] = QDir(targetRoot).absoluteFilePath(relPath);
+                        changed = true;
+                    } else {
+                        // 尝试在新目录下找同名文件
+                        QString candidate = QDir(targetRoot).absoluteFilePath(fileName);
+                        modelObj["model_file"] = candidate;
+                        changed = true;
+                    }
+                }
+
+                // 更新 dataset_folder 路径
+                QString oldDataset = modelObj.value("dataset_folder").toString();
+                if (!oldDataset.isEmpty() && !oldRoot.isEmpty()
+                    && QDir::cleanPath(oldDataset).startsWith(oldRoot)) {
+                    QString relPath = QDir(oldRoot).relativeFilePath(oldDataset);
+                    modelObj["dataset_folder"] = QDir(targetRoot).absoluteFilePath(relPath);
+                    changed = true;
+                }
+
+                if (changed) {
+                    models[it.key()] = modelObj;
+                    modelsChanged = true;
+                }
+            }
+            if (modelsChanged) {
+                info.models = models;
+                ProjectConfig::saveProject(info);
+            }
+
+            Logger::info(QString::fromUtf8("项目已迁移: %1 -> %2").arg(
+                srcDir.exists() ? info.projectRoot : "(新建)", targetRoot));
+        }
     }
 
     m_currentProject     = info;
     m_currentProjectName = info.projectName;
-    m_currentProjectPath = fvprojPath;
+    m_currentProjectPath = info.fvprojPath;
     m_hasProject         = true;
 
+    refreshCards();
     updateLeftPanel();
-    updateStepGuide();
+
+    // 选中对应的卡片
+    for (ProjectCard* card : m_cards) {
+        if (card->fvprojPath() == info.fvprojPath) {
+            card->setSelected(true);
+            m_selectedCard = card;
+            break;
+        }
+    }
+
+    m_loadingOverlay->hideOverlay();
 
     Logger::info(QString::fromUtf8("项目已打开: %1").arg(info.projectName));
-    emit projectOpened(info.projectName, fvprojPath);
+    emit projectOpened(info.projectName, info.fvprojPath);
+}
+
+void ProjectManagement::onDeleteProject()
+{
+    // 优先从已打开项目获取，其次从已选中卡片获取
+    QString projectName;
+    QString projectRoot;
+    QString fvprojPath;
+
+    if (m_hasProject) {
+        projectName = m_currentProject.projectName;
+        projectRoot = m_currentProject.projectRoot;
+        fvprojPath  = m_currentProjectPath;
+    } else if (m_selectedCard) {
+        fvprojPath  = m_selectedCard->fvprojPath();
+        QString error;
+        FvprojInfo info = ProjectConfig::loadProject(fvprojPath, &error);
+        if (info.projectName.isEmpty()) return;
+        projectName = info.projectName;
+        projectRoot = info.projectRoot;
+    } else {
+        QMessageBox::information(this,
+            QString::fromUtf8("提示"),
+            QString::fromUtf8("请先选中一个项目卡片，再进行删除操作。"));
+        return;
+    }
+
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(QString::fromUtf8("确认删除"));
+    msgBox.setText(QString::fromUtf8("确定要删除项目「%1」吗？").arg(projectName));
+    msgBox.setInformativeText(QString::fromUtf8(
+        "● 删除整个项目：移除项目目录及所有数据\n"
+        "● 仅删除项目文件：只移除 project.fvproj，保留数据"));
+    msgBox.setIcon(QMessageBox::Warning);
+
+    QPushButton* btnEntire = msgBox.addButton(QString::fromUtf8("删除整个项目"), QMessageBox::DestructiveRole);
+    QPushButton* btnFvproj = msgBox.addButton(QString::fromUtf8("仅删除项目文件"), QMessageBox::AcceptRole);
+    QPushButton* btnCancel = msgBox.addButton(QString::fromUtf8("取消"), QMessageBox::RejectRole);
+    msgBox.setDefaultButton(btnCancel);
+    msgBox.exec();
+
+    bool success = false;
+    QString actionDesc;
+
+    if (msgBox.clickedButton() == btnEntire) {
+        actionDesc = QString::fromUtf8("删除整个项目目录: %1").arg(projectRoot);
+        // 删除整个项目目录
+        QDir dir(projectRoot);
+        success = dir.removeRecursively();
+        if (success)
+            Logger::info(actionDesc);
+    } else if (msgBox.clickedButton() == btnFvproj) {
+        actionDesc = QString::fromUtf8("删除项目文件: %1").arg(fvprojPath);
+        // 仅删除 fvproj 文件
+        QFile fvprojFile(fvprojPath);
+        success = fvprojFile.remove();
+        if (success)
+            Logger::info(actionDesc);
+    } else {
+        return;  // 取消
+    }
+
+    if (success) {
+        // 清除选中状态
+        clearSelection();
+        m_hasProject = false;
+        m_currentProject = {};
+        m_currentProjectPath.clear();
+        m_previewProject = {};
+        m_selectedCard = nullptr;
+
+        updateLeftPanel();
+        refreshCards();
+
+        QMessageBox::information(this,
+            QString::fromUtf8("删除成功"),
+            QString::fromUtf8("项目「%1」已删除。").arg(projectName));
+    } else {
+        QMessageBox::warning(this,
+            QString::fromUtf8("删除失败"),
+            QString::fromUtf8("操作失败: %1").arg(actionDesc));
+    }
 }
 
 // ── 卡片交互 ──────────────────────────────────────────────────
@@ -715,30 +862,32 @@ void ProjectManagement::onCardClicked(ProjectCard* card)
     // 注入到临时预览状态：仅刷新左侧信息，不标记 m_hasProject
     m_previewProject = info;
 
-    m_projectTimeLabel->setText(
-        QString::fromUtf8("创建: %1\n修改: %2")
-            .arg(info.createdTime.toString("yyyy-MM-dd hh:mm"))
-            .arg(info.modifiedTime.toString("yyyy-MM-dd hh:mm")));
-    m_projectTimeLabel->setVisible(true);
+    m_projectFileLabel->setText(
+        breakLongWords(QString::fromUtf8("项目文件: %1").arg(info.projectRoot)));
 
-    if (!info.description.isEmpty()) {
-        m_projectDescLabel->setText(info.description);
-        m_projectDescLabel->setVisible(true);
-    } else {
-        m_projectDescLabel->setVisible(false);
-    }
+    m_projectCreatedLabel->setText(
+        breakLongWords(QString::fromUtf8("创建时间: %1")
+            .arg(info.createdTime.toString("yyyy-MM-dd hh:mm"))));
+
+    m_projectModifiedLabel->setText(
+        breakLongWords(QString::fromUtf8("修改时间: %1")
+            .arg(info.modifiedTime.toString("yyyy-MM-dd hh:mm"))));
+
+    if (!info.description.isEmpty())
+        m_projectDescLabel->setText(
+            breakLongWords(QString::fromUtf8("项目描述: %1").arg(info.description)));
+    else
+        m_projectDescLabel->setText(QString::fromUtf8("项目描述: （暂无）"));
 
     m_modelListTitle->setText(
         QString::fromUtf8("模型列表 (%1)").arg(info.models.size()));
-    m_modelList->setVisible(true);
     m_modelList->clear();
     QJsonObject models = info.models;
     for (auto it = models.begin(); it != models.end(); ++it)
         m_modelList->addItem(it.key());
 
-    m_stepGuideBar->setCurrentStep(0);  // 仅在预览，停留在步骤 0
-
     emit projectPreviewed(info.projectName);
+    m_deleteProjectBtn->setEnabled(true);
 }
 
 void ProjectManagement::onCardDoubleClicked(ProjectCard* card)
@@ -759,8 +908,17 @@ void ProjectManagement::onCardDoubleClicked(ProjectCard* card)
     m_currentProjectPath = fvproj;
     m_hasProject         = true;
 
+    refreshCards();
     updateLeftPanel();
-    updateStepGuide();
+
+    // 选中对应的卡片
+    for (ProjectCard* card : m_cards) {
+        if (card->fvprojPath() == fvproj) {
+            card->setSelected(true);
+            m_selectedCard = card;
+            break;
+        }
+    }
 
     Logger::info(QString::fromUtf8("项目已打开(双击): %1").arg(info.projectName));
     emit projectOpened(info.projectName, fvproj);
@@ -771,6 +929,31 @@ void ProjectManagement::clearSelection()
     for (ProjectCard* c : m_cards)
         c->setSelected(false);
     m_selectedCard = nullptr;
+}
+
+// ── 递归复制目录 ──────────────────────────────────────────────
+
+bool ProjectManagement::copyDirectory(const QString& src, const QString& dst)
+{
+    QDir srcDir(src);
+    if (!srcDir.exists()) return false;
+
+    QDir dstDir(dst);
+    if (!dstDir.exists() && !dstDir.mkpath(dst)) return false;
+
+    // 复制文件
+    for (const QFileInfo& fi : srcDir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot)) {
+        if (!QFile::copy(fi.absoluteFilePath(), dstDir.absoluteFilePath(fi.fileName())))
+            return false;
+    }
+
+    // 递归复制子目录
+    for (const QFileInfo& fi : srcDir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        if (!copyDirectory(fi.absoluteFilePath(), dstDir.absoluteFilePath(fi.fileName())))
+            return false;
+    }
+
+    return true;
 }
 
 // ── 模型列表 ──────────────────────────────────────────────────
@@ -797,42 +980,36 @@ void ProjectManagement::refreshModelList()
 void ProjectManagement::updateLeftPanel()
 {
     if (m_hasProject) {
-        m_projectTimeLabel->setText(
-            QString::fromUtf8("创建: %1\n修改: %2")
-                .arg(m_currentProject.createdTime.toString("yyyy-MM-dd hh:mm"))
-                .arg(m_currentProject.modifiedTime.toString("yyyy-MM-dd hh:mm")));
-        m_projectTimeLabel->setVisible(true);
+        m_projectFileLabel->setText(
+            breakLongWords(QString::fromUtf8("项目文件: %1").arg(m_currentProject.projectRoot)));
 
-        // 项目描述
-        if (!m_currentProject.description.isEmpty()) {
-            m_projectDescLabel->setText(m_currentProject.description);
-            m_projectDescLabel->setVisible(true);
-        } else {
-            m_projectDescLabel->setVisible(false);
-        }
+        m_projectCreatedLabel->setText(
+            breakLongWords(QString::fromUtf8("创建时间: %1")
+                .arg(m_currentProject.createdTime.toString("yyyy-MM-dd hh:mm"))));
+
+        m_projectModifiedLabel->setText(
+            breakLongWords(QString::fromUtf8("修改时间: %1")
+                .arg(m_currentProject.modifiedTime.toString("yyyy-MM-dd hh:mm"))));
+
+        if (!m_currentProject.description.isEmpty())
+            m_projectDescLabel->setText(
+                breakLongWords(QString::fromUtf8("项目描述: %1").arg(m_currentProject.description)));
+        else
+            m_projectDescLabel->setText(QString::fromUtf8("项目描述: （暂无）"));
 
         m_modelListTitle->setText(
             QString::fromUtf8("模型列表 (%1)").arg(m_currentProject.models.size()));
-        m_modelList->setVisible(true);
+        m_modelList->clear();
         refreshModelList();
+        m_deleteProjectBtn->setEnabled(true);
     } else {
-        m_projectTimeLabel->setVisible(false);
-        m_projectDescLabel->setVisible(false);
+        m_projectFileLabel->setText(QString::fromUtf8("项目文件: —"));
+        m_projectCreatedLabel->setText(QString::fromUtf8("创建时间: —"));
+        m_projectModifiedLabel->setText(QString::fromUtf8("修改时间: —"));
+        m_projectDescLabel->setText(QString::fromUtf8("项目描述: —"));
         m_modelListTitle->setText(QString::fromUtf8("模型列表"));
         m_modelList->clear();
-        m_modelList->setVisible(false);
-    }
-}
-
-// ── 步骤引导条 ────────────────────────────────────────────────
-
-void ProjectManagement::updateStepGuide()
-{
-    if (m_hasProject) {
-        m_stepGuideBar->setCurrentStep(1);
-        m_stepGuideBar->setStepCompleted(0);
-    } else {
-        m_stepGuideBar->setCurrentStep(0);
+        m_deleteProjectBtn->setEnabled(false);
     }
 }
 

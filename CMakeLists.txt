@@ -18,6 +18,8 @@ project(FuseVision
     LANGUAGES CXX
 )
 
+include(CTest)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # vcpkg 内部消费此变量（消除 CMake "not used" 警告）
@@ -57,67 +59,9 @@ else()
     message(FATAL_ERROR "OpenCV not found! Please make sure OpenCV is installed via vcpkg.")
 endif()
 
-# ========== Halcon 配置（自动切换：系统安装版 → sdk/halcon 内置版 → 禁用） ==========
-# 检测优先级：
-#   1. 系统安装的 Halcon（HALCONROOT / HALCONARCH 环境变量）
-#   2. 项目自带的 sdk/halcon 目录（CI / 无 Halcon 环境时使用）
-#   3. 均未找到 → 禁用 Halcon 功能，编译时跳过相关代码
-set(HALCON_FOUND OFF)
-set(HALCON_SOURCE "none")
-
-# ── 优先检测系统安装的 Halcon ──
-if(DEFINED ENV{HALCONROOT} AND DEFINED ENV{HALCONARCH})
-    set(HALCON_INCLUDE_DIR "$ENV{HALCONROOT}/include")
-    set(HALCONCPP_INCLUDE_DIR "$ENV{HALCONROOT}/include/halconcpp")
-    set(HALCON_LIB_DIR "$ENV{HALCONROOT}/lib/$ENV{HALCONARCH}")
-    set(HALCON_BIN_DIR "$ENV{HALCONROOT}/bin/$ENV{HALCONARCH}")
-    set(HALCON_FOUND ON)
-    set(HALCON_SOURCE "system")
-    message(STATUS "✅ Halcon 已检测到（系统安装）: $ENV{HALCONROOT} (架构: $ENV{HALCONARCH})")
-
-# ── 回退到 sdk/halcon 内置 SDK ──
-else()
-    set(HALCON_SDK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/sdk/halcon")
-    set(HALCON_SDK_INCLUDE "${HALCON_SDK_DIR}/include")
-    set(HALCON_SDK_LIB "${HALCON_SDK_DIR}/lib")
-    set(HALCON_SDK_BIN "${HALCON_SDK_DIR}/bin")
-
-    if((EXISTS "${HALCON_SDK_INCLUDE}/HalconCpp.h" OR EXISTS "${HALCON_SDK_INCLUDE}/halconcpp/HalconCpp.h") AND
-       EXISTS "${HALCON_SDK_LIB}/halcon.lib" AND
-       EXISTS "${HALCON_SDK_LIB}/halconcpp.lib")
-        set(HALCON_INCLUDE_DIR "${HALCON_SDK_INCLUDE}")
-        set(HALCONCPP_INCLUDE_DIR "${HALCON_SDK_INCLUDE}/halconcpp")
-        set(HALCON_LIB_DIR "${HALCON_SDK_LIB}")
-        set(HALCON_BIN_DIR "${HALCON_SDK_BIN}")
-        set(HALCON_FOUND ON)
-        set(HALCON_SOURCE "sdk/halcon")
-        message(STATUS "✅ Halcon 已检测到（sdk/halcon 内置 SDK）: ${HALCON_SDK_DIR}")
-    else()
-        set(HALCON_INCLUDE_DIR "")
-        set(HALCONCPP_INCLUDE_DIR "")
-        set(HALCON_LIB_DIR "")
-        set(HALCON_BIN_DIR "")
-        message(WARNING "⚠️  Halcon 未检测到：系统未安装且 sdk/halcon 目录不完整。传统视觉模块的 Halcon 功能将不可用。")
-        message(STATUS "   期望的 sdk/halcon 结构: include/HalconCpp.h (或 include/halconcpp/HalconCpp.h), lib/halcon.lib, lib/halconcpp.lib")
-    endif()
-endif()
-
-# 设置MVS SDK路径（已从 src/ 迁移至 sdk/）
-set(MVS_SDK_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/sdk/MVS")
-set(MVS_INCLUDE_DIR "${MVS_SDK_ROOT}/Includes")
-set(MVS_LIBRARY_DIR "${MVS_SDK_ROOT}/Libraries/win64")
-
-if(EXISTS "${MVS_INCLUDE_DIR}" AND EXISTS "${MVS_LIBRARY_DIR}")
-    set(MVS_LIBRARIES MvCameraControl)
-    message(STATUS "MVS SDK configured for Windows")
-    message(STATUS "MVS Include Directory: ${MVS_INCLUDE_DIR}")
-    message(STATUS "MVS Library Directory: ${MVS_LIBRARY_DIR}")
-else()
-    set(MVS_LIBRARIES "")
-    message(WARNING "MVS SDK not found in expected locations:")
-    message(WARNING "Include dir: ${MVS_INCLUDE_DIR}")
-    message(WARNING "Library dir: ${MVS_LIBRARY_DIR}")
-endif()
+# ========== 第三方 SDK 检测 ==========
+include(cmake/FindHalcon.cmake)
+include(cmake/FindMVS.cmake)
 
 #（管理所有非 main 的源文件）
 add_subdirectory(src)
@@ -172,89 +116,33 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ${MVS_LIBRARIES}
     ${OpenCV_LIBS}
 )
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    FUSEVISION_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+)
 if(HALCON_FOUND)
     target_link_libraries(${PROJECT_NAME} PRIVATE halcon halconcpp)
 endif()
 
-# ========== Windows Qt 平台插件自动复制（区分 Debug/Release 模式，适配单/多配置生成器） ==========
+# ========== 构建后部署运行时依赖 ==========
+include(cmake/DeployRuntime.cmake)
 if(WIN32)
-    # 插件源路径：生成器表达式自动区分Debug/Release，兼容所有CMake生成器
-    set(QT_PLATFORM_PLUGIN_SRC "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/$<IF:$<CONFIG:Debug>,debug/,>Qt6/plugins/platforms")
-    # 插件目标路径：修复生成器表达式语法错误，正确获取exe所在目录并拼接platforms
-    set(QT_PLATFORM_PLUGIN_DST "$<TARGET_FILE_DIR:${PROJECT_NAME}>/platforms")
-    
-    # 构建后增量复制插件（仅文件变更时执行）
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${QT_PLATFORM_PLUGIN_SRC}"
-            "${QT_PLATFORM_PLUGIN_DST}"
-        COMMENT "✅ 复制 Qt 平台插件($<CONFIG>)到：${QT_PLATFORM_PLUGIN_DST}"
-        VERBATIM
-    )
-
-    # ========== 复制 SQLite 数据库驱动（区分 Debug/Release） ==========
-    # Debug 版本使用 qsqlited.dll，Release 版本使用 qsqlite.dll
-    set(QT_SQL_DRIVER_NAME "$<IF:$<CONFIG:Debug>,qsqlited.dll,qsqlite.dll>")
-    set(QT_SQL_PLUGIN_SRC "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/$<IF:$<CONFIG:Debug>,debug/,>Qt6/plugins/sqldrivers")
-    set(QT_SQL_PLUGIN_DST "$<TARGET_FILE_DIR:${PROJECT_NAME}>/sqldrivers")
-    
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${QT_SQL_PLUGIN_DST}
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${QT_SQL_PLUGIN_SRC}/${QT_SQL_DRIVER_NAME}" ${QT_SQL_PLUGIN_DST}
-        COMMENT "✅ 复制 Qt SQLite 驱动($<CONFIG>)到：${QT_SQL_PLUGIN_DST}"
-        VERBATIM
-    )
-
-    # ========== 复制 Qt 图像格式插件（JPG/PNG/GIF/ICO 等） ==========
-    # 项目使用本地 vcpkg 子模块，vcpkg_installed 在 build 目录下
-    set(QT_IMAGE_PLUGIN_SRC "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/$<IF:$<CONFIG:Debug>,debug/,>Qt6/plugins/imageformats")
-    set(QT_IMAGE_PLUGIN_DST "$<TARGET_FILE_DIR:${PROJECT_NAME}>/imageformats")
-    
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory "${QT_IMAGE_PLUGIN_DST}"
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            "${QT_IMAGE_PLUGIN_SRC}"
-            "${QT_IMAGE_PLUGIN_DST}"
-        COMMENT "Copy Qt imageformats plugins ($<CONFIG>) -> imageformats/"
-        VERBATIM
-    )
-
-    # ========== 复制 JPEG 运行时依赖 ==========
-    # qjpegd.dll 依赖 jpeg62.dll / turbojpeg.dll，vcpkg 自动部署可能遗漏
-    set(VCPKG_DEBUG_BIN "${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/debug/bin")
-    set(OUTPUT_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${VCPKG_DEBUG_BIN}/jpeg62.dll"
-            "${OUTPUT_DIR}"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${VCPKG_DEBUG_BIN}/turbojpeg.dll"
-            "${OUTPUT_DIR}"
-        COMMENT "Copy JPEG runtime DLLs -> ${OUTPUT_DIR}"
-        VERBATIM
-    )
-    # ========== 复制 Halcon 运行时 DLL（系统安装版 / sdk/halcon 内置版） ==========
-    if(HALCON_FOUND)
-        set(OUTPUT_DIR "$<TARGET_FILE_DIR:${PROJECT_NAME}>")
-        
-        add_custom_command(
-            TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${OUTPUT_DIR}
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-                "${HALCON_BIN_DIR}/halcon.dll" ${OUTPUT_DIR}
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different 
-                "${HALCON_BIN_DIR}/hdevenginecpp.dll" ${OUTPUT_DIR}
-            COMMENT "✅ 复制 Halcon 运行时 DLL (${HALCON_SOURCE}) 到输出目录"
-            VERBATIM
-        )
-    endif() 
+    fusevision_deploy_runtime(TARGET ${PROJECT_NAME})
 endif()
 
+if(BUILD_TESTING)
+    add_test(NAME startup-smoke COMMAND $<TARGET_FILE:${PROJECT_NAME}>)
+    set_tests_properties(startup-smoke PROPERTIES
+        ENVIRONMENT "QT_QPA_PLATFORM=offscreen;FUSEVISION_STARTUP_SMOKE_TEST=1"
+        TIMEOUT 30
+    )
+    if(WIN32)
+        set_property(TEST startup-smoke APPEND PROPERTY ENVIRONMENT
+            "PATH=$ENV{SystemRoot}/System32"
+            "QT_PLUGIN_PATH="
+            "QT_QPA_PLATFORM_PLUGIN_PATH="
+        )
+    endif()
+endif()
 
 # ========== 打印构建信息 ==========
 message(STATUS "========== 项目构建信息 ==========")

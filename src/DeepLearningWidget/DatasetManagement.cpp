@@ -1,8 +1,6 @@
 #include "DatasetManagement.h"
-#include "ProjectManagement.h"  // StepGuideBar
 #include "core/Logger.h"
-#include "core/SettingsManager.h"
-
+#include "core/ThemeManager.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
@@ -45,6 +43,9 @@
 #include <QSet>
 #include <QPainter>
 #include <QPen>
+#include <QRegularExpression>
+#include <QTableWidget>
+#include <QHeaderView>
 
 // =============================================================================
 // DatasetManagement.cpp — 数据集管理标签页实现
@@ -61,6 +62,20 @@ static const QStringList s_defaultColors = {
     "#F1948A", "#A3E4D7", "#D2B4DE", "#AED6F1"
 };
 
+// ── 统一色块绘制（所有色块共用同一套参数）────────────────
+static QPixmap makeColorChip(const QColor& fill, int size, const QColor& border, int borderW, int radius)
+{
+    QPixmap pm(size, size);
+    pm.fill(Qt::transparent);
+    QPainter p(&pm);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setBrush(fill);
+    p.setPen(QPen(border, borderW));
+    p.drawRoundedRect(1, 1, size - 2, size - 2, radius, radius);
+    p.end();
+    return pm;
+}
+
 // =============================================================================
 // 构造 / 析构
 // =============================================================================
@@ -72,16 +87,26 @@ DatasetManagement::DatasetManagement(QWidget* parent)
     applyTheme();
     connect(&ThemeManager::instance(), &ThemeManager::themeChanged,
             this, &DatasetManagement::applyTheme);
+
+    // 防抖定时器：避免窗口缩放时连续触发 refreshGallery 导致卡死/闪退
+    m_resizeDebounce = new QTimer(this);
+    m_resizeDebounce->setSingleShot(true);
+    m_resizeDebounce->setInterval(150);
+    connect(m_resizeDebounce, &QTimer::timeout, this, [this]() {
+        if (m_inRefresh) return;
+        QSet<int> saved = m_selectedIndices;
+        refreshGallery();
+        m_selectedIndices = saved;
+        updateSelectionUI();
+    });
 }
 
 // ── 绑定项目和模型 ────────────────────────────────────────────
 
 void DatasetManagement::setCurrentProject(const FvprojInfo& project)
 {
-    m_project     = project;
-    m_dataRoot    = project.dataRoot;
-    m_datasetRoot = project.datasetRoot;
-    m_modelRoot   = project.modelRoot;
+    m_project      = project;
+    m_projectRoot  = project.projectRoot;
 }
 
 void DatasetManagement::setCurrentModel(const QString& modelId, const FvdlInfo& model)
@@ -113,7 +138,6 @@ void DatasetManagement::setCurrentModel(const QString& modelId, const FvdlInfo& 
 
     // ── 阶段 1：立即显示骨架（模型信息 + 加载提示）──
     updateModelInfoPanel();
-    updateStepGuide();
     if (m_galleryEmptyHint)
         m_galleryEmptyHint->setText(QString::fromUtf8("\u23f3 正在加载数据集..."));
     if (m_galleryStack)
@@ -128,12 +152,14 @@ void DatasetManagement::setCurrentModel(const QString& modelId, const FvdlInfo& 
     m_loadDeferTimer = new QTimer(this);
     m_loadDeferTimer->setSingleShot(true);
     connect(m_loadDeferTimer, &QTimer::timeout, this, [this]() {
+        m_loadingOverlay->showOverlay();
         loadDatasetConfig();
         refreshGallery();
         saveDatasetConfig();   // ── 写入 instance_count 到 config（ModelManagement 展示用）──
         updateModelInfoPanel();
-        updateStepGuide();
-        // ── 强制刷新右侧面板布局（双击切标签页后确保 stepGuideBar 可见）──
+        if (m_btnFormatConvert)
+            m_btnFormatConvert->setEnabled(hasModel());
+        // ── 强制刷新右侧面板布局 ──
         if (m_rightContainer) {
             m_rightContainer->updateGeometry();
             m_rightContainer->layout()->activate();
@@ -148,7 +174,7 @@ void DatasetManagement::setCurrentModel(const QString& modelId, const FvdlInfo& 
 
 QString DatasetManagement::datasetDir() const
 {
-    return QDir(m_datasetRoot).absoluteFilePath(m_currentModel.datasetRef);
+    return QDir(m_projectRoot).absoluteFilePath(m_currentModelId);
 }
 
 QString DatasetManagement::imagesDir() const
@@ -156,14 +182,74 @@ QString DatasetManagement::imagesDir() const
     return QDir(datasetDir()).absoluteFilePath("images");
 }
 
+QString DatasetManagement::labelsDir() const
+{
+    return QDir(datasetDir()).absoluteFilePath("labels");
+}
+
 QString DatasetManagement::annotationsDir() const
 {
-    return QDir(datasetDir()).absoluteFilePath("annotations");
+    // 兼容旧接口：标注文件存放在 labels/ 目录下
+    return labelsDir();
 }
 
 QString DatasetManagement::configPath() const
 {
     return QDir(datasetDir()).absoluteFilePath("dataset_config.json");
+}
+
+int DatasetManagement::currentLabelOffset() const
+{
+    // Halcon 兼容：GrayMask minGray 偏移，为 ColorIndex 留出 0 值
+    return 1;
+}
+
+// ── 标注模块集成：按路径查找样本索引 ──────────────────────────
+
+int DatasetManagement::findSampleIndex(const QString& imagePath) const
+{
+    QString clean = QDir::cleanPath(imagePath);
+    for (int i = 0; i < m_samples.size(); ++i) {
+        if (QDir::cleanPath(m_samples[i].absolutePath) == clean)
+            return i;
+    }
+    return -1;
+}
+
+void DatasetManagement::onAnnotationUpdated(const QString& imagePath,
+                                             const QList<int>& categoryIds,
+                                             int instanceCount)
+{
+    int idx = findSampleIndex(imagePath);
+    if (idx < 0 || idx >= m_samples.size()) {
+        Logger::warn(QString::fromUtf8(
+            "onAnnotationUpdated: 找不到图像 %1").arg(imagePath));
+        return;
+    }
+
+    // 更新样本状态
+    m_samples[idx].annotated     = true;
+    m_samples[idx].categoryIds   = categoryIds;
+    m_samples[idx].instanceCount = instanceCount;
+
+    // 重新统计标签实例数
+    m_labelInstanceCounts.clear();
+    m_labelInstanceCounts.resize(m_labelNames.size());
+    for (int i = 0; i < m_labelInstanceCounts.size(); ++i)
+        m_labelInstanceCounts[i] = 0;
+    for (const auto& s : m_samples) {
+        for (int cid : s.categoryIds) {
+            if (cid >= 0 && cid < m_labelInstanceCounts.size())
+                m_labelInstanceCounts[cid]++;
+        }
+    }
+
+    // 保存配置 + 刷新 UI
+    saveDatasetConfig();
+    updateLabelPanel();
+    updateModelInfoPanel();
+
+    emit annotationSaved(m_currentModelId);
 }
 
 QString DatasetManagement::imageFileFilter()
@@ -209,9 +295,28 @@ void DatasetManagement::loadDatasetConfig()
     QJsonArray cats = m_datasetConfig.value("categories").toArray();
     for (const QJsonValue& v : cats) {
         QJsonObject cat = v.toObject();
-        m_labelNames.append(cat.value("name").toString());
+        QString name = cat.value("name").toString();
+        if (name.trimmed().isEmpty()) continue;  // 跳过空名称（防止损坏/残留条目传播）
+        m_labelNames.append(name);
         m_labelColors.append(cat.value("color").toString("#888888"));
         m_labelInstanceCounts.append(cat.value("instance_count").toInt(-1));
+    }
+
+    // ── 防御性清理：移除遗留的空名称条目（保持三数组同步 + 通知调用方）──
+    {
+        int labelCount = m_labelNames.size();
+        QVector<bool> isEmpty(labelCount, false);
+        for (int i = 0; i < labelCount; ++i)
+            isEmpty[i] = m_labelNames[i].trimmed().isEmpty();
+
+        for (int i = labelCount - 1; i >= 0; --i) {
+            if (isEmpty[i]) {
+                m_labelNames.removeAt(i);
+                if (i < m_labelColors.size()) m_labelColors.removeAt(i);
+                if (i < m_labelInstanceCounts.size()) m_labelInstanceCounts.removeAt(i);
+            }
+        }
+        // 注意：samples 随后会 m_samples.clear() 重建，无需重映射 categoryIds
     }
 
     // 扫描 images 目录（硬编码格式兜底 + 动态格式合并）
@@ -273,34 +378,50 @@ void DatasetManagement::loadDatasetConfig()
             if (lids.isEmpty())
                 baseToLabelIdx[af.completeBaseName()]; // 空标注占位
         }
-        // PNG 掩码标注 — 收集所有类别灰度值
+        // PNG 掩码标注 — 收集全部灰度值，统一 offset（灰度 0 恒为背景）
         annFiles = annDir.entryInfoList({"*.png"}, QDir::Files);
+        // 第一遍：收集所有唯一非零灰度值，确定全局 minGray
+        QSet<int> allGrayVals;
         for (const QFileInfo& af : annFiles) {
             QImage img(af.absoluteFilePath());
             if (img.isNull()) continue;
             QImage gray = img.convertToFormat(QImage::Format_Grayscale8);
             int w = gray.width(), h = gray.height();
-            QSet<int> grayVals;
-            // 采样找出所有非零灰度值
-            int stepY = qMax(1, h / 20);
-            int stepX = qMax(1, w / 20);
+            int stepY = qMax(1, h / 50);
+            int stepX = qMax(1, w / 50);
             for (int y = 0; y < h; y += stepY) {
                 const uchar* line = gray.constScanLine(y);
                 for (int x = 0; x < w; x += stepX) {
                     if (line[x] > 0 && line[x] < 250)
-                        grayVals.insert(line[x]);
+                        allGrayVals.insert(line[x]);
                 }
             }
-            // 灰度值 → 0-based 类别索引（兼容 Halcon 偏移：minGray≥2 时自动矫正）
-            if (!grayVals.isEmpty()) {
-                int offset = *std::min_element(grayVals.begin(), grayVals.end());
-                for (int gv : grayVals) {
-                    int lid = gv - offset;  // 标准: gv=1→0  Halcon: gv=2→0
-                    if (lid >= 0)
-                        baseToLabelIdx[af.completeBaseName()].append(lid);
+        }
+        // 自动检测偏移：标准掩码 minGray=1, Halcon 掩码 minGray≥2
+        int globalOffset = allGrayVals.isEmpty() ? 0
+            : *std::min_element(allGrayVals.begin(), allGrayVals.end());
+
+        // 第二遍：按统一 offset 映射灰度 → 0-based 索引
+        for (const QFileInfo& af : annFiles) {
+            QImage img(af.absoluteFilePath());
+            if (img.isNull()) continue;
+            QImage gray = img.convertToFormat(QImage::Format_Grayscale8);
+            int w = gray.width(), h = gray.height();
+            QSet<int> lids;
+            int stepY = qMax(1, h / 50);
+            int stepX = qMax(1, w / 50);
+            for (int y = 0; y < h; y += stepY) {
+                const uchar* line = gray.constScanLine(y);
+                for (int x = 0; x < w; x += stepX) {
+                    if (line[x] > 0 && line[x] < 250) {
+                        int lid = line[x] - globalOffset;
+                        if (lid >= 0) lids.insert(lid);
+                    }
                 }
             }
-            if (grayVals.isEmpty())
+            for (int lid : lids)
+                baseToLabelIdx[af.completeBaseName()].append(lid);
+            if (lids.isEmpty())
                 baseToLabelIdx[af.completeBaseName()]; // 全黑掩码占位
         }
     }
@@ -367,9 +488,11 @@ void DatasetManagement::saveDatasetConfig()
 
     QJsonArray cats;
     for (int i = 0; i < m_labelNames.size(); ++i) {
+        const QString& name = m_labelNames[i];
+        if (name.trimmed().isEmpty()) continue;  // 跳过空名称（已清理或残留条目）
         QJsonObject cat;
-        cat["id"]    = i + 1;
-        cat["name"]  = m_labelNames[i];
+        cat["id"]    = cats.size() + 1;
+        cat["name"]  = name;
         cat["color"] = m_labelColors.value(i, s_defaultColors[i % s_defaultColors.size()]);
         cat["instance_count"] = m_labelInstanceCounts.value(i, -1);
         cats.append(cat);
@@ -767,14 +890,14 @@ void DatasetManagement::initRightPanel()
             this, &DatasetManagement::onFilterChanged);
     tbLayout->addWidget(m_filterCombo);
 
-    // ── 占位按钮：预处理（Phase 1 预留，功能待实现）──
-    m_btnPreprocess = new QPushButton(QString::fromUtf8("预处理"));
-    m_btnPreprocess->setObjectName("dsPlaceholderBtn");
-    m_btnPreprocess->setCursor(Qt::PointingHandCursor);
-    m_btnPreprocess->setEnabled(false);  // 灰显
-    m_btnPreprocess->setToolTip(QString::fromUtf8("预处理功能开发中…"));
-    connect(m_btnPreprocess, &QPushButton::clicked, this, &DatasetManagement::onPreprocessClicked);
-    tbLayout->addWidget(m_btnPreprocess);
+    // ── 格式转换按钮 ──
+    m_btnFormatConvert = new QPushButton(QString::fromUtf8("格式转换"));
+    m_btnFormatConvert->setObjectName("dsPlaceholderBtn");
+    m_btnFormatConvert->setCursor(Qt::PointingHandCursor);
+    m_btnFormatConvert->setEnabled(false);  // 需要先绑定模型
+    m_btnFormatConvert->setToolTip(QString::fromUtf8("将导入的标注转换为当前模型所需的 YOLO txt 格式"));
+    connect(m_btnFormatConvert, &QPushButton::clicked, this, &DatasetManagement::onFormatConvert);
+    tbLayout->addWidget(m_btnFormatConvert);
 
     // ── 占位按钮：数据增强（Phase 1 预留，功能待实现）──
     m_btnAugment = new QPushButton(QString::fromUtf8("数据增强"));
@@ -929,12 +1052,9 @@ m_galleryScrollArea = new QScrollArea;
     m_galleryScrollArea->setWidget(m_galleryStack);
     rightLayout->addWidget(m_galleryScrollArea, 1);
 
-    // ── 步骤引导条（嵌入右侧底部）──
-    m_stepGuideBar = new StepGuideBar;
-    m_stepGuideBar->setCurrentStep(2);        // 当前在数据集管理
-    m_stepGuideBar->setStepCompleted(0);       // 项目管理已完成
-    m_stepGuideBar->setStepCompleted(1);       // 模型管理已完成
-    rightLayout->addWidget(m_stepGuideBar);
+    // ── 加载动画覆盖层（覆盖整个画廊区域）──
+    m_loadingOverlay = new LoadingOverlay(m_galleryStack,
+        QString::fromUtf8("正在加载数据集..."));
 }
 
 // =============================================================================
@@ -1063,14 +1183,16 @@ void DatasetManagement::applyTheme()
                 .arg(p.borderMedium));
     }
 
-    // 占位按钮样式（灰显 + "开发中" badge 感）
-    if (m_btnPreprocess) {
-        m_btnPreprocess->setStyleSheet(QString(
+    // 格式转换按钮样式
+    if (m_btnFormatConvert) {
+        m_btnFormatConvert->setStyleSheet(QString(
             "QPushButton#dsPlaceholderBtn {"
-            "  background-color: %1; color: %2; border: 1px dashed %3;"
+            "  background-color: %1; color: %2; border: 1px solid %3;"
             "  border-radius: 4px; padding: 4px 12px; font-size: 11px; }"
-            "QPushButton#dsPlaceholderBtn:hover { border-color: %4; }")
-            .arg(p.bgSecondary, p.textMuted, p.borderMedium, p.textSecondary));
+            "QPushButton#dsPlaceholderBtn:hover { border-color: %4; background-color: %5; }"
+            "QPushButton#dsPlaceholderBtn:disabled { color: %6; border-style: dashed; }")
+            .arg(p.bgSecondary, p.textPrimary, p.borderMedium, p.accentPrimary,
+                 p.bgHover, p.textMuted));
     }
     if (m_btnAugment) {
         m_btnAugment->setStyleSheet(QString(
@@ -1442,9 +1564,7 @@ void DatasetManagement::refreshGallery()
 
             for (int ci = 0; ci < visibleChips; ++ci) {
                 int cid = catIds[ci];
-                QString chipColor = p.success;
-                if (cid >= 0 && cid < m_labelColors.size())
-                    chipColor = m_labelColors[cid];
+                QString chipColor = m_labelColors.value(cid, s_defaultColors[cid % s_defaultColors.size()]);
 
                 QString chipText;
                 QString chipTooltip;
@@ -1471,20 +1591,10 @@ void DatasetManagement::refreshGallery()
                 chip->move(chipX, chipY);
                 chip->setToolTip(chipTooltip);
 
-                // 用 QPixmap 绘制色块 — 避免 QLabel stylesheet 在父容器未完成布局时不生效
-                QPixmap chipBg(chipSize, chipSize);
-                chipBg.fill(Qt::transparent);
-                QPainter painter(&chipBg);
-                painter.setRenderHint(QPainter::Antialiasing, true);
-                if (fold) {
-                    painter.setBrush(QColor(128, 128, 128, 180));
-                    painter.setPen(QPen(Qt::white, 2));
-                } else {
-                    painter.setBrush(QColor(chipColor));
-                    painter.setPen(QPen(Qt::white, 2));
-                }
-                painter.drawRoundedRect(1, 1, chipSize - 2, chipSize - 2, 4, 4);
-                painter.end();
+                // 用 QPixmap 绘制色块（统一辅助函数，与标签面板一致）
+                QPixmap chipBg = makeColorChip(
+                    fold ? QColor(128, 128, 128, 180) : QColor(chipColor),
+                    chipSize, Qt::white, 1, 3);
                 chip->setPixmap(chipBg);
 
                 // 文本叠加 — 用富文本或单独 label
@@ -1617,10 +1727,10 @@ void DatasetManagement::refreshGallery()
 
             // 标签色块装饰 — 使用主类别颜色
             int primaryCat2 = s.primaryCategory();
-            if (s.annotated && primaryCat2 >= 0
-                && primaryCat2 < m_labelColors.size()) {
-                QColor c(m_labelColors[primaryCat2]);
-                item->setForeground(c);
+            if (s.annotated && primaryCat2 >= 0) {
+                QString color = m_labelColors.value(primaryCat2,
+                    s_defaultColors[primaryCat2 % s_defaultColors.size()]);
+                item->setForeground(QColor(color));
             }
 
             // 复选框
@@ -1660,6 +1770,7 @@ void DatasetManagement::refreshGallery()
     if (m_galleryScrollArea && m_galleryScrollArea->viewport())
         m_galleryScrollArea->viewport()->update();
 
+    m_loadingOverlay->hideOverlay();
     m_inRefresh = false;
 }
 
@@ -1667,15 +1778,13 @@ void DatasetManagement::refreshGallery()
 
 bool DatasetManagement::eventFilter(QObject* obj, QEvent* event)
 {
-    // 外层滚动区宽度变化 → 重新排列缩略图列数
+    // 外层滚动区宽度变化 → 防抖后重新排列缩略图列数（避免连续 resize 时反复重建导致卡死）
     if (obj == m_galleryScrollArea && event->type() == QEvent::Resize) {
         int w = m_galleryScrollArea->width();
         if (w > 0 && w != m_lastGalleryWidth) {
             m_lastGalleryWidth = w;
-            QSet<int> saved = m_selectedIndices;
-            refreshGallery();
-            m_selectedIndices = saved;
-            updateSelectionUI();
+            if (m_resizeDebounce)
+                m_resizeDebounce->start();
         }
         return false;
     }
@@ -1779,9 +1888,9 @@ void DatasetManagement::updateModelInfoPanel()
             m_labelTypeLabel->setText(QString::fromUtf8("标签格式：--"));
         } else if (m_labelType.isEmpty()) {
             QString recommended = LabelTypes::recommendForModelType(m_currentModel.modelType);
-            m_labelTypeLabel->setText(QString::fromUtf8("标签格式：未设置（推荐：%1）").arg(recommended));
+            m_labelTypeLabel->setText(QString::fromUtf8("标签格式：未导入（推荐：%1）").arg(recommended));
         } else {
-            m_labelTypeLabel->setText(QString::fromUtf8("标签格式：%1").arg(m_labelType));
+            m_labelTypeLabel->setText(QString::fromUtf8("标签格式：%1 → TXT").arg(m_labelType));
         }
     }
 
@@ -1859,19 +1968,15 @@ void DatasetManagement::updateLabelPanel()
         itemLayout->setContentsMargins(4, 2, 4, 2);
         itemLayout->setSpacing(6);
 
-        // 颜色方块（空标签虚线边框 + 半透明）
+        // 颜色方块（统一辅助函数，与缩略图色块一致）
+        QColor chipColor(color);
+        if (isEmpty) chipColor.setAlpha(100);
+        QPixmap chipPix = makeColorChip(chipColor, 14,
+            isEmpty ? QColor(p.borderMedium) : QColor(Qt::white), 1, 3);
+
         QLabel* colorBlock = new QLabel;
         colorBlock->setFixedSize(14, 14);
-        if (isEmpty)
-            colorBlock->setStyleSheet(
-                QString("background-color: %1; border: 1px dashed %2;"
-                        " border-radius: 2px; opacity: 0.5;")
-                    .arg(color, p.borderMedium));
-        else
-            colorBlock->setStyleSheet(
-                QString("background-color: %1; border: 1px solid %2;"
-                        " border-radius: 2px;")
-                    .arg(color, p.borderMedium));
+        colorBlock->setPixmap(chipPix);
         itemLayout->addWidget(colorBlock);
 
         // 编号
@@ -1897,21 +2002,6 @@ void DatasetManagement::updateLabelPanel()
         item->setData(Qt::UserRole, i);
         m_labelListWidget->setItemWidget(item, itemWidget);
     }
-}
-
-void DatasetManagement::updateStepGuide()
-{
-    if (!m_stepGuideBar) return;
-    m_stepGuideBar->setStepCompleted(0);
-    m_stepGuideBar->setStepCompleted(1);
-
-    bool hasModel = !m_currentModelId.isEmpty();
-    if (m_samples.size() > 0)
-        m_stepGuideBar->setStepCompleted(2);
-
-    // ── 确保始终可见（双击切标签页时 resize 触发的空 refreshGallery 可能影响布局）──
-    m_stepGuideBar->raise();
-    m_stepGuideBar->setVisible(true);
 }
 
 void DatasetManagement::setPanelEnabled(QWidget* panel, bool enabled)
@@ -1963,8 +2053,10 @@ void DatasetManagement::detectLabelsFromAnnotations()
 
     // 初始化实例计数（保留已有标签，先全部置 0）
     QMap<QString, int> nameToInstances;  // name → 实例数
-    for (int i = 0; i < m_labelNames.size(); ++i)
-        nameToInstances[m_labelNames[i]] = 0;  // 重置计数，后续重新统计
+    for (int i = 0; i < m_labelNames.size(); ++i) {
+        if (!m_labelNames[i].trimmed().isEmpty())
+            nameToInstances[m_labelNames[i]] = 0;  // 重置计数，后续重新统计
+    }
 
     // ══════════════════════════════════════════════════
     // Step 1：始终扫描 JSON 标注（labelme shapes + COCO annotations）
@@ -1994,11 +2086,14 @@ void DatasetManagement::detectLabelsFromAnnotations()
         QJsonArray shapes = root.value("shapes").toArray();
 
         if (!annots.isEmpty()) {
-            // COCO annotations
+            // COCO annotations（1-based category_id → 0-based 索引）
             for (const QJsonValue& av : annots) {
                 int cid = av.toObject().value("category_id").toInt(-1);
-                if (cid >= 0 && cid < m_labelNames.size())
-                    nameToInstances[m_labelNames[cid]]++;
+                // 减 1 转换为 0-based 索引（与 saveAnnotations 写入时的 +labelOffset 对应）
+                int lid = cid - currentLabelOffset();
+                if (lid >= 0 && lid < m_labelNames.size()
+                    && !m_labelNames[lid].trimmed().isEmpty())
+                    nameToInstances[m_labelNames[lid]]++;
             }
         } else if (!shapes.isEmpty()) {
             // labelme shapes（多边形 / 矩形 / 圆形等）
@@ -2016,20 +2111,22 @@ void DatasetManagement::detectLabelsFromAnnotations()
     }
 
     // ══════════════════════════════════════════════════
-    // Step 2：掩码类型时，额外扫描 PNG 掩码（按图片数统计，非像素数）
+    // Step 2：掩码类型时，扫描全部 PNG 掩码确定类别数
     // ══════════════════════════════════════════════════
+    // 灰度值 0 恒为背景，类别从灰度值 1 开始
+    // 总类别数 = maxGray - minGray + 1（支持 Halcon 偏移 minGray≥2）
     if (LabelTypes::isMaskType(m_labelType)) {
         QMap<int, int> grayToMaskCount;  // 灰度值 → 包含该值的掩码图片数
         QStringList pngFilters = { "*.png" };
         QFileInfoList pngFiles = annDir.entryInfoList(pngFilters, QDir::Files);
 
-        int scanLimit = qMin(pngFiles.size(), 50);
-        for (int i = 0; i < scanLimit; ++i) {
-            QImage img(pngFiles[i].absoluteFilePath());
+        // 扫描全部 PNG 掩码，收集所有非零灰度值
+        for (const QFileInfo& pngFi : pngFiles) {
+            QImage img(pngFi.absoluteFilePath());
             if (img.isNull()) continue;
             QImage gray = img.convertToFormat(QImage::Format_Grayscale8);
             int w = gray.width(), h = gray.height();
-            // 采样检测该掩码中包含哪些灰度值，每图去重
+            // 自适应步长：大图稀采样，小图逐像素扫描
             int step = qMax(1, qMin(w, h) / 50);
             QSet<int> uniqueVals;
             for (int y = 0; y < h; y += step) {
@@ -2043,48 +2140,65 @@ void DatasetManagement::detectLabelsFromAnnotations()
                 grayToMaskCount[gv]++;
         }
 
-        // 灰度值 → 连续索引映射（兼容 Halcon 偏移）
-        int maxGray = 0;
-        for (auto it = grayToMaskCount.begin(); it != grayToMaskCount.end(); ++it)
-            maxGray = qMax(maxGray, it.key());
+        if (grayToMaskCount.isEmpty()) {
+            // 无有效灰度值，跳过掩码解析
+            goto endMaskStep2;
+        }
 
         // 自动检测偏移：标准掩码 minGray=1, Halcon 掩码 minGray≥2
-        int minGray = grayToMaskCount.isEmpty() ? 1 : grayToMaskCount.firstKey();
+        int minGray = grayToMaskCount.firstKey();
+        int maxGray = grayToMaskCount.lastKey();
 
-        // 填充缺失灰度值（缺口 → 空标签占位）
+        // ── 有效类别总数 = maxGray - minGray + 1（灰度值 0 已排除）──
+        // 填充缺失灰度值（中间缺口 → 掩码计数 0，类别名称仍创建）
         for (int g = minGray; g <= maxGray; ++g) {
             if (!grayToMaskCount.contains(g))
                 grayToMaskCount[g] = 0;
         }
 
-        // 映射：灰度值 g → 索引 g-minGray (0-based)
+        // 映射：灰度值 g → 0-based 索引（g - minGray）
         QMap<int, int> grayToIndex;
-        for (auto it = grayToMaskCount.begin(); it != grayToMaskCount.end(); ++it)
-            grayToIndex[it.key()] = it.key() - minGray;
+        int totalClasses = maxGray - minGray + 1;
+        for (int g = minGray, idx = 0; g <= maxGray; ++g, ++idx)
+            grayToIndex[g] = idx;
 
+        // ── 同步标签列表 ──
+        // 确保 m_labelNames 大小 = totalClasses（0-based 索引连续）
+        // 已有 JSON 名称保留，不足部分用占位名填充
         bool added = false;
-        // 按灰度值顺序创建标签（保证索引连续）
-        for (int gv = minGray; gv <= maxGray; ++gv) {
-            int mappedIdx = grayToIndex[gv];
-            while (m_labelNames.size() <= mappedIdx) {
-                QString autoName = QString::fromUtf8("class_%1").arg(m_labelNames.size());
-                m_labelNames.append(autoName);
-                m_labelColors.append(s_defaultColors[(m_labelNames.size() - 1) % s_defaultColors.size()]);
-                m_labelInstanceCounts.append(0);
-                nameToInstances[autoName] = 0;
-                added = true;
+        while (m_labelNames.size() < totalClasses) {
+            int idx = m_labelNames.size();
+            QString autoName = QString::fromUtf8("class_%1").arg(idx + 1);
+            m_labelNames.append(autoName);
+            m_labelColors.append(s_defaultColors[idx % s_defaultColors.size()]);
+            m_labelInstanceCounts.append(0);
+            nameToInstances[autoName] = 0;
+            added = true;
+        }
+        // 截断超出部分（灰值范围缩小）
+        while (m_labelNames.size() > totalClasses) {
+            m_labelNames.removeLast();
+            if (!m_labelColors.isEmpty()) m_labelColors.removeLast();
+            if (!m_labelInstanceCounts.isEmpty()) m_labelInstanceCounts.removeLast();
+            added = true;
+        }
+
+        // 更新实例计数：每个灰度值对应的掩码图片数
+        for (int g = minGray, idx = 0; g <= maxGray; ++g, ++idx) {
+            int maskCount = grayToMaskCount.value(g, 0);
+            if (idx < m_labelInstanceCounts.size()) {
+                m_labelInstanceCounts[idx] = maskCount;
+                if (idx < m_labelNames.size())
+                    nameToInstances[m_labelNames[idx]] = maskCount;
             }
-            // 实例数 = 包含该灰度值的掩码图片数量
-            int maskCount = grayToMaskCount.value(gv, 0);
-            m_labelInstanceCounts[mappedIdx] = maskCount;
-            nameToInstances[m_labelNames[mappedIdx]] = maskCount;
         }
 
         if (added) {
+            // 重映射样本 categoryIds（考虑 offset）
             for (auto& s : m_samples) {
                 if (s.annotated) {
                     for (int& cid : s.categoryIds) {
-                        int grav = cid + minGray;  // 转换回灰度值（考虑 Halcon 偏移）
+                        int grav = cid + minGray;
                         if (grayToIndex.contains(grav))
                             cid = grayToIndex[grav];
                     }
@@ -2094,6 +2208,7 @@ void DatasetManagement::detectLabelsFromAnnotations()
             Logger::info(QString::fromUtf8("从掩码图像自动识别 %1 个类别").arg(grayToMaskCount.size()));
         }
     }
+    endMaskStep2:
 
     // ══════════════════════════════════════════════════
     // Step 3：合并 nameToInstances → m_labelNames
@@ -2101,6 +2216,8 @@ void DatasetManagement::detectLabelsFromAnnotations()
     bool imported = false;
     for (auto it = nameToInstances.begin(); it != nameToInstances.end(); ++it) {
         const QString& name = it.key();
+        // 跳过空名称（可能来自损坏的 dataset_config 或误保存的残留条目）
+        if (name.trimmed().isEmpty()) continue;
         if (!m_labelNames.contains(name)) {
             m_labelNames.append(name);
             m_labelColors.append(s_defaultColors[(m_labelNames.size() - 1) % s_defaultColors.size()]);
@@ -2113,6 +2230,42 @@ void DatasetManagement::detectLabelsFromAnnotations()
         }
     }
 
+    // ── 清理遗留的空名称条目（保持三数组同步 + 重映射样本 categoryIds）──
+    int labelCount = m_labelNames.size();
+    // 1) 标记哪些索引即将被移除
+    QVector<bool> isEmpty(labelCount, false);
+    for (int i = 0; i < labelCount; ++i)
+        isEmpty[i] = m_labelNames[i].trimmed().isEmpty();
+
+    // 2) 构建 old-index → new-index 映射
+    QMap<int, int> idxRemap;
+    int newIdx = 0;
+    for (int i = 0; i < labelCount; ++i) {
+        if (!isEmpty[i])
+            idxRemap[i] = newIdx++;
+    }
+
+    // 3) 逆向移除空条目（保持三数组同步）
+    for (int i = labelCount - 1; i >= 0; --i) {
+        if (isEmpty[i]) {
+            m_labelNames.removeAt(i);
+            if (i < m_labelColors.size()) m_labelColors.removeAt(i);
+            if (i < m_labelInstanceCounts.size()) m_labelInstanceCounts.removeAt(i);
+        }
+    }
+
+    // 4) 重映射所有样本的 categoryIds，避免颜色/名称错位
+    for (auto& s : m_samples) {
+        if (!s.annotated) continue;
+        QList<int> remapped;
+        for (int cid : s.categoryIds) {
+            if (idxRemap.contains(cid))
+                remapped.append(idxRemap[cid]);
+            // 旧索引指向空名称 → 丢弃（不应再存在此类引用）
+        }
+        s.categoryIds = remapped;
+    }
+
     if (imported) {
         saveDatasetConfig();
         Logger::info(QString::fromUtf8("从标注文件自动识别 %1 个新标签类别")
@@ -2120,6 +2273,7 @@ void DatasetManagement::detectLabelsFromAnnotations()
     }
 
     updateLabelPanel();
+    emit labelsChanged();
 }
 
 // =============================================================================
@@ -2160,7 +2314,7 @@ void DatasetManagement::onImportImages()
     QStringList imgFiles = QFileDialog::getOpenFileNames(
         this,
         QString::fromUtf8("第一步：选择原图文件"),
-        m_dataRoot,
+        m_projectRoot,
         imageFileFilter());
 
     // 3. 再导入标签（可选）
@@ -2180,7 +2334,7 @@ void DatasetManagement::onImportImages()
             lblFiles = QFileDialog::getOpenFileNames(
                 this,
                 QString::fromUtf8("第二步：选择标签文件"),
-                m_dataRoot,
+                m_projectRoot,
                 QString::fromUtf8("标签文件 (*.json *.png);;JSON 标签 (*.json);;PNG 掩码 (*.png);;所有文件 (*.*)"));
         }
     }
@@ -2252,15 +2406,15 @@ void DatasetManagement::onImportImages()
 
     // 重新扫描
     loadDatasetConfig();
-    refreshGallery();
-    updateModelInfoPanel();
-    updateStepGuide();
 
-    // 自动识别标签类别
+    // 自动识别标签类别（必须在 refreshGallery 之前，否则色块颜色全部回退为默认绿）
     if (imported > 0 || labelsImported > 0) {
         detectLabelsFromAnnotations();
         validateLabelCount();
     }
+
+    refreshGallery();
+    updateModelInfoPanel();
 
     // 更新项目状态：data_imported = true
     if (imported > 0 && !m_currentModelId.isEmpty()) {
@@ -2307,7 +2461,7 @@ void DatasetManagement::onImportFolder()
     QString folderPath = QFileDialog::getExistingDirectory(
         this,
         QString::fromUtf8("选择数据集根目录（需包含 images/ 子目录，labels/ 可选）"),
-        m_dataRoot);
+        m_projectRoot);
 
     if (folderPath.isEmpty()) return;
 
@@ -2467,13 +2621,12 @@ void DatasetManagement::onImportFolder()
     // 重新扫描（必须在 parseCocoJson 之后，因为 COCO 导入可能额外复制图像）
     loadDatasetConfig();
 
-    refreshGallery();
-    updateModelInfoPanel();
-    updateStepGuide();
-
-    // 自动识别标签类别
+    // 自动识别标签类别（必须在 refreshGallery 之前，否则色块颜色全部回退为默认绿）
     detectLabelsFromAnnotations();
     validateLabelCount();
+
+    refreshGallery();
+    updateModelInfoPanel();
 
     // 更新项目状态
     if (imported > 0 && !m_currentModelId.isEmpty()) {
@@ -2500,22 +2653,29 @@ bool DatasetManagement::validateLabelCount()
     if (LabelTypes::isMaskType(m_labelType)) {
         QSet<int> grayValues;
         QStringList pngFiles = annDir.entryList({ "*.png" }, QDir::Files);
-        int scanLimit = qMin(pngFiles.size(), 50);
-        for (int i = 0; i < scanLimit; ++i) {
-            QImage img(annDir.absoluteFilePath(pngFiles[i]));
+        // 扫描全部 PNG 掩码，收集所有非零灰度值
+        for (const QString& fname : pngFiles) {
+            QImage img(annDir.absoluteFilePath(fname));
             if (img.isNull()) continue;
             QImage gray = img.convertToFormat(QImage::Format_Grayscale8);
             int w = gray.width(), h = gray.height();
-            int step = qMax(1, qMin(w, h) / 100);
+            int step = qMax(1, qMin(w, h) / 50);
             for (int y = 0; y < h; y += step) {
                 const uchar* line = gray.constScanLine(y);
                 for (int x = 0; x < w; x += step) {
-                    if (line[x] > 0)
+                    if (line[x] > 0 && line[x] < 250)
                         grayValues.insert(line[x]);
                 }
             }
         }
-        actualCount = grayValues.size();
+        // 灰度值 0 恒为背景，类别总数 = maxGray - minGray + 1
+        if (!grayValues.isEmpty()) {
+            int minGray = *std::min_element(grayValues.begin(), grayValues.end());
+            int maxGray = *std::max_element(grayValues.begin(), grayValues.end());
+            actualCount = maxGray - minGray + 1;
+        } else {
+            actualCount = 0;
+        }
     } else if (LabelTypes::isJsonType(m_labelType)) {
         QSet<QString> catNames;
         QStringList jsonFiles = annDir.entryList({ "*.json" }, QDir::Files);
@@ -2526,8 +2686,11 @@ bool DatasetManagement::validateLabelCount()
             f.close();
             QJsonArray cats = doc.object().value("categories").toArray();
             QJsonArray annots = doc.object().value("annotations").toArray();
-            for (const QJsonValue& v : cats)
-                catNames.insert(v.toObject().value("name").toString());
+            for (const QJsonValue& v : cats) {
+                QString name = v.toObject().value("name").toString();
+                if (!name.trimmed().isEmpty())
+                    catNames.insert(name);
+            }
             for (const QJsonValue& v : annots) {
                 int cid = v.toObject().value("category_id").toInt(-1);
                 if (cid >= 0)
@@ -2789,6 +2952,7 @@ void DatasetManagement::onAddLabel()
     m_labelInstanceCounts.append(0);  // 新标签初始实例数为 0
     saveDatasetConfig();
     updateLabelPanel();
+    emit labelsChanged();
 
     Logger::info(QString::fromUtf8("已添加标签: %1 [%2]").arg(name, color.name()));
 }
@@ -2820,6 +2984,7 @@ void DatasetManagement::onEditLabel()
     m_labelNames[row] = newName;
     saveDatasetConfig();
     updateLabelPanel();
+    emit labelsChanged();
     Logger::info(QString::fromUtf8("已编辑标签: %1").arg(newName));
 }
 
@@ -2844,6 +3009,7 @@ void DatasetManagement::onDeleteLabel()
     if (row < m_labelInstanceCounts.size()) m_labelInstanceCounts.removeAt(row);
     saveDatasetConfig();
     updateLabelPanel();
+    emit labelsChanged();
     Logger::info(QString::fromUtf8("已删除标签: %1").arg(removed));
 }
 
@@ -2878,7 +3044,7 @@ void DatasetManagement::onImportLabels()
             if (!name.isEmpty() && !m_labelNames.contains(name)) {
                 m_labelNames.append(name);
                 m_labelColors.append(cat.value("color").toString(
-                    s_defaultColors[m_labelNames.size() % s_defaultColors.size()]));
+                    s_defaultColors[(m_labelNames.size() - 1) % s_defaultColors.size()]));
                 m_labelInstanceCounts.append(0);  // 从 JSON 导入的标签初始实例数未知
                 imported++;
             }
@@ -2886,6 +3052,7 @@ void DatasetManagement::onImportLabels()
         if (imported > 0) {
             saveDatasetConfig();
             updateLabelPanel();
+            emit labelsChanged();
             Logger::info(QString::fromUtf8("已从 JSON 导入 %1 个标签").arg(imported));
         }
     }
@@ -2942,6 +3109,7 @@ void DatasetManagement::onLabelOrderChanged()
     saveDatasetConfig();
     updateLabelPanel();
     refreshGallery();
+    emit labelsChanged();
     Logger::info(QString::fromUtf8("标签顺序已更新（共 %1 类）").arg(count));
 }
 
@@ -2955,17 +3123,1282 @@ void DatasetManagement::onRefreshImageInfo()
     Logger::info(QString::fromUtf8("数据集已刷新"));
 }
 
-// ── 占位按钮：预处理（Phase 1 预留，功能待后续迭代实现）──
-void DatasetManagement::onPreprocessClicked()
+// ── 标注格式转换 ──────────────────────────────────────────────
+DatasetManagement::InputFormat DatasetManagement::detectInputFormat() const
 {
-    QMessageBox::information(this,
-        QString::fromUtf8("预处理"),
-        QString::fromUtf8("预处理功能将在后续版本中实现。\n\n"
-            "届时支持：\n"
-            "  • 图像尺寸统一（缩放到网络输入大小）\n"
-            "  • 像素归一化（mean/std 或 min/max）\n"
-            "  • 通道顺序转换（RGB ↔ BGR ↔ Grayscale）\n"
-            "  • 分割掩码编码"));
+    QDir annDir(annotationsDir());
+    if (!annDir.exists()) return Fmt_Unknown;
+
+    int txtCount = 0, pngCount = 0, jsonCount = 0;
+    QFileInfoList files = annDir.entryInfoList(QDir::Files);
+    // 递归检查子目录
+    for (const char* phase : {"train", "val", "test"}) {
+        QDir subDir(annDir.absoluteFilePath(phase));
+        if (subDir.exists())
+            files.append(subDir.entryInfoList(QDir::Files));
+    }
+
+    for (const auto& fi : files) {
+        QString suf = fi.suffix().toLower();
+        if (suf == "txt") txtCount++;
+        else if (suf == "png") pngCount++;
+        else if (suf == "json") jsonCount++;
+    }
+
+    // 优先级：json > png > txt（更具体的格式优先）
+    if (jsonCount > 0 && jsonCount >= txtCount && jsonCount >= pngCount)
+        return Fmt_LabelMe_JSON;
+    if (pngCount > 0 && pngCount >= txtCount)
+        return Fmt_PNG_Mask;
+    if (txtCount > 0)
+        return Fmt_YOLO_Txt;
+
+    return Fmt_Unknown;
+}
+
+// ── 目标格式描述与示例 ──────────────────────────────────────
+static QString targetFormatDesc(const QString& modelType)
+{
+    if (modelType == ModelTaskTypes::ObjDetectFree)
+        return QString::fromUtf8(
+            "自由矩形检测 — YOLO txt 格式\n"
+            "每行：类别ID 中心点x 中心点y 宽度 高度\n"
+            "示例：0 0.512300 0.489100 0.235600 0.312400\n"
+            "数值归一化到 [0,1]（除以图像宽高）");
+    if (modelType == ModelTaskTypes::InstanceSeg)
+        return QString::fromUtf8(
+            "实例分割 — YOLO txt 格式\n"
+            "每行：类别ID x1 y1 x2 y2 ... xn yn\n"
+            "示例：1 0.681 0.485 0.670 0.487 0.676 0.487\n"
+            "点按顺序连接成闭合多边形，坐标归一化到 [0,1]");
+    if (modelType == ModelTaskTypes::ObjDetectFixed)
+        return QString::fromUtf8(
+            "旋转框(OBB) — YOLO txt 格式\n"
+            "每行：类别ID x1 y1 x2 y2 x3 y3 x4 y4\n"
+            "示例：0 0.780811 0.743961 0.782371 0.746860 0.777691 0.752174 0.776131 0.749758\n"
+            "四点按顺时针排列，坐标归一化到 [0,1]");
+    // 异常检测
+    return QString::fromUtf8(
+        "异常检测 — 分类目录格式\n"
+        "无标签文件，文件夹名即标签\n"
+        "目录结构：train/OK/ train/NG/ val/OK/ val/NG/");
+}
+
+// ── 主入口：格式转换 ────────────────────────────────────────
+void DatasetManagement::onFormatConvert()
+{
+    if (!hasModel()) {
+        QMessageBox::warning(this, QString::fromUtf8("提示"),
+            QString::fromUtf8("请先选择一个模型。"));
+        return;
+    }
+
+    QString modelType = m_currentModel.modelType;
+
+    // ── 异常检测：引导 OK/NG 导入 ──
+    if (modelType == ModelTaskTypes::AnomalyDetect) {
+        convertAnomalyClassification();
+        return;
+    }
+
+    // 检测输入格式
+    InputFormat inputFmt = detectInputFormat();
+    if (inputFmt == Fmt_Unknown) {
+        QDir annDir(annotationsDir());
+        if (!annDir.exists() || annDir.entryList(QDir::Files).isEmpty()) {
+            QMessageBox::information(this, QString::fromUtf8("格式转换"),
+                QString::fromUtf8("labels/ 目录下没有找到标注文件。\n\n"
+                    "请先导入标注数据（支持 YOLO txt、PNG 掩码、LabelMe JSON）。"));
+        } else {
+            QMessageBox::warning(this, QString::fromUtf8("格式转换"),
+                QString::fromUtf8("无法识别 labels/ 下的标注格式。\n"
+                    "支持的格式：YOLO txt (.txt)、PNG 掩码 (.png)、LabelMe JSON (.json)"));
+        }
+        return;
+    }
+
+    // 先校验当前格式是否已经是目标格式
+    auto validationResults = validateCurrentFormat();
+    bool allPass = true;
+    for (const auto& r : validationResults) {
+        if (r.status == ConvertResult::Error) { allPass = false; break; }
+    }
+    if (allPass && inputFmt == Fmt_YOLO_Txt) {
+        // 已经是正确的 YOLO txt 格式
+        int passCount = 0;
+        for (const auto& r : validationResults)
+            if (r.status == ConvertResult::Pass) passCount++;
+        QMessageBox::information(this, QString::fromUtf8("格式转换"),
+            QString::fromUtf8("当前标注已是正确的 %1 格式，无需转换。\n\n%2 项通过校验。")
+                .arg(modelType).arg(passCount));
+        return;
+    }
+
+    // 格式不匹配时，展示目标格式说明并确认转换
+    QString inputName;
+    switch (inputFmt) {
+    case Fmt_YOLO_Txt:    inputName = QString::fromUtf8("YOLO txt"); break;
+    case Fmt_PNG_Mask:    inputName = QString::fromUtf8("PNG 掩码"); break;
+    case Fmt_LabelMe_JSON: inputName = QString::fromUtf8("LabelMe JSON"); break;
+    default: break;
+    }
+
+    QString desc = targetFormatDesc(modelType);
+    QString msg = QString::fromUtf8(
+        "检测到输入格式：%1\n\n"
+        "目标格式：\n%2\n\n"
+        "是否将标注转换为目标格式？\n"
+        "（原始标注文件将保留，转换结果写入 labels/*.txt）")
+        .arg(inputName, desc);
+
+    QMessageBox::StandardButton btn = QMessageBox::question(
+        this, QString::fromUtf8("格式转换 — %1").arg(modelType), msg,
+        QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+    if (btn != QMessageBox::Yes) return;
+
+    // 执行转换
+    bool ok = false;
+    switch (inputFmt) {
+    case Fmt_YOLO_Txt:    ok = convertYoloTxtToTarget(); break;
+    case Fmt_PNG_Mask:    ok = convertPngMaskToTarget(); break;
+    case Fmt_LabelMe_JSON: ok = convertLabelMeJsonToTarget(); break;
+    default: break;
+    }
+
+    if (ok) {
+        // 刷新
+        loadDatasetConfig();
+        detectLabelsFromAnnotations();
+        validateLabelCount();
+        refreshGallery();
+        updateModelInfoPanel();
+
+        Logger::info(QString::fromUtf8("标注格式转换完成: %1 → %2").arg(inputName, modelType));
+    }
+}
+
+// ── 校验当前 YOLO txt 是否符合目标格式 ──────────────────────
+QList<DatasetManagement::ConvertResult> DatasetManagement::validateCurrentFormat() const
+{
+    QList<ConvertResult> results;
+    QString modelType = m_currentModel.modelType;
+    QDir annDir(annotationsDir());
+
+    // 收集所有 .txt 标签文件
+    QFileInfoList allLabels;
+    for (const char* phase : {"", "train", "val", "test"}) {
+        QDir dir = phase[0] ? QDir(annDir.absoluteFilePath(phase)) : annDir;
+        if (!dir.exists()) continue;
+        allLabels.append(dir.entryInfoList({"*.txt"}, QDir::Files));
+    }
+
+    for (const auto& fi : allLabels) {
+        QFile f(fi.absoluteFilePath());
+        if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            ConvertResult r;
+            r.file = fi.fileName();
+            r.status = ConvertResult::Error;
+            r.message = QString::fromUtf8("无法打开文件");
+            results.append(r);
+            continue;
+        }
+
+        QTextStream ts(&f);
+        int lineNum = 0;
+        while (!ts.atEnd()) {
+            QString line = ts.readLine().trimmed();
+            lineNum++;
+            if (line.isEmpty() || line.startsWith('#')) continue;
+
+            QStringList parts = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+            if (parts.isEmpty()) continue;
+
+            bool ok = false;
+            int classId = parts[0].toInt(&ok);
+            if (!ok || classId < 0) {
+                ConvertResult r;
+                r.file = fi.fileName(); r.line = lineNum;
+                r.status = ConvertResult::Error;
+                r.message = QString::fromUtf8("无效的类别ID: \"%1\"").arg(parts[0]);
+                results.append(r);
+                continue;
+            }
+
+            if (modelType == ModelTaskTypes::ObjDetectFree && parts.size() != 5) {
+                ConvertResult r;
+                r.file = fi.fileName(); r.line = lineNum;
+                r.status = ConvertResult::Error;
+                r.message = QString::fromUtf8("自由矩形应为5个值(class cx cy w h)，实际%1个\n示例: 0 0.512300 0.489100 0.235600 0.312400")
+                    .arg(parts.size());
+                results.append(r);
+            } else if (modelType == ModelTaskTypes::ObjDetectFixed && parts.size() != 9) {
+                ConvertResult r;
+                r.file = fi.fileName(); r.line = lineNum;
+                r.status = ConvertResult::Error;
+                r.message = QString::fromUtf8("旋转框应为9个值(class x1 y1 ... x4 y4)，实际%1个\n示例: 0 0.780 0.743 0.782 0.746 0.777 0.752 0.776 0.749")
+                    .arg(parts.size());
+                results.append(r);
+            } else if (modelType == ModelTaskTypes::InstanceSeg) {
+                int coords = parts.size() - 1;
+                if (coords < 6 || coords % 2 != 0) {
+                    ConvertResult r;
+                    r.file = fi.fileName(); r.line = lineNum;
+                    r.status = ConvertResult::Error;
+                    r.message = QString::fromUtf8("实例分割应为偶数个坐标(class x1 y1 ... xn yn)，实际%1个坐标\n示例: 1 0.681 0.485 0.670 0.487 0.676 0.487")
+                        .arg(coords);
+                    results.append(r);
+                }
+            } else {
+                ConvertResult r;
+                r.file = fi.fileName(); r.line = lineNum;
+                r.status = ConvertResult::Pass;
+                r.message = QString::fromUtf8("格式正确");
+                results.append(r);
+            }
+
+            // 检查归一化（仅检查数值列）
+            if (parts.size() > 1) {
+                int checkEnd = qMin(parts.size(), modelType == ModelTaskTypes::ObjDetectFixed ? 9 : parts.size());
+                for (int i = 1; i < checkEnd; ++i) {
+                    double val = parts[i].toDouble(&ok);
+                    if (!ok || val < 0.0 || val > 1.0) {
+                        ConvertResult r;
+                        r.file = fi.fileName(); r.line = lineNum;
+                        r.status = ConvertResult::Error;
+                        r.message = QString::fromUtf8("坐标值 %1 超出 [0,1] 归一化范围").arg(parts[i]);
+                        results.append(r);
+                    }
+                }
+            }
+        }
+        f.close();
+    }
+    return results;
+}
+
+// ── YOLO txt 格式校验修正 ──────────────────────────────────
+bool DatasetManagement::convertYoloTxtToTarget()
+{
+    QDir annDir(annotationsDir());
+
+    // 收集所有 .txt 标签文件
+    QFileInfoList allLabels;
+    for (const char* phase : {"", "train", "val", "test"}) {
+        QDir dir = phase[0] ? QDir(annDir.absoluteFilePath(phase)) : annDir;
+        if (!dir.exists()) continue;
+        allLabels.append(dir.entryInfoList({"*.txt"}, QDir::Files));
+    }
+
+    // 扫描所有使用的类别 ID
+    QSet<int> usedClassIds;
+    for (const auto& fi : allLabels) {
+        QFile f(fi.absoluteFilePath());
+        if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) continue;
+        QTextStream ts(&f);
+        while (!ts.atEnd()) {
+            QString line = ts.readLine().trimmed();
+            if (line.isEmpty() || line.startsWith('#')) continue;
+            QStringList parts = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+            if (!parts.isEmpty()) {
+                bool ok = false;
+                int cid = parts[0].toInt(&ok);
+                if (ok && cid >= 0) usedClassIds.insert(cid);
+            }
+        }
+        f.close();
+    }
+
+    if (usedClassIds.isEmpty()) {
+        QMessageBox::information(this, QString::fromUtf8("格式转换"),
+            QString::fromUtf8("标注文件中未发现有效类别。"));
+        return false;
+    }
+
+    // ── 类别设置对话框 ──
+    const auto& p = ThemeManager::instance().palette();
+
+    QDialog catDlg(this);
+    catDlg.setWindowTitle(QString::fromUtf8("设置类别名称 — YOLO txt 导入"));
+    catDlg.setMinimumSize(460, 380);
+    catDlg.setStyleSheet(QString("QDialog { background: %1; }").arg(p.bgPrimary));
+
+    QVBoxLayout* catLayout = new QVBoxLayout(&catDlg);
+    catLayout->setSpacing(10);
+
+    QLabel* hintLabel = new QLabel(QString::fromUtf8(
+        "YOLO txt 标注中仅包含类别 ID（数字），请为每个 ID 指定类别名称。\n"
+        "类别名称仅支持英文、数字和下划线。"));
+    hintLabel->setWordWrap(true);
+    hintLabel->setStyleSheet(QString("color: %1; font-size: 12px;").arg(p.textSecondary));
+    catLayout->addWidget(hintLabel);
+
+    // 类别映射表
+    QTableWidget* catTable = new QTableWidget;
+    catTable->setColumnCount(2);
+    catTable->setHorizontalHeaderLabels({
+        QString::fromUtf8("类别 ID"), QString::fromUtf8("类别名称")});
+    catTable->horizontalHeader()->setStretchLastSection(true);
+    catTable->horizontalHeader()->resizeSection(0, 80);
+    catTable->setAlternatingRowColors(true);
+    catTable->setEditTriggers(QAbstractItemView::DoubleClicked | QAbstractItemView::EditKeyPressed);
+    catTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    catTable->setStyleSheet(QString(
+        "QTableWidget { background: %1; color: %2; border: 1px solid %3;"
+        " gridline-color: %4; font-size: 12px; }"
+        "QHeaderView::section { background: %5; color: %6; border: none;"
+        " padding: 4px; font-weight: bold; }")
+        .arg(p.bgPrimary, p.textPrimary, p.borderMedium,
+             p.borderLight, p.bgTertiary, p.textSecondary));
+
+    QList<int> sortedIds(usedClassIds.begin(), usedClassIds.end());
+    std::sort(sortedIds.begin(), sortedIds.end());
+    catTable->setRowCount(sortedIds.size());
+
+    for (int i = 0; i < sortedIds.size(); ++i) {
+        int cid = sortedIds[i];
+        auto* idItem = new QTableWidgetItem(QString::number(cid));
+        idItem->setFlags(idItem->flags() & ~Qt::ItemIsEditable);  // ID 不可编辑
+        idItem->setTextAlignment(Qt::AlignCenter);
+        catTable->setItem(i, 0, idItem);
+
+        // 如果已有对应名称则预填，否则填 class_{id}
+        QString name;
+        if (cid < m_labelNames.size() && !m_labelNames[cid].isEmpty())
+            name = m_labelNames[cid];
+        else
+            name = QString("class_%1").arg(cid);
+        catTable->setItem(i, 1, new QTableWidgetItem(name));
+    }
+
+    catLayout->addWidget(catTable, 1);
+
+    // 按钮行
+    QHBoxLayout* btnRow = new QHBoxLayout;
+    QPushButton* btnAddRow = new QPushButton(QString::fromUtf8("+ 添加类别"));
+    QPushButton* btnRemoveRow = new QPushButton(QString::fromUtf8("- 删除选中"));
+    QPushButton* btnImport = new QPushButton(QString::fromUtf8("导入类别"));
+
+    for (auto* btn : {btnAddRow, btnRemoveRow, btnImport}) {
+        btn->setStyleSheet(QString(
+            "QPushButton { background: %1; color: %2; border: 1px solid %3;"
+            " border-radius: 4px; padding: 4px 10px; font-size: 11px; }"
+            "QPushButton:hover { background: %4; }")
+            .arg(p.bgSecondary, p.textPrimary, p.borderMedium, p.bgHover));
+        btn->setCursor(Qt::PointingHandCursor);
+    }
+
+    btnRow->addWidget(btnAddRow);
+    btnRow->addWidget(btnRemoveRow);
+    btnRow->addWidget(btnImport);
+    btnRow->addStretch();
+    catLayout->addLayout(btnRow);
+
+    // 添加行
+    connect(btnAddRow, &QPushButton::clicked, this, [catTable]() {
+        int nextId = 0;
+        for (int r = 0; r < catTable->rowCount(); ++r) {
+            int cid = catTable->item(r, 0)->text().toInt();
+            if (cid >= nextId) nextId = cid + 1;
+        }
+        int row = catTable->rowCount();
+        catTable->insertRow(row);
+        auto* idItem = new QTableWidgetItem(QString::number(nextId));
+        idItem->setFlags(idItem->flags() & ~Qt::ItemIsEditable);
+        idItem->setTextAlignment(Qt::AlignCenter);
+        catTable->setItem(row, 0, idItem);
+        catTable->setItem(row, 1, new QTableWidgetItem(QString("class_%1").arg(nextId)));
+    });
+
+    // 删除行
+    connect(btnRemoveRow, &QPushButton::clicked, this, [catTable]() {
+        int row = catTable->currentRow();
+        if (row >= 0) catTable->removeRow(row);
+    });
+
+    // 从文件导入类别
+    connect(btnImport, &QPushButton::clicked, this, [catTable, &p]() {
+        QString filePath = QFileDialog::getOpenFileName(nullptr,
+            QString::fromUtf8("导入类别文件"),
+            QString(),
+            QString::fromUtf8("文本文件 (*.txt *.csv);;所有文件 (*.*)"));
+        if (filePath.isEmpty()) return;
+        QFile f(filePath);
+        if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) return;
+        QSet<int> existingIds;
+        for (int r = 0; r < catTable->rowCount(); ++r)
+            existingIds.insert(catTable->item(r, 0)->text().toInt());
+        int added = 0;
+        while (!f.atEnd()) {
+            QString line = QString::fromUtf8(f.readLine()).trimmed();
+            if (line.isEmpty() || line.startsWith('#')) continue;
+            // 格式：id name 或 name（自动分配 id）
+            QStringList parts = line.split(QRegularExpression("[,\\s]+"), Qt::SkipEmptyParts);
+            if (parts.isEmpty()) continue;
+            bool ok = false;
+            int id = parts[0].toInt(&ok);
+            QString name;
+            if (ok && parts.size() >= 2) {
+                name = parts[1];
+            } else {
+                name = parts[0];
+                id = 0;
+                while (existingIds.contains(id)) id++;
+            }
+            if (!existingIds.contains(id)) {
+                int row = catTable->rowCount();
+                catTable->insertRow(row);
+                auto* idItem = new QTableWidgetItem(QString::number(id));
+                idItem->setFlags(idItem->flags() & ~Qt::ItemIsEditable);
+                idItem->setTextAlignment(Qt::AlignCenter);
+                catTable->setItem(row, 0, idItem);
+                catTable->setItem(row, 1, new QTableWidgetItem(name));
+                existingIds.insert(id);
+                added++;
+            }
+        }
+        f.close();
+        QMessageBox::information(nullptr, QString::fromUtf8("导入类别"),
+            QString::fromUtf8("已导入 %1 个新类别").arg(added));
+    });
+
+    // 确定/取消
+    QDialogButtonBox* bbox = new QDialogButtonBox(
+        QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    bbox->setStyleSheet(QString(
+        "QPushButton { background: %1; color: %2; border: 1px solid %3;"
+        " border-radius: 4px; padding: 6px 20px; }"
+        "QPushButton:hover { background: %4; }")
+        .arg(p.bgSecondary, p.textPrimary, p.borderMedium, p.bgHover));
+    catLayout->addWidget(bbox);
+    connect(bbox->button(QDialogButtonBox::Ok), &QPushButton::clicked, &catDlg, &QDialog::accept);
+    connect(bbox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, &catDlg, &QDialog::reject);
+
+    if (catDlg.exec() != QDialog::Accepted) return false;
+
+    // ── 从表格获取类别映射 ──
+    QMap<int, QString> idToName;
+    for (int r = 0; r < catTable->rowCount(); ++r) {
+        int cid = catTable->item(r, 0)->text().toInt();
+        QString name = catTable->item(r, 1)->text().trimmed();
+        if (name.isEmpty()) name = QString("class_%1").arg(cid);
+        // 替换非英文/数字/下划线字符
+        name.replace(QRegularExpression("[^A-Za-z0-9_]"), "_");
+        idToName[cid] = name;
+    }
+
+    if (idToName.isEmpty()) {
+        QMessageBox::warning(this, QString::fromUtf8("提示"),
+            QString::fromUtf8("至少需要一个类别。"));
+        return false;
+    }
+
+    // 更新标签列表（按 ID 顺序填充，空位用占位符）
+    int maxId = idToName.keys().last();
+    m_labelNames.clear();
+    m_labelColors.clear();
+    m_labelInstanceCounts.clear();
+    for (int i = 0; i <= maxId; ++i) {
+        if (idToName.contains(i)) {
+            m_labelNames.append(idToName[i]);
+        } else {
+            m_labelNames.append(QString("class_%1").arg(i));
+        }
+        QColor c = QColor::fromHsv((i * 360 / (maxId + 1)) % 360, 200, 200);
+        m_labelColors.append(c.name());
+        m_labelInstanceCounts.append(0);
+    }
+    saveDatasetConfig();
+
+    // ── 校验格式 ──
+    auto results = validateCurrentFormat();
+    int errorCount = 0;
+    for (const auto& r : results)
+        if (r.status == ConvertResult::Error) errorCount++;
+
+    if (errorCount > 0) {
+        showConvertResultDialog(results, 0, errorCount);
+        return false;
+    }
+
+    QMessageBox::information(this, QString::fromUtf8("格式转换"),
+        QString::fromUtf8("YOLO txt 格式校验通过，类别已设置。"));
+    return true;
+}
+
+// ── PNG 掩码 → YOLO txt ────────────────────────────────────
+bool DatasetManagement::convertPngMaskToTarget()
+{
+    QDir annDir(annotationsDir());
+    QDir imgDir(imagesDir());
+    QString modelType = m_currentModel.modelType;
+
+    // 收集 PNG 掩码文件
+    QFileInfoList maskFiles;
+    for (const char* phase : {"", "train", "val", "test"}) {
+        QDir dir = phase[0] ? QDir(annDir.absoluteFilePath(phase)) : annDir;
+        if (!dir.exists()) continue;
+        maskFiles.append(dir.entryInfoList({"*.png"}, QDir::Files));
+    }
+
+    if (maskFiles.isEmpty()) {
+        QMessageBox::warning(this, QString::fromUtf8("格式转换"),
+            QString::fromUtf8("未在 labels/ 下找到 PNG 掩码文件。"));
+        return false;
+    }
+
+    QList<ConvertResult> results;
+    int converted = 0, failed = 0;
+
+    for (const auto& maskFi : maskFiles) {
+        QString baseName = maskFi.completeBaseName();
+
+        // 查找对应图像获取尺寸
+        double imgW = 0, imgH = 0;
+        QStringList imgExts = {"*.png", "*.jpg", "*.jpeg", "*.bmp", "*.tif", "*.tiff"};
+        for (const auto& ext : imgExts) {
+            QString imgPath = imgDir.absoluteFilePath(baseName + ext.mid(1));
+            if (QFile::exists(imgPath)) {
+                QImageReader reader(imgPath);
+                QSize sz = reader.size();
+                if (sz.isValid()) { imgW = sz.width(); imgH = sz.height(); }
+                break;
+            }
+        }
+        if (imgW == 0) { imgW = 640; imgH = 640; }
+
+        // 读取掩码
+        QImage mask(maskFi.absoluteFilePath());
+        if (mask.isNull()) {
+            ConvertResult r;
+            r.file = maskFi.fileName();
+            r.status = ConvertResult::Error;
+            r.message = QString::fromUtf8("无法读取掩码图像");
+            results.append(r);
+            failed++;
+            continue;
+        }
+
+        QImage gray = mask.convertToFormat(QImage::Format_Grayscale8);
+        int mw = gray.width(), mh = gray.height();
+        if (mw == 0 || mh == 0) {
+            ConvertResult r;
+            r.file = maskFi.fileName();
+            r.status = ConvertResult::Error;
+            r.message = QString::fromUtf8("掩码图像尺寸为0");
+            results.append(r);
+            failed++;
+            continue;
+        }
+
+        // 提取每个灰度值的区域
+        QMap<int, QVector<QPoint>> classPoints;
+        for (int y = 0; y < mh; ++y) {
+            const uchar* line = gray.constScanLine(y);
+            for (int x = 0; x < mw; ++x) {
+                int gv = line[x];
+                if (gv == 0) continue;
+                classPoints[gv].append(QPoint(x, y));
+            }
+        }
+
+        if (classPoints.isEmpty()) {
+            // 掩码全黑（无标注）→ 写空 txt
+            QString txtPath = annDir.absoluteFilePath(baseName + ".txt");
+            QFile tf(txtPath);
+            if (tf.open(QIODevice::WriteOnly | QIODevice::Text)) tf.close();
+            ConvertResult r;
+            r.file = maskFi.fileName();
+            r.status = ConvertResult::Pass;
+            r.message = QString::fromUtf8("掩码为空（负样本），生成空标签文件");
+            results.append(r);
+            converted++;
+            continue;
+        }
+
+        // 生成 YOLO txt
+        QString txtPath = annDir.absoluteFilePath(baseName + ".txt");
+        QFile tf(txtPath);
+        if (!tf.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            ConvertResult r;
+            r.file = maskFi.fileName();
+            r.status = ConvertResult::Error;
+            r.message = QString::fromUtf8("无法写入 %1.txt").arg(baseName);
+            results.append(r);
+            failed++;
+            continue;
+        }
+
+        QTextStream ts(&tf);
+        for (auto it = classPoints.begin(); it != classPoints.end(); ++it) {
+            int gv = it.key();
+            int classId = gv - 1;  // 灰度值1=类别0
+            const auto& pts = it.value();
+
+            if (modelType == ModelTaskTypes::ObjDetectFree) {
+                // 提取 bbox → cx cy w h
+                int x1 = INT_MAX, y1 = INT_MAX, x2 = -1, y2 = -1;
+                for (const auto& p : pts) {
+                    x1 = qMin(x1, p.x()); y1 = qMin(y1, p.y());
+                    x2 = qMax(x2, p.x()); y2 = qMax(y2, p.y());
+                }
+                double cx = ((x1 + x2) / 2.0) / mw;
+                double cy = ((y1 + y2) / 2.0) / mh;
+                double w  = double(x2 - x1 + 1) / mw;
+                double h  = double(y2 - y1 + 1) / mh;
+                ts << QString("%1 %2 %3 %4 %5\n")
+                    .arg(classId).arg(cx, 0, 'f', 6).arg(cy, 0, 'f', 6)
+                    .arg(w, 0, 'f', 6).arg(h, 0, 'f', 6);
+            }
+            else if (modelType == ModelTaskTypes::ObjDetectFixed) {
+                // 提取 minAreaRect → 4 角点
+                // 简化：从 bbox 的 4 角提取（无旋转信息时退化为水平框）
+                int x1 = INT_MAX, y1 = INT_MAX, x2 = -1, y2 = -1;
+                for (const auto& p : pts) {
+                    x1 = qMin(x1, p.x()); y1 = qMin(y1, p.y());
+                    x2 = qMax(x2, p.x()); y2 = qMax(y2, p.y());
+                }
+                double px1 = (double)x1 / mw, py1 = (double)y1 / mh;
+                double px2 = (double)x2 / mw, py2 = (double)y2 / mh;
+                ts << QString("%1 %2 %3 %4 %5 %6 %7 %8 %9\n")
+                    .arg(classId)
+                    .arg(px1, 0, 'f', 6).arg(py1, 0, 'f', 6)
+                    .arg(px2, 0, 'f', 6).arg(py1, 0, 'f', 6)
+                    .arg(px2, 0, 'f', 6).arg(py2, 0, 'f', 6)
+                    .arg(px1, 0, 'f', 6).arg(py2, 0, 'f', 6);
+            }
+            else if (modelType == ModelTaskTypes::InstanceSeg) {
+                // 掩码轮廓 → 多边形点
+                // 简化：使用边界点采样
+                QMap<int, int> xByY;  // y → max x（右轮廓）
+                QMap<int, int> xByYMin;  // y → min x（左轮廓）
+                for (const auto& p : pts) {
+                    if (!xByY.contains(p.y()) || p.x() > xByY[p.y()])
+                        xByY[p.y()] = p.x();
+                    if (!xByYMin.contains(p.y()) || p.x() < xByYMin[p.y()])
+                        xByYMin[p.y()] = p.x();
+                }
+                // 左轮廓自上而下 + 右轮廓自下而上
+                QStringList coords;
+                auto leftKeys = xByYMin.keys();
+                for (int y : leftKeys)
+                    coords << QString("%1 %2").arg((double)xByYMin[y] / mw, 0, 'f', 6)
+                                           .arg((double)y / mh, 0, 'f', 6);
+                auto rightKeys = xByY.keys();
+                for (int i = rightKeys.size() - 1; i >= 0; --i)
+                    coords << QString("%1 %2").arg((double)xByY[rightKeys[i]] / mw, 0, 'f', 6)
+                                           .arg((double)rightKeys[i] / mh, 0, 'f', 6);
+                ts << QString("%1 %2\n").arg(classId).arg(coords.join(" "));
+            }
+        }
+        tf.close();
+
+        ConvertResult r;
+        r.file = maskFi.fileName();
+        r.status = ConvertResult::Pass;
+        r.message = QString::fromUtf8("已转换为 %1 格式").arg(modelType);
+        results.append(r);
+        converted++;
+    }
+
+    showConvertResultDialog(results, converted, failed);
+    return converted > 0;
+}
+
+// ── LabelMe JSON → YOLO txt ────────────────────────────────
+bool DatasetManagement::convertLabelMeJsonToTarget()
+{
+    QDir annDir(annotationsDir());
+    QDir imgDir(imagesDir());
+    QString modelType = m_currentModel.modelType;
+
+    // 收集 JSON 文件
+    QFileInfoList jsonFiles;
+    for (const char* phase : {"", "train", "val", "test"}) {
+        QDir dir = phase[0] ? QDir(annDir.absoluteFilePath(phase)) : annDir;
+        if (!dir.exists()) continue;
+        jsonFiles.append(dir.entryInfoList({"*.json"}, QDir::Files));
+    }
+
+    if (jsonFiles.isEmpty()) {
+        QMessageBox::warning(this, QString::fromUtf8("格式转换"),
+            QString::fromUtf8("未在 labels/ 下找到 LabelMe JSON 文件。"));
+        return false;
+    }
+
+    // ── 步骤1：从 JSON 中自动提取所有标签名 ──
+    QSet<QString> detectedLabels;
+    for (const auto& jsonFi : jsonFiles) {
+        QFile jf(jsonFi.absoluteFilePath());
+        if (!jf.open(QIODevice::ReadOnly)) continue;
+        QJsonDocument doc = QJsonDocument::fromJson(jf.readAll());
+        jf.close();
+        if (!doc.isObject()) continue;
+        QJsonObject obj = doc.object();
+        // 跳过 COCO 统一标注
+        if (obj.contains("images") && obj.contains("annotations")) continue;
+        QJsonArray shapes = obj.value("shapes").toArray();
+        for (const QJsonValue& sv : shapes) {
+            QString label = sv.toObject().value("label").toString();
+            if (!label.isEmpty()) detectedLabels.insert(label);
+        }
+    }
+
+    // ── 步骤2：类别设置对话框 ──
+    const auto& p = ThemeManager::instance().palette();
+
+    QDialog catDlg(this);
+    catDlg.setWindowTitle(QString::fromUtf8("设置类别 — LabelMe JSON 导入"));
+    catDlg.setMinimumSize(520, 420);
+    catDlg.setStyleSheet(QString("QDialog { background: %1; }").arg(p.bgPrimary));
+
+    QVBoxLayout* catLayout = new QVBoxLayout(&catDlg);
+    catLayout->setSpacing(10);
+
+    // 说明
+    QLabel* hintLabel = new QLabel(QString::fromUtf8(
+        "已从 JSON 中检测到以下标签类别，请确认或编辑类别列表。\n"
+        "类别顺序决定了 YOLO txt 中的类别 ID（从 0 开始）。"));
+    hintLabel->setWordWrap(true);
+    hintLabel->setStyleSheet(QString("color: %1; font-size: 12px;").arg(p.textSecondary));
+    catLayout->addWidget(hintLabel);
+
+    // 类别列表
+    QListWidget* catList = new QListWidget;
+    catList->setDragDropMode(QAbstractItemView::InternalMove);  // 支持拖拽排序
+    catList->setStyleSheet(QString(
+        "QListWidget { background: %1; color: %2; border: 1px solid %3;"
+        " border-radius: 4px; font-size: 12px; padding: 4px; }"
+        "QListWidget::item { padding: 4px 8px; border-bottom: 1px solid %4; }"
+        "QListWidget::item:selected { background: %5; }")
+        .arg(p.bgPrimary, p.textPrimary, p.borderMedium,
+             p.borderLight, p.bgSelected));
+    catLayout->addWidget(catList, 1);
+
+    // 填充检测到的标签
+    QStringList sortedLabels(detectedLabels.begin(), detectedLabels.end());
+    sortedLabels.sort();
+    // 合并已有标签
+    for (const QString& existing : m_labelNames) {
+        if (!sortedLabels.contains(existing))
+            sortedLabels.append(existing);
+    }
+    for (const QString& lbl : sortedLabels)
+        catList->addItem(lbl);
+
+    // 按钮行
+    QHBoxLayout* btnRow = new QHBoxLayout;
+    btnRow->setSpacing(6);
+
+    QPushButton* btnAdd = new QPushButton(QString::fromUtf8("+ 添加类别"));
+    QPushButton* btnRemove = new QPushButton(QString::fromUtf8("- 删除选中"));
+    QPushButton* btnImport = new QPushButton(QString::fromUtf8("导入类别"));
+    QPushButton* btnExample = new QPushButton(QString::fromUtf8("查看 JSON 示例"));
+
+    for (auto* btn : {btnAdd, btnRemove, btnImport, btnExample}) {
+        btn->setStyleSheet(QString(
+            "QPushButton { background: %1; color: %2; border: 1px solid %3;"
+            " border-radius: 4px; padding: 4px 10px; font-size: 11px; }"
+            "QPushButton:hover { background: %4; }")
+            .arg(p.bgSecondary, p.textPrimary, p.borderMedium, p.bgHover));
+        btn->setCursor(Qt::PointingHandCursor);
+    }
+
+    btnRow->addWidget(btnAdd);
+    btnRow->addWidget(btnRemove);
+    btnRow->addWidget(btnImport);
+    btnRow->addStretch();
+    btnRow->addWidget(btnExample);
+    catLayout->addLayout(btnRow);
+
+    // 添加类别
+    connect(btnAdd, &QPushButton::clicked, this, [catList, &p]() {
+        QString name = QInputDialog::getText(nullptr,
+            QString::fromUtf8("添加类别"),
+            QString::fromUtf8("类别名称："));
+        if (!name.trimmed().isEmpty()) {
+            catList->addItem(name.trimmed());
+        }
+    });
+
+    // 删除选中
+    connect(btnRemove, &QPushButton::clicked, this, [catList]() {
+        int row = catList->currentRow();
+        if (row >= 0) delete catList->takeItem(row);
+    });
+
+    // 从文件导入类别
+    connect(btnImport, &QPushButton::clicked, this, [catList, &p]() {
+        QString filePath = QFileDialog::getOpenFileName(nullptr,
+            QString::fromUtf8("导入类别文件"),
+            QString(),
+            QString::fromUtf8("文本文件 (*.txt *.csv);;所有文件 (*.*)"));
+        if (filePath.isEmpty()) return;
+        QFile f(filePath);
+        if (!f.open(QIODevice::ReadOnly | QIODevice::Text)) return;
+        int added = 0;
+        QSet<QString> existing;
+        for (int i = 0; i < catList->count(); ++i)
+            existing.insert(catList->item(i)->text());
+        while (!f.atEnd()) {
+            QString line = QString::fromUtf8(f.readLine()).trimmed();
+            if (line.isEmpty() || line.startsWith('#')) continue;
+            // 支持 逗号/空格/换行 分隔
+            QStringList parts = line.split(QRegularExpression("[,\\s]+"), Qt::SkipEmptyParts);
+            for (const QString& name : parts) {
+                if (!existing.contains(name)) {
+                    catList->addItem(name);
+                    existing.insert(name);
+                    added++;
+                }
+            }
+        }
+        f.close();
+        QMessageBox::information(nullptr, QString::fromUtf8("导入类别"),
+            QString::fromUtf8("已导入 %1 个新类别").arg(added));
+    });
+
+    // 查看 JSON 示例
+    connect(btnExample, &QPushButton::clicked, this, [&p]() {
+        QDialog exampleDlg(nullptr);
+        exampleDlg.setWindowTitle(QString::fromUtf8("LabelMe JSON 格式示例"));
+        exampleDlg.setMinimumSize(500, 400);
+        exampleDlg.setStyleSheet(QString("QDialog { background: %1; }").arg(p.bgPrimary));
+
+        QVBoxLayout* exLayout = new QVBoxLayout(&exampleDlg);
+
+        QTextEdit* exEdit = new QTextEdit;
+        exEdit->setReadOnly(true);
+        exEdit->setStyleSheet(QString(
+            "QTextEdit { background: %1; color: %2; border: 1px solid %3;"
+            " border-radius: 4px; padding: 8px; font-family: Consolas, monospace; font-size: 12px; }")
+            .arg(p.bgSecondary, p.textPrimary, p.borderMedium));
+        exEdit->setPlainText(QString::fromUtf8(
+            "{\n"
+            "  \"version\": \"5.0.1\",\n"
+            "  \"flags\": {},\n"
+            "  \"shapes\": [\n"
+            "    {\n"
+            "      \"label\": \"defect\",           ← 标签类别名\n"
+            "      \"points\": [                   ← 多边形/矩形顶点\n"
+            "        [120.5, 85.3],\n"
+            "        [235.0, 85.3],\n"
+            "        [235.0, 170.2],\n"
+            "        [120.5, 170.2]\n"
+            "      ],\n"
+            "      \"group_id\": null,\n"
+            "      \"shape_type\": \"polygon\",    ← polygon/rectangle/circle\n"
+            "      \"flags\": {}\n"
+            "    },\n"
+            "    {\n"
+            "      \"label\": \"scratch\",\n"
+            "      \"points\": [\n"
+            "        [50.0, 30.0],\n"
+            "        [90.0, 60.0],\n"
+            "        [70.0, 100.0]\n"
+            "      ],\n"
+            "      \"shape_type\": \"polygon\"\n"
+            "    }\n"
+            "  ],\n"
+            "  \"imagePath\": \"img_001.jpg\",     ← 对应的图像文件名\n"
+            "  \"imageData\": null,\n"
+            "  \"imageHeight\": 480,              ← 图像高度（用于坐标归一化）\n"
+            "  \"imageWidth\": 640                ← 图像宽度\n"
+            "}\n\n"
+            "说明：\n"
+            "  • shapes[].label → 类别名，需与上方类别列表对应\n"
+            "  • shapes[].points → 像素坐标，将自动归一化到 [0,1]\n"
+            "  • shapes[].shape_type → polygon(多边形)、rectangle(矩形)、circle(圆)\n"
+            "  • imageWidth/imageHeight → 用于坐标归一化"));
+        exLayout->addWidget(exEdit);
+
+        QPushButton* closeBtn = new QPushButton(QString::fromUtf8("关闭"));
+        closeBtn->setStyleSheet(QString(
+            "QPushButton { background: %1; color: %2; border: 1px solid %3;"
+            " border-radius: 4px; padding: 6px 20px; }"
+            "QPushButton:hover { background: %4; }")
+            .arg(p.bgSecondary, p.textPrimary, p.borderMedium, p.bgHover));
+        connect(closeBtn, &QPushButton::clicked, &exampleDlg, &QDialog::accept);
+        exLayout->addWidget(closeBtn, 0, Qt::AlignRight);
+
+        exampleDlg.exec();
+    });
+
+    // 确定/取消按钮
+    QDialogButtonBox* bbox = new QDialogButtonBox(
+        QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    bbox->setStyleSheet(QString(
+        "QPushButton { background: %1; color: %2; border: 1px solid %3;"
+        " border-radius: 4px; padding: 6px 20px; }"
+        "QPushButton:hover { background: %4; }")
+        .arg(p.bgSecondary, p.textPrimary, p.borderMedium, p.bgHover));
+    catLayout->addWidget(bbox);
+    connect(bbox->button(QDialogButtonBox::Ok), &QPushButton::clicked, &catDlg, &QDialog::accept);
+    connect(bbox->button(QDialogButtonBox::Cancel), &QPushButton::clicked, &catDlg, &QDialog::reject);
+
+    if (catDlg.exec() != QDialog::Accepted) return false;
+
+    // ── 步骤3：从对话框获取类别列表 ──
+    QStringList categoryNames;
+    for (int i = 0; i < catList->count(); ++i)
+        categoryNames.append(catList->item(i)->text());
+
+    if (categoryNames.isEmpty()) {
+        QMessageBox::warning(this, QString::fromUtf8("提示"),
+            QString::fromUtf8("至少需要一个类别才能进行转换。"));
+        return false;
+    }
+
+    // 更新标签列表
+    m_labelNames = categoryNames;
+    m_labelColors.clear();
+    m_labelInstanceCounts.clear();
+    for (int i = 0; i < categoryNames.size(); ++i) {
+        // 生成颜色
+        QColor c = QColor::fromHsv((i * 360 / categoryNames.size()) % 360, 200, 200);
+        m_labelColors.append(c.name());
+        m_labelInstanceCounts.append(0);
+    }
+    saveDatasetConfig();
+
+    // ── 步骤4：执行转换 ──
+    QList<ConvertResult> results;
+    int converted = 0, failed = 0;
+
+    for (const auto& jsonFi : jsonFiles) {
+        QString baseName = jsonFi.completeBaseName();
+
+        QFile jf(jsonFi.absoluteFilePath());
+        if (!jf.open(QIODevice::ReadOnly)) {
+            ConvertResult r;
+            r.file = jsonFi.fileName();
+            r.status = ConvertResult::Error;
+            r.message = QString::fromUtf8("无法读取 JSON 文件");
+            results.append(r);
+            failed++;
+            continue;
+        }
+
+        QJsonDocument doc = QJsonDocument::fromJson(jf.readAll());
+        jf.close();
+
+        if (!doc.isObject()) {
+            ConvertResult r;
+            r.file = jsonFi.fileName();
+            r.status = ConvertResult::Error;
+            r.message = QString::fromUtf8("JSON 格式无效（非对象）");
+            results.append(r);
+            failed++;
+            continue;
+        }
+
+        QJsonObject obj = doc.object();
+
+        // 跳过 COCO 统一标注文件（包含 images + annotations 键）
+        if (obj.contains("images") && obj.contains("annotations")) {
+            ConvertResult r;
+            r.file = jsonFi.fileName();
+            r.status = ConvertResult::Warning;
+            r.message = QString::fromUtf8("COCO 统一标注文件，请使用文件夹导入功能");
+            results.append(r);
+            continue;
+        }
+
+        QJsonArray shapes = obj.value("shapes").toArray();
+        double imgW = obj.value("imageWidth").toDouble(0);
+        double imgH = obj.value("imageHeight").toDouble(0);
+        if (imgW == 0 || imgH == 0) {
+            // 尝试从图像文件获取
+            for (const auto& ext : {"png", "jpg", "jpeg", "bmp", "tif"}) {
+                QString imgPath = imgDir.absoluteFilePath(
+                    baseName + "." + ext);
+                if (QFile::exists(imgPath)) {
+                    QImageReader reader(imgPath);
+                    QSize sz = reader.size();
+                    if (sz.isValid()) { imgW = sz.width(); imgH = sz.height(); }
+                    break;
+                }
+            }
+        }
+        if (imgW == 0) { imgW = 640; imgH = 640; }
+
+        // 生成 YOLO txt
+        QString txtPath = annDir.absoluteFilePath(baseName + ".txt");
+        QFile tf(txtPath);
+        if (!tf.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            ConvertResult r;
+            r.file = jsonFi.fileName();
+            r.status = ConvertResult::Error;
+            r.message = QString::fromUtf8("无法写入 %1.txt").arg(baseName);
+            results.append(r);
+            failed++;
+            continue;
+        }
+
+        QTextStream ts(&tf);
+
+        for (const QJsonValue& sv : shapes) {
+            QJsonObject shape = sv.toObject();
+            int classId = shape.value("category_id").toInt(-1);
+            QString label = shape.value("label").toString();
+            if (!label.isEmpty()) {
+                int found = m_labelNames.indexOf(label);
+                if (found >= 0) classId = found;
+            }
+            if (classId < 0) {
+                ConvertResult r;
+                r.file = jsonFi.fileName();
+                r.status = ConvertResult::Warning;
+                r.message = QString::fromUtf8("未识别的标签: \"%1\"，跳过").arg(label);
+                results.append(r);
+                continue;
+            }
+
+            QJsonArray points = shape.value("points").toArray();
+            QString shapeType = shape.value("shape_type").toString("polygon");
+
+            if (modelType == ModelTaskTypes::ObjDetectFree) {
+                // bbox → cx cy w h
+                double xmin = 1e9, ymin = 1e9, xmax = -1, ymax = -1;
+                for (const QJsonValue& pv : points) {
+                    double x = pv.toArray()[0].toDouble();
+                    double y = pv.toArray()[1].toDouble();
+                    xmin = qMin(xmin, x); ymin = qMin(ymin, y);
+                    xmax = qMax(xmax, x); ymax = qMax(ymax, y);
+                }
+                double cx = (xmin + xmax) / 2.0 / imgW;
+                double cy = (ymin + ymax) / 2.0 / imgH;
+                double w  = (xmax - xmin) / imgW;
+                double h  = (ymax - ymin) / imgH;
+                ts << QString("%1 %2 %3 %4 %5\n")
+                    .arg(classId).arg(cx, 0, 'f', 6).arg(cy, 0, 'f', 6)
+                    .arg(w, 0, 'f', 6).arg(h, 0, 'f', 6);
+            }
+            else if (modelType == ModelTaskTypes::ObjDetectFixed) {
+                // 旋转框：从 points 取4个顶点
+                if (points.size() >= 4) {
+                    QStringList coords;
+                    for (int i = 0; i < 4; ++i) {
+                        double x = points[i].toArray()[0].toDouble() / imgW;
+                        double y = points[i].toArray()[1].toDouble() / imgH;
+                        coords << QString("%1 %2").arg(x, 0, 'f', 6).arg(y, 0, 'f', 6);
+                    }
+                    ts << QString("%1 %2\n").arg(classId).arg(coords.join(" "));
+                } else {
+                    // 不足4点，退化为 bbox 4角
+                    double xmin = 1e9, ymin = 1e9, xmax = -1, ymax = -1;
+                    for (const QJsonValue& pv : points) {
+                        double x = pv.toArray()[0].toDouble();
+                        double y = pv.toArray()[1].toDouble();
+                        xmin = qMin(xmin, x); ymin = qMin(ymin, y);
+                        xmax = qMax(xmax, x); ymax = qMax(ymax, y);
+                    }
+                    ts << QString("%1 %2 %3 %4 %5 %6 %7 %8 %9\n")
+                        .arg(classId)
+                        .arg(xmin / imgW, 0, 'f', 6).arg(ymin / imgH, 0, 'f', 6)
+                        .arg(xmax / imgW, 0, 'f', 6).arg(ymin / imgH, 0, 'f', 6)
+                        .arg(xmax / imgW, 0, 'f', 6).arg(ymax / imgH, 0, 'f', 6)
+                        .arg(xmin / imgW, 0, 'f', 6).arg(ymax / imgH, 0, 'f', 6);
+                }
+            }
+            else if (modelType == ModelTaskTypes::InstanceSeg) {
+                // 多边形点
+                QStringList coords;
+                for (const QJsonValue& pv : points) {
+                    double x = pv.toArray()[0].toDouble() / imgW;
+                    double y = pv.toArray()[1].toDouble() / imgH;
+                    coords << QString("%1 %2").arg(x, 0, 'f', 6).arg(y, 0, 'f', 6);
+                }
+                if (coords.size() >= 3) {
+                    ts << QString("%1 %2\n").arg(classId).arg(coords.join(" "));
+                }
+            }
+        }
+
+        tf.close();
+        converted++;
+
+        ConvertResult r;
+        r.file = jsonFi.fileName();
+        r.status = ConvertResult::Pass;
+        r.message = QString::fromUtf8("已转换 %1 个标注").arg(shapes.size());
+        results.append(r);
+    }
+
+    showConvertResultDialog(results, converted, failed);
+    return converted > 0;
+}
+
+// ── 异常检测：引导 OK/NG 分类导入 ──────────────────────────
+bool DatasetManagement::convertAnomalyClassification()
+{
+    QString dsDir = datasetDir();
+
+    QString msg = QString::fromUtf8(
+        "异常检测不需要标签文件，图像按文件夹分类：\n\n"
+        "  train/OK/  — 正常样本（训练）\n"
+        "  train/NG/  — 异常样本（训练）\n"
+        "  val/OK/    — 正常样本（验证）\n"
+        "  val/NG/    — 异常样本（验证）\n\n"
+        "请依次导入 OK（正常）和 NG（异常）图像。\n"
+        "将自动创建目录结构。");
+
+    QMessageBox::StandardButton btn = QMessageBox::question(
+        this, QString::fromUtf8("异常检测数据导入"), msg,
+        QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+    if (btn != QMessageBox::Ok) return false;
+
+    // 导入 OK 图像
+    QStringList okFiles = QFileDialog::getOpenFileNames(
+        this,
+        QString::fromUtf8("选择 OK（正常）图像"),
+        m_projectRoot,
+        imageFileFilter());
+    if (okFiles.isEmpty()) return false;
+
+    // 选择目标阶段
+    QStringList phases = {QString::fromUtf8("train"), QString::fromUtf8("val"), QString::fromUtf8("test")};
+    bool ok = false;
+    QString phase = QInputDialog::getItem(this,
+        QString::fromUtf8("选择数据集划分"),
+        QString::fromUtf8("将 OK 图像放入哪个子集？"),
+        phases, 0, false, &ok);
+    if (!ok) return false;
+
+    QDir okDir(dsDir + "/" + phase + "/OK");
+    okDir.mkpath(".");
+
+    int imported = 0;
+    for (const QString& srcPath : okFiles) {
+        QString fn = QFileInfo(srcPath).fileName();
+        QString dstPath = okDir.absoluteFilePath(fn);
+        if (!QFile::exists(dstPath))
+            if (QFile::copy(srcPath, dstPath)) imported++;
+    }
+
+    // 导入 NG 图像
+    QStringList ngFiles = QFileDialog::getOpenFileNames(
+        this,
+        QString::fromUtf8("选择 NG（异常）图像"),
+        m_projectRoot,
+        imageFileFilter());
+
+    if (!ngFiles.isEmpty()) {
+        phase = QInputDialog::getItem(this,
+            QString::fromUtf8("选择数据集划分"),
+            QString::fromUtf8("将 NG 图像放入哪个子集？"),
+            phases, 0, false, &ok);
+        if (ok) {
+            QDir ngDir(dsDir + "/" + phase + "/NG");
+            ngDir.mkpath(".");
+            for (const QString& srcPath : ngFiles) {
+                QString fn = QFileInfo(srcPath).fileName();
+                QString dstPath = ngDir.absoluteFilePath(fn);
+                if (!QFile::exists(dstPath))
+                    if (QFile::copy(srcPath, dstPath)) imported++;
+            }
+        }
+    }
+
+    // 刷新
+    loadDatasetConfig();
+    refreshGallery();
+    updateModelInfoPanel();
+
+    if (imported > 0 && !m_currentModelId.isEmpty()) {
+        ProjectConfig::setModelStatus(m_project.fvprojPath, m_currentModelId,
+                                      "data_imported", true);
+        emit dataImported(m_currentModelId);
+    }
+
+    Logger::info(QString::fromUtf8("异常检测数据导入完成: %1 张图像").arg(imported));
+    return imported > 0;
+}
+
+// ── 转换结果展示 ──────────────────────────────────────────
+void DatasetManagement::showConvertResultDialog(const QList<ConvertResult>& results, int converted, int failed)
+{
+    const auto& p = ThemeManager::instance().palette();
+
+    QDialog dlg(this);
+    dlg.setWindowTitle(QString::fromUtf8("格式转换结果"));
+    dlg.setMinimumSize(600, 400);
+    dlg.setStyleSheet(QString("QDialog { background: %1; }").arg(p.bgPrimary));
+
+    QVBoxLayout* layout = new QVBoxLayout(&dlg);
+    layout->setSpacing(12);
+
+    // 统计摘要
+    int passCount = 0, warnCount = 0, errorCount = 0;
+    for (const auto& r : results) {
+        if (r.status == ConvertResult::Pass) passCount++;
+        else if (r.status == ConvertResult::Warning) warnCount++;
+        else errorCount++;
+    }
+
+    QLabel* summaryLabel = new QLabel;
+    summaryLabel->setStyleSheet(QString("font-size: 13px; font-weight: bold; color: %1;")
+        .arg(failed > 0 ? p.danger : (warnCount > 0 ? p.warning : p.success)));
+    summaryLabel->setText(QString::fromUtf8("转换完成：%1 成功，%2 失败，%3 警告，%4 通过")
+        .arg(converted).arg(failed).arg(warnCount).arg(passCount));
+    layout->addWidget(summaryLabel);
+
+    // 结果表格
+    QTableWidget* table = new QTableWidget;
+    table->setColumnCount(4);
+    table->setHorizontalHeaderLabels({
+        QString::fromUtf8("状态"),
+        QString::fromUtf8("文件"),
+        QString::fromUtf8("行号"),
+        QString::fromUtf8("描述")
+    });
+    table->setRowCount(results.size());
+    table->setAlternatingRowColors(true);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    table->horizontalHeader()->setStretchLastSection(true);
+    table->horizontalHeader()->resizeSection(0, 60);
+    table->horizontalHeader()->resizeSection(1, 180);
+    table->horizontalHeader()->resizeSection(2, 50);
+    table->setStyleSheet(QString(
+        "QTableWidget { background: %1; color: %2; border: 1px solid %3;"
+        " gridline-color: %4; font-size: 12px; }"
+        "QHeaderView::section { background: %5; color: %6; border: none;"
+        " padding: 4px; font-weight: bold; }")
+        .arg(p.bgPrimary, p.textPrimary, p.borderMedium,
+             p.borderLight, p.bgTertiary, p.textSecondary));
+
+    for (int i = 0; i < results.size(); ++i) {
+        const auto& r = results[i];
+        QString statusText, statusColor;
+        switch (r.status) {
+        case ConvertResult::Pass:
+            statusText = QString::fromUtf8("通过"); statusColor = p.success; break;
+        case ConvertResult::Warning:
+            statusText = QString::fromUtf8("警告"); statusColor = p.warning; break;
+        case ConvertResult::Error:
+            statusText = QString::fromUtf8("错误"); statusColor = p.danger; break;
+        }
+        auto* item0 = new QTableWidgetItem(statusText);
+        item0->setForeground(QColor(statusColor));
+        table->setItem(i, 0, item0);
+        table->setItem(i, 1, new QTableWidgetItem(r.file));
+        table->setItem(i, 2, new QTableWidgetItem(
+            r.line >= 0 ? QString::number(r.line) : QString()));
+        table->setItem(i, 3, new QTableWidgetItem(r.message));
+    }
+
+    layout->addWidget(table, 1);
+
+    QPushButton* closeBtn = new QPushButton(QString::fromUtf8("关闭"));
+    closeBtn->setStyleSheet(QString(
+        "QPushButton { background: %1; color: %2; border: 1px solid %3;"
+        " border-radius: 4px; padding: 6px 24px; font-size: 12px; }"
+        "QPushButton:hover { background: %4; }")
+        .arg(p.bgSecondary, p.textPrimary, p.borderMedium, p.bgHover));
+    connect(closeBtn, &QPushButton::clicked, &dlg, &QDialog::accept);
+    layout->addWidget(closeBtn, 0, Qt::AlignRight);
+
+    dlg.exec();
 }
 
 // ── 占位按钮：数据增强（Phase 1 预留，功能待后续迭代实现）──
@@ -3027,7 +4460,7 @@ void DatasetManagement::onExportDataset()
     if (choice.contains(QString::fromUtf8("PNG 掩码"))) {
         QString dir = QFileDialog::getExistingDirectory(this,
             QString::fromUtf8("选择 PNG 掩码导出目录"),
-            m_dataRoot);
+            m_projectRoot);
         if (dir.isEmpty()) return;
         writeMaskFormat(dir, exportIndices);
     } else if (choice.contains("COCO")) {
@@ -3040,7 +4473,7 @@ void DatasetManagement::onExportDataset()
     } else {
         QString dir = QFileDialog::getExistingDirectory(this,
             QString::fromUtf8("选择 YOLO 导出目录"),
-            m_dataRoot);
+            m_projectRoot);
         if (dir.isEmpty()) return;
         writeYoloFormat(dir, exportIndices);
     }
@@ -3067,9 +4500,11 @@ void DatasetManagement::writeCocoJson(const QString& outputPath, const QList<int
     // categories
     QJsonArray cats;
     for (int i = 0; i < m_labelNames.size(); ++i) {
+        const QString& name = m_labelNames[i];
+        if (name.trimmed().isEmpty()) continue;  // 跳过空名称
         QJsonObject cat;
-        cat["id"]   = i;   // COCO 0-based
-        cat["name"] = m_labelNames[i];
+        cat["id"]   = cats.size();   // COCO 0-based, 跳过空名称后重新编号
+        cat["name"] = name;
         if (m_labelColors.size() > i)
             cat["color"] = m_labelColors[i];
         cats.append(cat);
@@ -3281,14 +4716,23 @@ void DatasetManagement::writeYoloFormat(const QString& outputDir, const QList<in
     QString yamlPath = root.absoluteFilePath("data.yaml");
     QFile yf(yamlPath);
     if (yf.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        // 先统计有效类别数（跳过空名称）
+        int validNc = 0;
+        for (int i = 0; i < m_labelNames.size(); ++i) {
+            if (!m_labelNames[i].trimmed().isEmpty()) validNc++;
+        }
+
         QTextStream ts(&yf);
         ts << QString::fromUtf8("# FuseVision exported YOLO dataset\n");
         ts << QString("path: %1\n").arg(outputDir);
         ts << "train: images/train\n";
-        ts << "nc: " << m_labelNames.size() << "\n";
+        ts << "nc: " << validNc << "\n";
         ts << "names:\n";
-        for (int i = 0; i < m_labelNames.size(); ++i)
-            ts << QString("  %1: %2\n").arg(i).arg(m_labelNames[i]);
+        int yoloIdx = 0;
+        for (int i = 0; i < m_labelNames.size(); ++i) {
+            if (m_labelNames[i].trimmed().isEmpty()) continue;  // 跳过空名称
+            ts << QString("  %1: %2\n").arg(yoloIdx++).arg(m_labelNames[i]);
+        }
         yf.close();
     }
 

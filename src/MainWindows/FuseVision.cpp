@@ -1,5 +1,7 @@
 #include "FuseVision.h"
 #include "core/SessionManager.h"
+#include "core/Logger.h"
+#include "core/ThemeManager.h"
 #include "Login.h"
 #include <QFont>
 #include <QScreen>
@@ -343,19 +345,33 @@ void FuseVision::onMenuItemClicked(QAbstractButton* btn)
 
 void FuseVision::initMainContent()
 {
-    Logger::debug("Initializing main content area...");
+    Logger::debug("Initializing main content area (container only)...");
 
-    // 右侧内容区容器
+    // 右侧内容区容器（页面延迟创建，避免阻塞事件循环）
     m_contentContainer = new QWidget;
     QVBoxLayout* contentLayout = new QVBoxLayout(m_contentContainer);
     contentLayout->setContentsMargins(0, 0, 0, 0);
     contentLayout->setSpacing(0);
 
     m_stackedWidget = new QStackedWidget(this);
+    contentLayout->addWidget(m_stackedWidget, 1);
+}
+
+void FuseVision::initPagesAsync()
+{
+    Logger::debug("Creating pages asynchronously...");
+
     m_deepLearningWidget    = new DeepLearningWidget(this);
+    QApplication::processEvents();
+
     m_traditionalWidget     = new TraditionalWidget(this);
+    QApplication::processEvents();
+
     m_userManagementWidget  = new UserManagementWidget(this);
+    QApplication::processEvents();
+
     m_systemSettingsWidget  = new SystemSettingsWidget(this);
+    QApplication::processEvents();
 
     // DL 项目变更 → 状态栏更新
     connect(m_deepLearningWidget, &DeepLearningWidget::dlProjectChanged,
@@ -370,7 +386,8 @@ void FuseVision::initMainContent()
     m_stackedWidget->addWidget(m_systemSettingsWidget);   // index 3
 
     m_stackedWidget->setCurrentIndex(0);
-    contentLayout->addWidget(m_stackedWidget, 1);
+
+    Logger::info("All pages created successfully");
 }
 
 // ── 底部状态栏 ────────────────────────────────────────────────

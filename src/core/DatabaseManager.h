@@ -43,7 +43,7 @@ public:
     static DatabaseManager& instance();
 
     /* 生命周期 */
-    bool initDatabase();
+    bool initDatabase(const QString& databasePath = QString());
     bool isConnected() const;
 
     /* 认证 */

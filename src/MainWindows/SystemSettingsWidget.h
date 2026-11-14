@@ -24,9 +24,7 @@ public:
 private slots:
     void onBrowseLogPath();     // 浏览日志目录（QFileDialog）
     void onBrowseDbPath();      // 浏览数据库目录
-    void onBrowseDlData();      // 浏览 DL 数据目录
-    void onBrowseDlModel();     // 浏览 DL 模型目录
-    void onBrowseDlDataset();   // 浏览 DL 数据集目录
+    void onBrowseDlData();     // 浏览项目数据根目录
     void onBrowseTraditionalData();   // 浏览传统视觉数据目录
     void onBrowseTraditionalCamera(); // 浏览传统视觉相机配置目录
     void onSave();              // 保存配置 → SettingsManager + 弹窗提示
@@ -46,9 +44,7 @@ private:
     QPushButton* m_cleanBtn = nullptr;  // "清理旧日志"按钮
 
     // ── 深度学习设置 ──────────────────────────────────────────
-    QLineEdit* m_dlDataPathEdit    = nullptr;  // DL 数据路径
-    QLineEdit* m_dlModelPathEdit   = nullptr;  // DL 模型路径
-    QLineEdit* m_dlDatasetPathEdit = nullptr;  // DL 数据集路径
+    QLineEdit* m_projectDataPathEdit = nullptr;  // 项目数据根路径
 
     // ── 传统视觉设置 ──────────────────────────────────────────
     QLineEdit* m_traditionalDataPathEdit   = nullptr;  // 传统视觉数据路径

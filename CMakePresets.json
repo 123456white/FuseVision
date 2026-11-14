@@ -90,6 +90,20 @@
       "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
     }
   ],
+  "testPresets": [
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-x64-debug",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    },
+    {
+      "name": "windows-release",
+      "configurePreset": "windows-x64-release",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    }
+  ],
   "buildPresets": [
     {
       "name": "windows-debug",

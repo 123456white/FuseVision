@@ -1,11 +1,12 @@
 #include "ModelManagement.h"
 #include "ModelConfig.h"
-#include "ProjectManagement.h"  // StepGuideBar
+#include "ProjectManagement.h"
 #include "core/Logger.h"
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
+#include <QGridLayout>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDialog>
@@ -213,14 +214,11 @@ ModelManagement::ModelManagement(QWidget* parent)
 void ModelManagement::setCurrentProject(const FvprojInfo& project)
 {
     m_project      = project;
-    m_dataRoot     = project.dataRoot;
-    m_datasetRoot  = project.datasetRoot;
-    m_modelRoot    = project.modelRoot;
+    m_projectRoot  = project.projectRoot;
     m_currentModelId.clear();
     m_currentModel  = FvdlInfo();
     refreshCards();
     updateLeftInfo();
-    updateStepGuide();
 
     if (project.projectName.isEmpty())
         Logger::debug("模型管理：项目已关闭");
@@ -284,6 +282,16 @@ void ModelManagement::initLeftPanel()
 
     topLayout->addWidget(m_newModelBtn);
     topLayout->addWidget(m_openModelBtn);
+
+    m_deleteModelBtn = new QPushButton(QString::fromUtf8("  删除模型"));
+    m_deleteModelBtn->setIcon(QIcon(":/res/Del.png"));
+    m_deleteModelBtn->setIconSize(QSize(20, 20));
+    m_deleteModelBtn->setCursor(Qt::PointingHandCursor);
+    m_deleteModelBtn->setEnabled(false);
+    m_deleteModelBtn->setObjectName("mmDeleteModelBtn");
+    connect(m_deleteModelBtn, &QPushButton::clicked, this, &ModelManagement::onDeleteModel);
+    topLayout->addWidget(m_deleteModelBtn);
+
     topLayout->addStretch();
 
     // ===== 下栏：当前模型详细信息 =====
@@ -355,11 +363,9 @@ void ModelManagement::initRightPanel()
     m_scrollArea->setWidget(stackWidget);
     layout->addWidget(m_scrollArea, 1);
 
-    // 步骤引导条（直接占满宽度）
-    m_stepGuideBar = new StepGuideBar;
-    m_stepGuideBar->setCurrentStep(1);       // 当前在模型管理
-    m_stepGuideBar->setStepCompleted(0);     // 项目管理已完成
-    layout->addWidget(m_stepGuideBar);
+    // ── 加载动画覆盖层 ──
+    m_loadingOverlay = new LoadingOverlay(m_cardContainer,
+        QString::fromUtf8("正在加载模型..."));
 }
 
 // ── 主题刷新 ──────────────────────────────────────────────────
@@ -394,6 +400,25 @@ void ModelManagement::applyTheme()
                 "QPushButton#mmOpenModelBtn:hover { background-color: %3; }")
             .arg(p.accentPrimary, p.accentPrimary, p.bgHover));
 
+    // ── 删除模型按钮（危险操作，选中时红色，未选中时灰色不可用）──
+    m_deleteModelBtn->setStyleSheet(
+        QString("QPushButton#mmDeleteModelBtn {"
+                "  background-color: %1; color: %2;"
+                "  border: 1px solid %3; border-radius: 8px;"
+                "  padding: 10px 16px; font-size: 13px; font-weight: bold;"
+                "  text-align: left; }"
+                "QPushButton#mmDeleteModelBtn:hover {"
+                "  background-color: %4; border-color: %5; }"
+                "QPushButton#mmDeleteModelBtn:hover:disabled {"
+                "  background-color: %1; border-color: %3; }")
+            // enabled: red bg, white text
+            .arg(QString("#e74c3c"), QString("white"), QString("#c0392b"),
+                 QString("#c0392b"), QString("#a93226"))
+        +
+        QString("QPushButton#mmDeleteModelBtn:disabled {"
+                "  background-color: transparent; color: %1; border-color: %2; }")
+            .arg(p.textMuted, p.borderLight));
+
     // ── 左侧详情标签、标题 ──
     if (auto* title = findChild<QLabel*>("mmInfoTitle"))
         title->setStyleSheet(
@@ -417,6 +442,7 @@ void ModelManagement::applyTheme()
     // ── 图标暗色适配 ──
     m_newModelBtn->setIcon(QIcon(isDark ? ":/res/NewProject_D.png" : ":/res/NewProject.png"));
     m_openModelBtn->setIcon(QIcon(isDark ? ":/res/OpenProject_D.png" : ":/res/OpenProject.png"));
+    m_deleteModelBtn->setIcon(QIcon(isDark ? ":/res/Del_D.png" : ":/res/Del.png"));
 
     // ── 刷新所有卡片主题 ──
     for (ModelCard* card : m_cards)
@@ -438,25 +464,19 @@ void ModelManagement::onNewModel()
 
     QDialog dlg(this);
     dlg.setWindowTitle(QString::fromUtf8("新建模型"));
-    dlg.setMinimumSize(560, 480);
+    dlg.setMinimumSize(480, 560);
     dlg.setStyleSheet(
         QString("QDialog { background-color: %1; } QLabel { color: %2; }")
             .arg(p.bgSecondary, p.textPrimary));
 
     QVBoxLayout* mainDlgLayout = new QVBoxLayout(&dlg);
 
-    // ── 第一栏：任务类型选择（图标+名称，选中高亮边框，右栏=描述）──
-    QHBoxLayout* typeRow = new QHBoxLayout;
-
-    QWidget* typeLeftWidget = new QWidget;
-    QVBoxLayout* typeLeftLayout = new QVBoxLayout(typeLeftWidget);
-    typeLeftLayout->setContentsMargins(0, 0, 0, 0);
-
+    // ── 第一栏：任务类型选择（2×2 四宫格卡片）──
     QLabel* typeTitle = new QLabel(QString::fromUtf8("深度学习类型"));
     QFont boldFont = typeTitle->font();
     boldFont.setBold(true);
     typeTitle->setFont(boldFont);
-    typeLeftLayout->addWidget(typeTitle);
+    mainDlgLayout->addWidget(typeTitle);
 
     QButtonGroup* typeGroup = new QButtonGroup(&dlg);
     QStringList types = ModelTaskTypes::all();
@@ -464,52 +484,75 @@ void ModelManagement::onNewModel()
     bool isDark = (ThemeManager::instance().currentTheme() == ThemeManager::Dark);
     const auto& iconSet = isDark ? s_typeIconResDark : s_typeIconRes;
 
+    QGridLayout* typeGrid = new QGridLayout;
+    typeGrid->setSpacing(12);
+
     for (int i = 0; i < types.size(); ++i) {
-        QPushButton* btn = new QPushButton(
-            QIcon(iconSet[i]),
-            QString("  %1").arg(types[i]));
+        QPushButton* btn = new QPushButton;
         btn->setCheckable(true);
         btn->setCursor(Qt::PointingHandCursor);
         btn->setObjectName("mmTypeBtn");
+
+        // 卡片内容：左图标 + 右(类型名 + 描述摘要)
+        QHBoxLayout* btnLayout = new QHBoxLayout(btn);
+        btnLayout->setContentsMargins(14, 12, 14, 12);
+        btnLayout->setSpacing(12);
+
+        QLabel* iconLabel = new QLabel;
+        iconLabel->setAlignment(Qt::AlignCenter);
+        QPixmap pix(iconSet[i]);
+        iconLabel->setPixmap(pix.scaled(52, 52, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        iconLabel->setStyleSheet("background: transparent; border: none;");
+        iconLabel->setFixedSize(60, 60);
+
+        QVBoxLayout* textLayout = new QVBoxLayout;
+        textLayout->setSpacing(4);
+
+        QLabel* nameLabel = new QLabel(types[i]);
+        nameLabel->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+        nameLabel->setStyleSheet(
+            QString("background: transparent; border: none; font-size: 13px; font-weight: bold; color: %1;")
+                .arg(p.textPrimary));
+
+        // 截取描述的前两行作为摘要
+        QString descFull = QString::fromUtf8(s_typeDescs[i]);
+        QStringList descLines = descFull.split('\n');
+        QString summary = descLines.size() >= 2
+            ? descLines[0].trimmed() + "\n" + descLines[1].trimmed()
+            : descFull.left(40);
+        QLabel* descLabel = new QLabel(summary);
+        descLabel->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+        descLabel->setWordWrap(true);
+        descLabel->setStyleSheet(
+            QString("background: transparent; border: none; font-size: 10px; color: %1;")
+                .arg(p.textSecondary));
+
+        textLayout->addWidget(nameLabel);
+        textLayout->addWidget(descLabel, 1);
+
+        btnLayout->addWidget(iconLabel);
+        btnLayout->addLayout(textLayout, 1);
+
+        btn->setFixedSize(240, 100);
         btn->setStyleSheet(
             QString("QPushButton#mmTypeBtn {"
-                    "  text-align: left; padding: 6px 10px; font-size: 12px;"
-                    "  border: 2px solid %1; border-radius: 6px;"
-                    "  background-color: %2; color: %3; }"
+                    "  border: 2px solid %1; border-radius: 10px;"
+                    "  background-color: %2; }"
                     "QPushButton#mmTypeBtn:checked {"
-                    "  border: 2px solid %4; background-color: %5; color: %6; }"
+                    "  border: 2px solid %3; background-color: %4; }"
                     "QPushButton#mmTypeBtn:hover:!checked {"
-                    "  background-color: %7; }")
-                .arg(p.borderLight, p.bgSecondary, p.textPrimary,
-                     p.accentPrimary, p.bgSelected, p.accentPrimary,
+                    "  background-color: %5; }")
+                .arg(p.borderLight, p.bgSecondary,
+                     p.accentPrimary, p.bgSelected,
                      p.bgHover));
-        btn->setIconSize(QSize(20, 20));
+
         typeGroup->addButton(btn, i);
-        typeLeftLayout->addWidget(btn);
+        typeGrid->addWidget(btn, i / 2, i % 2);
         typeBtns.append(btn);
     }
     typeBtns[0]->setChecked(true);
 
-    QLabel* typeDescLabel = new QLabel(QString::fromUtf8(s_typeDescs[0]));
-    typeDescLabel->setWordWrap(true);
-    typeDescLabel->setMinimumWidth(220);
-    typeDescLabel->setMinimumHeight(130);
-    typeDescLabel->setStyleSheet(
-        QString("QLabel { color: %1; font-size: 11px; padding: 8px;"
-                " background-color: %2; border-radius: 4px; }")
-            .arg(p.textSecondary, p.bgTertiary));
-
-    for (int i = 0; i < typeBtns.size(); ++i) {
-        connect(typeBtns[i], &QPushButton::toggled, this,
-                [i, typeDescLabel](bool checked) {
-                    if (checked) typeDescLabel->setText(QString::fromUtf8(s_typeDescs[i]));
-                });
-    }
-
-    typeRow->addWidget(typeLeftWidget);
-    typeRow->addWidget(typeDescLabel, 1);
-
-    mainDlgLayout->addLayout(typeRow);
+    mainDlgLayout->addLayout(typeGrid);
 
     // ── 分隔线 ──
     QFrame* sep1 = new QFrame;
@@ -534,7 +577,7 @@ void ModelManagement::onNewModel()
     // 模型文件路径
     QHBoxLayout* pathRow = new QHBoxLayout;
     QLineEdit* pathEdit = new QLineEdit;
-    QString defaultPath = QDir(m_modelRoot).absoluteFilePath("model" + QString(".fvdl"));
+    QString defaultPath = QDir(m_projectRoot).absoluteFilePath("model" + QString(".fvdl"));
     pathEdit->setText(defaultPath);
     pathEdit->setReadOnly(true);
     pathEdit->setStyleSheet(
@@ -554,7 +597,7 @@ void ModelManagement::onNewModel()
         QString path = QFileDialog::getSaveFileName(
             &dlg,
             QString::fromUtf8("保存模型文件"),
-            m_modelRoot,
+            m_projectRoot,
             QString::fromUtf8("FuseVision 模型文件 (*.fvdl)"));
         if (!path.isEmpty()) pathEdit->setText(path);
     });
@@ -562,7 +605,7 @@ void ModelManagement::onNewModel()
     connect(nameEdit, &QLineEdit::textChanged, this, [nameEdit, pathEdit, this](const QString& text) {
         QString name = text.trimmed();
         if (!name.isEmpty()) {
-            QString newPath = QDir(m_modelRoot).absoluteFilePath(name + ".fvdl");
+            QString newPath = QDir(m_projectRoot).absoluteFilePath(name + ".fvdl");
             pathEdit->setText(newPath);
         }
     });
@@ -605,8 +648,8 @@ void ModelManagement::onNewModel()
     QString type = types[typeGroup->checkedId()];
 
     QString error;
-    if (!ModelConfig::createModel(name, type, m_modelRoot, m_datasetRoot,
-                                    m_project.projectName, m_project.fvprojPath, &error)) {
+    if (!ModelConfig::createModel(name, type, m_projectRoot,
+                                    m_project.fvprojPath, &error)) {
         QMessageBox::warning(this, QString::fromUtf8("创建失败"), error);
         return;
     }
@@ -641,39 +684,193 @@ void ModelManagement::onOpenModel()
     QString fvdlPath = QFileDialog::getOpenFileName(
         this,
         QString::fromUtf8("打开模型"),
-        m_modelRoot,
+        m_projectRoot,
         QString::fromUtf8("FuseVision 模型文件 (*.fvdl)"));
 
     if (fvdlPath.isEmpty()) return;
+
+    m_loadingOverlay->showOverlay();
 
     QString error;
     FvdlInfo info = ModelConfig::loadModel(fvdlPath, &error);
     if (info.modelName.isEmpty()) {
         QMessageBox::warning(this, QString::fromUtf8("打开失败"), error);
+        m_loadingOverlay->hideOverlay();
         return;
     }
 
+    // 模型来自其他项目 → 询问是否导入到当前项目
     if (info.projectRef != m_project.projectName) {
-        QMessageBox::warning(this, QString::fromUtf8("项目不匹配"),
-            QString::fromUtf8("模型 \"%1\" 不属于当前项目 \"%2\"。")
-                .arg(info.modelName, m_project.projectName));
-        return;
+        QString msg = QString::fromUtf8(
+            "模型 \"%1\" 属于项目 \"%2\"，不属于当前项目 \"%3\"。\n\n"
+            "是否将此模型导入到当前项目？\n"
+            "（模型数据将复制到当前项目目录，原数据保留）")
+            .arg(info.modelName, info.projectRef, m_project.projectName);
+        QMessageBox::StandardButton btn = QMessageBox::question(
+            this, QString::fromUtf8("导入模型"), msg,
+            QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
+        if (btn != QMessageBox::Yes) {
+            m_loadingOverlay->hideOverlay();
+            return;
+        }
+        // 更新项目归属
+        info.projectRef = m_project.projectName;
+    }
+
+    // 检查模型是否在当前项目目录下，若不在则复制过来
+    QDir srcModelDir = QFileInfo(fvdlPath).absoluteDir();
+    QString targetModelDir = QDir(m_projectRoot).absoluteFilePath(info.modelName);
+    bool needImport = (QDir::cleanPath(srcModelDir.absolutePath())
+                       != QDir::cleanPath(targetModelDir));
+
+    if (needImport) {
+        if (QDir(targetModelDir).exists()) {
+            // 目标目录已存在同名模型，直接使用
+            info.fvdlPath = QDir(targetModelDir).absoluteFilePath(
+                QFileInfo(fvdlPath).fileName());
+        } else {
+            bool copied = ProjectManagement::copyDirectory(
+                srcModelDir.absolutePath(), targetModelDir);
+            if (!copied) {
+                QMessageBox::warning(this, QString::fromUtf8("导入失败"),
+                    QString::fromUtf8("无法将模型复制到：%1").arg(targetModelDir));
+                m_loadingOverlay->hideOverlay();
+                return;
+            }
+            info.fvdlPath = QDir(targetModelDir).absoluteFilePath(
+                QFileInfo(fvdlPath).fileName());
+            Logger::info(QString::fromUtf8("模型已复制: %1 -> %2")
+                .arg(srcModelDir.absolutePath(), targetModelDir));
+        }
+
+        // 更新 .fvdl 中的项目归属和路径
+        info.datasetRef = info.modelName;  // 确保数据集引用正确
+        ModelConfig::saveModel(info, &error);
+
+        // 在 .fvproj 中注册此模型（若尚未注册）
+        FvprojInfo proj = ProjectConfig::loadProject(m_project.fvprojPath, &error);
+        QJsonObject models = proj.models;
+        if (!models.contains(info.modelName)) {
+            QJsonObject modelEntry;
+            modelEntry["model_file"]    = info.fvdlPath;
+            modelEntry["dataset_folder"] = info.modelName;
+            QJsonObject status;
+            status["data_imported"] = false;
+            status["annotated"]     = false;
+            status["split_done"]    = false;
+            status["trained"]       = false;
+            modelEntry["status"] = status;
+            models[info.modelName] = modelEntry;
+            proj.models = models;
+            ProjectConfig::saveProject(proj, &error);
+        } else {
+            // 已存在则更新路径
+            QJsonObject modelObj = models[info.modelName].toObject();
+            modelObj["model_file"] = info.fvdlPath;
+            models[info.modelName] = modelObj;
+            proj.models = models;
+            ProjectConfig::saveProject(proj, &error);
+        }
+        m_project = proj;
     }
 
     m_currentModel   = info;
     m_currentModelId = info.modelName;
-    updateLeftInfo();
-    updateStepGuide();
 
-    // 同步卡片选中状态
+    refreshCards();
+    updateLeftInfo();
+    m_deleteModelBtn->setEnabled(true);
+
+    // 选中对应的卡片
     for (ModelCard* card : m_cards) {
-        card->setSelected(card->modelId() == info.modelName);
-        if (card->modelId() == info.modelName)
+        if (card->modelId() == info.modelName) {
+            card->setSelected(true);
             m_selectedCard = card;
+            break;
+        }
     }
+
+    m_loadingOverlay->hideOverlay();
 
     Logger::info(QString::fromUtf8("模型已打开: %1 (%2)").arg(info.modelName, info.modelType));
     emit modelOpened(info.modelName);
+}
+
+// ── 卡片单击 ──────────────────────────────────────────────────
+
+void ModelManagement::onDeleteModel()
+{
+    if (m_currentModelId.isEmpty()) {
+        QMessageBox::information(this,
+            QString::fromUtf8("提示"),
+            QString::fromUtf8("请先选中一个模型卡片，再进行删除操作。"));
+        return;
+    }
+
+    QString modelName = m_currentModel.modelName;
+    QString modelRoot = m_projectRoot + "/" + modelName;
+    QString fvdlPath  = m_currentModel.fvdlPath;
+
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle(QString::fromUtf8("确认删除"));
+    msgBox.setText(QString::fromUtf8("确定要删除模型「%1」吗？").arg(modelName));
+    msgBox.setInformativeText(QString::fromUtf8(
+        "● 删除整个模型：移除模型目录及所有数据\n"
+        "● 仅删除模型文件：只移除 .fvdl，保留数据"));
+    msgBox.setIcon(QMessageBox::Warning);
+
+    QPushButton* btnEntire = msgBox.addButton(QString::fromUtf8("删除整个模型"), QMessageBox::DestructiveRole);
+    QPushButton* btnFvdl   = msgBox.addButton(QString::fromUtf8("仅删除模型文件"), QMessageBox::AcceptRole);
+    QPushButton* btnCancel = msgBox.addButton(QString::fromUtf8("取消"), QMessageBox::RejectRole);
+    msgBox.setDefaultButton(btnCancel);
+    msgBox.exec();
+
+    bool success = false;
+
+    if (msgBox.clickedButton() == btnEntire) {
+        QDir dir(modelRoot);
+        success = dir.removeRecursively();
+    } else if (msgBox.clickedButton() == btnFvdl) {
+        QFile fvdlFile(fvdlPath);
+        success = fvdlFile.remove();
+    } else {
+        return;
+    }
+
+    if (!success) {
+        QMessageBox::warning(this,
+            QString::fromUtf8("删除失败"),
+            QString::fromUtf8("操作失败，请检查文件权限。"));
+        return;
+    }
+
+    // 从 fvproj 中移除模型条目
+    QString error;
+    FvprojInfo proj = ProjectConfig::loadProject(m_project.fvprojPath, &error);
+    QJsonObject models = proj.models;
+    models.remove(modelName);
+    proj.models = models;
+
+    if (!ProjectConfig::saveProject(proj, &error)) {
+        Logger::warn(QString::fromUtf8("更新项目文件失败: %1").arg(error));
+    }
+
+    // 清除选中状态
+    m_currentModelId.clear();
+    m_currentModel = FvdlInfo();
+    m_selectedCard = nullptr;
+    m_deleteModelBtn->setEnabled(false);
+
+    // 刷新
+    m_project = proj;
+    refreshCards();
+    updateLeftInfo();
+
+    QMessageBox::information(this,
+        QString::fromUtf8("删除成功"),
+        QString::fromUtf8("模型「%1」已删除。").arg(modelName));
+
+    Logger::info(QString::fromUtf8("模型已删除: %1").arg(modelName));
 }
 
 // ── 卡片单击 ──────────────────────────────────────────────────
@@ -700,7 +897,7 @@ void ModelManagement::onCardClicked(ModelCard* card)
     m_currentModel   = info;
     m_currentModelId = modelId;
     updateLeftInfo();
-    updateStepGuide();
+    m_deleteModelBtn->setEnabled(true);
     Logger::info(QString::fromUtf8("模型单卡选中: %1 (%2)").arg(modelId, info.modelType));
     emit currentModelChanged(modelId);
 }
@@ -732,7 +929,7 @@ void ModelManagement::onCardDoubleClicked(ModelCard* card)
     m_currentModel   = info;
     m_currentModelId = modelId;
     updateLeftInfo();
-    updateStepGuide();
+    m_deleteModelBtn->setEnabled(true);
 
     Logger::info(QString::fromUtf8("模型已打开(双击): %1").arg(modelId));
     emit modelOpened(modelId);
@@ -743,6 +940,8 @@ void ModelManagement::onCardDoubleClicked(ModelCard* card)
 
 void ModelManagement::refreshCards()
 {
+    m_loadingOverlay->showOverlay();
+
     for (ModelCard* card : m_cards)
         m_cardLayout->removeWidget(card);
     qDeleteAll(m_cards);
@@ -752,6 +951,7 @@ void ModelManagement::refreshCards()
     QJsonObject models = m_project.models;
     if (models.isEmpty()) {
         m_emptyHint->show();
+        m_loadingOverlay->hideOverlay();
         return;
     }
 
@@ -776,6 +976,7 @@ void ModelManagement::refreshCards()
     }
 
     relayoutCards();
+    m_loadingOverlay->hideOverlay();
 }
 
 void ModelManagement::relayoutCards()
@@ -811,6 +1012,7 @@ void ModelManagement::updateLeftInfo()
             "未选定模型\n\n"
             "可点击左侧\"新建模型\"创建新模型，\n"
             "或点击\"打开模型\"选择已有模型。"));
+        m_deleteModelBtn->setEnabled(false);
         return;
     }
 
@@ -820,7 +1022,7 @@ void ModelManagement::updateLeftInfo()
     QString labelInfo = QString::fromUtf8("无");
     QString instanceInfo = QString::fromUtf8("--");
 
-    QString datasetConfigPath = QDir(m_datasetRoot)
+    QString datasetConfigPath = QDir(m_projectRoot)
         .absoluteFilePath(m.datasetRef + "/dataset_config.json");
     QFile cfgFile(datasetConfigPath);
     if (cfgFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -863,49 +1065,10 @@ void ModelManagement::updateLeftInfo()
         "<b>修改</b>: %9")
         .arg(m.modelName, m.modelType,
              m.fvdlPath,
-             m_datasetRoot, m.datasetRef,
+             m_projectRoot, m.datasetRef,
              labelInfo, instanceInfo,
              m.createdTime.toString("yyyy-MM-dd hh:mm"),
              m.modifiedTime.toString("yyyy-MM-dd hh:mm"));
 
     m_detailLabel->setText(info);
-}
-
-// ── 步骤引导条状态解锁 ─────────────────────────────────────
-
-void ModelManagement::updateStepGuide()
-{
-    if (m_currentModelId.isEmpty()) {
-        // 无选定模型：仅步骤 0 完成，当前在步骤 1
-        m_stepGuideBar->setCurrentStep(1);
-        m_stepGuideBar->setStepCompleted(0);
-        return;
-    }
-
-    // 步骤 0 始终完成
-    m_stepGuideBar->setStepCompleted(0);
-    m_stepGuideBar->setCurrentStep(1);
-
-    // 从项目配置中读取当前模型的业务状态
-    QJsonObject models = m_project.models;
-    if (!models.contains(m_currentModelId)) return;
-
-    QJsonObject entry = models[m_currentModelId].toObject();
-    QJsonObject status = entry.value("status").toObject();
-
-    // 步骤 2（数据集管理）：data_imported
-    if (status.value("data_imported").toBool(false))
-        m_stepGuideBar->setStepCompleted(2);
-
-    // 步骤 3（数据标注）：annotated
-    if (status.value("annotated").toBool(false))
-        m_stepGuideBar->setStepCompleted(3);
-
-    // 步骤 4（数据拆分）：split_done
-    if (status.value("split_done").toBool(false))
-        m_stepGuideBar->setStepCompleted(4);
-
-    // 步骤 5（模型训练）：trained
-    if (status.value("trained").toBool(false))
-        m_stepGuideBar->setStepCompleted(5);
 }

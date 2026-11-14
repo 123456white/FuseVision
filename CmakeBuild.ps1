@@ -2,27 +2,49 @@
 FuseVision 构建脚本（Windows + Ninja）
 自动检测 VS 环境，无需手动打开开发者命令行
 #>
+param(
+    [ValidateSet("Debug", "Release")]
+    [string]$Configuration,
+    [switch]$NoRun,
+    [switch]$Test,
+    [switch]$Clean
+)
+
+$ErrorActionPreference = "Stop"
 chcp 65001 > $null
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-$ProjectRoot = $PWD.Path
+$ProjectRoot = $PSScriptRoot
 $DebugBuildDir  = Join-Path $ProjectRoot "out/build/windows-x64-debug"
 $ReleaseBuildDir = Join-Path $ProjectRoot "out/build/windows-x64-release"
 $ExeName = "FuseVision.exe"
 
-$VSBase = "C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools"
-$VcVars64 = Join-Path $VSBase "VC\Auxiliary\Build\vcvars64.bat"
-
 function Initialize-VSEnv {
-    if (-not (Test-Path $VcVars64)) {
-        Write-Host "错误: 未找到 VS 环境脚本: $VcVars64" -ForegroundColor Red
-        exit 1
+    param([string]$BuildDir)
+    $candidates = @()
+    # Prefer the cached toolchain to avoid changing compilers on an incremental build.
+    $cachePath = Join-Path $BuildDir "CMakeCache.txt"
+    if (Test-Path -LiteralPath $cachePath) {
+        $compilerLine = Get-Content -LiteralPath $cachePath | Where-Object { $_ -match '^CMAKE_CXX_COMPILER:FILEPATH=' } | Select-Object -First 1
+        if ($compilerLine -match '^CMAKE_CXX_COMPILER:FILEPATH=(.+)[/\\]VC[/\\]Tools[/\\]MSVC[/\\]') {
+            $candidates += Join-Path $matches[1] "VC/Auxiliary/Build/vcvars64.bat"
+        }
+    }
+    $vsWhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+    if (Test-Path -LiteralPath $vsWhere) {
+        $installation = & $vsWhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
+        if ($installation) { $candidates += Join-Path $installation "VC/Auxiliary/Build/vcvars64.bat" }
+    }
+    $VcVars64 = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+    if (-not $VcVars64) {
+        throw "未找到 VS x64 C++ 编译工具，请安装 Visual Studio / Build Tools 的 C++ 工作负载。"
     }
     Write-Host "初始化 VS x64 编译环境..." -ForegroundColor Cyan
     
     $tempFile = [System.IO.Path]::GetTempFileName()
     try {
         cmd /c "`"$VcVars64`" > nul 2>&1 && set > `"$tempFile`""
+        if ($LASTEXITCODE -ne 0) { throw "VS 环境初始化失败 (exit $LASTEXITCODE)" }
         Get-Content $tempFile | ForEach-Object {
             if ($_ -match '^([^=]+)=(.*)') {
                 $name = $matches[1]
@@ -43,7 +65,7 @@ function Initialize-VSEnv {
         [System.Environment]::SetEnvironmentVariable("CMAKE_CXX_COMPILER", $env:CMAKE_CXX_COMPILER, "Process")
         Write-Host "VS 环境已配置 (编译器: $env:CMAKE_C_COMPILER)" -ForegroundColor Green
     } else {
-        Write-Host "警告: 未找到 x64 编译器路径" -ForegroundColor Yellow
+        throw "未找到 x64 编译器路径"
     }
 }
 
@@ -96,11 +118,15 @@ function Invoke-Backup {
 function Invoke-Build {
     param([string]$BuildType, [string]$BuildDir, [bool]$Clean = $false)
     
-    Initialize-VSEnv
+    Initialize-VSEnv -BuildDir $BuildDir
     
     if ($Clean -and (Test-Path $BuildDir)) {
         Write-Host "清理: $BuildDir" -ForegroundColor Yellow
-        Remove-Item -Path $BuildDir -Recurse -Force -ErrorAction SilentlyContinue
+        $resolvedBuildDir = [System.IO.Path]::GetFullPath($BuildDir)
+        if ($resolvedBuildDir -notin @([System.IO.Path]::GetFullPath($DebugBuildDir), [System.IO.Path]::GetFullPath($ReleaseBuildDir))) {
+            throw "拒绝清理非项目构建目录: $resolvedBuildDir"
+        }
+        Remove-Item -LiteralPath $resolvedBuildDir -Recurse -Force
         $rootCache = Join-Path $ProjectRoot "CMakeCache.txt"
         if (Test-Path $rootCache) { Remove-Item $rootCache -Force }
     }
@@ -108,22 +134,43 @@ function Invoke-Build {
     $configPreset = "windows-x64-$($BuildType.ToLower())"
     $buildPreset = "windows-$($BuildType.ToLower())"
     
-    Write-Host "配置: $configPreset" -ForegroundColor Cyan
-    cmake --preset $configPreset
-    if ($LASTEXITCODE -ne 0) { Write-Host "配置失败" -ForegroundColor Red; return }
-    
-    Write-Host "构建: $buildPreset" -ForegroundColor Cyan
-    cmake --build --preset $buildPreset
-    if ($LASTEXITCODE -ne 0) { Write-Host "构建失败" -ForegroundColor Red; return }
+    Push-Location -LiteralPath $ProjectRoot
+    try {
+        Write-Host "配置: $configPreset" -ForegroundColor Cyan
+        cmake --preset $configPreset
+        if ($LASTEXITCODE -ne 0) { throw "配置失败 (exit $LASTEXITCODE)" }
+
+        Write-Host "构建: $buildPreset" -ForegroundColor Cyan
+        cmake --build --preset $buildPreset
+        if ($LASTEXITCODE -ne 0) { throw "构建失败 (exit $LASTEXITCODE)" }
+
+        if ($Test) {
+            $reportDir = Join-Path $BuildDir "Testing"
+            New-Item -ItemType Directory -Path $reportDir -Force | Out-Null
+            ctest --test-dir $BuildDir --build-config $BuildType --output-on-failure --no-tests=error --output-junit (Join-Path $reportDir "junit.xml")
+            if ($LASTEXITCODE -ne 0) { throw "测试失败 (exit $LASTEXITCODE)" }
+        }
+    } finally {
+        Pop-Location
+    }
     
     $exePath = Join-Path $BuildDir "bin\$BuildType\$ExeName"
     if (-not (Test-Path $exePath)) {
-        Write-Host "未找到可执行文件: $exePath" -ForegroundColor Red; return
+        throw "未找到可执行文件: $exePath"
     }
+    if ($NoRun) { return }
     
     Write-Host "运行: $BuildType" -ForegroundColor Cyan
     & $exePath
+    if ($LASTEXITCODE -ne 0) { throw "应用运行失败 (exit $LASTEXITCODE)" }
 }
+
+if ($Configuration) {
+    $buildDir = if ($Configuration -eq "Debug") { $DebugBuildDir } else { $ReleaseBuildDir }
+    Invoke-Build -BuildType $Configuration -BuildDir $buildDir -Clean $Clean.IsPresent
+    exit 0
+}
+if ($NoRun -or $Test -or $Clean) { throw "非交互选项需要同时指定 -Configuration Debug 或 Release。" }
 
 do {
     Write-Host "`n===== FuseVision 构建菜单 =====" -ForegroundColor Cyan

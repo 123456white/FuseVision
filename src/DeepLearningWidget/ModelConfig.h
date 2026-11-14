@@ -22,9 +22,10 @@ struct FvdlInfo {
     QString    modelName;
     QString    modelType;       // 实例分割 / 异常检测 / 物体检测(非自由矩形) / 物体检测(自由矩形)
     QString    description;
-    QString    fvdlPath;        // dl_models/ProjectA/model1.fvdl
+    QString    fvdlPath;        // ProjectName/modelName.fvdl
     QString    projectRef;      // 所属项目名
-    QString    datasetRef;      // 绑定的数据集文件夹名
+    QString    datasetRef;      // 绑定的数据集文件夹名（同 modelName）
+    QString    datasetLayout;   // "yolo" 或 "classification"
     QDateTime  createdTime;
     QDateTime  modifiedTime;
 };
@@ -49,6 +50,11 @@ struct ModelTaskTypes {
                  QString::fromUtf8(ObjDetectFixed),
                  QString::fromUtf8(ObjDetectFree) };
     }
+
+    // 判断任务类型是否需要 labels 文件夹（异常检测不需要）
+    static bool hasLabelsFolder(const QString& type) {
+        return type != QString::fromUtf8(AnomalyDetect);
+    }
 };
 
 // =============================================================================
@@ -58,19 +64,26 @@ class ModelConfig
 {
 public:
     // ── 新建模型 ──────────────────────────────────────────────
-    // 在 modelRoot 下创建 .fvdl 文件，在 datasetRoot 下创建数据集子文件夹，
-    // 并更新 .fvproj 中 models 条目。
+    // 在 projectRoot 下创建 ModelName/ 文件夹
+    //   YOLO 布局（实例分割/自由矩形/OBB）:
+    //     images/train/  images/val/  images/test/
+    //     labels/train/  labels/val/  labels/test/
+    //   分类布局（异常检测）:
+    //     train/OK/  train/NG/  val/OK/  val/NG/  test/OK/  test/NG/
+    //   均生成 data.yaml + modelName.fvdl，并更新 .fvproj
     static bool createModel(const QString& modelName,
                             const QString& modelType,
-                            const QString& modelRoot,
-                            const QString& datasetRoot,
-                            const QString& projectName,
+                            const QString& projectRoot,
                             const QString& fvprojPath,
                             QString* errorOut = nullptr);
 
     // ── 加载模型 ──────────────────────────────────────────────
     static FvdlInfo loadModel(const QString& fvdlPath,
                               QString* errorOut = nullptr);
+
+    // ── 保存模型 ──────────────────────────────────────────────
+    static bool saveModel(const FvdlInfo& info,
+                          QString* errorOut = nullptr);
 
     // ── 校验模型名称 ──────────────────────────────────────────
     static bool isValidModelName(const QString& name);

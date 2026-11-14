@@ -16,6 +16,8 @@ add_library(FuseVisionCore STATIC
     ThemeManager.cpp
     LogMonitor.h
     LogMonitor.cpp
+    LoadingOverlay.h
+    LoadingOverlay.cpp
 )
 
 target_include_directories(FuseVisionCore
@@ -29,4 +31,8 @@ target_link_libraries(FuseVisionCore
         Qt6::Widgets
         Qt6::Sql
         spdlog::spdlog
+)
+
+target_compile_definitions(FuseVisionCore PRIVATE
+    FUSEVISION_SOURCE_DIR="${CMAKE_SOURCE_DIR}"
 )
