@@ -130,6 +130,9 @@ if ($allOk) {
     Write-Host "===== 环境检查通过！可以开始构建 =====" -ForegroundColor Green
     Write-Host "  运行:  cmake --preset windows-x64-debug"
     Write-Host "  然后:  cmake --build --preset windows-debug"
+    # Optional native probes (for example where.exe cl.exe) may leave exit code 1.
+    # GitHub Actions propagates LASTEXITCODE, so return the aggregate result explicitly.
+    exit 0
 } else {
     Write-Host "===== 存在 [FAIL] 项，请先修复后再构建 =====" -ForegroundColor Red
     exit 1
