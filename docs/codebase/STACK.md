@@ -49,7 +49,7 @@ QSettings存路径、级别、主题、Python；默认业务目录在可执行�
 
 ### 6) Evidence
 
-[CMakeLists.txt:4 cmake_minimum_required](../../CMakeLists.txt:4)；[CMakePresets.json:14 CMAKE_CXX_STANDARD](../../CMakePresets.json:14)；[vcpkg.json:23 builtin-baseline](../../vcpkg.json:23)；[src/main.cpp:105 int main](../../src/main.cpp)；[src/core/SettingsManager.cpp:29 SettingsManager::load](../../src/core/SettingsManager.cpp:30)。
+[CMakeLists.txt:4 cmake_minimum_required](../../CMakeLists.txt:4)；[CMakePresets.json:14 CMAKE_CXX_STANDARD](../../CMakePresets.json:14)；[vcpkg.json:23 builtin-baseline](../../vcpkg.json:23)；[src/main.cpp:107 int main](../../src/main.cpp)；[src/core/SettingsManager.cpp:29 SettingsManager::load](../../src/core/SettingsManager.cpp:30)。
 
 精确本机版本证据为out/build/windows-x64-release/vcpkg_installed/x64-windows/share中的Qt6Core/Qt6CoreConfigVersionImpl.cmake、opencv4/OpenCVConfig-version.cmake及spdlog/spdlogConfigVersion.cmake；它们是构建产物，不纳入可移植业务配置契约。
 

@@ -80,3 +80,6 @@ python -X utf8 scripts/ci/package_windows.py --archive out/delivery/FuseVision-W
 打包只选应用exe、运行DLL和三类Qt插件，不携带测试exe/GTest、账户、项目、配置、日志和恢复目录。SHA256校验及解压启动在临时目录执行，PATH仅系统目录，清空外部Qt插件路径，内存数据库。GitHub Actions同时检查Ninja Debug/Release及VS2022 Debug；文档可复用工作流检查镜像、引用与Mermaid。两项作业通过才交付版本化ZIP和校验文件；v*标签才发布prerelease。详见[CI/CD](../GETTING-STARTED.md#cicd)。
 
 补充交付故障回归TC-020：startup-smoke实际保存并重读PNG/JPEG/BMP/TIFF/WebP，修复前TIFF失败、补齐插件传递运行DLL后通过（ISS-017）。文档夹具的临时根使用resolve消除Windows runner的8.3路径别名；首轮远端26项文档测试的4失败2错误保留，修复不放宽越界断言。Windows原生平台直接执行native/workflow/current-issues三组均退出0，见[平台证据](../logic/evidence/full-functional-windows-platform-20261117.json)，仍不等于人工连续交互验收。
+
+
+CI缓存修正：完整的vcpkg工具前缀命中继续复用，不再因cache-hit并非精确true而删除已恢复工具；不存在时引导安装，缓存不完整则明确失败。缓存按GitHub分支隔离，2026-11-15的缓存位于codex/ci-validation-20261115；本轮以保留两个父提交的追加提交在该验证分支运行，不改主分支或用户工作区/暂存区，也不重写旧运行历史。冷构建上限180分钟覆盖历史首次构建耗时，门禁保持全部执行。

@@ -1,0 +1,10 @@
+{
+  "archive": "out/delivery/FuseVision-Windows-x64-codecs.zip",
+  "sha256": "86ab7c7012983dde66784aa47f3447e0b4afa9ccf3debe033b948ea1da72113a",
+  "files": 48,
+  "metadata": {
+    "revision": "local-codecs-20261117",
+    "configuration": "Release"
+  },
+  "excluded_user_and_test_data": true
+}

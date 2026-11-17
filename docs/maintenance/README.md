@@ -75,4 +75,4 @@ check核对本地MD链接/标题锚点、代码行号范围及当前功能/问�
 
 sync只生成features.json、issues.json、导图JSON/.xmind、CATALOG.md和generated-manifest.json；--html另生成out下阅读文件。历史字段从已保护的归档读取，当前业务事实及主流程关联线从MD读取。归档数据有改动时先check，不能用修改归档来“更新”旧事实。HTML会检测正文、代码预览、下载和已生成文件摘要，源变化或产物缺失时重建；原样再生成不刷新文件。
 
-独立CI在.github/workflows/docs.yml中对push、pull_request或手动触发执行工具测试、只读检查、Mermaid校验与HTML生成，并上传阅读产物；不会在CI中自动改写/提交MD。远端运行前不宣称CI已通过。
+文档CI在.github/workflows/docs.yml中提供workflow_call与手动入口，由build.yml在main/codex验证分支push、main PR及v*标签时调用，执行工具测试、只读检查、Mermaid校验与HTML生成并上传阅读产物。构建和文档都通过才交付桌面包；CI不自动改写/提交MD。实际远端状态见[最新验证](../logic/VALIDATION.md#2026-11-17-完整功能关系回归与cicd)。
