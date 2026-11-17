@@ -76,9 +76,11 @@ class AnnotationManagement : public QWidget
     Q_OBJECT
 public:
     explicit AnnotationManagement(QWidget* parent = nullptr);
+    ~AnnotationManagement() override;
 
     void setDatasetSource(DatasetManagement* dataset);
-    bool openImage(const QString& modelId, const QString& imagePath);
+    /// Own destination values before refreshing samples or entering modal save decisions.
+    bool openImage(QString modelId, QString imagePath);
     void syncLabels();  // 从 DatasetManagement 同步标签类别（名称/颜色/实例数）
     bool hasUnsavedChanges() const;
     bool prepareToLeave();

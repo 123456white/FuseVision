@@ -1,0 +1,37 @@
+test_only_runtime_files_selected (test_ci_tools.PackageTests.test_only_runtime_files_selected) ... ok
+test_missing_smoke_or_duplicate_rejected (test_ci_tools.TraceabilityTests.test_missing_smoke_or_duplicate_rejected) ... ok
+test_missing_test_or_assertion_rejected (test_ci_tools.TraceabilityTests.test_missing_test_or_assertion_rejected) ... ok
+test_skipped_and_failed_rejected (test_ci_tools.TraceabilityTests.test_skipped_and_failed_rejected) ... ok
+test_unmapped_case_rejected (test_ci_tools.TraceabilityTests.test_unmapped_case_rejected) ... ok
+test_valid (test_ci_tools.TraceabilityTests.test_valid) ... ok
+test_cannot_complete_unreviewed_change (test_docflow.DocumentationTests.test_cannot_complete_unreviewed_change) ... ok
+test_dialog_button_identifiers_are_preserved (test_docflow.DocumentationTests.test_dialog_button_identifiers_are_preserved) ... ok
+test_duplicate_feature_id_fails (test_docflow.DocumentationTests.test_duplicate_feature_id_fails) ... ok
+test_features_come_from_markdown_and_preserve_history (test_docflow.DocumentationTests.test_features_come_from_markdown_and_preserve_history) ... ok
+test_fenced_example_links_are_not_treated_as_real_links (test_docflow.DocumentationTests.test_fenced_example_links_are_not_treated_as_real_links) ... ok
+test_file_deletion_is_detected (test_docflow.DocumentationTests.test_file_deletion_is_detected) ... ok
+test_generated_changes_do_not_invalidate_semantic_receipt (test_docflow.DocumentationTests.test_generated_changes_do_not_invalidate_semantic_receipt) ... ok
+test_generation_failure_releases_repository_lock (test_docflow.DocumentationTests.test_generation_failure_releases_repository_lock) ... ok
+test_hooks_skip_other_projects (test_docflow.DocumentationTests.test_hooks_skip_other_projects) ... ok
+test_html_refresh_tracks_linked_code_and_downloads (test_docflow.DocumentationTests.test_html_refresh_tracks_linked_code_and_downloads) ... ok
+test_integrity_check_does_not_change_input_or_create_reports (test_docflow.DocumentationTests.test_integrity_check_does_not_change_input_or_create_reports) ... ok
+test_issue_current_status_and_original_history_are_separate (test_docflow.DocumentationTests.test_issue_current_status_and_original_history_are_separate) ... ok
+test_map_relationships_come_from_markdown_and_validate_endpoints (test_docflow.DocumentationTests.test_map_relationships_come_from_markdown_and_validate_endpoints) ... ok
+test_missing_file_and_heading_links_fail (test_docflow.DocumentationTests.test_missing_file_and_heading_links_fail) ... ok
+test_missing_required_field_fails_instead_of_inventing_fact (test_docflow.DocumentationTests.test_missing_required_field_fails_instead_of_inventing_fact) ... ok
+test_moved_symbol_invalidates_old_code_line (test_docflow.DocumentationTests.test_moved_symbol_invalidates_old_code_line) ... ok
+test_original_evidence_tampering_fails (test_docflow.DocumentationTests.test_original_evidence_tampering_fails) ... ok
+test_preexisting_dirty_untracked_files_not_attributed_to_session (test_docflow.DocumentationTests.test_preexisting_dirty_untracked_files_not_attributed_to_session) ... ok
+test_receipts_are_project_local_and_reject_outside_docs (test_docflow.DocumentationTests.test_receipts_are_project_local_and_reject_outside_docs) ... ok
+test_resume_and_compact_do_not_reset_pending_baseline (test_docflow.DocumentationTests.test_resume_and_compact_do_not_reset_pending_baseline) ... ok
+test_review_invalidated_after_additional_edit (test_docflow.DocumentationTests.test_review_invalidated_after_additional_edit) ... ok
+test_shared_capability_has_no_invented_button (test_docflow.DocumentationTests.test_shared_capability_has_no_invented_button) ... ok
+test_stale_mirrors_fail (test_docflow.DocumentationTests.test_stale_mirrors_fail) ... ok
+test_stop_requests_one_continuation_and_then_reports_unresolved (test_docflow.DocumentationTests.test_stop_requests_one_continuation_and_then_reports_unresolved) ... ok
+test_updated_receipt_completes_and_advances_baseline (test_docflow.DocumentationTests.test_updated_receipt_completes_and_advances_baseline) ... ok
+test_updated_receipt_requires_actual_markdown_update (test_docflow.DocumentationTests.test_updated_receipt_requires_actual_markdown_update) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.645s
+
+OK

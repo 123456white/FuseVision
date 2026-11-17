@@ -24,7 +24,7 @@
       {
         "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
         "symbol": "AnnotationManagement::saveAnnotations",
-        "line": 1413
+        "line": 1422
       }
     ],
     "history_2026_11_14": {
@@ -81,7 +81,7 @@
       {
         "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
         "symbol": "AnnotationManagement::prepareToLeave",
-        "line": 1676
+        "line": 1685
       }
     ],
     "history_2026_11_14": {
@@ -675,7 +675,7 @@
     "status": "2026-11-17已修复；34个GoogleTest与6组既有回归共40项Release CTest通过，P1",
     "fact": "StorageContract统一项目/模型/数据集原生配置的document_type、format_version=字符串1.0及必填字段守卫，仅接受完整1.0标准，缺标记/未知类型版本/旧布局拒绝读取和改写。成功项目保存和状态更新改用根内相对引用，模型与数据集保存保留未知根字段；新标注工作目录为native平铺images/labels，分类为六目录，新模型立即生成完整数据集配置，明确annotation/classification且与模型匹配；新YAML使用相对path及UTF-8/LF。新建拒绝Windows设备名；日志目录中的点不再被误判为文件，仅显式.log路径使用自定义前缀",
     "verify": "[GTest源码](../../tests/storage_regression.cpp)与[真实Widget datasetStorage](../../tests/current_issues_regression.cpp)保留先红后绿证据；覆盖移动重开、旧绝对引用/旧yolo布局/无标记配置拒绝、必填字段、新建数据集配置、缺失配置拒写、模式匹配及无效内存/磁盘配置不覆盖、扩展字段、原子失败、分类/标注目录和日志路径。结果见[本轮验证](../logic/VALIDATION.md#2026-11-17-严格原生存储标准)",
-    "limitations": "本轮没有批量搬移旧项目/账户/设置、改写旧YAML或自动吸收嵌套分区；原生工作索引不等于训练配置。恢复UI/保留期、并发冲突检测、断电事务和Q04备份策略未实现；Debug与完整可见Windows操作未验",
+    "limitations": "本轮没有批量搬移旧项目/账户/设置、改写旧YAML或自动吸收嵌套分区；原生工作索引不等于训练配置。恢复UI/保留期、并发冲突检测、断电事务和Q04备份策略未实现；Debug已由本轮回归补验，完整可见Windows操作未验",
     "sources": [
       {
         "path": "src/deeplearning/storage/StorageContract.h",
@@ -701,6 +701,27 @@
         "path": "src/core/Logger.cpp",
         "symbol": "Logger::init",
         "line": 40
+      }
+    ]
+  },
+  {
+    "id": "ISS-016",
+    "title": "标注导航与页面销毁生命周期崩溃",
+    "priority": "P1",
+    "status": "2026-11-17已修复；Debug与Release自动回归通过，P1",
+    "fact": "openImage按值持有模型ID与图片路径，避免刷新样本或保存对话框使引用失效。析构阶段先停自动保存、断开模型与撤销栈到页面的信号并取消未提交工具，避免子对象销毁后按钮仍被更新",
+    "verify": "[Debug基线](../logic/evidence/full-functional-debug-baseline-20261117.log)40项中两项崩溃；[堆栈](../logic/evidence/full-functional-debug-stack-20261117.log)分别定位openImage的QString赋值和QUndoStack析构时的按钮更新。[最终Debug](../logic/evidence/full-functional-debug-final-20261117.log)与[Release](../logic/evidence/full-functional-release-final-20261117.log)41/41通过，含连续前后导航、保存失败重试及持有撤销记录的页面销毁",
+    "limitations": "自动Qt事件测试不代替完整可见桌面、高DPI与相机验收",
+    "sources": [
+      {
+        "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+        "symbol": "AnnotationManagement::openImage",
+        "line": 107
+      },
+      {
+        "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+        "symbol": "AnnotationManagement::~AnnotationManagement",
+        "line": 65
       }
     ]
   }

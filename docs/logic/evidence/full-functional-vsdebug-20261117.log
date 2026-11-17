@@ -1,0 +1,648 @@
+配置: windows-vs2026-x64
+-- Running vcpkg install
+Detecting compiler hash for triplet x64-windows...
+-- Using %HTTP(S)_PROXY% in environment variables.
+Compiler found: C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe
+The following packages will be rebuilt:
+  * abseil:x64-windows@20260107.1#2
+  * brotli:x64-windows@1.2.0
+  * bzip2[core,tool]:x64-windows@1.0.8#6
+  * dbus:x64-windows@1.16.2#3
+  * double-conversion:x64-windows@3.4.0
+  * egl-registry:x64-windows@2025-05-27
+  * expat:x64-windows@2.7.4
+  * flatbuffers:x64-windows@25.12.19
+  * fmt:x64-windows@12.1.0
+  * freetype[brotli,bzip2,core,png,zlib]:x64-windows@2.13.3
+  * harfbuzz[core,freetype]:x64-windows@13.0.1
+  * icu[core,tools]:x64-windows@78.2
+  * jasper:x64-windows@4.2.9
+  * libjpeg-turbo:x64-windows@3.1.4.1
+  * liblzma:x64-windows@5.8.2#1
+  * libpng:x64-windows@1.6.55
+  * libpq[core,lz4,openssl,zlib]:x64-windows@18.3
+  * libwebp[core,libwebpmux,nearlossless,simd,unicode]:x64-windows@1.6.0#2
+  * lz4:x64-windows@1.10.0
+  * md4c:x64-windows@0.5.2
+    opencv4[calib3d,core,directml,dnn,dshow,fs,gapi,highgui,intrinsics,jpeg,msmf,png,quirc,thread,tiff,webp,win32ui]:x64-windows@4.12.0#1
+  * opengl:x64-windows@2022-12-04#3
+  * opengl-registry:x64-windows@2026-01-26
+  * openssl:x64-windows@3.6.1#3
+  * pcre2[core,jit,platform-default-features]:x64-windows@10.47
+  * protobuf:x64-windows@6.33.4#1
+    qtbase[brotli,concurrent,core,dbus,dnslookup,doubleconversion,freetype,gui,harfbuzz,icu,jpeg,network,opengl,openssl,pcre2,png,sessionmanager,sql,sql-psql,sql-sqlite,testlib,thread,widgets,zstd]:x64-windows@6.10.2
+    qtimageformats[core,jasper,tiff,webp]:x64-windows@6.10.2
+  * quirc:x64-windows@1.2
+    spdlog[core,fmt,tz-offset]:x64-windows@1.17.0
+  * sqlite3[core,json1]:x64-windows@3.52.0
+  * tiff[core,jpeg,lzma,zip]:x64-windows@4.7.1
+  * utf8-range:x64-windows@6.33.4
+  * vcpkg-cmake:x64-windows@2024-04-23
+  * vcpkg-cmake-config:x64-windows@2024-05-23
+  * vcpkg-cmake-get-vars:x64-windows@2025-05-29
+  * vcpkg-get-python-packages:x64-windows@2025-04-05
+  * vcpkg-make:x64-windows@2026-01-01
+  * vcpkg-tool-meson:x64-windows@1.9.0#4
+  * zlib:x64-windows@1.3.1
+  * zstd:x64-windows@1.5.7
+The following packages will be built and installed:
+    gtest:x64-windows@1.17.0#2
+Additional packages (*) will be modified to complete this operation.
+Restored 42 package(s) from C:\Users\21012\AppData\Local\vcpkg\archives in 13 s. Use --debug to see more details.
+Removing 1/83 spdlog:x64-windows
+Elapsed time to handle spdlog:x64-windows: 40.7 ms
+Removing 2/83 fmt:x64-windows
+Elapsed time to handle fmt:x64-windows: 15.6 ms
+Removing 3/83 qtimageformats:x64-windows
+Elapsed time to handle qtimageformats:x64-windows: 31.3 ms
+Removing 4/83 jasper:x64-windows
+Elapsed time to handle jasper:x64-windows: 13.6 ms
+Removing 5/83 qtbase:x64-windows
+Elapsed time to handle qtbase:x64-windows: 1.3 s
+Removing 6/83 md4c:x64-windows
+Elapsed time to handle md4c:x64-windows: 13.5 ms
+Removing 7/83 dbus:x64-windows
+Elapsed time to handle dbus:x64-windows: 22.4 ms
+Removing 8/83 expat:x64-windows
+Elapsed time to handle expat:x64-windows: 12.1 ms
+Removing 9/83 double-conversion:x64-windows
+Elapsed time to handle double-conversion:x64-windows: 14.5 ms
+Removing 10/83 harfbuzz:x64-windows
+Elapsed time to handle harfbuzz:x64-windows: 29.8 ms
+Removing 11/83 freetype:x64-windows
+Elapsed time to handle freetype:x64-windows: 24.7 ms
+Removing 12/83 brotli:x64-windows
+Elapsed time to handle brotli:x64-windows: 12.1 ms
+Removing 13/83 bzip2:x64-windows
+Elapsed time to handle bzip2:x64-windows: 12 ms
+Removing 14/83 icu:x64-windows
+Elapsed time to handle icu:x64-windows: 74.4 ms
+Removing 15/83 vcpkg-make:x64-windows
+Elapsed time to handle vcpkg-make:x64-windows: 15.8 ms
+Removing 16/83 opengl:x64-windows
+Elapsed time to handle opengl:x64-windows: 55.5 ms
+Removing 17/83 opengl-registry:x64-windows
+Elapsed time to handle opengl-registry:x64-windows: 18.9 ms
+Removing 18/83 egl-registry:x64-windows
+Elapsed time to handle egl-registry:x64-windows: 5.17 ms
+Removing 19/83 pcre2:x64-windows
+Elapsed time to handle pcre2:x64-windows: 61.1 ms
+Removing 20/83 libpq:x64-windows
+Elapsed time to handle libpq:x64-windows: 243 ms
+Removing 21/83 vcpkg-tool-meson:x64-windows
+Elapsed time to handle vcpkg-tool-meson:x64-windows: 9.35 ms
+Removing 22/83 lz4:x64-windows
+Elapsed time to handle lz4:x64-windows: 13.7 ms
+Removing 23/83 openssl:x64-windows
+Elapsed time to handle openssl:x64-windows: 56 ms
+Removing 24/83 vcpkg-cmake-get-vars:x64-windows
+Elapsed time to handle vcpkg-cmake-get-vars:x64-windows: 8.79 ms
+Removing 25/83 sqlite3:x64-windows
+Elapsed time to handle sqlite3:x64-windows: 14 ms
+Removing 26/83 zstd:x64-windows
+Elapsed time to handle zstd:x64-windows: 12.3 ms
+Removing 27/83 opencv4:x64-windows
+Elapsed time to handle opencv4:x64-windows: 184 ms
+Removing 28/83 vcpkg-get-python-packages:x64-windows
+Elapsed time to handle vcpkg-get-python-packages:x64-windows: 8.01 ms
+Removing 29/83 flatbuffers:x64-windows
+Elapsed time to handle flatbuffers:x64-windows: 20.3 ms
+Removing 30/83 protobuf:x64-windows
+Elapsed time to handle protobuf:x64-windows: 67.1 ms
+Removing 31/83 utf8-range:x64-windows
+Elapsed time to handle utf8-range:x64-windows: 10.9 ms
+Removing 32/83 abseil:x64-windows
+Elapsed time to handle abseil:x64-windows: 216 ms
+Removing 33/83 libpng:x64-windows
+Elapsed time to handle libpng:x64-windows: 16.1 ms
+Removing 34/83 quirc:x64-windows
+Elapsed time to handle quirc:x64-windows: 9.15 ms
+Removing 35/83 tiff:x64-windows
+Elapsed time to handle tiff:x64-windows: 14.3 ms
+Removing 36/83 libjpeg-turbo:x64-windows
+Elapsed time to handle libjpeg-turbo:x64-windows: 15.9 ms
+Removing 37/83 liblzma:x64-windows
+Elapsed time to handle liblzma:x64-windows: 24 ms
+Removing 38/83 zlib:x64-windows
+Elapsed time to handle zlib:x64-windows: 12 ms
+Removing 39/83 libwebp:x64-windows
+Elapsed time to handle libwebp:x64-windows: 30.4 ms
+Removing 40/83 vcpkg-cmake:x64-windows
+Elapsed time to handle vcpkg-cmake:x64-windows: 7.62 ms
+Removing 41/83 vcpkg-cmake-config:x64-windows
+Elapsed time to handle vcpkg-cmake-config:x64-windows: 5 ms
+Installing 42/83 vcpkg-cmake-config:x64-windows@2024-05-23...
+vcpkg-cmake-config:x64-windows@2024-05-23 package ABI: f22ea01bc91967067a0244fe7e33466db5edd3f279a402b71d23f290b86a6af3
+Elapsed time to handle vcpkg-cmake-config:x64-windows: 36.3 ms
+Installing 43/83 vcpkg-cmake:x64-windows@2024-04-23...
+vcpkg-cmake:x64-windows@2024-04-23 package ABI: ac29cac17f9570699e1e3a035a13271bc280887bdb284d1589881e517041d351
+Elapsed time to handle vcpkg-cmake:x64-windows: 50.8 ms
+Installing 44/83 libwebp[core,libwebpmux,nearlossless,simd,unicode]:x64-windows@1.6.0#2...
+libwebp[core,libwebpmux,nearlossless,simd,unicode]:x64-windows@1.6.0#2 package ABI: e9d0493c259f23126831dd7a09ea4f9323120f0500682f32f747a24c565dbee2
+Elapsed time to handle libwebp:x64-windows: 87.6 ms
+Installing 45/83 zlib:x64-windows@1.3.1...
+zlib:x64-windows@1.3.1 package ABI: a0a5fd1a06043cc8a6fb3df08aeb320f9b5bc8ce283be28f4c8637fe6ff3488c
+Elapsed time to handle zlib:x64-windows: 37.8 ms
+Installing 46/83 liblzma:x64-windows@5.8.2#1...
+liblzma:x64-windows@5.8.2#1 package ABI: 85cb4ef36de69f51a76faab88424f90096438e62d1998a34015eb66d31d90ad1
+Elapsed time to handle liblzma:x64-windows: 107 ms
+Installing 47/83 libjpeg-turbo:x64-windows@3.1.4.1...
+libjpeg-turbo:x64-windows@3.1.4.1 package ABI: 0679e50ad01986f4bf17f12f959b6119381408739d255ec5f46b5460d5860762
+Elapsed time to handle libjpeg-turbo:x64-windows: 64.3 ms
+Installing 48/83 tiff[core,jpeg,lzma,zip]:x64-windows@4.7.1...
+tiff[core,jpeg,lzma,zip]:x64-windows@4.7.1 package ABI: ea10b99e0029ea298508e5d298323ee0d87192eb1aa97615dd4ec71d572c7786
+Elapsed time to handle tiff:x64-windows: 46.5 ms
+Installing 49/83 quirc:x64-windows@1.2...
+quirc:x64-windows@1.2 package ABI: 650edbb6f19bf6712c69450af8d788fd5590f406f0a0a31c711cf234062a9706
+Elapsed time to handle quirc:x64-windows: 49.4 ms
+Installing 50/83 libpng:x64-windows@1.6.55...
+libpng:x64-windows@1.6.55 package ABI: ede603ab9d65fb1d33988556194cca7625ad49ccc2b038aa02ab21de5e377ada
+Elapsed time to handle libpng:x64-windows: 53.5 ms
+Installing 51/83 abseil:x64-windows@20260107.1#2...
+abseil:x64-windows@20260107.1#2 package ABI: de98713fb1b2318b7027fdec8984356904d434ffc1920b844788abc7498cd0e5
+Elapsed time to handle abseil:x64-windows: 269 ms
+Installing 52/83 utf8-range:x64-windows@6.33.4...
+utf8-range:x64-windows@6.33.4 package ABI: 932a2bf2ceb6430bd06cdc92df1fb5e13355bc4834b7daa4ba629ea454b0f28e
+Elapsed time to handle utf8-range:x64-windows: 22.4 ms
+Installing 53/83 protobuf:x64-windows@6.33.4#1...
+protobuf:x64-windows@6.33.4#1 package ABI: bd2c335dfe3b76ac2c9adfbaeba173a693a826f05ca8cf9dc8027769718c7033
+Elapsed time to handle protobuf:x64-windows: 117 ms
+Installing 54/83 flatbuffers:x64-windows@25.12.19...
+flatbuffers:x64-windows@25.12.19 package ABI: 7cf83687ea98e91ee556522e50ce94a41a79a79ced9136be88005e8b15b82415
+Elapsed time to handle flatbuffers:x64-windows: 129 ms
+Installing 55/83 vcpkg-get-python-packages:x64-windows@2025-04-05...
+vcpkg-get-python-packages:x64-windows@2025-04-05 package ABI: 77b246a83bccfd57edc501d343a620b2fd73d4587e3c328dadc2ea976deccb92
+Elapsed time to handle vcpkg-get-python-packages:x64-windows: 61.9 ms
+Installing 56/83 opencv4[calib3d,core,directml,dnn,dshow,fs,gapi,highgui,intrinsics,jpeg,msmf,png,quirc,thread,tiff,webp,win32ui]:x64-windows@4.12.0#1...
+opencv4[calib3d,core,directml,dnn,dshow,fs,gapi,highgui,intrinsics,jpeg,msmf,png,quirc,thread,tiff,webp,win32ui]:x64-windows@4.12.0#1 package ABI: 44d30a0d109eb65dd91ad6f9f427271ab9475f95ad7037670a251d90f3f7b9c6
+Elapsed time to handle opencv4:x64-windows: 175 ms
+Installing 57/83 zstd:x64-windows@1.5.7...
+zstd:x64-windows@1.5.7 package ABI: bc89eebfa3502fed7370ba460dccf0aff26ee927e4e9a6d605a488b50076d83b
+Elapsed time to handle zstd:x64-windows: 84.5 ms
+Installing 58/83 sqlite3[core,json1]:x64-windows@3.52.0...
+sqlite3[core,json1]:x64-windows@3.52.0 package ABI: 2307cc9994508ff2ec5da942b58ed0159033fd3904503e31e223b48a3d77c358
+Elapsed time to handle sqlite3:x64-windows: 24.2 ms
+Installing 59/83 vcpkg-cmake-get-vars:x64-windows@2025-05-29...
+vcpkg-cmake-get-vars:x64-windows@2025-05-29 package ABI: 51ce81f7291153ae8f0cea28565da42056656796adb03aafd07b8d38cbd4a110
+Elapsed time to handle vcpkg-cmake-get-vars:x64-windows: 42.7 ms
+Installing 60/83 openssl:x64-windows@3.6.1#3...
+openssl:x64-windows@3.6.1#3 package ABI: 656fefc80d75517196cb9254e1b395ca541bc74349dd8c6d4eb44eaf34fa00b7
+Elapsed time to handle openssl:x64-windows: 116 ms
+Installing 61/83 lz4:x64-windows@1.10.0...
+lz4:x64-windows@1.10.0 package ABI: dee3ac8e5e373a91b5a9f890752adebc1a4ebd14b1c1ce118c356b87a74a2160
+Elapsed time to handle lz4:x64-windows: 77.8 ms
+Installing 62/83 vcpkg-tool-meson:x64-windows@1.9.0#4...
+vcpkg-tool-meson:x64-windows@1.9.0#4 package ABI: 125cc06acf808f2dd97e0169882c0ca57f24e8c76fe3dd3276301777f9b77141
+Elapsed time to handle vcpkg-tool-meson:x64-windows: 85.3 ms
+Installing 63/83 libpq[core,lz4,openssl,zlib]:x64-windows@18.3...
+libpq[core,lz4,openssl,zlib]:x64-windows@18.3 package ABI: 46e92c0b7fa5981cb5c4cd55bec8e98d617fa438a940b99910b3cd9e2d6db68b
+Elapsed time to handle libpq:x64-windows: 224 ms
+Installing 64/83 pcre2[core,jit,platform-default-features]:x64-windows@10.47...
+pcre2[core,jit,platform-default-features]:x64-windows@10.47 package ABI: 54e1f1a44186fd56bec0f3887df8918b9cb66494ed347ecb3a9241bb06e3fe07
+Elapsed time to handle pcre2:x64-windows: 82.9 ms
+Installing 65/83 egl-registry:x64-windows@2025-05-27...
+egl-registry:x64-windows@2025-05-27 package ABI: e7defffeba5ed8b27e9c33febcfedb726966c91ad0a6acbbfd1495e42c16a3d1
+Elapsed time to handle egl-registry:x64-windows: 11.1 ms
+Installing 66/83 opengl-registry:x64-windows@2026-01-26...
+opengl-registry:x64-windows@2026-01-26 package ABI: ac8cf9897c92af39ca21c49d50bf6d2821b3b70b46ef3dddbc396788c386b236
+Elapsed time to handle opengl-registry:x64-windows: 43.1 ms
+Installing 67/83 opengl:x64-windows@2022-12-04#3...
+opengl:x64-windows@2022-12-04#3 package ABI: 57bc44fb61425f4b464d994b945aa9a8a93d284d30e6bc228efaf4ea36e83e66
+Elapsed time to handle opengl:x64-windows: 21 ms
+Installing 68/83 vcpkg-make:x64-windows@2026-01-01...
+vcpkg-make:x64-windows@2026-01-01 package ABI: f6216470a260f3d85d8bc8633faf8ece7f38602661685b3e00d3142765f78111
+Elapsed time to handle vcpkg-make:x64-windows: 72.4 ms
+Installing 69/83 icu[core,tools]:x64-windows@78.2...
+icu[core,tools]:x64-windows@78.2 package ABI: 02171c70242faf1d07738f6d3d9f94a6983a8ce95b839e6c3d5719023b6009a7
+Elapsed time to handle icu:x64-windows: 120 ms
+Installing 70/83 bzip2[core,tool]:x64-windows@1.0.8#6...
+bzip2[core,tool]:x64-windows@1.0.8#6 package ABI: 530ebe0b54a35e7562f8a028a1468794ae4e7b8814b2707ec5d63188aeaea925
+Elapsed time to handle bzip2:x64-windows: 35.2 ms
+Installing 71/83 brotli:x64-windows@1.2.0...
+brotli:x64-windows@1.2.0 package ABI: 6e1578fb1ae4e6b4a8b4bd20d10d861db3b091feaeca18701a418b8b13265294
+Elapsed time to handle brotli:x64-windows: 46.7 ms
+Installing 72/83 freetype[brotli,bzip2,core,png,zlib]:x64-windows@2.13.3...
+freetype[brotli,bzip2,core,png,zlib]:x64-windows@2.13.3 package ABI: 2fda68638643785c85377fec0012164f8f64a33fe1d350b0c2e3da1dadd34439
+Elapsed time to handle freetype:x64-windows: 118 ms
+Installing 73/83 harfbuzz[core,freetype]:x64-windows@13.0.1...
+harfbuzz[core,freetype]:x64-windows@13.0.1 package ABI: 107294430049532f536b5724677db848ab02521628a4b6f9a51577ae625ceb72
+Elapsed time to handle harfbuzz:x64-windows: 79.6 ms
+Installing 74/83 double-conversion:x64-windows@3.4.0...
+double-conversion:x64-windows@3.4.0 package ABI: 54e8c5a0bb6b46801bb38d5fd0b16105de297c4b77ed97fc59cdcab30856c91e
+Elapsed time to handle double-conversion:x64-windows: 69.6 ms
+Installing 75/83 expat:x64-windows@2.7.4...
+expat:x64-windows@2.7.4 package ABI: 0bc0a6b12eb37b15a7a03a60ee19106d54f4f74e7a4cf78d2a9c7da7e3efdece
+Elapsed time to handle expat:x64-windows: 53.3 ms
+Installing 76/83 dbus:x64-windows@1.16.2#3...
+dbus:x64-windows@1.16.2#3 package ABI: bb8652933b5fd04c7d67ecf568e18e9d6d0175c3647b584c2b9678b9531d8cbc
+Elapsed time to handle dbus:x64-windows: 114 ms
+Installing 77/83 md4c:x64-windows@0.5.2...
+md4c:x64-windows@0.5.2 package ABI: 2f263833e1e2179590e9ce9d373b52dffd0902135a9dc81b64399f87835a760d
+Elapsed time to handle md4c:x64-windows: 54.3 ms
+Installing 78/83 qtbase[brotli,concurrent,core,dbus,dnslookup,doubleconversion,freetype,gui,harfbuzz,icu,jpeg,network,opengl,openssl,pcre2,png,sessionmanager,sql,sql-psql,sql-sqlite,testlib,thread,widgets,zstd]:x64-windows@6.10.2...
+qtbase[brotli,concurrent,core,dbus,dnslookup,doubleconversion,freetype,gui,harfbuzz,icu,jpeg,network,opengl,openssl,pcre2,png,sessionmanager,sql,sql-psql,sql-sqlite,testlib,thread,widgets,zstd]:x64-windows@6.10.2 package ABI: 8aa17c3596874fbe380cce1600a9f659b312060cbc8879f000a8804645463d30
+Elapsed time to handle qtbase:x64-windows: 1.1 s
+Installing 79/83 jasper:x64-windows@4.2.9...
+jasper:x64-windows@4.2.9 package ABI: fb8ca665ffae5eecb97a312b6b3cf8047f9fddd162ed98a3c121e002d0625356
+Elapsed time to handle jasper:x64-windows: 113 ms
+Installing 80/83 qtimageformats[core,jasper,tiff,webp]:x64-windows@6.10.2...
+qtimageformats[core,jasper,tiff,webp]:x64-windows@6.10.2 package ABI: 20ade3a2a2ed38148003216d53f6c27f0193b594440c43d2ef9290b4d517ec33
+Elapsed time to handle qtimageformats:x64-windows: 99.1 ms
+Installing 81/83 fmt:x64-windows@12.1.0...
+fmt:x64-windows@12.1.0 package ABI: e7815aadc57e0a73680fc4928ee9c80d5f875dffdc5a6d1c18de62ab5a58cce9
+Elapsed time to handle fmt:x64-windows: 71.7 ms
+Installing 82/83 spdlog[core,fmt,tz-offset]:x64-windows@1.17.0...
+spdlog[core,fmt,tz-offset]:x64-windows@1.17.0 package ABI: 3abbeeac3702c328f879a49592f74b14836c869a6f77c0fd0569dfb26d2784c1
+Elapsed time to handle spdlog:x64-windows: 117 ms
+Installing 83/83 gtest:x64-windows@1.17.0#2...
+gtest:x64-windows@1.17.0#2 package ABI: 9db82fb0dc6354b180b16f71032037687132b3c48c5ed6834224fdee4464e734
+Elapsed time to handle gtest:x64-windows: 73.2 ms
+Installed contents are licensed to you by owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Some packages did not declare an SPDX license. Check the `copyright` file for each package for more information about their licensing.
+Packages installed in this vcpkg installation declare the following licenses:
+(AFL-2.1 OR GPL-2.0-or-later)
+(BSD-3-Clause OR GPL-2.0-only)
+(FTL OR GPL-2.0-or-later)
+Apache-2.0
+BSD-2-Clause
+BSD-3-Clause
+ICU
+MIT
+MIT-Modern-Variant
+PostgreSQL
+Zlib
+blessing
+bzip2-1.0.6
+libpng-2.0
+libtiff
+opencv4 is compatible with built-in CMake variables. In case of multiple OpenCV version installed, set OpenCV_ROOT *before* the find_package call:
+
+    set(OpenCV_ROOT "${VCPKG_INSTALLED_DIR}/x64-windows/share/opencv4")
+    find_package(OpenCV REQUIRED)
+
+qtbase provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Qt6 CONFIG REQUIRED)
+  # note: 38 additional targets are not displayed.
+  target_link_libraries(main PRIVATE DB2::DB2 PPS::PPS Oracle::OCI Libb2::Libb2)
+
+  find_package(Qt6Concurrent CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Concurrent)
+
+  find_package(Qt6Core CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Core)
+
+  find_package(Qt6CorePrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::CorePrivate)
+
+  find_package(Qt6DBus CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBus)
+
+  find_package(Qt6DBusPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBusPrivate)
+
+  find_package(Qt6DeviceDiscoverySupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DeviceDiscoverySupportPrivate)
+
+  find_package(Qt6EntryPointPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::EntryPointPrivate Qt6::EntryPointImplementation)
+
+  find_package(Qt6ExampleIconsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExampleIconsPrivate Qt6::ExampleIconsPrivate_resources_1)
+
+  find_package(Qt6ExamplesAssetDownloaderPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExamplesAssetDownloaderPrivate)
+
+  find_package(Qt6FbSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::FbSupportPrivate)
+
+  find_package(Qt6Gui CONFIG REQUIRED)
+  # note: 5 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Gui Qt6::QGifPlugin Qt6::QICOPlugin Qt6::QJpegPlugin)
+
+  find_package(Qt6GuiPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::GuiPrivate)
+
+  find_package(Qt6Network CONFIG REQUIRED)
+  # note: 1 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Network Qt6::QNLMNIPlugin Qt6::QSchannelBackendPlugin Qt6::QTlsBackendOpenSSLPlugin)
+
+  find_package(Qt6NetworkPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::NetworkPrivate)
+
+  find_package(Qt6OpenGL CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGL)
+
+  find_package(Qt6OpenGLPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLPrivate)
+
+  find_package(Qt6OpenGLWidgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLWidgets)
+
+  find_package(Qt6PrintSupport CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupport)
+
+  find_package(Qt6PrintSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupportPrivate)
+
+  find_package(Qt6Sql CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Sql Qt6::QPSQLDriverPlugin Qt6::QSQLiteDriverPlugin)
+
+  find_package(Qt6SqlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::SqlPrivate)
+
+  find_package(Qt6Test CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Test)
+
+  find_package(Qt6TestInternalsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestInternalsPrivate)
+
+  find_package(Qt6TestPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestPrivate)
+
+  find_package(Qt6Widgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Widgets Qt6::QModernWindowsStylePlugin)
+
+  find_package(Qt6WidgetsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::WidgetsPrivate)
+
+  find_package(Qt6Xml CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Xml)
+
+  find_package(Qt6XmlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::XmlPrivate)
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+The package gtest is compatible with built-in CMake targets:
+
+    enable_testing()
+    
+    find_package(GTest CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+    
+    add_test(AllTestsInMain main)
+
+All requested installations completed successfully in: 7.3 s
+-- Running vcpkg install - done
+-- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.26200.
+-- 检测通过：当前使用 64 位编译器，指针宽度: 8 字节
+-- OpenCV version: 4.12.0
+-- OpenCV include dirs: D:/project/FuseVision/out/build/windows-vs2026-x64/vcpkg_installed/x64-windows/include/opencv4
+-- OpenCV libraries: opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio
+-- Halcon detected (system): D:\software\HALCON (arch: x64-win64)
+-- MVS SDK configured for Windows
+-- Doxygen not found; set DOXYGEN_ROOT or DOXYGEN_EXECUTABLE to enable the docs target
+-- Found Python3: D:/pythonbase/python.exe (found version "3.14.7") found components: Interpreter
+-- ========== 项目构建信息 ==========
+-- 项目名称：FuseVision
+-- 项目版本：1.0.0
+-- C++ 标准：20
+-- 构建类型：
+-- 编译器：MSVC 19.50.35728.0
+-- Qt 版本：6.10.2
+-- Qt 库路径：D:/project/FuseVision/out/build/windows-vs2026-x64/vcpkg_installed/x64-windows/share/Qt6
+-- vcpkg 三元组：x64-windows
+-- Halcon 来源：system
+-- Halcon 头文件目录：D:\software\HALCON/include
+-- Halcon 库目录：D:\software\HALCON/lib/x64-win64
+-- MVS SDK 根目录：D:/project/FuseVision/sdk/MVS
+-- OpenCV 版本：4.12.0
+-- spdlog 版本：1.17.0
+-- ==================================
+-- Configuring done (27.7s)
+-- Generating done (1.0s)
+-- Build files have been written to: D:/project/FuseVision/out/build/windows-vs2026-x64
+解决方案: D:\project\FuseVision\out\build\windows-vs2026-x64\FuseVision.slnx
+构建: windows-vs2026-debug
+适用于 .NET Framework MSBuild 版本 18.4.0+6e61e96ac
+
+  1>Checking Build System
+  1>Automatic MOC and UIC for target FuseVisionCore
+  Running AUTOMOC file extraction for target FuseVisionCore
+  Running moc --collect-json for target FuseVisionCore
+  mocs_compilation_Debug.cpp
+  Logger.cpp
+  DatabaseManager.cpp
+  PermissionRegistry.cpp
+  SessionManager.cpp
+  SettingsManager.cpp
+  正在生成代码...
+  FuseVisionCore.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\lib\Debug\FuseVisionCore.lib
+  1>Automatic MOC and UIC for target FuseVisionDeepLearningData
+  Building Custom Rule D:/project/FuseVision/src/deeplearning/CMakeLists.txt
+  Running AUTOMOC file extraction for target FuseVisionDeepLearningData
+  Building Custom Rule D:/project/FuseVision/src/deeplearning/CMakeLists.txt
+  Running moc --collect-json for target FuseVisionDeepLearningData
+  Building Custom Rule D:/project/FuseVision/src/deeplearning/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  AnnotationShape.cpp
+  AnnotationModel.cpp
+  AnnotationRender.cpp
+  ProjectConfig.cpp
+  ModelConfig.cpp
+  AnnotationStore.cpp
+  AnnotationIO.cpp
+  DatasetFileService.cpp
+  AnnotationTool.cpp
+  BrushTool.cpp
+  EraserTool.cpp
+  PolygonTool.cpp
+  RectTool.cpp
+  FillTool.cpp
+  SelectTool.cpp
+  正在生成代码...
+  FuseVisionDeepLearningData.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\lib\Debug\FuseVisionDeepLearningData.lib
+  1>Automatic MOC and UIC for target FuseVisionUiCommon
+  Building Custom Rule D:/project/FuseVision/src/ui/CMakeLists.txt
+  Running AUTOMOC file extraction for target FuseVisionUiCommon
+  Building Custom Rule D:/project/FuseVision/src/ui/CMakeLists.txt
+  Running moc --collect-json for target FuseVisionUiCommon
+  Building Custom Rule D:/project/FuseVision/src/ui/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  WriteAccess.cpp
+  PermissionGuard.cpp
+  ThemeManager.cpp
+  LogMonitor.cpp
+  LoadingOverlay.cpp
+  正在生成代码...
+  FuseVisionUiCommon.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\lib\Debug\FuseVisionUiCommon.lib
+  1>Automatic MOC and UIC for target FuseVisionDeepLearning
+  Building Custom Rule D:/project/FuseVision/src/deeplearning/CMakeLists.txt
+  Running AUTOMOC file extraction for target FuseVisionDeepLearning
+  Building Custom Rule D:/project/FuseVision/src/deeplearning/CMakeLists.txt
+  Running moc --collect-json for target FuseVisionDeepLearning
+  Building Custom Rule D:/project/FuseVision/src/deeplearning/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  DeepLearningWidget.cpp
+  ProjectManagement.cpp
+  ModelManagement.cpp
+  DatasetManagement.cpp
+  AnnotationManagement.cpp
+  AnnotationCanvas.cpp
+  正在生成代码...
+  FuseVisionDeepLearning.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\lib\Debug\FuseVisionDeepLearning.lib
+  1>Automatic MOC and UIC for target FuseVisionTraditional
+  Building Custom Rule D:/project/FuseVision/src/traditional/CMakeLists.txt
+  Running AUTOMOC file extraction for target FuseVisionTraditional
+  Building Custom Rule D:/project/FuseVision/src/traditional/CMakeLists.txt
+  Running moc --collect-json for target FuseVisionTraditional
+  Building Custom Rule D:/project/FuseVision/src/traditional/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  TraditionalWidget.cpp
+  正在生成代码...
+  FuseVisionTraditional.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\lib\Debug\FuseVisionTraditional.lib
+  1>Automatic MOC and UIC for target FuseVisionUI
+  Building Custom Rule D:/project/FuseVision/src/app/CMakeLists.txt
+  Running AUTOMOC file extraction for target FuseVisionUI
+  Building Custom Rule D:/project/FuseVision/src/app/CMakeLists.txt
+  Running moc --collect-json for target FuseVisionUI
+  Building Custom Rule D:/project/FuseVision/src/app/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  FuseVision.cpp
+  Login.cpp
+  UserManagementWidget.cpp
+  SystemSettingsWidget.cpp
+  正在生成代码...
+  FuseVisionUI.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\lib\Debug\FuseVisionUI.lib
+  Automatic MOC and UIC for target FuseVision
+  1>Automatic RCC for FuseVision.qrc
+  Building Custom Rule D:/project/FuseVision/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  main.cpp
+  qrc_FuseVision_Debug.cpp
+  正在生成代码...
+  FuseVision.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\bin\Debug\FuseVision.exe
+  	Copy Qt platform plugin (Debug) -^> platforms/	Copy Qt SQLite driver (Debug) -^> sqldrivers/	Copy Qt imageformat plugins (Debug) -^> imageformats/	Copy JPEG runtime DLLs -^> D:/project/FuseVision/out/build/windows-vs2026-x64/bin/Debug	Copy Halcon runtime DLLs (system) -^> D:/project/FuseVision/out/build/windows-vs2026-x64/bin/Debug
+  Automatic MOC and UIC for target FuseVisionCurrentIssuesTests
+  1>Automatic RCC for FuseVision.qrc
+  Building Custom Rule D:/project/FuseVision/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  current_issues_regression.cpp
+  qrc_FuseVision_Debug.cpp
+  正在生成代码...
+  FuseVisionCurrentIssuesTests.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\bin\Debug\FuseVisionCurrentIssuesTests.exe
+  Automatic MOC and UIC for target FuseVisionDataTests
+  Building Custom Rule D:/project/FuseVision/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  data_contract_regression.cpp
+  正在生成代码...
+  FuseVisionDataTests.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\bin\Debug\FuseVisionDataTests.exe
+  Automatic MOC and UIC for target FuseVisionNativeAnnotationTests
+  1>Automatic RCC for FuseVision.qrc
+  Building Custom Rule D:/project/FuseVision/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  native_annotation_regression.cpp
+  qrc_FuseVision_Debug.cpp
+  正在生成代码...
+  FuseVisionNativeAnnotationTests.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\bin\Debug\FuseVisionNativeAnnotationTests.exe
+  Automatic MOC and UIC for target FuseVisionStorageTests
+  Building Custom Rule D:/project/FuseVision/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  storage_regression.cpp
+  正在生成代码...
+  FuseVisionStorageTests.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\bin\Debug\FuseVisionStorageTests.exe
+  Automatic MOC and UIC for target FuseVisionWorkflowTests
+  1>Automatic RCC for FuseVision.qrc
+  Building Custom Rule D:/project/FuseVision/CMakeLists.txt
+  mocs_compilation_Debug.cpp
+  workflow_regression.cpp
+  qrc_FuseVision_Debug.cpp
+  正在生成代码...
+  FuseVisionWorkflowTests.vcxproj -> D:\project\FuseVision\out\build\windows-vs2026-x64\bin\Debug\FuseVisionWorkflowTests.exe
+  Building Custom Rule D:/project/FuseVision/CMakeLists.txt
+Test project D:/project/FuseVision/out/build/windows-vs2026-x64
+      Start  1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+ 1/41 Test  #1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths ............................   Passed    0.05 sec
+      Start  2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+ 2/41 Test  #2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields ......................   Passed    0.07 sec
+      Start  3: storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+ 3/41 Test  #3: storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting ......................   Passed    0.06 sec
+      Start  4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+ 4/41 Test  #4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories ...........................   Passed    0.13 sec
+      Start  5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml
+ 5/41 Test  #5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml ...........................   Passed    0.15 sec
+      Start  6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles
+ 6/41 Test  #6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles .............................   Passed    0.14 sec
+      Start  7: storage.Storage.MalformedAndWrongFieldTypesAreRejected
+ 7/41 Test  #7: storage.Storage.MalformedAndWrongFieldTypesAreRejected .................................   Passed    0.16 sec
+      Start  8: storage.Storage.ModelUnknownFieldsSurviveSave
+ 8/41 Test  #8: storage.Storage.ModelUnknownFieldsSurviveSave ..........................................   Passed    0.15 sec
+      Start  9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+ 9/41 Test  #9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten .......................   Passed    0.14 sec
+      Start 10: storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+10/41 Test #10: storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting ......................   Passed    0.05 sec
+      Start 11: storage.Storage.StatusUpdateRejectsLegacyPaths
+11/41 Test #11: storage.Storage.StatusUpdateRejectsLegacyPaths .........................................   Passed    0.14 sec
+      Start 12: storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+12/41 Test #12: storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject .................   Passed    0.04 sec
+      Start 13: storage.Storage.ModelCreationCommitsCompleteDatasetConfig
+13/41 Test #13: storage.Storage.ModelCreationCommitsCompleteDatasetConfig ..............................   Passed    0.15 sec
+      Start 14: storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+14/41 Test #14: storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion ..............................   Passed    0.15 sec
+      Start 15: storage.Storage.MissingRequiredFieldsAreRejected
+15/41 Test #15: storage.Storage.MissingRequiredFieldsAreRejected .......................................   Passed    0.14 sec
+      Start 16: storage.StorageFiles.DatasetRejectsWrongFieldTypes
+16/41 Test #16: storage.StorageFiles.DatasetRejectsWrongFieldTypes .....................................   Passed    0.12 sec
+      Start 17: storage.StorageFiles.AtomicFailureRetainsExistingFile
+17/41 Test #17: storage.StorageFiles.AtomicFailureRetainsExistingFile ..................................   Passed    0.13 sec
+      Start 18: storage.StorageFiles.DottedLogDirectoryIsRespected
+18/41 Test #18: storage.StorageFiles.DottedLogDirectoryIsRespected .....................................   Passed    0.13 sec
+      Start 19: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+19/41 Test #19: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0 ...   Passed    0.07 sec
+      Start 20: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+20/41 Test #20: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1 ...   Passed    0.05 sec
+      Start 21: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+21/41 Test #21: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2 ...   Passed    0.15 sec
+      Start 22: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+22/41 Test #22: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0 ..............   Passed    0.14 sec
+      Start 23: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+23/41 Test #23: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1 ..............   Passed    0.05 sec
+      Start 24: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+24/41 Test #24: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2 ..............   Passed    0.05 sec
+      Start 25: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0
+25/41 Test #25: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0 ..........   Passed    0.34 sec
+      Start 26: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1
+26/41 Test #26: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1 ..........   Passed    0.15 sec
+      Start 27: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0
+27/41 Test #27: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0 ..................   Passed    0.04 sec
+      Start 28: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1
+28/41 Test #28: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1 ..................   Passed    0.14 sec
+      Start 29: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0
+29/41 Test #29: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0 ...............................   Passed    0.03 sec
+      Start 30: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1
+30/41 Test #30: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1 ...............................   Passed    0.12 sec
+      Start 31: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2
+31/41 Test #31: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2 ...............................   Passed    0.03 sec
+      Start 32: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3
+32/41 Test #32: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3 ...............................   Passed    0.12 sec
+      Start 33: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4
+33/41 Test #33: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4 ...............................   Passed    0.03 sec
+      Start 34: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5
+34/41 Test #34: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5 ...............................   Passed    0.03 sec
+      Start 35: native-annotation-regression
+35/41 Test #35: native-annotation-regression ...........................................................   Passed    1.72 sec
+      Start 36: documentation-tools
+36/41 Test #36: documentation-tools ....................................................................   Passed    1.01 sec
+      Start 37: data-contract-regression
+37/41 Test #37: data-contract-regression ...............................................................   Passed    0.13 sec
+      Start 38: module-boundaries
+38/41 Test #38: module-boundaries ......................................................................   Passed    0.12 sec
+      Start 39: workflow-regression
+39/41 Test #39: workflow-regression ....................................................................   Passed   13.32 sec
+      Start 40: startup-smoke
+40/41 Test #40: startup-smoke ..........................................................................   Passed    2.20 sec
+      Start 41: current-issues-regression
+41/41 Test #41: current-issues-regression ..............................................................   Passed    2.26 sec
+
+100% tests passed, 0 tests failed out of 41
+
+Total Test time (real) =  24.81 sec

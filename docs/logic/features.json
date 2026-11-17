@@ -1257,12 +1257,12 @@
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::openImage",
-          "line": 98
+          "line": 107
         },
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onCanvasMousePressed",
-          "line": 1238
+          "line": 211
         },
         {
           "path": "src/deeplearning/tools/RectTool.cpp",
@@ -1272,7 +1272,7 @@
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::renderOverlay",
-          "line": 1366
+          "line": 1375
         }
       ],
       "runtime": "真实画布事件覆盖平移/焦点/缩放；六工具和保存重开保留原回归。",
@@ -1380,12 +1380,12 @@
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::saveAnnotations",
-          "line": 1413
+          "line": 1422
         },
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onSave",
-          "line": 1450
+          "line": 504
         },
         {
           "path": "src/deeplearning/widgets/DatasetManagement.cpp",
@@ -1481,17 +1481,17 @@
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::updateShapeList",
-          "line": 1157
+          "line": 1166
         },
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onUndo",
-          "line": 1453
+          "line": 510
         },
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onDeleteSelectedShapes",
-          "line": 1228
+          "line": 722
         },
         {
           "path": "src/deeplearning/model/AnnotationModel.cpp",
@@ -1607,20 +1607,20 @@
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onNavigateTo",
-          "line": 811
+          "line": 820
         },
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onReturnToGallery",
-          "line": 818
+          "line": 599
         },
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::applyImageAdjustments",
-          "line": 905
+          "line": 914
         }
       ],
-      "runtime": "平移结束、零滚轮/锚点缩放、亮度视野保持、保存切图保持和显示不改数据通过。",
+      "runtime": "平移结束、零滚轮/锚点缩放、亮度视野保持、保存切图保持和显示不改数据通过。Debug/Release补验连续前后导航，刷新列表时目标路径保持有效，见[ISS-016](../refactor/ISSUES.md#iss-016)。",
       "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
       "buttonIds": [
         "B05-06",
@@ -1728,12 +1728,12 @@
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onSaveAndNext",
-          "line": 1718
+          "line": 585
         },
         {
           "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
           "symbol": "AnnotationManagement::onCanvasKeyPressed",
-          "line": 1028
+          "line": 219
         },
         {
           "path": "src/deeplearning/widgets/AnnotationCanvas.cpp",
@@ -1746,7 +1746,7 @@
           "line": 61
         }
       ],
-      "runtime": "原生入口无外部launch槽断言、画布事件、失败重试与重开、访客拒绝和offscreen截图；可见桌面未验。",
+      "runtime": "Debug/Release补验持有撤销记录的页面销毁，销毁前停自动保存并断开模型更新信号。原生入口无外部launch槽断言、画布事件、失败重试与重开、访客拒绝和offscreen截图；可见桌面未验。",
       "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
       "buttonIds": [
         "B05-22",

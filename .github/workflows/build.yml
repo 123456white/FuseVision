@@ -3,6 +3,7 @@ name: Build & Test
 on:
   push:
     branches: [main, 'codex/ci-*']
+    tags: ['v*']
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -18,10 +19,17 @@ env:
   VCPKG_FEATURE_FLAGS: manifests
 
 jobs:
+  documentation:
+    uses: ./.github/workflows/docs.yml
+
   build-windows:
     runs-on: windows-2022
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Restore vcpkg tool cache
         id: cache-vcpkg-tool
@@ -110,18 +118,29 @@ jobs:
         shell: pwsh
         run: ./CmakeBuild.ps1 -Generator VisualStudio -Configuration Debug -NoRun -Test
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: FuseVision-Windows-Debug
-          path: out/build/windows-x64-debug/bin/Debug/
-          if-no-files-found: error
+      - name: Configure, build and test (Release)
+        shell: pwsh
+        run: ./CmakeBuild.ps1 -Configuration Release -NoRun -Test
 
-      - name: Upload Visual Studio Build Artifact
+      - name: Verify maintained functional traceability
+        shell: pwsh
+        run: |
+          foreach ($report in @('windows-x64-debug/Testing', 'windows-x64-release/Testing', 'windows-vs2022-x64/Testing/Debug')) {
+            python -X utf8 scripts/ci/verify_traceability.py --junit "out/build/$report/junit.xml" --output "out/build/$report/traceability.json"
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
+      - name: Package Release runtime and verify isolated startup
+        shell: pwsh
+        env:
+          BUILD_REVISION: ${{ github.sha }}
+        run: python -X utf8 scripts/ci/package_windows.py --source out/build/windows-x64-release/bin/Release --archive out/delivery/FuseVision-Windows-x64.zip --revision "$env:BUILD_REVISION"
+
+      - name: Upload tested delivery candidate
         uses: actions/upload-artifact@v4
         with:
-          name: FuseVision-VS2022-Windows-Debug
-          path: out/build/windows-vs2022-x64/bin/Debug/
+          name: FuseVision-Delivery-Candidate
+          path: out/delivery/*
           if-no-files-found: error
 
       - name: Upload test results
@@ -132,3 +151,34 @@ jobs:
           path: |
             out/build/windows-x64-debug/Testing/
             out/build/windows-vs2022-x64/Testing/
+            out/build/windows-x64-release/Testing/
+
+  deliver:
+    needs: [build-windows, documentation]
+    runs-on: windows-2022
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: FuseVision-Delivery-Candidate
+          path: out/delivery
+      - name: Verify downloaded delivery checksum and startup
+        run: python -X utf8 scripts/ci/package_windows.py --archive out/delivery/FuseVision-Windows-x64.zip --verify-only
+      - name: Deliver versioned Windows package
+        uses: actions/upload-artifact@v4
+        with:
+          name: FuseVision-Windows-x64-${{ github.sha }}
+          path: out/delivery/*
+          if-no-files-found: error
+      - name: Publish tagged prerelease
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$env:RELEASE_TAG" out/delivery/* --verify-tag --prerelease --generate-notes

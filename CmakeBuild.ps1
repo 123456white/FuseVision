@@ -1,4 +1,4 @@
-﻿<#
+<#
 FuseVision 构建脚本（Windows + Ninja / Visual Studio）
 自动检测 VS 环境，无需手动打开开发者命令行
 #>
@@ -177,7 +177,7 @@ function Invoke-Build {
             $reportDir = Join-Path $BuildDir "Testing"
             if ($Generator -eq "VisualStudio") { $reportDir = Join-Path $reportDir $BuildType }
             New-Item -ItemType Directory -Path $reportDir -Force | Out-Null
-            ctest --test-dir $BuildDir --build-config $BuildType --output-on-failure --no-tests=error --output-junit (Join-Path $reportDir "junit.xml")
+            ctest --test-dir $BuildDir --build-config $BuildType --output-on-failure --no-tests=error --test-output-size-passed 1000000 --output-junit (Join-Path $reportDir "junit.xml")
             if ($LASTEXITCODE -ne 0) { throw "测试失败 (exit $LASTEXITCODE)" }
         }
     } finally {

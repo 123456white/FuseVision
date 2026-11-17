@@ -638,7 +638,7 @@ ISS-011～014已修复，Release构建与CTest 6/6通过，见[本次修复验�
 
 验证范围：真实画布事件覆盖平移/焦点/缩放；六工具和保存重开保留原回归。
 
-代码：[AnnotationManagement::openImage](../../src/deeplearning/widgets/AnnotationManagement.cpp:98)；[AnnotationManagement::onCanvasMousePressed](../../src/deeplearning/widgets/AnnotationManagement.cpp:1238)；[RectTool::endRect](../../src/deeplearning/tools/RectTool.cpp:66)；[AnnotationManagement::renderOverlay](../../src/deeplearning/widgets/AnnotationManagement.cpp:1366)。
+代码：[AnnotationManagement::openImage](../../src/deeplearning/widgets/AnnotationManagement.cpp:107)；[AnnotationManagement::onCanvasMousePressed](../../src/deeplearning/widgets/AnnotationManagement.cpp:211)；[RectTool::endRect](../../src/deeplearning/tools/RectTool.cpp:66)；[AnnotationManagement::renderOverlay](../../src/deeplearning/widgets/AnnotationManagement.cpp:1375)。
 
 <a id="f24"></a>
 ## F24 保存与自动保存
@@ -665,7 +665,7 @@ ISS-011～014已修复，Release构建与CTest 6/6通过，见[本次修复验�
 
 验证范围：失败保留文件字节和编辑、恢复后快捷键前进、末图停留、PNG重开形状身份通过。
 
-代码：[AnnotationManagement::saveAnnotations](../../src/deeplearning/widgets/AnnotationManagement.cpp:1413)；[AnnotationManagement::onSave](../../src/deeplearning/widgets/AnnotationManagement.cpp:1450)；[DatasetManagement::currentLabelOffset](../../src/deeplearning/widgets/DatasetManagement.cpp:219)。
+代码：[AnnotationManagement::saveAnnotations](../../src/deeplearning/widgets/AnnotationManagement.cpp:1422)；[AnnotationManagement::onSave](../../src/deeplearning/widgets/AnnotationManagement.cpp:504)；[DatasetManagement::currentLabelOffset](../../src/deeplearning/widgets/DatasetManagement.cpp:219)。
 
 <a id="f25"></a>
 ## F25 撤销重做与形状列表
@@ -691,7 +691,7 @@ ISS-011～014已修复，Release构建与CTest 6/6通过，见[本次修复验�
 
 验证范围：列表对象与选择保持、画布选中删除、一次拖动一个撤销、失焦取消和角点缩小通过。
 
-代码：[AnnotationManagement::updateShapeList](../../src/deeplearning/widgets/AnnotationManagement.cpp:1157)；[AnnotationManagement::onUndo](../../src/deeplearning/widgets/AnnotationManagement.cpp:1453)；[AnnotationManagement::onDeleteSelectedShapes](../../src/deeplearning/widgets/AnnotationManagement.cpp:1228)；[AnnotationModel::undo](../../src/deeplearning/model/AnnotationModel.cpp:341)。
+代码：[AnnotationManagement::updateShapeList](../../src/deeplearning/widgets/AnnotationManagement.cpp:1166)；[AnnotationManagement::onUndo](../../src/deeplearning/widgets/AnnotationManagement.cpp:510)；[AnnotationManagement::onDeleteSelectedShapes](../../src/deeplearning/widgets/AnnotationManagement.cpp:722)；[AnnotationModel::undo](../../src/deeplearning/model/AnnotationModel.cpp:341)。
 
 <a id="f26"></a>
 ## F26 视图调整与图像导航
@@ -717,9 +717,9 @@ ISS-011～014已修复，Release构建与CTest 6/6通过，见[本次修复验�
 
 数据/接口/算法：m_sourceImage/m_displayImage；样本列表；标签目录。
 
-验证范围：平移结束、零滚轮/锚点缩放、亮度视野保持、保存切图保持和显示不改数据通过。
+验证范围：平移结束、零滚轮/锚点缩放、亮度视野保持、保存切图保持和显示不改数据通过。Debug/Release补验连续前后导航，刷新列表时目标路径保持有效，见[ISS-016](../refactor/ISSUES.md#iss-016)。
 
-代码：[AnnotationManagement::onNavigateTo](../../src/deeplearning/widgets/AnnotationManagement.cpp:811)；[AnnotationManagement::onReturnToGallery](../../src/deeplearning/widgets/AnnotationManagement.cpp:818)；[AnnotationManagement::applyImageAdjustments](../../src/deeplearning/widgets/AnnotationManagement.cpp:905)。
+代码：[AnnotationManagement::onNavigateTo](../../src/deeplearning/widgets/AnnotationManagement.cpp:820)；[AnnotationManagement::onReturnToGallery](../../src/deeplearning/widgets/AnnotationManagement.cpp:599)；[AnnotationManagement::applyImageAdjustments](../../src/deeplearning/widgets/AnnotationManagement.cpp:914)。
 
 <a id="f27"></a>
 ## F27 Qt原生连续标注工作区
@@ -744,9 +744,9 @@ ISS-011～014已修复，Release构建与CTest 6/6通过，见[本次修复验�
 
 数据/接口/算法：Qt Widgets/QGraphicsView、权威AnnotationModel与原生PNG/JSON；历史labelmePythonPath配置保留但不再使用。
 
-验证范围：原生入口无外部launch槽断言、画布事件、失败重试与重开、访客拒绝和offscreen截图；可见桌面未验。
+验证范围：Debug/Release补验持有撤销记录的页面销毁，销毁前停自动保存并断开模型更新信号。原生入口无外部launch槽断言、画布事件、失败重试与重开、访客拒绝和offscreen截图；可见桌面未验。
 
-代码：[AnnotationManagement::onSaveAndNext](../../src/deeplearning/widgets/AnnotationManagement.cpp:1718)；[AnnotationManagement::onCanvasKeyPressed](../../src/deeplearning/widgets/AnnotationManagement.cpp:1028)；[AnnotationCanvas::wheelEvent](../../src/deeplearning/widgets/AnnotationCanvas.cpp:144)；[DeepLearningWidget::initUI](../../src/deeplearning/widgets/DeepLearningWidget.cpp:61)。
+代码：[AnnotationManagement::onSaveAndNext](../../src/deeplearning/widgets/AnnotationManagement.cpp:585)；[AnnotationManagement::onCanvasKeyPressed](../../src/deeplearning/widgets/AnnotationManagement.cpp:219)；[AnnotationCanvas::wheelEvent](../../src/deeplearning/widgets/AnnotationCanvas.cpp:144)；[DeepLearningWidget::initUI](../../src/deeplearning/widgets/DeepLearningWidget.cpp:61)。
 
 <a id="f28"></a>
 ## F28 数据检查占位页

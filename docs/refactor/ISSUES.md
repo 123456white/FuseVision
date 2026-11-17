@@ -22,6 +22,7 @@
 | [ISS-012](#iss-012) 旋转框平移未移动旋转中心 | P1 | 已修复；新增自动回归通过 |
 | [ISS-013](#iss-013) 数据库路径配置未接入启动 | P1 | 已修复；新增自动回归通过 |
 | [ISS-014](#iss-014) 异常分类导入布局未接入图库 | P1 | 分类链路已接通；采用明确新模式 |
+| [ISS-016](#iss-016) 标注导航与页面销毁生命周期崩溃 | P1 | 已修复；Debug/Release自动回归通过 |
 | [ISS-015](#iss-015) 原生配置缺格式守卫、绝对引用与工作目录不一致 | P1 | 已修复；存储GTest及真实Widget回归通过 |
 
 <a id="iss-001"></a>
@@ -35,7 +36,7 @@
 
 **未完成或边界**：原生Windows手动交互与大图工具性能未验。
 
-**当前代码**：[AnnotationModel::reset](../../src/deeplearning/model/AnnotationModel.cpp:287)；[AnnotationManagement::saveAnnotations](../../src/deeplearning/widgets/AnnotationManagement.cpp:1413)。
+**当前代码**：[AnnotationModel::reset](../../src/deeplearning/model/AnnotationModel.cpp:287)；[AnnotationManagement::saveAnnotations](../../src/deeplearning/widgets/AnnotationManagement.cpp:1422)。
 
 <a id="iss-002"></a>
 ## ISS-002 保存结果不传播与离页缺少阻断
@@ -48,7 +49,7 @@
 
 **未完成或边界**：退出登录的取消/保存失败/重试/放弃已通过offscreen回归；窗口关闭及原生文件对话框全流程需可见桌面补验；断电不等于普通写失败。
 
-**当前代码**：[AnnotationStore::save](../../src/deeplearning/storage/AnnotationStore.cpp:82)；[AnnotationManagement::prepareToLeave](../../src/deeplearning/widgets/AnnotationManagement.cpp:1676)。
+**当前代码**：[AnnotationStore::save](../../src/deeplearning/storage/AnnotationStore.cpp:82)；[AnnotationManagement::prepareToLeave](../../src/deeplearning/widgets/AnnotationManagement.cpp:1685)。
 
 <a id="iss-003"></a>
 ## ISS-003 新建模型的通知被屏蔽
@@ -215,9 +216,22 @@
 
 **验证**：[GTest源码](../../tests/storage_regression.cpp)与[真实Widget datasetStorage](../../tests/current_issues_regression.cpp)保留先红后绿证据；覆盖移动重开、旧绝对引用/旧yolo布局/无标记配置拒绝、必填字段、新建数据集配置、缺失配置拒写、模式匹配及无效内存/磁盘配置不覆盖、扩展字段、原子失败、分类/标注目录和日志路径。结果见[本轮验证](../logic/VALIDATION.md#2026-11-17-严格原生存储标准)。
 
-**未完成或边界**：本轮没有批量搬移旧项目/账户/设置、改写旧YAML或自动吸收嵌套分区；原生工作索引不等于训练配置。恢复UI/保留期、并发冲突检测、断电事务和Q04备份策略未实现；Debug与完整可见Windows操作未验。
+**未完成或边界**：本轮没有批量搬移旧项目/账户/设置、改写旧YAML或自动吸收嵌套分区；原生工作索引不等于训练配置。恢复UI/保留期、并发冲突检测、断电事务和Q04备份策略未实现；Debug已由本轮回归补验，完整可见Windows操作未验。
 
 **当前代码**：[validate](../../src/deeplearning/storage/StorageContract.h:16)；[ProjectConfig::saveProject](../../src/deeplearning/storage/ProjectConfig.cpp:111)；[ModelConfig::createModel](../../src/deeplearning/storage/ModelConfig.cpp:22)；[DatasetManagement::saveDatasetConfig](../../src/deeplearning/widgets/DatasetManagement.cpp:367)；[Logger::init](../../src/core/Logger.cpp:40)。
+
+<a id="iss-016"></a>
+## ISS-016 标注导航与页面销毁生命周期崩溃
+
+**状态**：2026-11-17已修复；Debug与Release自动回归通过，P1。
+
+**当前实现/限制**：openImage按值持有模型ID与图片路径，避免刷新样本或保存对话框使引用失效。析构阶段先停自动保存、断开模型与撤销栈到页面的信号并取消未提交工具，避免子对象销毁后按钮仍被更新。
+
+**验证**：[Debug基线](../logic/evidence/full-functional-debug-baseline-20261117.log)40项中两项崩溃；[堆栈](../logic/evidence/full-functional-debug-stack-20261117.log)分别定位openImage的QString赋值和QUndoStack析构时的按钮更新。[最终Debug](../logic/evidence/full-functional-debug-final-20261117.log)与[Release](../logic/evidence/full-functional-release-final-20261117.log)41/41通过，含连续前后导航、保存失败重试及持有撤销记录的页面销毁。
+
+**未完成或边界**：自动Qt事件测试不代替完整可见桌面、高DPI与相机验收。
+
+**当前代码**：[AnnotationManagement::openImage](../../src/deeplearning/widgets/AnnotationManagement.cpp:107)；[AnnotationManagement::~AnnotationManagement](../../src/deeplearning/widgets/AnnotationManagement.cpp:65)。
 
 ## 待确认的产品决策与推荐
 

@@ -44,6 +44,9 @@
 #include "core/Logger.h"
 #include "core/AccessControl.h"
 #include "ui/ThemeManager.h"
+#include "ui/LogMonitor.h"
+#include <QListWidget>
+#include <QTextDocument>
 #include "deeplearning/widgets/DeepLearningWidget.h"
 
 static std::function<void(QDialog*)> dialogAction;
@@ -423,6 +426,50 @@ public:
         QList<AnnotationShape> loaded;QString error;check(AnnotationStore::load(path,image.size(),false,dataset.currentLabelNames(),loaded,error) && loaded.size()==2 && loaded[0].labelId==1 && dataset.currentLabelNames()[loaded[0].labelId]=="second","existing annotation still references same category after operations");
         check(dataset.currentLabelInstanceCounts().value(1)==2 && dataset.m_samples[dataset.findSampleIndex(dataset.imagesDir()+"/protected.png")].instanceCount==2,"class and image instance counts rebuild from committed shapes rather than stale config or image totals");
     }
+    static void additionalFunctions(const QString& root) {
+        auto& theme=ThemeManager::instance();const auto original=theme.currentTheme();
+        {
+            FuseVision window;window.onToggleTheme();
+            check(theme.currentTheme()!=original,"authenticated theme toggle applies");
+            QSettings persisted("FuseVisionTeam","FuseVision");persisted.sync();
+            check(persisted.value("ui/theme").toString()==(theme.currentTheme()==ThemeManager::Dark?"dark":"light"),"theme persists in isolated settings");
+            window.onToggleTheme();check(theme.currentTheme()==original,"theme toggles back");
+        }
+        LogMonitor monitor;auto* log=monitor.findChild<QTextEdit*>("logView");
+        check(log && log->isReadOnly(),"log panel is read-only");
+        monitor.log("<b>literal & message</b>",LogMonitor::Warning);
+        check(log->toPlainText().contains("<b>literal & message</b>") && log->toPlainText().contains("[WARN]"),"log escapes external markup and preserves severity");
+        monitor.collapse();check(!monitor.isExpanded() && log->isHidden(),"log collapse");
+        monitor.expand();check(monitor.isExpanded() && !log->isHidden(),"log expand");
+        for(int i=0;i<1100;++i) monitor.log(QString::number(i));
+        check(log->document()->blockCount()<=1000 && log->toPlainText().contains("1099"),"log retains newest entries within limit");
+        monitor.clear();check(log->toPlainText().isEmpty(),"log clears display");
+
+        QString error;check(ProjectConfig::createProject("Coverage","",root,&error),"coverage project");
+        const auto project=ProjectConfig::loadProject(root+"/Coverage/project.fvproj",&error);
+        check(ModelConfig::createModel("Samples",ModelTaskTypes::InstanceSeg,project.projectRoot,project.fvprojPath,&error),"coverage model");
+        const auto dir=project.projectRoot+"/Samples",config=dir+"/dataset_config.json";
+        writeFile(config,QJsonDocument(datasetFixture(LabelTypes::GrayscaleMask,QJsonArray{QJsonObject{{"name","first"}},QJsonObject{{"name","second"}}})).toJson());
+        DatasetManagement data;data.setCurrentProject(project);data.setCurrentModel("Samples",ModelConfig::loadModel(dir+"/Samples.fvdl",&error));drain();
+        const auto before=read(config);int notifications=0;QObject::connect(&data,&DatasetManagement::labelsChanged,[&]{++notifications;});
+        const auto reverse=[&]{auto* item=data.m_labelListWidget->takeItem(0);data.m_labelListWidget->insertItem(1,item);data.onLabelOrderChanged();};
+        check(QFile::rename(config,config+".held") && QDir().mkdir(config),"block isolated config commit");
+        reverse();check(data.currentLabelNames()==QStringList{"first","second"} && notifications==0,"failed reorder restores names without notification");
+        check(data.m_labelListWidget->item(0)->data(Qt::UserRole).toInt()==0,"failed reorder restores displayed order");
+        check(QDir().rmdir(config) && QFile::rename(config+".held",config) && read(config)==before,"failed reorder preserves committed config");
+        reverse();data.loadDatasetConfig();check(data.currentLabelNames()==QStringList{"second","first"} && notifications==1,"reorder retry persists current order once");
+        QImage image(50,40,QImage::Format_RGB32);image.fill(Qt::white);
+        check(image.save(dir+"/images/a.png") && image.save(dir+"/images/b.png"),"filter image fixtures");
+        AnnotationShape shape;shape.type=AnnotationShape::RectShape;shape.labelId=0;shape.bbox={2,2,10,10};
+        check(AnnotationStore::save(dir+"/labels/a.png","a.png",image,{shape},true,false,2).ok,"filter annotated fixture");
+        data.loadDatasetConfig();check(data.allSamples().size()==2,"filter scans two samples");
+        data.m_filterCombo->setCurrentIndex(1);data.onSelectAll(Qt::Checked);
+        check(data.m_selectedIndices==QSet<int>{1},"unannotated filter selects visible sample only");
+        data.m_filterCombo->setCurrentIndex(2);check(data.m_selectedIndices.isEmpty(),"filter switch clears selection");
+        data.onSelectAll(Qt::Checked);check(data.m_selectedIndices==QSet<int>{0},"annotated filter selects visible sample only");
+        data.m_filterCombo->setCurrentIndex(0);data.onSelectAll(Qt::Checked);check(data.m_selectedIndices.size()==2,"all filter selects both");
+        data.onSelectAll(Qt::Unchecked);check(data.m_selectedIndices.isEmpty(),"unselect clears selection");
+    }
     static void modelCreation(const QString& root) {
         auto project=ProjectConfig::loadProject(root+"/Fixture/project.fvproj");
         ModelManagement models;models.setCurrentProject(project);
@@ -564,6 +611,7 @@ int main(int argc, char** argv) {
         check(!AnnotationStore::save(path,"a.png",image,invalid,false,false,2).ok,"reject invalid category");
         check(f.open(QIODevice::ReadOnly) && f.readAll()==original,"failed replacement preserves bytes");
     });
+    run("theme logs filters and reorder recovery",[&] {WorkflowRegression::additionalFunctions(temp.path());});
     run("category protection",[&] {WorkflowRegression::categoryProtection(temp.path());});
     run("model creation signals",[&] {WorkflowRegression::modelCreation(temp.path());});
     run("export semantic baseline",[&] {WorkflowRegression::exportSemantics(temp.path());});

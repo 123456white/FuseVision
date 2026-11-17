@@ -39,3 +39,38 @@
 可见Windows连续操作、原生文件对话框、高DPI/触控板、真实大图性能、完整进程重启、XMind桌面兼容性和相机硬件。训练/预测等占位能力没有可宣称通过的业务测试。LabelMe进程已退役，不继续列为当前运行功能的必验项。
 
 后续新增用例先关联F编号、关系或迁移及业务断言；只有运行记录与对应版本匹配时才记录通过。不以本表行数计算全产品覆盖率。
+
+## 执行门禁映射
+
+每行由scripts/ci/verify_traceability.py消费：要求JUnit中真实通过、无跳过且包含断言输出。多行表示同一追踪需同时满足多个分组；storage正则检查本次发现的全部GoogleTest，不以固定数量代替断言。TC-012使用独立的documentation-tools CTest，startup-smoke另要求存在且通过。门禁只证明以下自动范围。
+
+| 用例ID | 功能/关系/状态 | 已有真实测试位置 | 关键断言 | 证据/缺口 |
+|---|---|---|---|---|
+| TC-019 | F03/F16/F17/F38；REL-004/007 | [additionalFunctions](../../tests/workflow_regression.cpp) | 主题写入隔离设置、日志转义/上限/清空、无标签类别重排失败恢复与重试、已标注/未标注筛选全选 | Debug自动通过；桌面视觉与大数据性能另验 |
+
+| 类型 | 用例 | 执行测试（正则） | 必须输出 |
+|---|---|---|---|
+| EXEC | TC-001 | `workflow-regression` | `PASS integrated project model gallery editor reopen export` |
+| EXEC | TC-002 | `workflow-regression` | `PASS widget load edit save reopen` |
+| EXEC | TC-003 | `native-annotation-regression` | `PASS failed save-and-next retains edits and committed file` |
+| EXEC | TC-004 | `workflow-regression` | `PASS guest pages single account login logout and password` |
+| EXEC | TC-004 | `workflow-regression` | `PASS guest denied handlers and login state` |
+| EXEC | TC-005 | `workflow-regression` | `PASS selected project and model deletion` |
+| EXEC | TC-005 | `workflow-regression` | `PASS model creation signals` |
+| EXEC | TC-006 | `workflow-regression` | `PASS paired import recovery` |
+| EXEC | TC-007 | `workflow-regression` | `PASS category protection` |
+| EXEC | TC-007 | `workflow-regression` | `PASS COCO sparse IDs empty labels RLE and quality` |
+| EXEC | TC-008 | `workflow-regression` | `PASS export semantic baseline` |
+| EXEC | TC-008 | `data-contract-regression` | `PASS data-only paired export independently reread` |
+| EXEC | TC-009 | `workflow-regression` | `PASS COCO sparse IDs empty labels RLE and quality` |
+| EXEC | TC-010 | `workflow-regression` | `PASS settings and actual log retention` |
+| EXEC | TC-011 | `module-boundaries` | `PASS module include boundaries` |
+| EXEC | TC-011 | `data-contract-regression` | `PASS data-only undo storage round trip and failure` |
+| EXEC | TC-012 | `documentation-tools` | `OK` |
+| EXEC | TC-013 | `current-issues-regression` | `PASS ISS-011` |
+| EXEC | TC-014 | `current-issues-regression` | `PASS ISS-012` |
+| EXEC | TC-015 | `current-issues-regression` | `PASS ISS-013` |
+| EXEC | TC-016 | `current-issues-regression` | `PASS ISS-014` |
+| EXEC | TC-017 | `storage\..+` | `[  PASSED  ] 1 test.` |
+| EXEC | TC-018 | `current-issues-regression` | `PASS storage-config` |
+| EXEC | TC-019 | `workflow-regression` | `PASS theme logs filters and reorder recovery` |

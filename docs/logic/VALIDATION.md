@@ -270,3 +270,17 @@ git diff --check
 2026-11-15时ISS-007未修复；2026-11-17用户已明确改为单账户，故按需求变化关闭。Q02异常分类/掩码主模式、Q03矩形命名/映射与Q04审计备份要求仍待产品选择。角色人数限制不再作为单账户界面的需求。详细推荐见 [ISSUES](../refactor/ISSUES.md)。
 
 下一优先级为 P0 可见桌面的保存/退出登录/关闭和 LabelMe 权限补验；P1 产品决策及中断恢复验证；P2 完整分区、压缩 RLE 和真实负载基准。代表样本的自动核心链满足本轮断言；全部支持格式和桌面场景的闭环验收仍需上述补验。
+
+## 2026-11-17 完整功能关系回归与CI/CD
+
+依据FEATURE-RELATIONS、STATE-MACHINES及TEST-TRACEABILITY的REL-001～007和TC-001～018逐项复跑，新增TC-019覆盖主题、日志、筛选选择与类别重排失败恢复。训练/预测/模型导出等占位、退役LabelMe进程、相机和完整可见桌面不冒充已测功能。
+
+- [Debug初始日志](evidence/full-functional-debug-baseline-20261117.log)：38/40，两项访问异常；[诊断堆栈](evidence/full-functional-debug-stack-20261117.log)定位导航样本引用失效与页面析构后撤销栈信号，修复见ISS-016。
+- [最终Debug](evidence/full-functional-debug-final-20261117.log)、[JUnit](evidence/full-functional-debug-junit-20261117.xml)及[图谱门禁](evidence/full-functional-debug-traceability-20261117.json)：41/41通过，19个TC、24条执行映射。
+- [最终Release](evidence/full-functional-release-final-20261117.log)、[JUnit](evidence/full-functional-release-junit-20261117.xml)及[图谱门禁](evidence/full-functional-release-traceability-20261117.json)：41/41通过。
+- documentation-tools包含32个Python测试；6项CI工具测试验证缺失/跳过/断言丢失等失败门禁与打包文件白名单；actionlint 1.7.7检查两份workflow通过。
+- [本地Release包验证](evidence/full-functional-package-local-20261117.log)：实际打包、临时解压、系统PATH及无外部插件路径启动成功，未访问真实账户库或改写用户设置。
+
+[Visual Studio 2026 Debug日志](evidence/full-functional-vsdebug-20261117.log)、[JUnit](evidence/full-functional-vsdebug-junit-20261117.xml)与[门禁结果](evidence/full-functional-vsdebug-traceability-20261117.json)均通过41/41。本机Doxygen生成通过，见[日志](evidence/full-functional-doxygen-20261117.log)；[32项Python工具测试](evidence/full-functional-python-20261117.log)通过。仓库.gitattributes固定源码LF并保留历史证据原字节，避免跨机器检出改变保护摘要。
+
+远端CI/CD运行状态在完成后追加；本地结果不能代替远端成功。完整可见Windows连续操作、原生文件对话框、高DPI/触控板、大图性能及硬件仍需人工或对应设备补验。

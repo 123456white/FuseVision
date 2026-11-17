@@ -168,12 +168,12 @@ VS 解决方案采用多配置生成器：同一输出目录包含 Debug 和 Rel
 
 ## CI/CD
 
-每次 push / PR 到 `main` 分支自动触发 GitHub Actions 构建：
+push到main、codex/ci-*验证分支或v*标签，PR到main及手动触发执行GitHub Actions：
 
 - **Runner**：windows-2022
 - **缓存策略**：vcpkg 工具链缓存与依赖二进制缓存
 - **二进制缓存**：`vcpkg/bincache`，后续运行跳过耗时编译
-- **检查**：环境自检 → Ninja 构建及 CTest → VS 2022/MSBuild 构建及 CTest → 上传两种构建产物及测试日志
+- **检查**：环境自检 → Ninja Debug/Release及VS2022 Debug各41项CTest → 功能图谱输出门禁 → 运行文件打包与隔离启动；文档工具/镜像/导图同时检查
 - **手动触发**：工作流支持 `workflow_dispatch`
 
 本地单独执行测试：
@@ -186,7 +186,7 @@ ctest --preset windows-release
 `startup-smoke` 使用 Qt offscreen 平台、内存 SQLite、临时项目目录和独立测试日志，验证默认用户、错误密码拒绝、权限初始化、登录对话框和主窗口各页面初始化后退出。
 测试不修改现有用户数据库。它覆盖启动与基础认证，不覆盖登录后的业务操作、相机采集、模型训练或第三方 SDK 的完整功能。
 Windows 测试会将 PATH 限制为系统目录并清空外部 Qt 插件路径，避免借用 Conda、Qt SDK 等开发环境中的运行库。
-当前流水线只构建、测试和上传产物，没有生产环境自动部署。
+构建和文档作业都通过后，delivery作业下载候选包，重验SHA256及隔离启动，再上传带提交SHA的Windows Release ZIP与校验文件。候选包不等于通过全部门禁的交付包。v*标签额外创建GitHub prerelease；分支验证不创建正式版本。没有远程服务部署目标，CD在本项目表示经门禁验证的桌面包交付。
 
 2026-11-15 在验证分支 `codex/ci-validation-20261115` 实测：首次 Ninja 构建约 117 分钟；缓存命中后，提交 `9264b74` 的 Ninja + VS 2022 双入口流水线耗时 5 分 45 秒，两个入口的启动测试各 1/1 通过。两个下载包均校验 SHA-256 一致并独立启动成功。此结果对应上述验证提交。
 

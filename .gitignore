@@ -45,3 +45,6 @@ sdk/yolo/ultralytics-main/docker/
 sdk/yolo/ultralytics-main/docs/
 sdk/yolo/ultralytics-main/examples/
 sdk/yolo/ultralytics-main/tests/
+# Python tooling caches
+__pycache__/
+*.py[cod]

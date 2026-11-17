@@ -63,4 +63,18 @@ Doxygen使用`./scripts/build-docs.ps1 -DoxygenPath <doxygen.exe路径>`或CMake
 
 ## 文档工具回归
 
-`python -X utf8 -m unittest discover -s tests -p test_docflow.py -v`独立检查文档工具，不加入C++业务CTest数量。覆盖基线归因、删除/新增、resume保持、review失效、证据保护、断链、过期派生与Stop续跑限制，使用临时目录，不写业务证据。功能关系与状态断言见[测试追踪](../logic/TEST-TRACEABILITY.md)。当前文档CI在`.github/workflows/docs.yml`，远端结果尚未运行。
+`python -X utf8 -m unittest discover -s tests -p test_docflow.py -v`独立检查文档工具，不加入C++业务CTest数量。覆盖基线归因、删除/新增、resume保持、review失效、证据保护、断链、过期派生与Stop续跑限制，使用临时目录，不写业务证据。功能关系与状态断言见[测试追踪](../logic/TEST-TRACEABILITY.md)。当前文档CI在`.github/workflows/docs.yml`，由构建工作流调用；远端实测状态见最新验证记录。
+
+## 2026-11-17 全功能关系回归与CI门禁
+
+当前CTest总数41：34个GoogleTest、6组既有业务/边界/启动回归，以及新增documentation-tools（32个Python工具断言，含6个CI工具测试）。Ninja Debug和Release均41/41通过；[追踪映射](../logic/TEST-TRACEABILITY.md#执行门禁映射)关联19个TC与24条输出核验。默认JUnit成功输出上限提高至1000000字节，避免后续业务分组断言被截断。门禁拒绝未映射追踪、缺失测试、失败/跳过、重复测试及缺少断言标记；不宣称覆盖率100%。
+
+新增additionalFunctions真实Widget测试覆盖主题持久化、日志文本转义/1000行保留/清空/折叠、无标注类别重排失败恢复及重试、图库筛选全选。ISS-016保留Debug两项崩溃与堆栈，修复导航目标引用失效与页面析构信号回调。隔离数据规则继续适用。
+
+```powershell
+python -X utf8 scripts/ci/verify_traceability.py --junit out/build/windows-x64-release/Testing/junit.xml --output out/validation/traceability.json
+python -X utf8 scripts/ci/package_windows.py --source out/build/windows-x64-release/bin/Release --archive out/delivery/FuseVision-Windows-x64.zip --revision local
+python -X utf8 scripts/ci/package_windows.py --archive out/delivery/FuseVision-Windows-x64.zip --verify-only
+```
+
+打包只选应用exe、运行DLL和三类Qt插件，不携带测试exe/GTest、账户、项目、配置、日志和恢复目录。SHA256校验及解压启动在临时目录执行，PATH仅系统目录，清空外部Qt插件路径，内存数据库。GitHub Actions同时检查Ninja Debug/Release及VS2022 Debug；文档可复用工作流检查镜像、引用与Mermaid。两项作业通过才交付版本化ZIP和校验文件；v*标签才发布prerelease。详见[CI/CD](../GETTING-STARTED.md#cicd)。

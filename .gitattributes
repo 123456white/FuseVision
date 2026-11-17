@@ -1,0 +1,12 @@
+* text=auto eol=lf
+
+# Historical evidence is byte protected by archive-manifest.json.
+docs/archive/** -text
+docs/logic/evidence/** -text
+docs/requirements/** -text
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.gif -text
+*.ico -text
+*.xmind -text

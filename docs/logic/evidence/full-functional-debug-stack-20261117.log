@@ -1,0 +1,434 @@
+初始化 VS x64 编译环境...
+VS 环境已配置 (编译器: C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe)
+配置: windows-x64-debug
+-- Running vcpkg install
+Detecting compiler hash for triplet x64-windows...
+-- Using %HTTP(S)_PROXY% in environment variables.
+Compiler found: C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe
+The following packages are already installed:
+  * abseil:x64-windows@20260107.1#2
+  * brotli:x64-windows@1.2.0
+  * bzip2[core,tool]:x64-windows@1.0.8#6
+  * dbus:x64-windows@1.16.2#3
+  * double-conversion:x64-windows@3.4.0
+  * egl-registry:x64-windows@2025-05-27
+  * expat:x64-windows@2.7.4
+  * flatbuffers:x64-windows@25.12.19
+  * fmt:x64-windows@12.1.0
+  * freetype[core,zlib,png,bzip2,brotli]:x64-windows@2.13.3
+    gtest:x64-windows@1.17.0#2
+  * harfbuzz[core,freetype]:x64-windows@13.0.1
+  * icu[core,tools]:x64-windows@78.2
+  * jasper:x64-windows@4.2.9
+  * libjpeg-turbo:x64-windows@3.1.4.1
+  * liblzma:x64-windows@5.8.2#1
+  * libpng:x64-windows@1.6.55
+  * libpq[core,zlib,openssl,lz4]:x64-windows@18.3
+  * libwebp[core,unicode,simd,nearlossless,libwebpmux]:x64-windows@1.6.0#2
+  * lz4:x64-windows@1.10.0
+  * md4c:x64-windows@0.5.2
+    opencv4[core,win32ui,webp,tiff,thread,quirc,png,msmf,jpeg,intrinsics,highgui,gapi,fs,dshow,dnn,directml,calib3d]:x64-windows@4.12.0#1
+  * opengl:x64-windows@2022-12-04#3
+  * opengl-registry:x64-windows@2026-01-26
+  * openssl:x64-windows@3.6.1#3
+  * pcre2[core,platform-default-features,jit]:x64-windows@10.47
+  * protobuf:x64-windows@6.33.4#1
+    qtbase[core,zstd,widgets,thread,testlib,sql-sqlite,sql-psql,sql,sessionmanager,png,pcre2,openssl,opengl,network,jpeg,icu,harfbuzz,gui,freetype,doubleconversion,dnslookup,dbus,concurrent,brotli]:x64-windows@6.10.2
+    qtimageformats[core,webp,tiff,jasper]:x64-windows@6.10.2
+  * quirc:x64-windows@1.2
+    spdlog[core,tz-offset,fmt]:x64-windows@1.17.0
+  * sqlite3[core,json1]:x64-windows@3.52.0
+  * tiff[core,zip,lzma,jpeg]:x64-windows@4.7.1
+  * utf8-range:x64-windows@6.33.4
+  * vcpkg-cmake:x64-windows@2024-04-23
+  * vcpkg-cmake-config:x64-windows@2024-05-23
+  * vcpkg-cmake-get-vars:x64-windows@2025-05-29
+  * vcpkg-get-python-packages:x64-windows@2025-04-05
+  * vcpkg-make:x64-windows@2026-01-01
+  * vcpkg-tool-meson:x64-windows@1.9.0#4
+  * zlib:x64-windows@1.3.1
+  * zstd:x64-windows@1.5.7
+opencv4 is compatible with built-in CMake variables. In case of multiple OpenCV version installed, set OpenCV_ROOT *before* the find_package call:
+
+    set(OpenCV_ROOT "${VCPKG_INSTALLED_DIR}/x64-windows/share/opencv4")
+    find_package(OpenCV REQUIRED)
+
+qtbase provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Qt6 CONFIG REQUIRED)
+  # note: 38 additional targets are not displayed.
+  target_link_libraries(main PRIVATE DB2::DB2 PPS::PPS Oracle::OCI Libb2::Libb2)
+
+  find_package(Qt6Concurrent CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Concurrent)
+
+  find_package(Qt6Core CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Core)
+
+  find_package(Qt6CorePrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::CorePrivate)
+
+  find_package(Qt6DBus CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBus)
+
+  find_package(Qt6DBusPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBusPrivate)
+
+  find_package(Qt6DeviceDiscoverySupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DeviceDiscoverySupportPrivate)
+
+  find_package(Qt6EntryPointPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::EntryPointPrivate Qt6::EntryPointImplementation)
+
+  find_package(Qt6ExampleIconsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExampleIconsPrivate Qt6::ExampleIconsPrivate_resources_1)
+
+  find_package(Qt6ExamplesAssetDownloaderPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExamplesAssetDownloaderPrivate)
+
+  find_package(Qt6FbSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::FbSupportPrivate)
+
+  find_package(Qt6Gui CONFIG REQUIRED)
+  # note: 5 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Gui Qt6::QGifPlugin Qt6::QICOPlugin Qt6::QJpegPlugin)
+
+  find_package(Qt6GuiPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::GuiPrivate)
+
+  find_package(Qt6Network CONFIG REQUIRED)
+  # note: 1 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Network Qt6::QNLMNIPlugin Qt6::QSchannelBackendPlugin Qt6::QTlsBackendOpenSSLPlugin)
+
+  find_package(Qt6NetworkPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::NetworkPrivate)
+
+  find_package(Qt6OpenGL CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGL)
+
+  find_package(Qt6OpenGLPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLPrivate)
+
+  find_package(Qt6OpenGLWidgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLWidgets)
+
+  find_package(Qt6PrintSupport CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupport)
+
+  find_package(Qt6PrintSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupportPrivate)
+
+  find_package(Qt6Sql CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Sql Qt6::QPSQLDriverPlugin Qt6::QSQLiteDriverPlugin)
+
+  find_package(Qt6SqlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::SqlPrivate)
+
+  find_package(Qt6Test CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Test)
+
+  find_package(Qt6TestInternalsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestInternalsPrivate)
+
+  find_package(Qt6TestPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestPrivate)
+
+  find_package(Qt6Widgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Widgets Qt6::QModernWindowsStylePlugin)
+
+  find_package(Qt6WidgetsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::WidgetsPrivate)
+
+  find_package(Qt6Xml CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Xml)
+
+  find_package(Qt6XmlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::XmlPrivate)
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+The package gtest is compatible with built-in CMake targets:
+
+    enable_testing()
+    
+    find_package(GTest CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+    
+    add_test(AllTestsInMain main)
+
+All requested installations completed successfully in: 1.16 ms
+-- Running vcpkg install - done
+-- 检测通过：当前使用 64 位编译器，指针宽度: 8 字节
+-- OpenCV version: 4.12.0
+-- OpenCV include dirs: D:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/include/opencv4
+-- OpenCV libraries: opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio
+-- Halcon detected (system): D:\software\HALCON (arch: x64-win64)
+-- MVS SDK configured for Windows
+-- Doxygen not found; set DOXYGEN_ROOT or DOXYGEN_EXECUTABLE to enable the docs target
+-- ========== 项目构建信息 ==========
+-- 项目名称：FuseVision
+-- 项目版本：1.0.0
+-- C++ 标准：20
+-- 构建类型：Debug
+-- 编译器：MSVC 19.50.35728.0
+-- Qt 版本：6.10.2
+-- Qt 库路径：D:/project/FuseVision/out/build/windows-x64-debug/vcpkg_installed/x64-windows/share/Qt6
+-- vcpkg 三元组：x64-windows
+-- Halcon 来源：system
+-- Halcon 头文件目录：D:\software\HALCON/include
+-- Halcon 库目录：D:\software\HALCON/lib/x64-win64
+-- MVS SDK 根目录：D:/project/FuseVision/sdk/MVS
+-- OpenCV 版本：4.12.0
+-- spdlog 版本：1.17.0
+-- ==================================
+-- Configuring done (4.1s)
+-- Generating done (0.4s)
+-- Build files have been written to: D:/project/FuseVision/out/build/windows-x64-debug
+构建: windows-debug
+[1/8] Automatic MOC and UIC for target FuseVisionWorkflowTests
+[2/7] Automatic MOC and UIC for target FuseVisionNativeAnnotationTests
+[3/6] Building CXX object CMakeFiles\FuseVisionNativeAnnotationTests.dir\tests\native_annotation_regression.cpp.obj
+[4/6] Building CXX object CMakeFiles\FuseVisionWorkflowTests.dir\tests\workflow_regression.cpp.obj
+[5/6] Linking CXX executable bin\Debug\FuseVisionNativeAnnotationTests.exe
+[6/6] Linking CXX executable bin\Debug\FuseVisionWorkflowTests.exe
+Test project D:/project/FuseVision/out/build/windows-x64-debug
+      Start  1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+ 1/40 Test  #1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths ............................   Passed    0.11 sec
+      Start  2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+ 2/40 Test  #2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields ......................   Passed    0.05 sec
+      Start  3: storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+ 3/40 Test  #3: storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting ......................   Passed    0.05 sec
+      Start  4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+ 4/40 Test  #4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories ...........................   Passed    0.05 sec
+      Start  5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml
+ 5/40 Test  #5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml ...........................   Passed    0.05 sec
+      Start  6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles
+ 6/40 Test  #6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles .............................   Passed    0.05 sec
+      Start  7: storage.Storage.MalformedAndWrongFieldTypesAreRejected
+ 7/40 Test  #7: storage.Storage.MalformedAndWrongFieldTypesAreRejected .................................   Passed    0.15 sec
+      Start  8: storage.Storage.ModelUnknownFieldsSurviveSave
+ 8/40 Test  #8: storage.Storage.ModelUnknownFieldsSurviveSave ..........................................   Passed    0.15 sec
+      Start  9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+ 9/40 Test  #9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten .......................   Passed    0.05 sec
+      Start 10: storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+10/40 Test #10: storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting ......................   Passed    0.14 sec
+      Start 11: storage.Storage.StatusUpdateRejectsLegacyPaths
+11/40 Test #11: storage.Storage.StatusUpdateRejectsLegacyPaths .........................................   Passed    0.14 sec
+      Start 12: storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+12/40 Test #12: storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject .................   Passed    0.15 sec
+      Start 13: storage.Storage.ModelCreationCommitsCompleteDatasetConfig
+13/40 Test #13: storage.Storage.ModelCreationCommitsCompleteDatasetConfig ..............................   Passed    0.15 sec
+      Start 14: storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+14/40 Test #14: storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion ..............................   Passed    0.15 sec
+      Start 15: storage.Storage.MissingRequiredFieldsAreRejected
+15/40 Test #15: storage.Storage.MissingRequiredFieldsAreRejected .......................................   Passed    0.15 sec
+      Start 16: storage.StorageFiles.DatasetRejectsWrongFieldTypes
+16/40 Test #16: storage.StorageFiles.DatasetRejectsWrongFieldTypes .....................................   Passed    0.03 sec
+      Start 17: storage.StorageFiles.AtomicFailureRetainsExistingFile
+17/40 Test #17: storage.StorageFiles.AtomicFailureRetainsExistingFile ..................................   Passed    0.14 sec
+      Start 18: storage.StorageFiles.DottedLogDirectoryIsRespected
+18/40 Test #18: storage.StorageFiles.DottedLogDirectoryIsRespected .....................................   Passed    0.13 sec
+      Start 19: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+19/40 Test #19: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0 ...   Passed    0.06 sec
+      Start 20: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+20/40 Test #20: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1 ...   Passed    0.04 sec
+      Start 21: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+21/40 Test #21: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2 ...   Passed    0.14 sec
+      Start 22: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+22/40 Test #22: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0 ..............   Passed    0.05 sec
+      Start 23: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+23/40 Test #23: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1 ..............   Passed    0.14 sec
+      Start 24: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+24/40 Test #24: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2 ..............   Passed    0.05 sec
+      Start 25: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0
+25/40 Test #25: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0 ..........   Passed    0.15 sec
+      Start 26: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1
+26/40 Test #26: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1 ..........   Passed    0.15 sec
+      Start 27: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0
+27/40 Test #27: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0 ..................   Passed    0.04 sec
+      Start 28: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1
+28/40 Test #28: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1 ..................   Passed    0.04 sec
+      Start 29: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0
+29/40 Test #29: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0 ...............................   Passed    0.03 sec
+      Start 30: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1
+30/40 Test #30: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1 ...............................   Passed    0.02 sec
+      Start 31: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2
+31/40 Test #31: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2 ...............................   Passed    0.02 sec
+      Start 32: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3
+32/40 Test #32: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3 ...............................   Passed    0.03 sec
+      Start 33: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4
+33/40 Test #33: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4 ...............................   Passed    0.12 sec
+      Start 34: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5
+34/40 Test #34: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5 ...............................   Passed    0.02 sec
+      Start 35: native-annotation-regression
+35/40 Test #35: native-annotation-regression ...........................................................***Exception: SegFault  4.82 sec
+PASS hover preview and keyboard focus enabled
+PASS space pan consumes its release and always ends
+PASS image refresh preserves view
+PASS zero wheel delta does not zoom
+PASS wheel zoom holds mouse anchor
+PASS drag rectangle commits one shape
+PASS two-click rectangle remains compatible
+PASS Enter completes reverse-direction rectangle
+PASS rotated rectangle hit test follows rendered orientation
+PASS corner drag can shrink rectangle
+PASS native editor has no external launch entry
+PASS dataset async category initialization completes
+PASS unfinished shape blocks save-and-next without discarding preview
+PASS model update preserves UUID selection and list item
+PASS canvas drag synchronizes list and creates one undo
+PASS focus loss restores uncommitted drag
+PASS canvas selection deletes intended object
+PASS brightness change preserves zoom and center
+PASS original-image toggle leaves annotation unchanged
+PASS failed save-and-next retains edits and committed file
+ACCESS VIOLATION at 00007FFC18B4D8DA
+00007FF629D67CC2 printCrash + 210
+00007FFD1E236DF6 RtlWow64GetCurrentMachine + 2758
+00007FFD1E236595 RtlWow64GetCurrentMachine + 613
+00007FFD1E2DA47E KiUserExceptionDispatcher + 46
+00007FFC18B4D8DA std::_Atomic_integral<int,4>::fetch_add + 42
+00007FFC18B4110F QAtomicOps<int>::ref<int> + 31
+00007FFC18B556A7 QBasicAtomicInteger<int>::ref + 23
+00007FFC18B556D7 QArrayData::ref + 23
+00007FFC18B55672 QArrayDataPointer<char16_t>::ref + 34
+00007FFC18B41AAD QArrayDataPointer<char16_t>::QArrayDataPointer<char16_t> + 77
+00007FFC18B7EF24 QArrayDataPointer<char16_t>::operator= + 52
+00007FFC18F2CCD1 QString::operator= + 33
+00007FF629D8A32D AnnotationManagement::openImage + 3485
+00007FF629D8BF61 AnnotationManagement::onNavigateNext + 177
+00007FF629D8C136 AnnotationManagement::onSaveAndNext + 86
+00007FF629D8D9E6 AnnotationManagement::onCanvasKeyPressed + 198
+00007FF629DA2012 ``AnnotationManagement::AnnotationManagement'::`2'::<lambda_1>::operator()'::`2'::<lambda_1>::operator() + 50
+00007FF629DA7727 `QtPrivate::FunctorCall<std::integer_sequence<unsigned __int64>,QtPrivate::List<>,void,``AnnotationManagement::AnnotationManagement'::`2'::<lambda_1>::operator()'::`2'::<lambda_1> >::call'::`2'::<lambda_1>::operator() + 23
+00007FF629DB5C19 QtPrivate::FunctorCallBase::call_internal<void,`QtPrivate::FunctorCall<std::integer_sequence<unsigned __int64>,QtPrivate::List<>,void,``AnnotationManagement::AnnotationManagement'::`2'::<lambda_1>::operator()'::`2'::<lambda_1> >::call'::`2'::<lambda_1> > + 25
+00007FF629DA76EB QtPrivate::FunctorCall<std::integer_sequence<unsigned __int64>,QtPrivate::List<>,void,``AnnotationManagement::AnnotationManagement'::`2'::<lambda_1>::operator()'::`2'::<lambda_1> >::call + 43
+00007FF629DB5353 QtPrivate::FunctorCallable<``AnnotationManagement::AnnotationManagement'::`2'::<lambda_1>::operator()'::`2'::<lambda_1> >::call<QtPrivate::List<>,void> + 35
+00007FF629DA5CA0 QtPrivate::QCallableObject<``AnnotationManagement::AnnotationManagement'::`2'::<lambda_1>::operator()'::`2'::<lambda_1>,QtPrivate::List<>,void>::impl + 144
+00007FFC18B88AF3 QtPrivate::QSlotObjectBase::call + 67
+00007FFC18DE6D7B doActivate<0> + 2395
+00007FFC18DCD829 QMetaObject::activate + 105
+00007FFC1A6B45C2 QShortcut::activated + 34
+00007FFC1A6B46FB QShortcut::event + 235
+00007FFC1AFEA563 QApplicationPrivate::notify_helper + 467
+00007FFC1AFE78BD QApplication::notify + 13165
+00007FFC18D0E4A5 QCoreApplication::notifyInternal2 + 373
+00007FFC18D0BF1D QCoreApplication::sendEvent + 125
+00007FFC1A6B88AD QShortcutMap::dispatchEvent + 2157
+00007FFC1A6B7730 QShortcutMap::tryShortcut + 192
+00007FFC19E00091 qt_sendShortcutOverrideEvent + 273
+00007FFC1AFE498D QApplication::notify + 1085
+00007FFC18D0E4A5 QCoreApplication::notifyInternal2 + 373
+00007FFC18D0BF1D QCoreApplication::sendEvent + 125
+00007FF629D6CDC9 main + 18937
+00007FF629F41519 invoke_main + 57
+00007FF629F41402 __scrt_common_main_seh + 306
+00007FF629F412BE __scrt_common_main + 14
+00007FF629F415AE mainCRTStartup + 14
+00007FFD1D6FDDA7 BaseThreadInitThunk + 23
+00007FFD1E239C5C RtlUserThreadStart + 44
+
+      Start 36: data-contract-regression
+36/40 Test #36: data-contract-regression ...............................................................   Passed    0.08 sec
+      Start 37: module-boundaries
+37/40 Test #37: module-boundaries ......................................................................   Passed    0.11 sec
+      Start 38: workflow-regression
+38/40 Test #38: workflow-regression ....................................................................***Exception: SegFault  6.74 sec
+PASS annotation model undo/redo
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/Fixture/Seg/labels/a.png
+无法创建标注目录
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+PASS widget load edit save reopen
+PASS JSON rotated and polygon round trip and failed replacement
+DIALOG 已有标注或未保存编辑，禁止重排类别编号。
+C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/Fixture/Seg/labels
+PASS category protection
+PASS model creation signals
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/export-coco/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/export-yolo
+成功 1 项，跳过 0 项，失败 0 项
+PASS export semantic baseline
+PASS external PNG edit
+PASS brush eraser fill polygon masks
+PASS paired import recovery
+DIALOG 成功 2 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/coco-source/bad.json
+不安全的图像相对路径：../escape.png
+PASS COCO sparse IDs empty labels RLE and quality
+DIALOG 删除项目「DeleteB」
+项目目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/DeleteB
+项目文件：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-KRrftn/DeleteB/project.fvproj
+PASS selected project and model deletion
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+ACCESS VIOLATION at 00007FFC1B0DA696
+00007FF7012FAC92 printCrash + 210
+00007FFD1E236DF6 RtlWow64GetCurrentMachine + 2758
+00007FFD1E236595 RtlWow64GetCurrentMachine + 613
+00007FFD1E2DA47E KiUserExceptionDispatcher + 46
+00007FFC1B0DA696 QWidget::testAttribute_helper + 102
+00007FFC1AFDAF25 QWidget::testAttribute + 85
+00007FFC1B0D533F QWidget::setAttribute + 159
+00007FFC1B0C7FA7 QWidget::setEnabled + 71
+00007FF70137FD8C AnnotationManagement::updateUndoRedoButtons + 140
+00007FF701381277 `AnnotationManagement::initUI'::`2'::<lambda_3>::operator() + 23
+00007FF701386887 `QtPrivate::FunctorCall<std::integer_sequence<unsigned __int64>,QtPrivate::List<>,void,`AnnotationManagement::initUI'::`2'::<lambda_3> >::call'::`2'::<lambda_1>::operator() + 23
+00007FF701394219 QtPrivate::FunctorCallBase::call_internal<void,`QtPrivate::FunctorCall<std::integer_sequence<unsigned __int64>,QtPrivate::List<>,void,`AnnotationManagement::initUI'::`2'::<lambda_3> >::call'::`2'::<lambda_1> > + 25
+00007FF70138662B QtPrivate::FunctorCall<std::integer_sequence<unsigned __int64>,QtPrivate::List<>,void,`AnnotationManagement::initUI'::`2'::<lambda_3> >::call + 43
+00007FF7013939E3 QtPrivate::FunctorCallable<`AnnotationManagement::initUI'::`2'::<lambda_3> >::call<QtPrivate::List<>,void> + 35
+00007FF7013852C0 QtPrivate::QCallableObject<`AnnotationManagement::initUI'::`2'::<lambda_3>,QtPrivate::List<>,void>::impl + 144
+00007FFC18B88AF3 QtPrivate::QSlotObjectBase::call + 67
+00007FFC18DE6D7B doActivate<0> + 2395
+00007FFC18DCD829 QMetaObject::activate + 105
+00007FFC19DD2B95 QMetaObject::activate<void,int> + 101
+00007FFC1A7EA06F QUndoStack::indexChanged + 47
+00007FFC1A7E8163 QUndoStack::clear + 163
+00007FFC1A7E80A2 QUndoStack::~QUndoStack + 98
+00007FF70131623C AnnotationModel::~AnnotationModel + 28
+00007FF7014979D8 AnnotationModel::`scalar deleting destructor' + 24
+00007FFC18DD62F4 QObjectPrivate::deleteChildren + 276
+00007FFC1B0C78DD QWidget::~QWidget + 1949
+00007FF7013161D6 AnnotationManagement::~AnnotationManagement + 230
+00007FF70132B245 WorkflowRegression::deniedHandlers + 3973
+00007FF7012FED70 `main'::`2'::<lambda_14>::operator() + 64
+00007FF7013060E6 `main'::`2'::<lambda_2>::operator()<`main'::`2'::<lambda_14> > + 118
+00007FF7012FBB52 main + 2642
+00007FF701519E09 invoke_main + 57
+00007FF701519CF2 __scrt_common_main_seh + 306
+00007FF701519BAE __scrt_common_main + 14
+00007FF701519E9E mainCRTStartup + 14
+00007FFD1D6FDDA7 BaseThreadInitThunk + 23
+00007FFD1E239C5C RtlUserThreadStart + 44
+
+      Start 39: startup-smoke
+39/40 Test #39: startup-smoke ..........................................................................   Passed    2.04 sec
+      Start 40: current-issues-regression
+40/40 Test #40: current-issues-regression ..............................................................   Passed    1.88 sec
+
+95% tests passed, 2 tests failed out of 40
+
+Total Test time (real) =  18.77 sec
+
+The following tests FAILED:
+	 35 - native-annotation-regression (SEGFAULT)
+	 38 - workflow-regression (SEGFAULT)
+Errors while running CTest

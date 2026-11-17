@@ -62,6 +62,15 @@ AnnotationManagement::AnnotationManagement(QWidget* parent)
             this, &AnnotationManagement::applyTheme);
 }
 
+AnnotationManagement::~AnnotationManagement()
+{
+    // QUndoStack emits indexChanged while being destroyed, after sibling widgets may be gone.
+    m_autoSaveTimer->stop();
+    disconnect(m_model, nullptr, this, nullptr);
+    disconnect(m_model->undoStack(), nullptr, this, nullptr);
+    cancelPendingTools();
+}
+
 void AnnotationManagement::setDatasetSource(DatasetManagement* dataset)
 {
     m_dataset = dataset;
@@ -95,7 +104,7 @@ void AnnotationManagement::syncLabels()
 }
 
 
-bool AnnotationManagement::openImage(const QString& modelId, const QString& imagePath)
+bool AnnotationManagement::openImage(QString modelId, QString imagePath)
 {
     if(!AccessControl::canRead("深度学习.数据标注")) return false;
     if (!m_dataset || modelId != m_dataset->currentModelId() || m_dataset->isClassificationDataset()) return false;

@@ -159,6 +159,10 @@ int main(int argc,char** argv) {
     state->appendShape(box);QMetaObject::invokeMethod(&editor,"onSaveAndNext");
     check(state->shapeCount()==1 && !state->isDirty() && QFile::exists(root+"/labels/b.png"),"last image saves and remains open");
     check(editor.openImage("Seg",root+"/images/a.png") && state->shapes()==unsaved,"saved-next annotation reopens with shape identity");
+    QMetaObject::invokeMethod(&editor,"onNavigateNext");
+    check(state->shapeCount()==1 && !state->isDirty(),"next navigation loads saved second image");
+    QMetaObject::invokeMethod(&editor,"onNavigatePrev");
+    check(state->shapes()==unsaved,"previous navigation keeps destination valid across sample refresh");
     const auto persisted=read(root+"/labels/a.png");SessionManager::instance().logout();
     QMetaObject::invokeMethod(&editor,"onSaveAndNext");press({100,100});move({140,140});release({140,140});
     check(state->shapes()==unsaved && !state->isDirty() && read(root+"/labels/a.png")==persisted,"guest handlers cannot mutate or advance through saving");
