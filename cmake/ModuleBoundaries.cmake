@@ -1,0 +1,17 @@
+# Fail during configuration if a lower layer gains a forbidden link dependency.
+function(fusevision_forbid_links target)
+    get_target_property(direct_links ${target} LINK_LIBRARIES)
+    get_target_property(public_links ${target} INTERFACE_LINK_LIBRARIES)
+    foreach(forbidden IN LISTS ARGN)
+        string(FIND "${direct_links};${public_links}" "${forbidden}" position)
+        if(NOT position EQUAL -1)
+            message(FATAL_ERROR "Module boundary violated: ${target} links ${forbidden}")
+        endif()
+    endforeach()
+endfunction()
+
+fusevision_forbid_links(FuseVisionCore Qt6::Widgets FuseVisionUiCommon FuseVisionDeepLearning FuseVisionTraditional FuseVisionUI FuseVisionVisionSdk)
+fusevision_forbid_links(FuseVisionUiCommon FuseVisionDeepLearning FuseVisionTraditional FuseVisionUI FuseVisionVisionSdk)
+fusevision_forbid_links(FuseVisionDeepLearningData Qt6::Widgets FuseVisionUiCommon FuseVisionTraditional FuseVisionUI FuseVisionVisionSdk)
+fusevision_forbid_links(FuseVisionDeepLearning FuseVisionTraditional FuseVisionUI FuseVisionVisionSdk)
+fusevision_forbid_links(FuseVisionTraditional FuseVisionDeepLearning FuseVisionUI)

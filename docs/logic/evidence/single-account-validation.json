@@ -1,0 +1,295 @@
+{
+  "date": "2026-11-17",
+  "configuration": "windows-x64-release",
+  "verification": "real Qt Widgets offscreen + isolated file/SQLite/INI assertions",
+  "passed": true,
+  "checks": [
+    {
+      "name": "initial-files-retained",
+      "passed": true,
+      "detail": {
+        "initialFiles": 261,
+        "missing": []
+      }
+    },
+    {
+      "name": "edits-within-authorized-business-test-doc-scope",
+      "passed": true,
+      "detail": {
+        "changedExisting": [
+          "docs/GETTING-STARTED.md",
+          "docs/README.md",
+          "docs/codebase/ARCHITECTURE.md",
+          "docs/codebase/CONCERNS.md",
+          "docs/codebase/CONVENTIONS.md",
+          "docs/codebase/INTEGRATIONS.md",
+          "docs/codebase/STACK.md",
+          "docs/codebase/STRUCTURE.md",
+          "docs/codebase/TESTING.md",
+          "docs/logic/CORE-FLOW.md",
+          "docs/logic/DATA-CONTRACTS.md",
+          "docs/logic/FEATURES.md",
+          "docs/logic/FuseVision-功能与代码.json",
+          "docs/logic/FuseVision-功能与代码.xmind",
+          "docs/logic/README.md",
+          "docs/logic/SCREENSHOTS.md",
+          "docs/logic/VALIDATION.md",
+          "docs/logic/evidence/refactor-source-references.json",
+          "docs/logic/evidence/source-references.json",
+          "docs/logic/features.json",
+          "docs/logic/tools/validate_analysis.py",
+          "docs/refactor/ISSUES.md",
+          "docs/refactor/issues.json",
+          "docs/refactor/refactor-workflow-consistency-1.md",
+          "docs/refactor/spec-process-workflow-consistency.md",
+          "src/DeepLearningWidget/AnnotationCanvas.cpp",
+          "src/DeepLearningWidget/AnnotationManagement.cpp",
+          "src/DeepLearningWidget/AnnotationManagement.h",
+          "src/DeepLearningWidget/AnnotationModel.cpp",
+          "src/DeepLearningWidget/AnnotationModel.h",
+          "src/DeepLearningWidget/AnnotationRender.cpp",
+          "src/DeepLearningWidget/Tools/BrushTool.cpp",
+          "src/DeepLearningWidget/Tools/EraserTool.cpp",
+          "src/DeepLearningWidget/Tools/FillTool.cpp",
+          "src/DeepLearningWidget/Tools/SelectTool.h",
+          "CMakeLists.txt",
+          "src/DeepLearningWidget/CMakeLists.txt",
+          "src/DeepLearningWidget/DatasetManagement.cpp",
+          "src/DeepLearningWidget/DatasetManagement.h",
+          "src/DeepLearningWidget/DeepLearningWidget.cpp",
+          "src/DeepLearningWidget/DeepLearningWidget.h",
+          "src/DeepLearningWidget/ModelConfig.cpp",
+          "src/DeepLearningWidget/ModelConfig.h",
+          "src/DeepLearningWidget/ModelManagement.cpp",
+          "src/DeepLearningWidget/ModelManagement.h",
+          "src/DeepLearningWidget/ProjectConfig.cpp",
+          "src/DeepLearningWidget/ProjectManagement.cpp",
+          "src/DeepLearningWidget/ProjectManagement.h",
+          "src/MainWindows/FuseVision.cpp",
+          "src/MainWindows/FuseVision.h",
+          "src/MainWindows/Login.cpp",
+          "src/MainWindows/Login.h",
+          "src/MainWindows/SystemSettingsWidget.cpp",
+          "src/MainWindows/SystemSettingsWidget.h",
+          "src/MainWindows/UserManagementWidget.cpp",
+          "src/MainWindows/UserManagementWidget.h",
+          "src/TraditionalWidget/TraditionalWidget.cpp",
+          "src/core/DatabaseManager.cpp",
+          "src/core/DatabaseManager.h",
+          "src/core/Logger.cpp",
+          "src/core/Logger.h",
+          "src/core/PermissionGuard.cpp",
+          "src/core/PermissionGuard.h",
+          "src/core/PermissionRegistry.cpp",
+          "src/core/PermissionRegistry.h",
+          "src/core/SessionManager.cpp",
+          "src/core/SessionManager.h",
+          "src/core/SettingsManager.cpp",
+          "src/core/SettingsManager.h",
+          "src/main.cpp"
+        ],
+        "unexpected": [],
+        "unchanged": 191
+      }
+    },
+    {
+      "name": "single-account-change-scope",
+      "passed": true,
+      "detail": {
+        "changed": [
+          "docs/codebase/ARCHITECTURE.md",
+          "docs/codebase/CONCERNS.md",
+          "docs/codebase/INTEGRATIONS.md",
+          "docs/codebase/TESTING.md",
+          "docs/GETTING-STARTED.md",
+          "docs/logic/CORE-FLOW.md",
+          "docs/logic/DATA-CONTRACTS.md",
+          "docs/logic/evidence/refactor-source-references.json",
+          "docs/logic/evidence/source-references.json",
+          "docs/logic/features.json",
+          "docs/logic/FEATURES.md",
+          "docs/logic/FuseVision-功能与代码.json",
+          "docs/logic/README.md",
+          "docs/logic/SCREENSHOTS.md",
+          "docs/logic/VALIDATION.md",
+          "docs/README.md",
+          "docs/refactor/issues.json",
+          "docs/refactor/ISSUES.md",
+          "docs/refactor/refactor-workflow-consistency-1.md",
+          "docs/refactor/spec-process-workflow-consistency.md",
+          "src/core/AccessControl.h",
+          "src/core/DatabaseManager.cpp",
+          "src/core/DatabaseManager.h",
+          "src/core/PermissionGuard.cpp",
+          "src/core/PermissionGuard.h",
+          "src/core/PermissionRegistry.cpp",
+          "src/core/PermissionRegistry.h",
+          "src/core/SessionManager.cpp",
+          "src/core/SessionManager.h",
+          "src/DeepLearningWidget/AnnotationManagement.cpp",
+          "src/main.cpp",
+          "src/MainWindows/FuseVision.cpp",
+          "src/MainWindows/FuseVision.h",
+          "src/MainWindows/Login.cpp",
+          "src/MainWindows/Login.h",
+          "src/MainWindows/UserManagementWidget.cpp",
+          "src/MainWindows/UserManagementWidget.h",
+          "src/TraditionalWidget/TraditionalWidget.cpp",
+          "tests/workflow_regression.cpp"
+        ],
+        "missing": [],
+        "unexpected": [],
+        "unchanged": 72
+      }
+    },
+    {
+      "name": "feature-ids-retained",
+      "passed": true,
+      "detail": {
+        "count": 38
+      }
+    },
+    {
+      "name": "single-account-decision-recorded",
+      "passed": true,
+      "detail": "Q01 explicitly decided 2026-11-17; Q02–Q04 remain product decisions"
+    },
+    {
+      "name": "current-symbol-line-references",
+      "passed": true,
+      "detail": {
+        "count": 344,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-json-graph",
+      "passed": true,
+      "detail": {
+        "sheets": 9,
+        "topics": 315,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-archive-resources",
+      "passed": true,
+      "detail": {
+        "sheets": 9,
+        "images": 25,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-feature-coverage",
+      "passed": true,
+      "detail": "F01–F38, Chinese notes and current descriptions"
+    },
+    {
+      "name": "xmind-current-screenshots-embedded",
+      "passed": true,
+      "detail": [
+        "P04-workflow-gallery-20261115.png",
+        "P05-workflow-reopened-20261115.png",
+        "P00-single-account-20261117.png",
+        "P01-guest-readonly-20261117.png",
+        "P12-single-account-20261117.png"
+      ]
+    },
+    {
+      "name": "markdown-local-links",
+      "passed": true,
+      "detail": {
+        "count": 283,
+        "broken": []
+      }
+    },
+    {
+      "name": "workflow-regression",
+      "passed": true,
+      "detail": {
+        "cases": [
+          "annotation model undo/redo",
+          "widget load edit save reopen",
+          "JSON rotated and polygon round trip and failed replacement",
+          "category protection",
+          "model creation signals",
+          "export semantic baseline",
+          "external PNG edit",
+          "brush eraser fill polygon masks",
+          "paired import recovery",
+          "COCO sparse IDs empty labels RLE and quality",
+          "selected project and model deletion",
+          "guest denied handlers and login state",
+          "settings and actual log retention",
+          "integrated project model gallery editor reopen export",
+          "guest pages single account login logout and password"
+        ],
+        "failures": []
+      }
+    },
+    {
+      "name": "single-account-regressions-executed",
+      "passed": true,
+      "detail": "guest writes refused, all pages browsable, fixed account login/logout/password behavior"
+    },
+    {
+      "name": "ctest-release",
+      "passed": true,
+      "detail": "workflow-regression + startup-smoke; Release, Qt offscreen"
+    },
+    {
+      "name": "current-screenshot-P04-workflow-gallery-20261115.png",
+      "passed": true,
+      "detail": {
+        "path": "docs\\logic\\screenshots\\P04-workflow-gallery-20261115.png",
+        "sha256": "120f865d29c398088d9e6d556bc80967617f63edb2a358282185661d52edd2b9"
+      }
+    },
+    {
+      "name": "current-screenshot-P05-workflow-reopened-20261115.png",
+      "passed": true,
+      "detail": {
+        "path": "docs\\logic\\screenshots\\P05-workflow-reopened-20261115.png",
+        "sha256": "a78138d7a04d9e7490a30982d04ddbbca19db5eeeb5d96088156e492f534ee7f"
+      }
+    },
+    {
+      "name": "current-screenshot-P00-single-account-20261117.png",
+      "passed": true,
+      "detail": {
+        "path": "docs\\logic\\screenshots\\P00-single-account-20261117.png",
+        "sha256": "bf019d79d0ee340aa966c828bb1e5c7d589eb3e03d198fef8fb075c2f3f84a16"
+      }
+    },
+    {
+      "name": "current-screenshot-P01-guest-readonly-20261117.png",
+      "passed": true,
+      "detail": {
+        "path": "docs\\logic\\screenshots\\P01-guest-readonly-20261117.png",
+        "sha256": "fa2ff2bdbc2e547b2926f4331e66a7073c49bb4774bc7902b05f7cdea9b660af"
+      }
+    },
+    {
+      "name": "current-screenshot-P12-single-account-20261117.png",
+      "passed": true,
+      "detail": {
+        "path": "docs\\logic\\screenshots\\P12-single-account-20261117.png",
+        "sha256": "dfc9985d0603b76078f94bba96cfd472b531c3c588ebd41c714c33f749cf224d"
+      }
+    }
+  ],
+  "notExecuted": [
+    "Visible Windows desktop and native file dialogs (login/logout covered offscreen)",
+    "LabelMe process/embedding/external save and camera hardware",
+    "Confirmed reset and full process restart",
+    "Debug build and real dataset/performance benchmark",
+    "XMind desktop client"
+  ],
+  "decisions": [
+    "ISS-007/Q01 superseded by explicit single-account requirement",
+    "Q02 anomaly classification versus masks",
+    "Q03 rectangle labels and task mapping",
+    "Q04 role headcount, audit and backup requirements"
+  ]
+}

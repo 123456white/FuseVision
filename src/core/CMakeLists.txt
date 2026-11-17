@@ -1,32 +1,14 @@
-add_library(FuseVisionCore STATIC
-    Logger.h
-    Logger.cpp
+qt_add_library(FuseVisionCore STATIC
+    AccessControl.h
+    AtomicFile.h
+    RecoveryStore.h
+    Logger.h Logger.cpp
+    DatabaseManager.h DatabaseManager.cpp
     PermissionInfo.h
-    DatabaseManager.h
-    DatabaseManager.cpp
-    PermissionRegistry.h
-    PermissionRegistry.cpp
-    SessionManager.h
-    SessionManager.cpp
-    SettingsManager.h
-    SettingsManager.cpp
-    PermissionGuard.h
-    PermissionGuard.cpp
-    ThemeManager.h
-    ThemeManager.cpp
-    LogMonitor.h
-    LogMonitor.cpp
+    PermissionRegistry.h PermissionRegistry.cpp
+    SessionManager.h SessionManager.cpp
+    SettingsManager.h SettingsManager.cpp
 )
-
-target_include_directories(FuseVisionCore
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/..
-)
-
-target_link_libraries(FuseVisionCore
-    PUBLIC
-        Qt6::Core
-        Qt6::Widgets
-        Qt6::Sql
-        spdlog::spdlog
-)
+target_include_directories(FuseVisionCore PUBLIC ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(FuseVisionCore PUBLIC Qt6::Core Qt6::Sql PRIVATE spdlog::spdlog)
+target_compile_definitions(FuseVisionCore PRIVATE FUSEVISION_SOURCE_DIR="${PROJECT_SOURCE_DIR}")

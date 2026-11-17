@@ -1,0 +1,370 @@
+初始化 VS x64 编译环境...
+VS 环境已配置 (编译器: C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe)
+配置: windows-x64-release
+-- Running vcpkg install
+Detecting compiler hash for triplet x64-windows...
+-- Using %HTTP(S)_PROXY% in environment variables.
+Compiler found: C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe
+The following packages are already installed:
+  * abseil:x64-windows@20260107.1#2
+  * brotli:x64-windows@1.2.0
+  * bzip2[core,tool]:x64-windows@1.0.8#6
+  * dbus:x64-windows@1.16.2#3
+  * double-conversion:x64-windows@3.4.0
+  * egl-registry:x64-windows@2025-05-27
+  * expat:x64-windows@2.7.4
+  * flatbuffers:x64-windows@25.12.19
+  * fmt:x64-windows@12.1.0
+  * freetype[core,zlib,png,bzip2,brotli]:x64-windows@2.13.3
+    gtest:x64-windows@1.17.0#2
+  * harfbuzz[core,freetype]:x64-windows@13.0.1
+  * icu[core,tools]:x64-windows@78.2
+  * jasper:x64-windows@4.2.9
+  * libjpeg-turbo:x64-windows@3.1.4.1
+  * liblzma:x64-windows@5.8.2#1
+  * libpng:x64-windows@1.6.55
+  * libpq[core,zlib,openssl,lz4]:x64-windows@18.3
+  * libwebp[core,unicode,simd,nearlossless,libwebpmux]:x64-windows@1.6.0#2
+  * lz4:x64-windows@1.10.0
+  * md4c:x64-windows@0.5.2
+    opencv4[core,win32ui,webp,tiff,thread,quirc,png,msmf,jpeg,intrinsics,highgui,gapi,fs,dshow,dnn,directml,calib3d]:x64-windows@4.12.0#1
+  * opengl:x64-windows@2022-12-04#3
+  * opengl-registry:x64-windows@2026-01-26
+  * openssl:x64-windows@3.6.1#3
+  * pcre2[core,platform-default-features,jit]:x64-windows@10.47
+  * protobuf:x64-windows@6.33.4#1
+    qtbase[core,zstd,widgets,thread,testlib,sql-sqlite,sql-psql,sql,sessionmanager,png,pcre2,openssl,opengl,network,jpeg,icu,harfbuzz,gui,freetype,doubleconversion,dnslookup,dbus,concurrent,brotli]:x64-windows@6.10.2
+    qtimageformats[core,webp,tiff,jasper]:x64-windows@6.10.2
+  * quirc:x64-windows@1.2
+    spdlog[core,tz-offset,fmt]:x64-windows@1.17.0
+  * sqlite3[core,json1]:x64-windows@3.52.0
+  * tiff[core,zip,lzma,jpeg]:x64-windows@4.7.1
+  * utf8-range:x64-windows@6.33.4
+  * vcpkg-cmake:x64-windows@2024-04-23
+  * vcpkg-cmake-config:x64-windows@2024-05-23
+  * vcpkg-cmake-get-vars:x64-windows@2025-05-29
+  * vcpkg-get-python-packages:x64-windows@2025-04-05
+  * vcpkg-make:x64-windows@2026-01-01
+  * vcpkg-tool-meson:x64-windows@1.9.0#4
+  * zlib:x64-windows@1.3.1
+  * zstd:x64-windows@1.5.7
+opencv4 is compatible with built-in CMake variables. In case of multiple OpenCV version installed, set OpenCV_ROOT *before* the find_package call:
+
+    set(OpenCV_ROOT "${VCPKG_INSTALLED_DIR}/x64-windows/share/opencv4")
+    find_package(OpenCV REQUIRED)
+
+qtbase provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Qt6 CONFIG REQUIRED)
+  # note: 38 additional targets are not displayed.
+  target_link_libraries(main PRIVATE DB2::DB2 PPS::PPS Oracle::OCI Libb2::Libb2)
+
+  find_package(Qt6Concurrent CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Concurrent)
+
+  find_package(Qt6Core CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Core)
+
+  find_package(Qt6CorePrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::CorePrivate)
+
+  find_package(Qt6DBus CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBus)
+
+  find_package(Qt6DBusPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBusPrivate)
+
+  find_package(Qt6DeviceDiscoverySupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DeviceDiscoverySupportPrivate)
+
+  find_package(Qt6EntryPointPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::EntryPointPrivate Qt6::EntryPointImplementation)
+
+  find_package(Qt6ExampleIconsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExampleIconsPrivate Qt6::ExampleIconsPrivate_resources_1)
+
+  find_package(Qt6ExamplesAssetDownloaderPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExamplesAssetDownloaderPrivate)
+
+  find_package(Qt6FbSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::FbSupportPrivate)
+
+  find_package(Qt6Gui CONFIG REQUIRED)
+  # note: 5 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Gui Qt6::QGifPlugin Qt6::QICOPlugin Qt6::QJpegPlugin)
+
+  find_package(Qt6GuiPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::GuiPrivate)
+
+  find_package(Qt6Network CONFIG REQUIRED)
+  # note: 1 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Network Qt6::QNLMNIPlugin Qt6::QSchannelBackendPlugin Qt6::QTlsBackendOpenSSLPlugin)
+
+  find_package(Qt6NetworkPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::NetworkPrivate)
+
+  find_package(Qt6OpenGL CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGL)
+
+  find_package(Qt6OpenGLPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLPrivate)
+
+  find_package(Qt6OpenGLWidgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLWidgets)
+
+  find_package(Qt6PrintSupport CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupport)
+
+  find_package(Qt6PrintSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupportPrivate)
+
+  find_package(Qt6Sql CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Sql Qt6::QPSQLDriverPlugin Qt6::QSQLiteDriverPlugin)
+
+  find_package(Qt6SqlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::SqlPrivate)
+
+  find_package(Qt6Test CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Test)
+
+  find_package(Qt6TestInternalsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestInternalsPrivate)
+
+  find_package(Qt6TestPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestPrivate)
+
+  find_package(Qt6Widgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Widgets Qt6::QModernWindowsStylePlugin)
+
+  find_package(Qt6WidgetsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::WidgetsPrivate)
+
+  find_package(Qt6Xml CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Xml)
+
+  find_package(Qt6XmlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::XmlPrivate)
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+The package gtest is compatible with built-in CMake targets:
+
+    enable_testing()
+    
+    find_package(GTest CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+    
+    add_test(AllTestsInMain main)
+
+All requested installations completed successfully in: 1.04 ms
+-- Running vcpkg install - done
+-- 检测通过：当前使用 64 位编译器，指针宽度: 8 字节
+-- OpenCV version: 4.12.0
+-- OpenCV include dirs: D:/project/FuseVision/out/build/windows-x64-release/vcpkg_installed/x64-windows/include/opencv4
+-- OpenCV libraries: opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio
+-- Halcon detected (system): D:\software\HALCON (arch: x64-win64)
+-- MVS SDK configured for Windows
+-- ========== 项目构建信息 ==========
+-- 项目名称：FuseVision
+-- 项目版本：1.0.0
+-- C++ 标准：20
+-- 构建类型：Release
+-- 编译器：MSVC 19.50.35728.0
+-- Qt 版本：6.10.2
+-- Qt 库路径：D:/project/FuseVision/out/build/windows-x64-release/vcpkg_installed/x64-windows/share/Qt6
+-- vcpkg 三元组：x64-windows
+-- Halcon 来源：system
+-- Halcon 头文件目录：D:\software\HALCON/include
+-- Halcon 库目录：D:\software\HALCON/lib/x64-win64
+-- MVS SDK 根目录：D:/project/FuseVision/sdk/MVS
+-- OpenCV 版本：4.12.0
+-- spdlog 版本：1.17.0
+-- ==================================
+-- Configuring done (4.0s)
+-- Generating done (0.4s)
+-- Build files have been written to: D:/project/FuseVision/out/build/windows-x64-release
+构建: windows-release
+[1/8] Automatic MOC and UIC for target FuseVisionCurrentIssuesTests
+[2/7] Automatic MOC and UIC for target FuseVisionStorageTests
+[3/6] Building CXX object CMakeFiles\FuseVisionStorageTests.dir\tests\storage_regression.cpp.obj
+[4/6] Building CXX object CMakeFiles\FuseVisionCurrentIssuesTests.dir\tests\current_issues_regression.cpp.obj
+[5/6] Linking CXX executable bin\Release\FuseVisionStorageTests.exe
+[6/6] Linking CXX executable bin\Release\FuseVisionCurrentIssuesTests.exe
+Test project D:/project/FuseVision/out/build/windows-x64-release
+      Start  1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+ 1/33 Test  #1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths ............................   Passed    0.13 sec
+      Start  2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+ 2/33 Test  #2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields ......................   Passed    0.14 sec
+      Start  3: storage.Storage.LegacyAbsoluteReferencesRelocateWithoutWriting
+ 3/33 Test  #3: storage.Storage.LegacyAbsoluteReferencesRelocateWithoutWriting .........................   Passed    0.04 sec
+      Start  4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+ 4/33 Test  #4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories ...........................   Passed    0.13 sec
+      Start  5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml
+ 5/33 Test  #5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml ...........................   Passed    0.14 sec
+      Start  6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles
+ 6/33 Test  #6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles .............................   Passed    0.03 sec
+      Start  7: storage.Storage.MalformedAndWrongFieldTypesAreRejected
+ 7/33 Test  #7: storage.Storage.MalformedAndWrongFieldTypesAreRejected .................................   Passed    0.04 sec
+      Start  8: storage.Storage.ModelUnknownFieldsSurviveSave
+ 8/33 Test  #8: storage.Storage.ModelUnknownFieldsSurviveSave ..........................................   Passed    0.04 sec
+      Start  9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+ 9/33 Test  #9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten .......................***Failed    0.04 sec
+Note: Google Test filter = Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+D:\project\FuseVision\tests\storage_regression.cpp(147): error: Value of: ModelConfig::saveModel(info,&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(147): error: Expected equality of these values:
+  read(modelPath)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+  before
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+With diff:
+
+
+[  FAILED  ] Storage.SemanticallyInvalidOriginalModelIsNotOverwritten (17 ms)
+[----------] 1 test from Storage (17 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (17 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+
+ 1 FAILED TEST
+
+      Start 10: storage.Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave
+10/33 Test #10: storage.Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave ...................   Passed    0.04 sec
+      Start 11: storage.Storage.StatusUpdateNormalizesLegacyPaths
+11/33 Test #11: storage.Storage.StatusUpdateNormalizesLegacyPaths ......................................***Failed    0.05 sec
+Note: Google Test filter = Storage.StatusUpdateNormalizesLegacyPaths
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.StatusUpdateNormalizesLegacyPaths
+D:\project\FuseVision\tests\storage_regression.cpp(164): error: Expected equality of these values:
+  json(path)["models"].toObject()["Model"].toObject()["model_file"].toString()
+    Which is: { 2-byte object <43-00>, 2-byte object <3A-00>, 2-byte object <2F-00>, 2-byte object <55-00>, 2-byte object <73-00>, 2-byte object <65-00>, 2-byte object <72-00>, 2-byte object <73-00>, 2-byte object <2F-00>, 2-byte object <32-00>, 2-byte object <31-00>, 2-byte object <30-00>, 2-byte object <31-00>, 2-byte object <32-00>, 2-byte object <2F-00>, 2-byte object <41-00>, 2-byte object <70-00>, 2-byte object <70-00>, 2-byte object <44-00>, 2-byte object <61-00>, 2-byte object <74-00>, 2-byte object <61-00>, 2-byte object <2F-00>, 2-byte object <4C-00>, 2-byte object <6F-00>, 2-byte object <63-00>, 2-byte object <61-00>, 2-byte object <6C-00>, 2-byte object <2F-00>, 2-byte object <54-00>, 2-byte object <65-00>, 2-byte object <6D-00>, ... }
+  "Model/Model.fvdl"
+    Which is: 00007FF69B585768
+
+[  FAILED  ] Storage.StatusUpdateNormalizesLegacyPaths (21 ms)
+[----------] 1 test from Storage (21 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (21 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.StatusUpdateNormalizesLegacyPaths
+
+ 1 FAILED TEST
+
+      Start 12: storage.Storage.ExternalModelReferenceRemainsAbsolute
+12/33 Test #12: storage.Storage.ExternalModelReferenceRemainsAbsolute ..................................   Passed    0.04 sec
+      Start 13: storage.StorageFiles.DatasetRejectsWrongFieldTypes
+13/33 Test #13: storage.StorageFiles.DatasetRejectsWrongFieldTypes .....................................***Failed    0.02 sec
+Note: Google Test filter = StorageFiles.DatasetRejectsWrongFieldTypes
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from StorageFiles
+[ RUN      ] StorageFiles.DatasetRejectsWrongFieldTypes
+D:\project\FuseVision\tests\storage_regression.cpp(170): error: Value of: StorageContract::validate(QJsonObject{{"categories","wrong"}},"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(171): error: Value of: StorageContract::validate(QJsonObject{{"categories",QJsonArray{1}}},"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(172): error: Value of: StorageContract::validate(QJsonObject{{"categories",QJsonArray{QJsonObject{{"name",42}}}}},"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(173): error: Value of: StorageContract::validate(QJsonObject{{"image_count",-1}},"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(174): error: Value of: StorageContract::validate(QJsonObject{{"image_count",0.5}},"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+[  FAILED  ] StorageFiles.DatasetRejectsWrongFieldTypes (0 ms)
+[----------] 1 test from StorageFiles (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] StorageFiles.DatasetRejectsWrongFieldTypes
+
+ 1 FAILED TEST
+
+      Start 14: storage.StorageFiles.AtomicFailureRetainsExistingFile
+14/33 Test #14: storage.StorageFiles.AtomicFailureRetainsExistingFile ..................................   Passed    0.02 sec
+      Start 15: storage.StorageFiles.DottedLogDirectoryIsRespected
+15/33 Test #15: storage.StorageFiles.DottedLogDirectoryIsRespected .....................................   Passed    0.12 sec
+      Start 16: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+16/33 Test #16: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0 ...   Passed    0.13 sec
+      Start 17: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+17/33 Test #17: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1 ...   Passed    0.04 sec
+      Start 18: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+18/33 Test #18: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2 ...   Passed    0.04 sec
+      Start 19: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+19/33 Test #19: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0 ..............   Passed    0.04 sec
+      Start 20: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+20/33 Test #20: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1 ..............   Passed    0.05 sec
+      Start 21: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+21/33 Test #21: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2 ..............   Passed    0.04 sec
+      Start 22: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0
+22/33 Test #22: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0 ...............................   Passed    0.03 sec
+      Start 23: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1
+23/33 Test #23: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1 ...............................   Passed    0.03 sec
+      Start 24: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2
+24/33 Test #24: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2 ...............................   Passed    0.02 sec
+      Start 25: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3
+25/33 Test #25: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3 ...............................   Passed    0.03 sec
+      Start 26: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4
+26/33 Test #26: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4 ...............................   Passed    0.03 sec
+      Start 27: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5
+27/33 Test #27: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5 ...............................   Passed    0.03 sec
+      Start 28: native-annotation-regression
+28/33 Test #28: native-annotation-regression ...........................................................   Passed    0.36 sec
+      Start 29: data-contract-regression
+29/33 Test #29: data-contract-regression ...............................................................   Passed    0.06 sec
+      Start 30: module-boundaries
+30/33 Test #30: module-boundaries ......................................................................   Passed    0.11 sec
+      Start 31: workflow-regression
+31/33 Test #31: workflow-regression ....................................................................   Passed    2.17 sec
+      Start 32: startup-smoke
+32/33 Test #32: startup-smoke ..........................................................................   Passed    0.32 sec
+      Start 33: current-issues-regression
+33/33 Test #33: current-issues-regression ..............................................................***Failed    0.91 sec
+FAIL storage-config: dataset type/version persisted
+PASS ISS-011
+PASS ISS-012
+PASS ISS-013
+PASS ISS-014
+
+
+88% tests passed, 4 tests failed out of 33
+
+Total Test time (real) =   5.64 sec
+
+The following tests FAILED:
+	  9 - storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten (Failed)
+	 11 - storage.Storage.StatusUpdateNormalizesLegacyPaths (Failed)
+	 13 - storage.StorageFiles.DatasetRejectsWrongFieldTypes (Failed)
+	 33 - current-issues-regression (Failed)
+Errors while running CTest

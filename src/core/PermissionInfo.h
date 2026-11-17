@@ -1,3 +1,7 @@
+/** @file
+ * @brief PermissionInfo 的公共声明。
+ * @ingroup core
+ */
 #ifndef PERMISSIONINFO_H
 #define PERMISSIONINFO_H
 

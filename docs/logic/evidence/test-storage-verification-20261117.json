@@ -1,0 +1,133 @@
+{
+  "date": "2026-11-17",
+  "session": "test-storage-20261117",
+  "scope": "Runtime storage contracts and current functionality tests on the existing dirty workspace; no commit identity or full desktop acceptance claimed.",
+  "ctest": {
+    "tests": 33,
+    "passed": 33,
+    "failed": 0,
+    "gtest_cases": 27,
+    "existing_regression_groups": 6,
+    "elapsed_seconds_from_log": 5.96
+  },
+  "doxygen_warnings_bytes": 0,
+  "previous_evidence_hashes_verified_unchanged": [
+    "docs/logic/evidence/issue-fixes-final-release-20261117.log",
+    "docs/logic/evidence/issue-fixes-final-ctest-20261117.log",
+    "docs/logic/evidence/issue-fixes-final-doxygen-20261117.log"
+  ],
+  "limits": [
+    "Debug not run",
+    "Visible desktop, native dialogs, hardware and real workload not tested",
+    "No bulk migration of real projects, settings or account database",
+    "No training/prediction implementation or acceptance"
+  ],
+  "files": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "1ed328222376b6d598e375a36506b93a22671817fc8f4748b38c4daf13824a34"
+    },
+    {
+      "path": "vcpkg.json",
+      "sha256": "4c5bdf8fb9ab54536ad7ae7e70bdf5e5c9f3f4df4aeb075a56643643b85cf7c9"
+    },
+    {
+      "path": "src/deeplearning/CMakeLists.txt",
+      "sha256": "42245b0cf3900fc7862543a71355f870a5b02500e2245c74e2eadbca890c757f"
+    },
+    {
+      "path": "src/core/Logger.cpp",
+      "sha256": "b79e2267e06478403ae5dafe3ab42e5b7285243692d5b285bc357a20ffe07ef9"
+    },
+    {
+      "path": "src/core/Logger.h",
+      "sha256": "812fba641163e6a5696eab591f3cec8e6708cf86afd15aad3123384da875d341"
+    },
+    {
+      "path": "src/deeplearning/domain/ModelTypes.h",
+      "sha256": "beeb22b9b1d1ed2ce76989b487eb0d1f7af2ba51723fef52a44fabbcf7fbc333"
+    },
+    {
+      "path": "src/deeplearning/storage/ProjectConfig.cpp",
+      "sha256": "405e041aed2108c525b8156cf5fa8ae5eed82e4ce42d2460ef04ec9598cddec1"
+    },
+    {
+      "path": "src/deeplearning/storage/ModelConfig.cpp",
+      "sha256": "f027b03e195ff51e88cce3664167e0af6a2d5be001f269a7608f5e3400f3b27a"
+    },
+    {
+      "path": "src/deeplearning/storage/ModelConfig.h",
+      "sha256": "ea17c18ff2fce2849b36f221b84b42f091d7b1935fc139c5b576cd9f93c58081"
+    },
+    {
+      "path": "src/deeplearning/storage/StorageContract.h",
+      "sha256": "adf81b5f3b246bd37a32f74e4270345f73e7d7e90a410f205435a28f4ee04d7c"
+    },
+    {
+      "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+      "sha256": "915f8c3b64586c3fab25f2d1ded65c93874561c7eefd6455164e239aff881057"
+    },
+    {
+      "path": "src/deeplearning/widgets/ModelManagement.cpp",
+      "sha256": "a6d9df8105128097f13c30790a55d173c714f7b855065c83575a2716c651db69"
+    },
+    {
+      "path": "tests/storage_regression.cpp",
+      "sha256": "69b5ca068d4ced58ad400b12a825deaeeb7604841ba804e082ad3db9f2990e6e"
+    },
+    {
+      "path": "tests/current_issues_regression.cpp",
+      "sha256": "f87e0561749fc6b062aeb44663f70bfaca5515e2779453203c61607be172bae4"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-baseline-20261117.log",
+      "sha256": "cd60f7819ec180922f2b1711d146be0cc7526f01f20faa87186ce67d164be18e"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-dataset-red-20261117.log",
+      "sha256": "bd139132bb8a0d9f6ea76312dfc8376c88226817e439f37a7f490ccaad48f2cd"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-doxygen-20261117.log",
+      "sha256": "75805724c2f1daefb3861a20252aef7d0c1ac06835dd0c3f3e3a6c58929b9596"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-final-ctest-20261117.log",
+      "sha256": "437861cc372036c7017e35f4b8e8ce608e86cf0f17020a7aadefa07aafbe5182"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-final-junit-20261117.xml",
+      "sha256": "996d068736c9d2779f2258a20d7e8b134d4409b3a482f9069aef6427697debd4"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-final-release-20261117.log",
+      "sha256": "dec3a13e4a18643500f9f7964fb8365620650461ad5d7a8ed0ddd2850f7b69df"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-green-first-20261117.log",
+      "sha256": "778859d8f6247e0d68fff42cf0ae378d3080aa7fbf53d8fc2a8496899344a747"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-green-second-20261117.log",
+      "sha256": "3cb6033922933ad13cd2c67aa98df488cf4c0c7f417676463aa296050877b31e"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-red-20261117.log",
+      "sha256": "7d44ff9bb46d1d8989cb31572ac8274c0d9302a9dbbf929ce0e2027c9ce97956"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-red-normalized-20261117.log",
+      "sha256": "79016bc028248b547f86b356ed4b84346fbf990473057b49bd8864958c53552d"
+    },
+    {
+      "path": "docs/logic/evidence/test-storage-yaml-red-20261117.log",
+      "sha256": "dd8afdaeb1062eecc8c3383faae88c014f31115fb9565d082da4dc6b7f79abfa"
+    }
+  ],
+  "original_audit_evidence_hashes_verified_unchanged": [
+    "docs/logic/evidence/current-audit-20261117-probe.cpp",
+    "docs/logic/evidence/current-audit-20261117-build-probe.ps1",
+    "docs/logic/evidence/current-audit-20261117-probe.log",
+    "docs/logic/evidence/current-audit-20261117-release-build.log"
+  ]
+}

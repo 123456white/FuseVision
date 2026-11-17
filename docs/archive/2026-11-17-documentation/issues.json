@@ -1,0 +1,572 @@
+[
+  {
+    "id": "ISS-001",
+    "priority": "P0",
+    "title": "标注状态、渲染与撤销分裂",
+    "status": "已修复；自动业务回归通过",
+    "features": [
+      "F23",
+      "F24",
+      "F25",
+      "F26"
+    ],
+    "fact": "AnnotationModel统一形状/dirty/撤销；列表、工具、渲染与保存同源，加载与保存基线一致。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "新增标注可能不落盘；列表、统计、撤销与画面不一致；切图/返回可能跳过保存。",
+    "scope": "AnnotationManagement、AnnotationModel、AnnotationRender、六种Tools；labels和样本统计。",
+    "verify": "矩形与选择处理器、画笔/橡皮/填充/多边形、PNG和JSON重开；修复填充覆盖旧笔画，Esc取消预览。",
+    "sources": [
+      {
+        "path": "src/deeplearning/model/AnnotationModel.cpp",
+        "symbol": "AnnotationModel::reset",
+        "line": 286
+      },
+      {
+        "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+        "symbol": "AnnotationManagement::saveAnnotations",
+        "line": 1413
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "实际操作验证 + 静态代码确认",
+      "fact": "导入已有掩码后，现代RectTool通过Transaction把模型形状增至2；保存后新矩形内(500,300)灰度0，重开模型只剩1。界面dirty=false而模型dirty=true。",
+      "cause": "openImage将旧m_shapes复制进模型并使模型dirty，随后只清界面m_modified；新工具修改m_model，列表/保存/部分render和Undo仍读取m_shapes与旧栈。",
+      "verify": "既有掩码→新增矩形/笔画→Undo/Redo→保存重开，形状与像素一致；保存前dirty=true，成功后两处clean；切图不丢编辑。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/AnnotationManagement.cpp",
+          "symbol": "AnnotationManagement::openImage",
+          "line": 142
+        },
+        {
+          "path": "src/DeepLearningWidget/AnnotationManagement.cpp",
+          "symbol": "AnnotationManagement::saveAnnotations",
+          "line": 2195
+        },
+        {
+          "path": "src/DeepLearningWidget/AnnotationManagement.cpp",
+          "symbol": "AnnotationManagement::onUndo",
+          "line": 2381
+        },
+        {
+          "path": "src/DeepLearningWidget/Tools/RectTool.cpp",
+          "symbol": "RectTool::endRect",
+          "line": 55
+        }
+      ]
+    },
+    "limitations": "原生Windows手动交互与大图工具性能未验。",
+    "date": "2026-11-15"
+  },
+  {
+    "id": "ISS-002",
+    "priority": "P0",
+    "title": "保存结果不传播与离页缺少阻断",
+    "status": "已修复；自动业务回归通过，入口集成部分静态确认",
+    "features": [
+      "F24",
+      "F26"
+    ],
+    "fact": "AnnotationStore返回路径/原因，QSaveFile提交；成功才清dirty和更新统计。统一保存/放弃/取消，保存失败不离开。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "磁盘不可写或短写时可能显示已保存且允许离开。此失败分支本次未模拟。",
+    "scope": "AnnotationManagement::saveAnnotations/onSave/onNavigate*/onReturnToGallery；Dataset::onAnnotationUpdated。",
+    "verify": "模拟labels为普通文件，验证失败保留内容/统计、取消和失败阻断、恢复重试、放弃重载。",
+    "sources": [
+      {
+        "path": "src/deeplearning/storage/AnnotationStore.cpp",
+        "symbol": "AnnotationStore::save",
+        "line": 82
+      },
+      {
+        "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+        "symbol": "AnnotationManagement::prepareToLeave",
+        "line": 1676
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "静态代码确认",
+      "fact": "mask.save返回值不检查；JSON打开失败不提示，write结果不检查；仍更新数据集并清m_modified；onSave无条件记已保存。导航/返回无法得知失败。",
+      "cause": "saveAnnotations返回void，持久化结果与界面/统计更新没有成功边界。",
+      "verify": "把labels路径替换为普通文件等确定性失败夹具；失败后dirty保留、不更新统计、不离页，原目标不损坏；可重试或显式放弃。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/AnnotationManagement.cpp",
+          "symbol": "AnnotationManagement::saveAnnotations",
+          "line": 2195
+        },
+        {
+          "path": "src/DeepLearningWidget/AnnotationManagement.cpp",
+          "symbol": "AnnotationManagement::onReturnToGallery",
+          "line": 884
+        }
+      ]
+    },
+    "limitations": "账号切换/窗口关闭及原生文件对话框全流程需可见桌面补验；断电不等于普通写失败。",
+    "date": "2026-11-15"
+  },
+  {
+    "id": "ISS-003",
+    "priority": "P1",
+    "title": "新建模型的通知被屏蔽",
+    "status": "已修复；自动回归通过",
+    "features": [
+      "F09",
+      "F11"
+    ],
+    "fact": "解除发成功通知时的信号屏蔽；创建成功通知各一次，取消零通知，数据集只绑定当前模型。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "新建后页面看似选中，但数据集/状态栏订阅者未获通知；双击模型能继续流程。",
+    "scope": "ModelManagement::onNewModel和DeepLearningWidget信号订阅。",
+    "verify": "真实新建模型对话框驱动，检查活动模型、currentModelChanged/modelCreated和取消计数。",
+    "sources": [
+      {
+        "path": "src/deeplearning/widgets/ModelManagement.cpp",
+        "symbol": "ModelManagement::onNewModel",
+        "line": 461
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "实际操作验证 + 静态代码确认",
+      "fact": "隔离QSignalSpy记录modelCreated=0、currentModelChanged=0，而hasModel=true，selectedModel=SurfaceSeg。",
+      "cause": "onNewModel中QSignalBlocker作用域直到函数末尾，包含onCardClicked与emit modelCreated。",
+      "verify": "新建成功两种通知各一次；订阅者模型一致；创建取消或失败各为0。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/ModelManagement.cpp",
+          "symbol": "QSignalBlocker blk(this)",
+          "line": 662
+        },
+        {
+          "path": "src/DeepLearningWidget/DeepLearningWidget.cpp",
+          "symbol": "&ModelManagement::modelCreated",
+          "line": 248
+        }
+      ]
+    },
+    "limitations": "新建失败各分支未逐一注入系统级故障。",
+    "date": "2026-11-15"
+  },
+  {
+    "id": "ISS-004",
+    "priority": "P1",
+    "title": "项目/模型删除目标与上下文未闭合",
+    "status": "已修复；自动回归通过",
+    "features": [
+      "F07",
+      "F08",
+      "F12"
+    ],
+    "fact": "项目/模型预览与活动对象分离，删除选中对象，确认含路径；成功清当前上下文，非当前保留。删除改为恢复目录移动，登记失败回滚。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "可能删到非预览目标；子页继续展示/写入已删除路径。未执行删除复现，不将风险写成已发生。",
+    "scope": "Project/ModelManagement、DeepLearningWidget、Dataset/AnnotationManagement。",
+    "verify": "A活动/B选中、取消、恢复目录阻塞、当前项目/模型删除通知；样本精确配对删除及手动恢复。",
+    "sources": [
+      {
+        "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+        "symbol": "ProjectManagement::onDeleteProject",
+        "line": 654
+      },
+      {
+        "path": "src/deeplearning/widgets/ModelManagement.cpp",
+        "symbol": "ModelManagement::onDeleteModel",
+        "line": 760
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "静态代码确认",
+      "fact": "项目删除优先已打开m_project，而卡片可能预览另一个项目；删除清本页但未emit projectClosed。模型删除也未向数据集/标注集中通知上下文失效。",
+      "cause": "预览、当前状态与子页副本分别持有，删除没有统一生命周期协议。",
+      "verify": "打开A预览B时删除明确显示并删除B；关闭/删除当前对象先处理未保存标注；成功后全部子页清空，非当前删除保留当前。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/ProjectManagement.cpp",
+          "symbol": "ProjectManagement::onDeleteProject",
+          "line": 767
+        },
+        {
+          "path": "src/DeepLearningWidget/ModelManagement.cpp",
+          "symbol": "ModelManagement::onDeleteModel",
+          "line": 801
+        },
+        {
+          "path": "src/DeepLearningWidget/DeepLearningWidget.cpp",
+          "symbol": "&ProjectManagement::projectClosed",
+          "line": 231
+        }
+      ]
+    },
+    "limitations": "恢复目录无自动还原/保留期管理UI；跨文件提交中断需按恢复记录人工处理。",
+    "date": "2026-11-15"
+  },
+  {
+    "id": "ISS-005",
+    "priority": "P1",
+    "title": "类别变更未保持磁盘ID语义",
+    "status": "已修复；自动回归通过",
+    "features": [
+      "F15",
+      "F16"
+    ],
+    "fact": "标签目录递归存在标注或有未保存编辑时禁止删除/重排；重命名和追加保持已有编号，不自动迁移。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "多类别标注重开后可能被解释成不同类别；未执行破坏性类别变更。",
+    "scope": "Dataset类别维护、config、Annotation::syncLabels及导出。",
+    "verify": "类别重排/删除被拒绝；重命名和新增后标签字节不变，重开仍引用原类别槽位；COCO稀疏ID映射。",
+    "sources": [
+      {
+        "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+        "symbol": "DatasetManagement::onLabelOrderChanged",
+        "line": 2684
+      },
+      {
+        "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+        "symbol": "DatasetManagement::hasPersistedAnnotations",
+        "line": 3754
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "静态代码确认",
+      "fact": "onDeleteLabel移除类别数组；onLabelOrderChanged只重映射内存samples.categoryIds；saveDatasetConfig按序重写id。未见对应PNG/JSON全量重编码。",
+      "cause": "展示顺序和持久化类别ID绑定，变更没有数据迁移或阻止规则。",
+      "verify": "两类别磁盘夹具下删除/重排被明确拒绝且文件哈希不变；只有名称编辑/新增仍可使用；空数据允许既有重排。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/DatasetManagement.cpp",
+          "symbol": "DatasetManagement::onDeleteLabel",
+          "line": 2991
+        },
+        {
+          "path": "src/DeepLearningWidget/DatasetManagement.cpp",
+          "symbol": "DatasetManagement::onLabelOrderChanged",
+          "line": 3062
+        },
+        {
+          "path": "src/DeepLearningWidget/DatasetManagement.cpp",
+          "symbol": "DatasetManagement::saveDatasetConfig",
+          "line": 485
+        }
+      ]
+    },
+    "limitations": "不支持已标注数据的破坏性类别迁移；PNG最多255个非背景类别。",
+    "date": "2026-11-15"
+  },
+  {
+    "id": "ISS-006",
+    "priority": "P0",
+    "title": "模块读写授权覆盖不一致",
+    "status": "已按单账户规则简化；2026-11-17自动回归通过",
+    "features": [
+      "F02",
+      "F04",
+      "F05",
+      "F35",
+      "F36"
+    ],
+    "fact": "未登录所有页面可读，登录统一可写；业务执行处守卫保留，旧模块权限矩阵不再参与授权。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "访客必须能浏览全部页面，任何已实现写入口都必须在处理函数拒绝未登录操作。",
+    "scope": "统一登录态；页面始终可访问；UserManagementWidget改为账户设置。",
+    "verify": "访客直接写处理器拒绝并保持文件/数据库；登录/退出刷新；旧禁止权限不影响登录解锁。",
+    "sources": [
+      {
+        "path": "src/core/AccessControl.h",
+        "symbol": "canWrite",
+        "line": 15
+      },
+      {
+        "path": "src/ui/PermissionGuard.cpp",
+        "symbol": "PermissionGuard::canWrite",
+        "line": 12
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "实际操作验证 + 静态代码确认",
+      "fact": "普通用户项目canWrite=false，原新建按钮仍enabled=true。深度学习仅按canRead隐藏页；项目/模型/数据集/标注写处理器未见canWrite守卫，系统设置亦无Guard。",
+      "cause": "Guard仅部分模块接入；Registry刷新缓存不发权限变更，Guard主要监听会话。",
+      "verify": "无read不能显示/进入；read-only全部写操作禁用且直接调用槽也拒绝；同会话改授权后即时刷新，拒绝时文件/DB/配置哈希不变。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/DeepLearningWidget.cpp",
+          "symbol": "DeepLearningWidget::applyPermissions",
+          "line": 628
+        },
+        {
+          "path": "src/DeepLearningWidget/ProjectManagement.cpp",
+          "symbol": "ProjectManagement::onNewProject",
+          "line": 533
+        },
+        {
+          "path": "src/MainWindows/SystemSettingsWidget.cpp",
+          "symbol": "SystemSettingsWidget::onSave",
+          "line": 259
+        },
+        {
+          "path": "src/core/PermissionRegistry.cpp",
+          "symbol": "PermissionRegistry::refreshPermissions",
+          "line": 87
+        }
+      ]
+    },
+    "limitations": "可见Windows原生桌面及LabelMe外部进程退出流程仍需补验；多用户CRUD已取消。",
+    "date": "2026-11-17",
+    "history_2026_11_15": {
+      "id": "ISS-006",
+      "priority": "P0",
+      "title": "模块读写授权覆盖不一致",
+      "status": "已修复主要入口；自动处理器回归通过，外部进程部分未验",
+      "features": [
+        "F02",
+        "F04",
+        "F05",
+        "F35",
+        "F36"
+      ],
+      "fact": "read控制页面访问，执行处要求read&&write；转换/导出按数据集写、LabelMe按标注写、设置按系统设置写。缓存刷新广播当前用户并更新控件。",
+      "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+      "impact": "用户可访问不符合权限矩阵的写入口；未以普通用户执行真实创建/删除。",
+      "scope": "FuseVision导航、DeepLearning四管理页、SystemSettings、PermissionRegistry/Guard、UserManagement权限编辑。",
+      "verify": "直接调用项目/模型/数据集/类别/标注/设置写处理器被拒绝，文件字节及用户数不变；授权变化、无read与logout刷新。",
+      "sources": [
+        {
+          "path": "src/core/AccessControl.h",
+          "symbol": "requireWrite",
+          "line": 16
+        },
+        {
+          "path": "src/core/PermissionRegistry.cpp",
+          "symbol": "PermissionRegistry::refreshPermissions",
+          "line": 87
+        },
+        {
+          "path": "src/DeepLearningWidget/DeepLearningWidget.cpp",
+          "symbol": "DeepLearningWidget::applyPermissions",
+          "line": 637
+        }
+      ],
+      "limitations": "用户CRUD所有写分支和原生顶层导航主要静态检查；LabelMe进程撤权退出及账号切换完整UI待验。",
+      "date": "2026-11-15"
+    }
+  },
+  {
+    "id": "ISS-007",
+    "priority": "P1",
+    "title": "新增用户名缺登录入口",
+    "status": "按单账户需求关闭（不再支持新增用户名）",
+    "features": [
+      "F01",
+      "F34"
+    ],
+    "fact": "2026-11-17用户明确只需一个账户；移除新增用户/角色权限入口，固定账户认证，访客可浏览。",
+    "cause": "原多账户入口不闭合的前提已被明确取消。",
+    "impact": "不再存在新增账号无法登录的产品路径；历史记录保留但其他账号不能解锁。",
+    "scope": "LoginDialog、DatabaseManager、SessionManager、FuseVision、账户设置。",
+    "verify": "新库单账户；旧账号拒绝；密码错误/取消保持只读；登录解除只读。",
+    "sources": [
+      {
+        "path": "src/core/DatabaseManager.cpp",
+        "symbol": "DatabaseManager::singleAccount",
+        "line": 39
+      },
+      {
+        "path": "src/app/Login.cpp",
+        "symbol": "LoginDialog::onLoginClicked",
+        "line": 35
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "静态代码确认 / 产品选择待Q01确认",
+      "fact": "添加用户允许任意非空用户名；Login角色下拉固定映射user/admin/superadmin。",
+      "cause": "账户标识与角色显示混合，无法提交新增账号名。",
+      "verify": "Q01确定账号输入方案后：内存新增alice→登录成功，角色以DB为准；三种原账号仍能登录。",
+      "sources": [
+        {
+          "path": "src/MainWindows/Login.cpp",
+          "symbol": "LoginDialog::doLogin",
+          "line": 220
+        },
+        {
+          "path": "src/MainWindows/UserManagementWidget.cpp",
+          "symbol": "UserManagementWidget::onAddUser",
+          "line": 447
+        }
+      ]
+    },
+    "limitations": "只认证唯一兼容账户；历史其他账号保留但不能登录。没有新增账号或忘记密码恢复流程。",
+    "date": "2026-11-17",
+    "history_2026_11_15": {
+      "id": "ISS-007",
+      "priority": "P1",
+      "title": "新增用户名缺登录入口",
+      "status": "仍然存在；待产品Q01确认；未修复",
+      "features": [
+        "F01",
+        "F34"
+      ],
+      "fact": "添加用户仍可创建任意用户名，登录框仍固定映射user/admin/superadmin。没有擅自改变登录模式。",
+      "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+      "impact": "成功添加的账号无法通过现登录页选中；此处并未更改登录模式。",
+      "scope": "Login、UserManagement和Session用户显示。",
+      "verify": "静态复核LoginDialog::doLogin；隔离数据库可认证固定账户，不代表新增任意用户名可从界面登录。",
+      "sources": [
+        {
+          "path": "src/MainWindows/Login.cpp",
+          "symbol": "LoginDialog::doLogin",
+          "line": 220
+        }
+      ],
+      "limitations": "推荐独立用户名输入、角色由数据库决定；保留三账户兼容入口。等待产品选择后实施。",
+      "date": "2026-11-15"
+    }
+  },
+  {
+    "id": "ISS-008",
+    "priority": "P2",
+    "title": "模型表单字段未被创建流程消费",
+    "status": "已修复；自动回归通过",
+    "features": [
+      "F09"
+    ],
+    "fact": "createModel接收并持久化中文描述；路径派生只读，移除无效浏览按钮；重开保留描述。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "用户填写描述后丢失，选择位置产生误导。",
+    "scope": "ModelManagement::onNewModel，ModelConfig::createModel/FvdlInfo。",
+    "verify": "真实模型创建对话框填中文描述，加载.fvdl核对内容和通知。",
+    "sources": [
+      {
+        "path": "src/deeplearning/storage/ModelConfig.cpp",
+        "symbol": "ModelConfig::createModel",
+        "line": 21
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "静态代码确认",
+      "fact": "新建模型有描述和路径字段；调用createModel未读取它们，.fvdl description硬编码空串。",
+      "cause": "UI表单与Config函数契约不匹配。",
+      "verify": "描述含中文且重开保持；路径若不支持自定义则作为只读派生结果展示且无可选Browse。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/ModelManagement.cpp",
+          "symbol": "ModelManagement::onNewModel",
+          "line": 454
+        },
+        {
+          "path": "src/DeepLearningWidget/ModelConfig.cpp",
+          "symbol": "ModelConfig::createModel",
+          "line": 18
+        }
+      ]
+    },
+    "limitations": "未逐一截图检查所有缩放比例下的表单布局。",
+    "date": "2026-11-15"
+  },
+  {
+    "id": "ISS-009",
+    "priority": "P2",
+    "title": "设置保存/重置的生效范围不明确",
+    "status": "已修复主要行为；部分验收待人工",
+    "features": [
+      "F36",
+      "F37",
+      "F38"
+    ],
+    "fact": "日志立即生效，数据库/业务默认根重启生效；重置仅五项路径；默认根不迁移项目。日志清理匹配真实无.log文件名并保护当前日志。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "用户无法判断何时使用新路径，重置显示路径可能与活动Logger不同。",
+    "scope": "SystemSettings、SettingsManager、ProjectManagement与Logger。",
+    "verify": "临时QSettings保存重读、写失败回滚内存并重试；活动根保持、无迁移、取消重置；实际Logger文件和过期选择器。",
+    "sources": [
+      {
+        "path": "src/app/SystemSettingsWidget.cpp",
+        "symbol": "SystemSettingsWidget::onSave",
+        "line": 265
+      },
+      {
+        "path": "src/app/SystemSettingsWidget.cpp",
+        "symbol": "SystemSettingsWidget::expiredLogs",
+        "line": 387
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "静态代码确认",
+      "fact": "保存提示除数据库外立即生效，但项目页构造时缓存根目录。重置只写五种路径且未重建Logger，不重置级别/Python/主题。",
+      "cause": "持久化设置、当前活动配置、页面路径副本缺少统一生效协议。",
+      "verify": "明确当前/重启生效：日志重建立即；所有业务根与DB重启生效；界面准确提示；重置遵循相同规则，不移动文件。",
+      "sources": [
+        {
+          "path": "src/MainWindows/SystemSettingsWidget.cpp",
+          "symbol": "SystemSettingsWidget::onSave",
+          "line": 259
+        },
+        {
+          "path": "src/MainWindows/SystemSettingsWidget.cpp",
+          "symbol": "SystemSettingsWidget::onReset",
+          "line": 281
+        },
+        {
+          "path": "src/DeepLearningWidget/ProjectManagement.cpp",
+          "symbol": "ProjectManagement::ProjectManagement",
+          "line": 160
+        }
+      ]
+    },
+    "limitations": "确认重置后的实际写入、完整进程重启和真实ACL场景未验；QSettings多键不是断电事务。",
+    "date": "2026-11-15"
+  },
+  {
+    "id": "ISS-010",
+    "priority": "P2",
+    "title": "数据/标注Widget承担重复持久化与格式职责",
+    "status": "必要提取已完成；基准通过；保留部分Widget编排",
+    "features": [
+      "F13",
+      "F14",
+      "F20",
+      "F21",
+      "F24"
+    ],
+    "fact": "先复现COCO类别表与引用不一致，再提取AnnotationStore与DatasetFileService，统一读取/编码、配对复制回滚、暂存导出。未重写全架构或引入无依据线程。",
+    "cause": "原缺陷机制保留在history_2026_11_14；当前实现和范围以本记录为准。",
+    "impact": "错误传播和状态一致性难以独立验证；并非证明运行性能差。",
+    "scope": "Dataset/Annotation的现有文件处理及格式代码，不含未实现训练/相机功能。",
+    "verify": "导出图像配对、编号、坐标、旋转角点、空标注、选中范围、RLE重读、失败无半成品；导入失败重试/删除恢复。",
+    "sources": [
+      {
+        "path": "src/deeplearning/storage/DatasetFileService.cpp",
+        "symbol": "DatasetFileService::importFiles",
+        "line": 75
+      },
+      {
+        "path": "src/deeplearning/storage/DatasetFileService.cpp",
+        "symbol": "DatasetFileService::exportFiles",
+        "line": 221
+      }
+    ],
+    "history_2026_11_14": {
+      "status": "静态代码确认",
+      "fact": "DatasetManagement.cpp5239行、AnnotationManagement.cpp2586行；导入/统计/转换/序列化与建界面同类；AnnotationIO已有相似方法但未接入管理链。",
+      "cause": "多次功能增量堆叠于Widget，新旧迁移未完成。",
+      "verify": "提取前后相同fixture的样本顺序、类别、PNG像素、JSON/YAML语义一致；Widget只负责输入/展示，错误路径可独立验证。",
+      "sources": [
+        {
+          "path": "src/DeepLearningWidget/DatasetManagement.cpp",
+          "symbol": "DatasetManagement::onImportImages",
+          "line": 2283
+        },
+        {
+          "path": "src/DeepLearningWidget/DatasetManagement.cpp",
+          "symbol": "DatasetManagement::writeCocoJson",
+          "line": 4483
+        },
+        {
+          "path": "src/DeepLearningWidget/AnnotationIO.cpp",
+          "symbol": "AnnotationIO::saveCOCO",
+          "line": 47
+        }
+      ]
+    },
+    "limitations": "聚合COCO与配置仍由DatasetManagement编排；压缩RLE、LabelMe circle等明确不支持；全分区导入不在当前支持范围。",
+    "date": "2026-11-15"
+  }
+]

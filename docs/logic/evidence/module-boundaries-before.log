@@ -1,0 +1,63 @@
+FAIL missing module: src/ui
+FAIL missing module: src/app
+FAIL missing module: src/deeplearning/domain
+FAIL missing module: src/deeplearning/storage
+FAIL missing module: src/traditional
+FAIL Qt Widgets dependency: src\core\AccessControl.h -> QMessageBox
+FAIL Qt Widgets dependency: src\core\LoadingOverlay.h -> QWidget
+FAIL Qt Widgets dependency: src\core\LoadingOverlay.h -> QLabel
+FAIL Qt Widgets dependency: src\core\LogMonitor.cpp -> QSplitter
+FAIL Qt Widgets dependency: src\core\LogMonitor.h -> QWidget
+FAIL Qt Widgets dependency: src\core\LogMonitor.h -> QPushButton
+FAIL Qt Widgets dependency: src\core\LogMonitor.h -> QLabel
+FAIL unclassified source: src\DeepLearningWidget\AnnotationCanvas.cpp
+FAIL unclassified source: src\DeepLearningWidget\AnnotationCanvas.h
+FAIL unclassified source: src\DeepLearningWidget\AnnotationIO.cpp
+FAIL unclassified source: src\DeepLearningWidget\AnnotationIO.h
+FAIL unclassified source: src\DeepLearningWidget\AnnotationManagement.cpp
+FAIL unclassified source: src\DeepLearningWidget\AnnotationManagement.h
+FAIL unclassified source: src\DeepLearningWidget\AnnotationModel.cpp
+FAIL unclassified source: src\DeepLearningWidget\AnnotationModel.h
+FAIL unclassified source: src\DeepLearningWidget\AnnotationRender.cpp
+FAIL unclassified source: src\DeepLearningWidget\AnnotationRender.h
+FAIL unclassified source: src\DeepLearningWidget\AnnotationStore.cpp
+FAIL unclassified source: src\DeepLearningWidget\AnnotationStore.h
+FAIL unclassified source: src\DeepLearningWidget\DatasetFileService.cpp
+FAIL unclassified source: src\DeepLearningWidget\DatasetFileService.h
+FAIL unclassified source: src\DeepLearningWidget\DatasetManagement.cpp
+FAIL unclassified source: src\DeepLearningWidget\DatasetManagement.h
+FAIL unclassified source: src\DeepLearningWidget\DeepLearningWidget.cpp
+FAIL unclassified source: src\DeepLearningWidget\DeepLearningWidget.h
+FAIL unclassified source: src\DeepLearningWidget\ModelConfig.cpp
+FAIL unclassified source: src\DeepLearningWidget\ModelConfig.h
+FAIL unclassified source: src\DeepLearningWidget\ModelManagement.cpp
+FAIL unclassified source: src\DeepLearningWidget\ModelManagement.h
+FAIL unclassified source: src\DeepLearningWidget\ProjectConfig.cpp
+FAIL unclassified source: src\DeepLearningWidget\ProjectConfig.h
+FAIL unclassified source: src\DeepLearningWidget\ProjectManagement.cpp
+FAIL unclassified source: src\DeepLearningWidget\ProjectManagement.h
+FAIL unclassified source: src\DeepLearningWidget\RecoveryStore.h
+FAIL unclassified source: src\DeepLearningWidget\Tools\AnnotationTool.cpp
+FAIL unclassified source: src\DeepLearningWidget\Tools\AnnotationTool.h
+FAIL unclassified source: src\DeepLearningWidget\Tools\BrushTool.cpp
+FAIL unclassified source: src\DeepLearningWidget\Tools\BrushTool.h
+FAIL unclassified source: src\DeepLearningWidget\Tools\EraserTool.cpp
+FAIL unclassified source: src\DeepLearningWidget\Tools\EraserTool.h
+FAIL unclassified source: src\DeepLearningWidget\Tools\FillTool.cpp
+FAIL unclassified source: src\DeepLearningWidget\Tools\FillTool.h
+FAIL unclassified source: src\DeepLearningWidget\Tools\PolygonTool.cpp
+FAIL unclassified source: src\DeepLearningWidget\Tools\PolygonTool.h
+FAIL unclassified source: src\DeepLearningWidget\Tools\RectTool.cpp
+FAIL unclassified source: src\DeepLearningWidget\Tools\RectTool.h
+FAIL unclassified source: src\DeepLearningWidget\Tools\SelectTool.cpp
+FAIL unclassified source: src\DeepLearningWidget\Tools\SelectTool.h
+FAIL unclassified source: src\MainWindows\FuseVision.cpp
+FAIL unclassified source: src\MainWindows\FuseVision.h
+FAIL unclassified source: src\MainWindows\Login.cpp
+FAIL unclassified source: src\MainWindows\Login.h
+FAIL unclassified source: src\MainWindows\SystemSettingsWidget.cpp
+FAIL unclassified source: src\MainWindows\SystemSettingsWidget.h
+FAIL unclassified source: src\MainWindows\UserManagementWidget.cpp
+FAIL unclassified source: src\MainWindows\UserManagementWidget.h
+FAIL unclassified source: src\TraditionalWidget\TraditionalWidget.cpp
+FAIL unclassified source: src\TraditionalWidget\TraditionalWidget.h

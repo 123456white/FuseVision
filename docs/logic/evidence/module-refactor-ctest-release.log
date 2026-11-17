@@ -1,0 +1,124 @@
+UpdateCTestConfiguration  from :D:/project/FuseVision/out/build/windows-x64-release/DartConfiguration.tcl
+Parse Config file:D:/project/FuseVision/out/build/windows-x64-release/DartConfiguration.tcl
+Test project D:/project/FuseVision/out/build/windows-x64-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: data-contract-regression
+
+1: Test command: D:\project\FuseVision\out\build\windows-x64-release\bin\Release\FuseVisionDataTests.exe
+1: Working Directory: D:/project/FuseVision/out/build/windows-x64-release
+1: Test timeout computed to be: 30
+1: PASS LabelMe adapter path resolution only (no external process)
+1: PASS data-only project and model configuration
+1: PASS data-only undo storage round trip and failure
+1: PASS data-only paired export independently reread
+1/5 Test #1: data-contract-regression .........   Passed    0.09 sec
+test 2
+    Start 2: module-boundaries
+
+2: Test command: D:\pythonbase\python.exe "-X" "utf8" "D:/project/FuseVision/tests/check_module_boundaries.py"
+2: Working Directory: D:/project/FuseVision/out/build/windows-x64-release
+2: Test timeout computed to be: 30
+2: PASS module include boundaries (core, UI, deep learning, traditional, app)
+2/5 Test #2: module-boundaries ................   Passed    0.12 sec
+test 3
+    Start 3: integration-paths
+
+3: Test command: D:\pythonbase\python.exe "-X" "utf8" "D:/project/FuseVision/tests/test_labelme_paths.py"
+3: Working Directory: D:/project/FuseVision/out/build/windows-x64-release
+3: Test timeout computed to be: 30
+3: ..
+3: ----------------------------------------------------------------------
+3: Ran 2 tests in 0.011s
+3: 
+3: OK
+3/5 Test #3: integration-paths ................   Passed    0.17 sec
+test 4
+    Start 4: workflow-regression
+
+4: Test command: D:\project\FuseVision\out\build\windows-x64-release\bin\Release\FuseVisionWorkflowTests.exe
+4: Working Directory: D:/project/FuseVision/out/build/windows-x64-release
+4: Environment variables: 
+4:  QT_QPA_PLATFORM=offscreen
+4: Test timeout computed to be: 60
+4: PASS annotation model undo/redo
+4: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/Fixture/Seg/labels/a.png
+4: 无法创建标注目录
+4: DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+4: PASS widget load edit save reopen
+4: PASS JSON rotated and polygon round trip and failed replacement
+4: DIALOG 已有标注或未保存编辑，禁止重排类别编号。
+4: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/Fixture/Seg/labels
+4: PASS category protection
+4: PASS model creation signals
+4: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/export-coco/annotations.json
+4: 成功 1 项，跳过 0 项，失败 0 项
+4: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/export-yolo
+4: 成功 1 项，跳过 0 项，失败 0 项
+4: PASS export semantic baseline
+4: PASS external PNG edit
+4: PASS brush eraser fill polygon masks
+4: PASS paired import recovery
+4: DIALOG 成功 2 项，跳过 0 项，失败 0 项
+4: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/coco-source/bad.json
+4: 不安全的图像相对路径：../escape.png
+4: PASS COCO sparse IDs empty labels RLE and quality
+4: DIALOG 删除项目「DeleteB」
+4: 项目目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/DeleteB
+4: 项目文件：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/DeleteB/project.fvproj
+4: PASS selected project and model deletion
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: PASS guest denied handlers and login state
+4: DIALOG 日志路径与级别已立即生效。
+4: 数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+4: DIALOG 配置存储不可写，请检查权限后重试。
+4: DIALOG 日志路径与级别已立即生效。
+4: 数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+4: PASS settings and actual log retention
+4: DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+4: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/integrated-export/annotations.json
+4: 成功 1 项，跳过 0 项，失败 0 项
+4: PASS integrated project model gallery editor reopen export
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 请先登录管理账户，再执行修改操作。
+4: DIALOG 密码错误或管理账户不可用，请重试。
+4: DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-pWRNYr/Fixture/Detect/images/one.png 有未保存的编辑或尚未完成的绘制。
+4: DIALOG 当前密码不正确或数据库无法写入，原密码保持不变。
+4: DIALOG 新密码至少6位，且两次输入必须一致。
+4: DIALOG 管理账户密码已更新，下次登录请使用新密码。
+4: PASS guest pages single account login logout and password
+4/5 Test #4: workflow-regression ..............   Passed    2.34 sec
+test 5
+    Start 5: startup-smoke
+
+5: Test command: D:\project\FuseVision\out\build\windows-x64-release\bin\Release\FuseVision.exe
+5: Working Directory: D:/project/FuseVision/out/build/windows-x64-release
+5: Environment variables: 
+5:  QT_QPA_PLATFORM=offscreen
+5:  FUSEVISION_STARTUP_SMOKE_TEST=1
+5:  PATH=C:\WINDOWS/System32
+5:  QT_PLUGIN_PATH=
+5:  QT_QPA_PLATFORM_PLUGIN_PATH=
+5: Test timeout computed to be: 30
+5/5 Test #5: startup-smoke ....................   Passed    0.34 sec
+
+100% tests passed, 0 tests failed out of 5
+
+Total Test time (real) =   3.08 sec

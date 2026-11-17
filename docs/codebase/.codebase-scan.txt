@@ -1,0 +1,437 @@
+
+=== DIRECTORY TREE (max depth 3, source files only) ===
+.clangd
+.github
+.github\workflows
+.github\workflows\build.yml
+.gitignore
+.mimosa
+.mimosa\hook-state
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.continue.json
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.json
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0008ba6406a5665f1b2cd7362c1189f771c7ab166b1e3859de1c12b027e3f202.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\000d9058ceac60f42a947ccaff8f276705909e60f92ddad0fe702d25aaeb1cc2.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\000f97a133d0dc371a51db83414d81f4361ccc9eba62aeeede62c507041d3f4d.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0026b95d1eeb53109000bb53d5b23b4f3c40d39868269d2ef234b2f9479f2ce6.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0075db9845bd5286f15871af7ae8e1825a8aa0f402846f2e52e01edff80dea4c.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0093bc2d7b5aba2e8cd3d63a3fb8fdb49de32c759c2b7d742777904276945f35.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00a1bba0d83e12ef969e09967c1c25a1959e33938b9b117e206cd93df0b5f347.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00a37d1b1270aec021e201552e4ba143a0a4d309d4d5c78d9806c4f751f928cd.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00a5d39569cb4237d5202b680100bc40f217064ea84341d550eab4432d0dcc94.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00a9725b1a11e9f686a207d16640e21e749e877dcda86b6ff7546e078f9417f8.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00aec802a38676eac2fadbc1611eb7e96045c418225d2629814a27d0c1b2153e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00d54aba27891e21b1f89644ecbd8d183bece0a0f2ad0b06e5db3f2cca4a4dc5.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00f28ba3b80f0c45da216ca770846b181a84674fd668ecb8250a34d2dd528df7.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\00f4dbb862e4a7efae7251aff0b9cc3fe4d148c643a9e74d289e28fb216d3013.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01303671f010b26d2f2909e2b7ef456ade17f9b54b4df7be71df159ee9839d32.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\014f2f0d7eb47453575fc52bf83a8b77c68137d4689c28114d4885f73a9806b7.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01663b2371ff771ee76375961f3a2b2bde205472e908118e1db9fdcf64bbb2cc.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\018446ec217da929a2685329faf7e25b8a26ee56fae8d68abc59474f2332c2ef.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0186304d0232aff6f9db75d87ddca2b0c289ee00c721284010c8a7922fc6dfcc.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0190c5a52d6321547285b2f1f97156f1951823f7f105cc41d179b0b733211a7b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\019b32d85365c559832fa8d019b183efdf904c6087300ab6c5736005bf9fb027.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01aa6cdc510c016ee8042014ac21c1af8d0cbf0a95af8e3bff131c82230a517a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01be8002000e4020eb11056fa7dc8522130085543d55462a2686a6c7c3ef82d6.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01c28e94b6e5b8fadff08c88d5e5106f4714702545d67f46889d1938b34c0f04.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01d19d33e04e2d5cf81cad44286ec94a39a14a0bd92074ded7eac6d853711bdd.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01d1b0ab54434c1a9e968b6cb9ae164578e3e0c4a885b75775c52262699c9c37.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01d40328d7ad50b19257d2a9f56d1e8d384025ebb99612833cd3a5f1250b6570.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01d898001937738783b12ad0b96e6c5ff8a27fe59f032c3fc5a26c3b14d74daa.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01dac79743aafdf2a49054fca28b9a63f965dfc310fe53a1a39bd8c79f040870.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01e7c1e8afeada5040a632c6931c63451c05c81ac6b259c58afee83cacf40c00.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\01f4a2f5a9bd9a4f6450231cd376893f6004ce824bfc3f806f181d82a89794b6.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\022c5e13c94b2246b8f4bd63f237141917ea8f4134a63efc4265f9ea5913e6a4.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0240dc504c6a4aac910cf4a1e96342083e55d7e1c612f63579b0ed8e15e7f5bb.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\027b52a1e9ede98dc2f9517aca9f8c626f125aac673fe0be1b10acb70f8e1fc7.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\027bec3c4c68a1b6669d7314e36777fe37fe206d990160436eeeb5e616115d62.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\028892dbd5396c7bd52bade5ee913bf73b4c7dcbd4870bbd29980ea61dd99114.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\02b0ad72a65ba4fb94a1ea371b0f4d953123ba5417063b6fb5167a3127333ab9.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\02c0912f3b005f406eaa63006df88e759031d879154f1d08ef837b561db2ac93.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\02c51cf5823b1f98d35febe1dfdbcddeca8a5cb864e600d69c0e1fba430df23f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\02dbbb612e6cc9b5af93d5764245c6982cb9669da6ae12ab470510960ea1eb8b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\02e3fbe14f073b3f9aa0214ee324dfbfc18df92854140f6a20cb2e9dc7636012.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\02f350cb99395e07c5d87bae6c0aff6af354d7d08fa586d3e4b9a046eb2f02e8.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\02f7e6b72b4d7746318af9e9d3036b2a9920a12faf04ab58fca0ec221fcaac19.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\031ab4eeb22cdc1fd6a716ceafc9e49c6db06249e9064b44ccd99c5614092e4c.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03570a55c6163370fc8180bb86f24a5ee1f665aa3af76aa2e516c08de5dc5f4b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\035b0bd102f809b648305d40ac84e60267c1868a9b8051af786baebc5333a962.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\037905bb07bd13ead73148df53c3489106f1014a80b2d73a6f2e781728b7a19e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0399ca5122eee1f2ee35bf6d1ec215f647d9631941db4c213e3f3827a8d53da1.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03bfafe14763c3e8f7d3ce6c09f63ba17a0117c30a91ab504a593fdec661a42e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03c445b02aea21c8f2748af47831579481bb3f1397cbc5bc43fecab5a1a41a5e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03d1b415d4e6c85bed03f24bc13a95675a3eb6205d057e123a149ee3882c561b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03d1c7b91ceb09e60de9cea7d59a095711eaa3cda8c1dcfb603e993e6e0370c3.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03d78f25071d4c6da1b331bf47507287f1cd59fe899882718915fc4597c2e9f6.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03edb57d79d3b51f4e4e2f291474c64f8c088adf077625f5a4c6ace4bd76ef88.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\03f0e3e1b4044ae5969634f77f1907b14eef239587b0285a83e6fc72463a4a17.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\040fadc1c226c6d8722e790fb6b134ab1b006fdf1a48114f0557c5d2f4df08ea.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\041ddc638f7163ce8996309378fbb9dab95d0d184ee301af311fc664292182ff.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0429387b566cff29603bcc1eff7714d9dcd4930d67d7b8b577cb539689f231e2.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\043150363385c6af726f15350503ac5a2e0c6e5d63121597e43cb769076dbbff.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04408870535b08b0d52c98e13b4b6b0be923df12bf357e540891b67a9c22315f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0452840c6db44b96fa73b91241d0382c4abbf38246d97ffc9e5eca0a66ec2f77.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0456f693241792fe63a868c44513658f6e6fc5592d84f2162fb3c868594744fe.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\047a34d52957d8ee0f7de6c852bc73e8d3337df749d0908ccadad5c2295e302e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0482c10d7561e3559f332ad4063ca95246c6844440050f662643825016cad09f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0488458aa4d33b1d3ecec80d82c9f77cbf26c45bf2beb9f7a79c4b8b249f3bc8.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\048bcc7c7446002921695e5cb446dba027a39041d15792a39fad90b474035407.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04a0adf5a3de7394924f237e7026e2c5fc8e861fdc540eb22e5fc24c732c8d3a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04b368837b3e38156fb4c946c80b50010580f33475dc762ecb47c0270868e429.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04b5a025071583c9972dc3d26e83ec1eb35d809192d51761d002f46527fd6e34.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04b791749409d9b4def18a6f1a8690b2163ea77b6314858a4c2932f626f69c15.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04cd95c66d1603e458e27e8621c69c3423c2a42ade121fc7412485bda620cd0b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04f6c05cad0fe4452dcde63e7e4f0edd6d9ddcc0c671e926646095af8ba68a33.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04fa12aeded04ddef9bec997c54c5ef2053e410e3eaa593b7725e8e82391a2aa.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\04fe35ecc6cfa46357ae461b23271a7de3c6e4dad69b543de1fd11d03084e0a8.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0500e304f7ceaba414123361cc5ce94aa0dcd45a5f29057406eaa11a2dd77627.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\050e582817f4f8067d3c5b2d4e3c9cd782c92251be55cd663f9cb266ffa24a18.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0517c668e51192558e3e261bc85c1b8569e0770b124e9ad4ff46d848e11b9d82.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0522e3bdd962218399c753a296e2cd759f4853ba3bad702d23993543d0b43be5.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\052a856acb1633a1b945302d7e36166bc3e431cfcb621371ac6659e6f29d7d98.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0531f64127327f82335c453bd4a62f4a5124468c58701f86b642433d92992fc1.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\054107ae1272e8401f8c2a4115baf8c531bc8e3bd72758d26529f97dd39be28a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\054fc2a0c98908ff8e63ae27cf32b415a1fd873b2ec1536d17f940f8d9fd1cc9.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\056b8f72e184551c07d7570bce83ed47c95953f27c67047cc80b052534f1a861.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0587fc99e81d4e96b5b2a56396ddc2d72638a2d5212640d063ae5ba6d261077a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\059e9ff13c602b1eabdb1e991b5dadbba4c08d1af2bddc3f509b9c4d4958f276.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\059f2ea4bb14920ad86e0eb3f3edd3201566d9fa854c83e174ce22abda81089f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\05afd69b51a7c7fd19bd8bb129b2451d5827f52431c0a494a836479a94ead79c.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\05cf8cbca22dd429099f9d87cf90f4e409ac013ce485388755559710fd926caa.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\05e8592d3138e7521c2a6aec0bab40f04049d6dc8bb5f97ce037538aa124a4f9.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06049a61b863c62c985226e9939abf10786ad91aa7dbf724c307b9cfe3d1a21d.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06080a65c1675f654e5a980eb19c1a70f21193a3106ac7d4d10c3bed3cae2265.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0629cc15b6b53d30d880e440cf5c1daabab429075c276d1e1939e3deb260451d.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0648edd17a9349b31553fe3c3f0110db2191824bbf444d39314a2065a90978ab.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06599b99961335d16f5a4b258ba1bc1ae39bf2898977f04101af23cf3d37fa35.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\065b270aa221114348a71079ceff90282ee37595ec9598c6e54d0f00adf36c58.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\065fc62b4fa1fa49e2bd33918e891e104cdec77e057c64f6e9b4acf095ff4a65.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\067db0a3a1b2d3347a3ff28d20b90b241a69ce8149fbe916e2ec27addd2b56d5.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06818ca9f64a42faf53b233d0f5c67f258d08bf2f73ce3fa88a6b7d38580d62f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06837b8e0802528d216caa1b249c1da43a9122b8e2b31ddd09c728956a5b9580.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\068866c923d2b7933171ee534ce6c1ceea31f5cef1270d727924492d6eba3dfc.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\068bef5202f8fdca11e8282070b507df32986c2c1a80e0d9cc48150d2a4a93dd.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\068d4ed91b7b7751e6f7ea27fe10a07f6d8c4f2ad3ac820a6d31477f41ae2a92.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06924b73d7d25483cb26948085232d6f478ac19ac9fd11d3e90b8fbf5c74007e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0693d6b3fad5207b784d93e0ef91cad84a275796f527bfc368d6424a6f2c606c.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0695726a4e0a7d79b25132dbacbea82e5a404a631667362144a82805103166ab.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06a4f76b56020cd408102b22d16e9df4d07da820f87077543f5e6b458b45f77e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06abc162e868f365467dd08f2de0ffc41331a77c6a52402954a36e65b2be0801.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06ad364b5de2901a55ccd308a07a3681df76886e581f8f47f972bb98f66914e2.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06ae02f70a715efe199576a48234d27527a112075516145e2898d4d11af5182a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06b1adf7bc12f7e45c6218f43232e5e9757646afe32148cd877feffa88de2005.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06d28ea2df86a3662b621e06cf8cd40cabdcefcdb104a81fcbb1275a01eab992.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06d3be2c9902a3610c4d0dcfa5bd4ed5dca49edec24697495b6975976e4d8b95.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06d7bac9e589e336a654e4232295291e509dcbc916cd50876c11cd678e4f5374.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06d97e1c5df92e412b75e47bf748f5f7daf71cb8db3f2f59db3c3cc42aa515de.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06e0bff6c720e21540d125bf8026bb04f3577ce2237e2d3d66f87e9be08aba9a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06f4cd42297a83f34602d01405939ee3595ec5a1883169ba8d51fece61b766a2.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\06f629ab27169ff79d71013b118cbeb1a3cb759269f95aa78c60cc0cca381721.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\070bfd1143e7a007d483d343cb88429ecb6b1a6788f446c22fe65008b73cf7d8.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\071dbd78b9acc864347d1bf98fca944feff403d61f94257d1c7aead7c2143fca.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\072911a1094e0bd2c2e64f2257f94a7a9815df841ffddcffdaf3cd2693ed18bd.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\073c04724112002ecc85af2799bc9e45bdad037834d0e758584f787e69c442fa.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\073e6c8228bba81bbf537e9b7576f0fb104284026d8ba811cac1ec93512f636f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0757e306b24b39a0182e3f0e1a4510735dce4b72f915c6c2124d10769eec3585.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0757f7a3a0268001f12d5c35e3dc62a2ec25b30e3af8f88dc5c7481e7159f511.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\076d7de16edd1ad8390d7900178e4dd370426abbcf1456dd48bfb3d6b37ac11b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\076ec1dd55f1ec4c1ef910b83975ab7eb5bfab964d31600ee38aec4602f64067.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\077695b9d2a8bfe291d2f7c4c383ad0e757fbe65b38f607d49ad789ca7e585a4.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\078886e49b4e1a4ec42f68d5c3880cb3be3f002f5accca9b71c7b7b30ca9acab.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\078d4c441e753e15500c4dee2b50b3e8b1e0c1731e6f1f2d3ffe8e598772cdb9.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\07a67ed0de624095fdcc2016373aa3d6bc32178d18f98778b30bf0e9d790cc3f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\07d000e687e6c43cf57fcdb936cd1e727f6cb0191e1692ab7328ada929d1f25b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\07d268301446f31fb00c4a6d131f30b0b7dae152ca2e32284e0f406e12716fbe.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\07d2c7a8999048f2c310a3be718072acd22b9f8e77f8b39e92e19f4f91c0d56e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\07e9d45058329874d6aaff3d1781a3f2dcb433a54c771f887c18a51b52cf5c55.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\07f61b8997b42de8ffa39afd39cd82797555325281619158995d74936d980339.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\080a5c4c548bec30ba4f1ea712beb918a11bd93362e665d3fdfa8df5cdd1a2ae.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\081373620b08f0e04f83b4237da79316d6fb74472e7b44262c608bd0a2306220.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\083e8a9887e629daa78f10f3dcdbfa33d561a1acf25a2d88407225b5ca9c3c2d.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\084eccc50736c63a96655fe92c8efca99cf146507afee7a8af62e614b23ae3da.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08536fea8900291b53f7c4e162df537a3a2812992586a7155c0e35adb41272fb.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08623df623a59662a1937607ce5e1f6399c334c8496c0f68d0a9284d0115bd01.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0865a490c4db9e29ccee4c7d0db02bda541fde0481f8c4335ebc7f0d60649e6f.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0874505f2b0a6a0c1f7584a0f8072947e305782e1fdd8d47f78eac44b0b28ea7.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\087776ff7e71754f47df0b0502fc1551a514ccbc70720eda41af6d0c74c84276.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0877e6c0e56d515c80fa0dae213ad52e1166fc15a3afe56ff6c6d2f9cf09d7b7.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\087e56528723c9294fa023f3ed60d844e76a6bf0cedc1a29f02af610ef26ad18.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08817a1826cd4b24ba47a23d94180c73307ef037d7c43a057e6970951fd61d77.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0881eeaa5c84a009198fd2fb9d241675681e3e4b99f4f3ce060239c1ca3533c7.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08842784f72870901bace3ae6b0d2d0e3a4f23df84e2b389c3815ade22381882.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\088fb37561ed3d84a369dcc7cfdec667387f5b223d9f13ff3d92ddb06ce26ec3.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08a22e45ab31ff367873206ce2874193923ffc7977d2c9951949411aac8f9b8b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08a841fb10d9ebcd800f0cb0a5bd3759a2e5673235830169dfbde3ca4a7c82fb.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08b86645dd37151001f3fdb984f12263d0b05902bd109f9f8c896a3a8c35442b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08ba93d4c343f0f7eddbf194bd2e02a1bb723e97489022b5051464a0a442f798.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08bf0827b0868dcd285e4c618152ae51549091bd9a868d4c046e8fff7d5d5fcb.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08c0d42f746125e841ee88efb8baed9d4f088ca3a1b3dd1491fd4914b202ddb3.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08c6910a0dfef8c6d93e6c786196e1a2d28c8ae423fc544f367befeb86df6690.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08c9aab53c4e8d90447fcfa9aead3bde19bcb06434f6c95d373e4473b0b74230.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\08e540e9a11c23921db208e56a9a96e0553ac0d5b2886fc275d4e625eac6eb25.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\090ce3be183ba6c2f384e4a3291853759fb0a52118d0991fb184437179454848.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0917cf3748b053997dc03631024407819199d8e023df77526ecdc11e96e04ed1.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09246a47795fe621c5c93fedaf9707b0cc72d54a247e68f5e5e38654a75c2d90.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\092c2b2733a3b8a8d532bd8d50a4f92873663a2814c00d9da96d31c0ea3bb9b2.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0940851564bda7b079179f68cf7f0f0c4f29989a17badeba8a87c3070e25a39e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0955c684867720d07a1d195fa3001164049a66b70ff7458bcee7ef282b3344da.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09565f7d00dee97378874c39999fc45ba6b8f6529bb3f50b2e499edddde1d559.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0959c27fdb05fa62dfc62ade341a9b0bf9759198901728cbbfbb117716f6ceb6.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09644036f940ccc5a2a559abbcce2bb24bdba092d8113100ce9bd1aea5eb2dd8.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\096714165b32ce4db6444ebfa2f2898531bc315c42859a17f002ac0df11700e5.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09800f332c0a43307fd007afb00809138ddf0e13d9a013470b0879136f3b7b6b.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\098312fd3d8ec0e290b33c101dc98e7cffd4c1217be89577fe8df994c9dd7f00.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09983a6ea3224e065bd4768c1564a972a0268c812ebd0b2f1ea05132bf9bbb8a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09a019a47b3db7efefcdf2c0605424e16b2114fea4891172a124f757b5094e62.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09b3aaf91bcbfd1162a86d4ac82f60d17cf123969540bcb413c3736bd23196f8.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09b629213e2bc0870d8a412f528fd37e0a3bce67fc12b416e43b6998c4400906.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09e7770919442dcb4052bc88edc698a03f134ae42d26c032446d7e8f7d336e78.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09e8627da27f4c1a0442f73788ef64fdad0589845375b2d1e96b361599ba1bf5.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\09ee9f95ae4fa097f5146fb5a3af873d65fb9f1aef771295a20de7f2fef5e63a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a0c36f0aca44289cd2c99be9f0577e0cfc5b7667dc4ac17aa715aeb568c6f1a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a22fdeda67b17632f260ff8ce266d4e3b7ab93bd158577a9e0856b0ff03c479.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a39fa0c1be90d902d52d9278b1915005ecb13200bc1bd6c164b70589f42c503.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a3d1709a7159724ca4121a7d2801d57d254fe7ee9a99db776b9e84dd1b4d1bc.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a3df8502908b6a5295e4b7842cf5e6e8356ba82ffb4c8300a22823c6e056ed5.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a444f99801a85895caf59760a75152cdcd5b124c0935d22806cd2608f19d6ee.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a6cd9e3d0eaca3c3638bcae88f62b2bb14081060cc2176279fbff1cc46df546.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a78d83d6c20501da8c51a7c77e6ed8dbd5768a5c071208161608cefb205fa1e.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a8a708a0b40dd9eafd7db6e653cfbb92bc0dc656471acc0e387d0c93d450d8a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a8fe7e142bc44ee1abb01761aa7a70e6ad4484bdd167261fee7eee74242692a.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a911c93ddc0f7e62855ca67e72a15aa743d858548e3947a8a413ed71b8526f5.source
+.mimosa\hook-state\sess_80be3571-3f68-402d-b481-986fb5c84114.mwk20f9j-51940-282cbf0ac8.baseline\0a95f39d14d987023de60b14e62f39245c960a12c1f7633fc2b3f9741518fd79.source
+
+=== STACK DETECTION (manifest files) ===
+
+--- CMakeLists.txt ---
+# CMakeList.txt: FuseVision 的 CMake 项目，在此处包括源代码并定义
+
+# 规定项目必须使用 ≥3.21 版本的 CMake（与 vcpkg manifest 模式兼容的最低版本）
+cmake_minimum_required(VERSION 3.21)
+# 如果支持，请为 MSVC 编译器启用热重载。
+if (POLICY CMP0141)
+  cmake_policy(SET CMP0141 NEW)
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+endif()
+
+# 定义一个变量 QT_RESOURCES，指向你的资源文件 FuseVision.qrc
+set(QT_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/FuseVision.qrc)
+
+# 项目定义（初始化编译器和系统变量）
+project(FuseVision
+    VERSION 1.0.0
+    DESCRIPTION "FuseVision Studio Application"
+    LANGUAGES CXX
+)
+
+include(CTest)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+if(MSVC)
+    add_compile_options(/utf-8)
+endif()
+
+# vcpkg 内部消费此变量（消除 CMake "not used" 警告）
+set(_vcpkg_bs_used "${VCPKG_BINARY_SOURCES}")
+
+# 64位编译器检测（变量已初始化，检测有效）
+if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+    message(FATAL_ERROR "
+    构建失败：当前编译器为 32 位！
+    本项目仅支持 x86_64 (64 位) 编译器，请切换至 64 位编译环境。
+    Windows：使用 x64 Native Tools Command Prompt for VS 2022
+    Linux/macOS：确认系统与编译器为 64 位版本
+    ")
+endif()
+message(STATUS "检测通过：当前使用 64 位编译器，指针宽度: ${CMAKE_SIZEOF_VOID_P} 字节")
+
+# 输出目录配置
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/$<CONFIG>)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<CONFIG>)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<CONFIG>)
+# Qt 自动编译配置
+set(CMAKE_AUTORCC ON)
+
+
+# 查找依赖
+find_package(Qt6 6.8 REQUIRED COMPONENTS Core Gui Widgets Sql)
+qt_standard_project_setup(REQUIRES 6.8)
+find_package(spdlog REQUIRED)
+find_package(OpenCV REQUIRED)
+
+if(OpenCV_FOUND)
+    message(STATUS "OpenCV version: ${OpenCV_VERSION}")
+    message(STATUS "OpenCV include dirs: ${OpenCV_INCLUDE_DIRS}")
+    message(STATUS "OpenCV libraries: ${OpenCV_LIBS}")
+else()
+    message(FATAL_ERROR "OpenCV not found! Please make sure OpenCV is installed via vcpkg.")
+endif()
+
+# ========== 第三方 SDK 检测 ==========
+include(cmake/FindHalcon.cmake)
+include(cmake/FindMVS.cmake)
+
+#（管理所有非 main 的源文件）
+add_subdirectory(src)
+
+# 创建可执行目标【关键：必须先创建目标，再设置属性】
+qt_add_executable(${PROJECT_NAME}
+    "src/main.cpp"
+    ${QT_RESOURCES}
+    "FuseVision.rc"
+)
+
+
+[TRUNCATED] Showing first 80 of 181 lines.
+
+=== ENTRY POINTS ===
+No common entry points found. Check 'main' or 'scripts.start' in manifest files above.
+
+=== LINTING AND FORMATTING CONFIG ===
+No linting or formatting config files found in project root.
+
+=== ENVIRONMENT VARIABLE TEMPLATES ===
+No .env.example or .env.template found. Identify required environment variables by searching the code and config for environment variable reads.
+
+=== TODO / FIXME / HACK (production code only, test dirs excluded) ===
+docs\logic\tools\build_documents.py:67: [TODO] 在XMind客户端检查实际布局/跨版本兼容性；可见Windows窗口与真实多类别/多任务数据回归；LabelMe环境与窗口嵌入；日志清理命名兼容性。以上缺口不妨碍当前静态整理交付。
+sdk\labelme\labelme\widgets\label_dialog.py:11: # TODO(unknown):
+sdk\MVS\demo\HIKCamera\HIKGrabImage\HIKCallBackGrabImage\HalconWin\HIKCallBackGrabImage\HIKCallBackGrabImage\HalconSDK\include\hdevengine\HDevEngineCpp.h:228: //  TODO: (indices of the variables run from 1 to count)
+sdk\MVS\demo\HIKCamera\HIKGrabImage\HIKCallBackGrabImage\HalconWin\HIKCallBackGrabImage\HIKCallBackGrabImage\HalconSDK\include\hdevengine\HDevEngineCpp.h:233: //  TODO: (indices of the variables run from 1 to count)
+sdk\MVS\demo\HIKCamera\HIKGrabImage\HIKInitiativeGrabImage\HalconWin\HIKGrabTriggerOff\HIKGrabTriggerOff\HalconSDK\include\hdevengine\HDevEngineCpp.h:228: //  TODO: (indices of the variables run from 1 to count)
+sdk\MVS\demo\HIKCamera\HIKGrabImage\HIKInitiativeGrabImage\HalconWin\HIKGrabTriggerOff\HIKGrabTriggerOff\HalconSDK\include\hdevengine\HDevEngineCpp.h:233: //  TODO: (indices of the variables run from 1 to count)
+sdk\MVS\demo\HIKCamera\HIKGrabImage\HikWidgetGrab\HikWidgetGrab\HalconSDK\include\hdevengine\HDevEngineCpp.h:228: //  TODO: (indices of the variables run from 1 to count)
+sdk\MVS\demo\HIKCamera\HIKGrabImage\HikWidgetGrab\HikWidgetGrab\HalconSDK\include\hdevengine\HDevEngineCpp.h:233: //  TODO: (indices of the variables run from 1 to count)
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemo\BasicDemo.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemo\BasicDemo.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemo\BasicDemo.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemo\BasicDemo.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoByGenTL\BasicDemoByGenTL.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoByGenTL\BasicDemoByGenTL.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoByGenTL\BasicDemoByGenTL.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoByGenTL\BasicDemoByGenTL.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoShapes\BasicDemoShapes.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoShapes\BasicDemoShapes.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoShapes\BasicDemoShapes.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\BasicDemoShapes\BasicDemoShapes.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\InfraredDemo\InfraredDemo.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\InfraredDemo\InfraredDemo.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\InfraredDemo\InfraredDemo.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\InfraredDemo\InfraredDemo.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\MultipleCamera\MultipleCamera.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\MultipleCamera\MultipleCamera.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\AreaScanCamera\MultipleCamera\MultipleCamera.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\AreaScanCamera\MultipleCamera\MultipleCamera.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\General\ReconnectDemo\ReconnectDemo.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\General\ReconnectDemo\ReconnectDemo.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\General\ReconnectDemo\ReconnectDemo.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\General\ReconnectDemo\ReconnectDemo.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\LineScanCamera\BasicDemoLineScan\BasicDemoLineScan.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\LineScanCamera\BasicDemoLineScan\BasicDemoLineScan.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\LineScanCamera\BasicDemoLineScan\BasicDemoLineScan.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\LineScanCamera\BasicDemoLineScan\BasicDemoLineScan.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\LineScanCamera\MultiLightCtrlDemo\MultiLightCtrlDemo.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\C++\LineScanCamera\MultiLightCtrlDemo\MultiLightCtrlDemo.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\C++\LineScanCamera\MultiLightCtrlDemo\MultiLightCtrlDemo.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\LineScanCamera\MultiLightCtrlDemo\MultiLightCtrlDemo.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\C++\LineScanCamera\MultiLightCtrlDemo\MultiLightCtrlDemoDlg.cpp:1300: // TODO:  在此添加控件通知处理程序代码
+sdk\MVS\demo\Samples\C++\LineScanCamera\MultiLightCtrlDemo\MultiLightCtrlDemoDlg.cpp:1361: // TODO:  在此添加控件通知处理程序代码
+sdk\MVS\demo\Samples\C++\LineScanCamera\MultiLightCtrlDemo\MultiLightCtrlDemoDlg.cpp:1384: // TODO:  在此添加控件通知处理程序代码
+sdk\MVS\demo\Samples\Cuda\GrabImage_GpuDirectForVideo_Cuda\stdafx.cpp:7: // TODO: reference any additional headers you need in STDAFX.H
+sdk\MVS\demo\Samples\Cuda\GrabImage_GpuDirectForVideo_Cuda\stdafx.h:15: // TODO: reference additional headers your program requires here
+sdk\MVS\demo\Samples\Halcon\VC\HalconGrabImage\HalconGrabImage.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\Halcon\VC\HalconGrabImage\HalconGrabImage.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\Halcon\VC\HalconGrabImage\HalconGrabImage.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\Halcon\VC\HalconGrabImage\HalconGrabImage.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\Halcon\VC\HalconGrabImage\HalconGrabImageDlg.cpp:1052: // TODO: Add your control notification handler code here
+sdk\MVS\demo\Samples\Halcon\VC\Raw2Himage_C\Raw2Himage_C.cpp:25: // TODO: 在此处添加构造代码，
+sdk\MVS\demo\Samples\Halcon\VC\Raw2Himage_C\Raw2Himage_C.cpp:58: // TODO: 应适当修改该字符串，
+sdk\MVS\demo\Samples\Halcon\VC\Raw2Himage_C\Raw2Himage_C.cpp:67: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\Halcon\VC\Raw2Himage_C\Raw2Himage_C.cpp:72: // TODO: 在此放置处理何时用
+sdk\MVS\demo\Samples\MvSerial\SerialDemo\SerialDemo.cpp:25: // TODO: add construction code here,
+sdk\MVS\demo\Samples\MvSerial\SerialDemo\SerialDemo.cpp:58: // TODO: You should modify this string to be something appropriate
+sdk\MVS\demo\Samples\MvSerial\SerialDemo\SerialDemo.cpp:67: // TODO: Place code here to handle when the dialog is
+sdk\MVS\demo\Samples\MvSerial\SerialDemo\SerialDemo.cpp:72: // TODO: Place code here to handle when the dialog is
+sdk\MVS\demo\Samples\MvSerial\SerialDemo\SerialDemoDlg.cpp:118: // TODO: Add extra initialization here
+sdk\MVS\demo\Samples\MvSerial\SerialDemo\SerialDemoDlg.cpp:321: // TODO: Add your message handler code here and/or call default
+
+=== GIT RECENT COMMITS (last 20) ===
+abd7f63 修改内容：
+19e9a72 1. Clone vcpkg（ --depth 1 ，只有最新 commit） 2. Bootstrap vcpkg 3. Fetch baseline commit → git fetch --depth=1 origin fc3be1eb... ← 新增 4. Configure & Build → vcpkg 能找到 versions/baseline.json
+75d6eab 修复CI
+946a73d - Ninja 安装独立成一步（ choco install ninja ） - VS 环境用 Launch-VsDevShell.ps1 替代 vcvars64.bat （pwsh 原生支持，环境变量传播稳定）
+0195338 关键改动：
+7c4a850 fix(ci): 修复 Node 20 弃用警告 + vcpkg 目录冲突 + MSVC/Ninja 环境丢失
+20e815f windows-2025 → windows-latest + MSVC 补 arch: amd64 — 消除 Node 20 弃用警告 git clone vcpkg → 检测 .git 是否存在后 pull 或 clone --depth 1 — 修复非空目录冲突
+279a433 feat(dataset): 渐进加载 + Halcon兼容 + 崩溃修复 + 实例计数
+d22f1cf feat(dataset): 渐进加载 + Halcon兼容 + 崩溃修复 + 实例计数 新增功能： - 缩略图逐张渐进加载（processEvents），立即显示画廊页面 - 单击缩略图高亮仅更新2张卡片样式（不再全量重建） - 导出格式根据模型类型动态适配（实例分割→PNG掩码置顶） - 导入文件夹支持labels/目录可选（允许仅导入原图） - PNG灰度掩码兼容Halcon导出格式（自动检测minGray偏移、过滤≥250极端值） - saveDatasetConfig写入顶层instance_count供ModelManagement面板展示 修复： - processEvents重入导致QList越界崩溃（4层防护：refreshGallery/loadDatasetConfig/setCurrentModel防重入+循环安全网） - 双击切标签页时StepGuideBar被挤出可视区（raise+布局强制刷新） - 二次打开/从模型管理进入时画廊只显示两列（宽度三级回退+延迟重试） - 空标签(instanceCount=0)在标签重排/删除/重复扫描中正确保留 - QImageReader回退链兼容JPEG/WebP缺失插件(vcpkg)
+31b8459 feat: 完成深度学习模块模型管理层开发
+8fa6c22 feat: 完成深度学习模块项目管理层基础开发
+0105555 完成项目模块化与初始界面搭建
+02dfb36 完成项目模块化与初始界面搭建
+3ea0f3c 完成项目模块化与初始界面搭建
+275dd6e 完成项目模块化与初始界面搭建
+b669d8a 五阶段重构(基础设施、主窗口ui修正、深度学习重构、传统视觉重构、功能增强) — UI模块化 + 权限扩展 + 运行时配置 + Bug修复
+c96948e 更新README.md 由AI生成，请辩证查看
+1551c39 ci: 修复 vcpkg tool cache 缺少 .vcpkg-root 标记文件导致 configure 失败
+25cddf0 ci: 触发第二次构建以验证二进制缓存
+e7e5b34 ci: 修复 vcpkg 二进制缓存与 Ninja 检测问题- 新增 Ensure binary cache directory 步骤，解决缓存未命中时目录不存在的错误- 新增 Ninja fallback 安装步骤，防止 CMAKE_MAKE_PROGRAM 未设置- 调整步骤顺序，编译工具链在 vcpkg 之前就绪- 优化缓存键，加入 triplet 标识防止跨平台缓存污染
+
+=== HIGH-CHURN FILES (last 90 days, top 20) ===
+None found.
+
+=== MONOREPO SIGNALS ===
+No monorepo signals detected.
+
+=== CODE METRICS ===
+Total files scanned: 159207
+Total lines of code: 21701125
+
+Files by language:
+  Other: 109295
+  C Header: 23402
+  C++: 10228
+  C: 9722
+  Python: 3587
+  Java: 901
+  C#: 655
+  Rust: 258
+  JavaScript: 253
+  TypeScript: 222
+  PHP: 217
+  Swift: 173
+  Kotlin: 94
+  Go: 72
+  Ruby: 63
+  Lua: 51
+  Scala: 8
+  Clojure: 6
+
+Top 10 largest files:
+backup\.vs\FuseVision.slnx\v18\Browse.VC.db: 1428536.0KB
+.vs\FuseVision.slnx\v18\Browse.VC.db: 1349864.0KB
+backup\.vs\FuseVision\CopilotIndices\18.4.105.37992\CodeChunks.db: 979788.0KB
+backup\.vs\FuseVision\CopilotIndices\18.4.105.37992\SemanticSymbols.db: 500628.0KB
+sdk\MVS\demo\HIKCamera\3.海康相机二次开发.mp4: 371693.8KB
+vcpkg\buildtrees\qtbase\x64-windows-dbg\src\openglwidgets\CMakeFiles\OpenGLWidgets.dir\cmake_pch.cxx.pch: 323584.0KB
+vcpkg\buildtrees\qtbase\x64-windows-dbg\src\printsupport\CMakeFiles\PrintSupport.dir\cmake_pch.cxx.pch: 319808.0KB
+vcpkg\buildtrees\qtsvg\x64-windows-dbg\src\svgwidgets\CMakeFiles\SvgWidgets.dir\cmake_pch.cxx.pch: 319616.0KB
+sdk\MVS\demo\HIKCamera\2.Qt海康相机二次开发讲解.mp4: 318458.8KB
+vcpkg\buildtrees\qtbase\x64-windows-rel\src\openglwidgets\CMakeFiles\OpenGLWidgets.dir\cmake_pch.cxx.pch: 318400.0KB
+
+=== CI/CD PIPELINES ===
+CI/CD: GitHub Actions
+
+=== CONTAINERS & ORCHESTRATION ===
+No containerization configs detected.
+
+=== SECURITY & COMPLIANCE ===
+No security configs detected.
+
+=== PERFORMANCE & TESTING ===
+No performance testing configs detected.
+
+=== SCAN COMPLETE ===

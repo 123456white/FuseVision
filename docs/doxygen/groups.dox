@@ -1,0 +1,98 @@
+/**
+ * @mainpage FuseVision C++ API
+ *
+ * 本文档由当前源码生成，按职责浏览：
+ * - @ref core
+ * - @ref ui_common
+ * - @ref deeplearning
+ * - @ref traditional
+ * - @ref app
+ *
+ * API 索引包含现有声明；关键公共边界补充了失败、线程和所有权说明。
+ * 索引存在不表示每个历史成员均已完整注释，也不表示占位功能已实现。
+ * 架构、编译方式和业务验收分别维护在仓库 docs/codebase 与 docs/logic。
+ */
+
+/**
+ * @defgroup core 核心通用能力
+ * @brief 会话、账户、设置、日志和可恢复文件操作，不依赖 Qt Widgets 或业务页面。
+ *
+ * 核心服务以返回值报告失败，不创建弹窗。调用者控制线程和写权限。
+ * 数据库与设置单例按应用线程使用；文件辅助函数不提供跨文件断电事务。
+ */
+
+/**
+ * @defgroup ui_common 共享界面组件
+ * @brief 主题、日志面板、加载遮罩、会话控件刷新和写入拒绝提示。
+ *
+ * 依赖核心服务及 Qt Widgets；只能在 GUI 线程访问，不依赖业务模块。
+ * QWidget 的 parent 管理生命周期；WriteAccess 的 parent 不发生所有权转移。
+ */
+
+/**
+ * @defgroup deeplearning 深度学习
+ * @brief 已实现的项目、模型、数据集、标注和格式处理。
+ *
+ * 训练、预测、数据划分及模型导出仍是占位功能。
+ */
+
+/**
+ * @defgroup dl_domain 领域数据
+ * @ingroup deeplearning
+ * @brief 标注几何、类别格式、样本、项目与模型值对象。
+ *
+ * 内存类别编号从零开始；掩码背景为零。具体文件编码见数据契约。
+ * 值对象不持有 Widget，不决定登录状态；DatasetSample 的 selected 是非持久化兼容字段。
+ */
+
+/**
+ * @defgroup dl_state 编辑状态与渲染
+ * @ingroup deeplearning
+ * @brief 标注权威状态、撤销事务、保存基线和图像渲染。
+ *
+ * QObject 实例在所属线程调用；现有编辑器在 GUI 线程使用。
+ * 这些类型只使用 Qt Core/Gui，不需要 QApplication 或 Qt Widgets。
+ */
+
+/**
+ * @defgroup dl_storage 持久化与格式处理
+ * @ingroup deeplearning
+ * @brief 配置文件、PNG/JSON 标签、成对导入及暂存导出。
+ *
+ * 无界面依赖；同步执行。Allowed 回调由调用方提供，在写入检查点验证授权。
+ * 失败报告保留路径与原因。旧 AnnotationIO 是兼容工具，不替代 AnnotationStore/DatasetFileService 的主流程契约。
+ */
+
+/**
+ * @defgroup dl_tools 标注交互工具
+ * @ingroup deeplearning
+ * @brief 通过 AnnotationTool::Context 操作模型，接收图像坐标事件。
+ *
+ * Context 中的 model/render 指针均借用，必须在工具使用期间有效。
+ * 工具不引用业务窗口；编辑入口的权限由界面处理器验证。
+ */
+
+/**
+ * @defgroup dl_widgets 深度学习界面
+ * @ingroup deeplearning
+ * @brief 页面、Qt原生工具输入、连续导航和上下文协调。
+ *
+ * GUI 线程访问，QObject parent 管理子控件；保存成功才提交 clean 状态。
+ * 页面可只读浏览，写处理器必须检查授权。外部标注进程已退役；视野偏好属于会话显示状态，不写入标注数据。
+ */
+
+/**
+ * @defgroup traditional 传统视觉
+ * @brief 当前布局、工具栏及 SDK 构建边界。
+ *
+ * 与深度学习模块互不引用。OpenCV/Halcon/MVS 的链接要求集中于此模块；
+ * 这不表示传统算法、相机采集或执行引擎已经实现。
+ */
+
+/**
+ * @defgroup app 应用组合根
+ * @brief 启动、主窗口、登录、账户设置及系统设置。
+ *
+ * 组合根创建业务页面，使用信号及 prepareToLeave 协调未保存状态。
+ * 主窗口公共头仅前向声明业务页面，不公开它们的完整头文件。
+ */

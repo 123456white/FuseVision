@@ -1,0 +1,303 @@
+{
+  "project": "FuseVision",
+  "features": "docs/logic/FEATURES.md",
+  "issues": "docs/refactor/ISSUES.md",
+  "history": "docs/archive/2026-11-17-documentation",
+  "images": [
+    {
+      "sheet": 0,
+      "id": "ov-P04-dataset-imported",
+      "title": "P04-dataset-imported",
+      "image": "screenshots/xmind/P04-dataset-imported.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P04-dataset-imported.png\n真实文件导入流程：一张合成图像和一张 PNG 掩码\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 1,
+      "id": "pm-P02-new-project-dialog",
+      "title": "P02-new-project-dialog",
+      "image": "screenshots/xmind/P02-new-project-dialog.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P02-new-project-dialog.png\n实际创建对话框（隔离验证）\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 1,
+      "id": "pm-P02-project-created",
+      "title": "P02-project-created",
+      "image": "screenshots/xmind/P02-project-created.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P02-project-created.png\n真实按钮创建项目后的项目卡片\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 1,
+      "id": "pm-P03-new-model-dialog",
+      "title": "P03-new-model-dialog",
+      "image": "screenshots/xmind/P03-new-model-dialog.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P03-new-model-dialog.png\n实际创建对话框（隔离验证）\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 1,
+      "id": "pm-P03-model-created",
+      "title": "P03-model-created",
+      "image": "screenshots/xmind/P03-model-created.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P03-model-created.png\n真实按钮创建模型；自动选中新模型\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 2,
+      "id": "ds-P04-dataset-empty",
+      "title": "P04-dataset-empty",
+      "image": "screenshots/xmind/P04-dataset-empty.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P04-dataset-empty.png\n模型双击进入数据集，尚无图像\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 2,
+      "id": "ds-P04-dataset-imported",
+      "title": "P04-dataset-imported",
+      "image": "screenshots/xmind/P04-dataset-imported.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P04-dataset-imported.png\n真实文件导入流程：一张合成图像和一张 PNG 掩码\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 2,
+      "id": "ds-P04-dataset-after-annotation",
+      "title": "P04-dataset-after-annotation",
+      "image": "screenshots/P04-workflow-gallery-20261115.png",
+      "note": "2026-11-15当前Release offscreen集成回归：返回图库、COCO图像与标注配对导出并独立重读。",
+      "status": "自动业务回归"
+    },
+    {
+      "sheet": 3,
+      "id": "an-P05-annotation-loaded",
+      "title": "P05-annotation-loaded",
+      "image": "screenshots/xmind/P05-annotation-loaded.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P05-annotation-loaded.png\n标注页加载真实导入的演示图像及掩码\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 3,
+      "id": "an-P05-annotation-saved",
+      "title": "P05-annotation-saved",
+      "image": "screenshots/xmind/P05-annotation-saved.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P05-annotation-saved.png\n两次点击完成矩形后保存；以模型形状数和文件像素验证实际结果\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 3,
+      "id": "an-P05-annotation-reopened",
+      "title": "P05-annotation-reopened",
+      "image": "screenshots/P05-workflow-reopened-20261115.png",
+      "note": "2026-11-15当前Release offscreen集成回归：矩形保存→图库→重开，形状/坐标/类别断言通过。",
+      "status": "自动业务回归"
+    },
+    {
+      "sheet": 3,
+      "id": "an-native-offscreen-20261117",
+      "title": "2026-11-17 Qt原生标注工作区（合成样本）",
+      "image": "screenshots/P05-native-annotation-offscreen-20261117.png",
+      "note": "",
+      "status": "实际offscreen截图；可见桌面未验"
+    },
+    {
+      "sheet": 4,
+      "id": "auth-P00-login",
+      "title": "历史截图（2026-11-14）：P00-login",
+      "image": "screenshots/xmind/P00-login.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P00-login.png\n原始登录页，只展示、不提交，不保存登录设置\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "历史界面，不代表当前实现"
+    },
+    {
+      "sheet": 4,
+      "id": "capture-P00-single-account-20261117",
+      "title": "P00 单账户登录：密码为空，可保持只读",
+      "image": "screenshots/P00-single-account-20261117.png",
+      "note": "来自workflow-regression的真实主窗口/登录对话框；临时工程、内存SQLite、临时INI。不是可见Windows桌面手动验收。",
+      "status": "2026-11-17真实Qt offscreen截图"
+    },
+    {
+      "sheet": 4,
+      "id": "auth-P01-dl-empty",
+      "title": "历史截图（2026-11-14）：P01-dl-empty",
+      "image": "screenshots/xmind/P01-dl-empty.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P01-dl-empty.png\n深度学习首页，未创建项目\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "历史界面，不代表当前实现"
+    },
+    {
+      "sheet": 4,
+      "id": "auth-P14-user-readonly",
+      "title": "历史截图（2026-11-14）：P14-user-readonly",
+      "image": "screenshots/xmind/P14-user-readonly.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P14-user-readonly.png\n切换内存会话到普通用户后观察项目写按钮\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "历史界面，不代表当前实现"
+    },
+    {
+      "sheet": 4,
+      "id": "capture-P01-guest-readonly-20261117",
+      "title": "P01 退出后只读：全部导航保留，改密禁用",
+      "image": "screenshots/P01-guest-readonly-20261117.png",
+      "note": "来自workflow-regression的真实主窗口/登录对话框；临时工程、内存SQLite、临时INI。不是可见Windows桌面手动验收。",
+      "status": "2026-11-17真实Qt offscreen截图"
+    },
+    {
+      "sheet": 4,
+      "id": "auth-P12-users",
+      "title": "历史截图（2026-11-14）：P12-users",
+      "image": "screenshots/xmind/P12-users.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P12-users.png\n内存数据库中的用户与权限矩阵\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "历史界面，不代表当前实现"
+    },
+    {
+      "sheet": 4,
+      "id": "capture-P12-single-account-20261117",
+      "title": "P12 已登录账户：仅状态与修改密码",
+      "image": "screenshots/P12-single-account-20261117.png",
+      "note": "来自workflow-regression的真实主窗口/登录对话框；临时工程、内存SQLite、临时INI。不是可见Windows桌面手动验收。",
+      "status": "2026-11-17真实Qt offscreen截图"
+    },
+    {
+      "sheet": 5,
+      "id": "ss-P13-settings",
+      "title": "P13-settings",
+      "image": "screenshots/xmind/P13-settings.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P13-settings.png\n系统设置页面，显示隔离验证路径\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 6,
+      "id": "bound-P06-placeholder",
+      "title": "P06-placeholder",
+      "image": "screenshots/xmind/P06-placeholder.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P06-placeholder.png\n数据检查占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 6,
+      "id": "bound-P07-placeholder",
+      "title": "P07-placeholder",
+      "image": "screenshots/xmind/P07-placeholder.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P07-placeholder.png\n数据拆分占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 6,
+      "id": "bound-P08-placeholder",
+      "title": "P08-placeholder",
+      "image": "screenshots/xmind/P08-placeholder.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P08-placeholder.png\n模型训练占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 6,
+      "id": "bound-P09-placeholder",
+      "title": "P09-placeholder",
+      "image": "screenshots/xmind/P09-placeholder.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P09-placeholder.png\n模型预测占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 6,
+      "id": "bound-P10-placeholder",
+      "title": "P10-placeholder",
+      "image": "screenshots/xmind/P10-placeholder.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P10-placeholder.png\n模型导出占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    },
+    {
+      "sheet": 6,
+      "id": "bound-P11-traditional",
+      "title": "P11-traditional",
+      "image": "screenshots/xmind/P11-traditional.png",
+      "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P11-traditional.png\n传统视觉当前界面骨架\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+      "status": "实际操作验证"
+    }
+  ],
+  "impact_rules": [
+    {
+      "paths": [
+        "src/deeplearning/widgets/Annotation*",
+        "src/deeplearning/model/*",
+        "src/deeplearning/tools/*"
+      ],
+      "docs": [
+        "docs/logic/FEATURES.md",
+        "docs/logic/CORE-FLOW.md",
+        "docs/logic/STATE-MACHINES.md",
+        "docs/logic/TEST-TRACEABILITY.md"
+      ]
+    },
+    {
+      "paths": [
+        "src/deeplearning/storage/*",
+        "src/deeplearning/render/*",
+        "src/deeplearning/domain/*"
+      ],
+      "docs": [
+        "docs/logic/DATA-CONTRACTS.md",
+        "docs/logic/ALGORITHMS.md",
+        "docs/logic/TEST-TRACEABILITY.md"
+      ]
+    },
+    {
+      "paths": [
+        "src/deeplearning/widgets/*",
+        "src/traditional/*",
+        "src/app/*"
+      ],
+      "docs": [
+        "docs/logic/FEATURES.md",
+        "docs/logic/CORE-FLOW.md",
+        "docs/logic/FEATURE-RELATIONS.md"
+      ]
+    },
+    {
+      "paths": [
+        "src/core/*",
+        "src/ui/*"
+      ],
+      "docs": [
+        "docs/codebase/ARCHITECTURE.md",
+        "docs/logic/DATA-CONTRACTS.md",
+        "docs/logic/TEST-TRACEABILITY.md"
+      ]
+    },
+    {
+      "paths": [
+        "tests/*"
+      ],
+      "docs": [
+        "docs/codebase/TESTING.md",
+        "docs/logic/TEST-TRACEABILITY.md"
+      ]
+    },
+    {
+      "paths": [
+        "CMakeLists.txt",
+        "CMakePresets.json",
+        "CmakeBuild.ps1",
+        "cmake/*",
+        ".github/workflows/build.yml",
+        "scripts/check-env.ps1",
+        "vcpkg.json"
+      ],
+      "docs": [
+        "docs/GETTING-STARTED.md",
+        "docs/codebase/STACK.md",
+        "docs/codebase/TESTING.md"
+      ]
+    },
+    {
+      "paths": [
+        "scripts/docs/*",
+        ".codex/*",
+        ".github/workflows/docs.yml",
+        "AGENTS.md"
+      ],
+      "docs": [
+        "docs/maintenance/README.md",
+        "docs/maintenance/STANDARD.md"
+      ]
+    }
+  ]
+}

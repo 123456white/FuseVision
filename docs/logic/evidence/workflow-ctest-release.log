@@ -1,0 +1,85 @@
+UpdateCTestConfiguration  from :D:/project/FuseVision/out/build/windows-x64-release/DartConfiguration.tcl
+Parse Config file:D:/project/FuseVision/out/build/windows-x64-release/DartConfiguration.tcl
+Test project D:/project/FuseVision/out/build/windows-x64-release
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: workflow-regression
+
+1: Test command: D:\project\FuseVision\out\build\windows-x64-release\bin\Release\FuseVisionWorkflowTests.exe
+1: Working Directory: D:/project/FuseVision/out/build/windows-x64-release
+1: Environment variables: 
+1:  QT_QPA_PLATFORM=offscreen
+1: Test timeout computed to be: 60
+1: PASS annotation model undo/redo
+1: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/Fixture/Seg/labels/a.png
+1: 无法创建标注目录
+1: DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+1: PASS widget load edit save reopen
+1: PASS JSON rotated and polygon round trip and failed replacement
+1: DIALOG 已有标注或未保存编辑，禁止重排类别编号。
+1: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/Fixture/Seg/labels
+1: PASS category protection
+1: PASS model creation signals
+1: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/export-coco/annotations.json
+1: 成功 1 项，跳过 0 项，失败 0 项
+1: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/export-yolo
+1: 成功 1 项，跳过 0 项，失败 0 项
+1: PASS export semantic baseline
+1: PASS external PNG edit
+1: PASS brush eraser fill polygon masks
+1: PASS paired import recovery
+1: DIALOG 成功 2 项，跳过 0 项，失败 0 项
+1: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/coco-source/bad.json
+1: 不安全的图像相对路径：../escape.png
+1: PASS COCO sparse IDs empty labels RLE and quality
+1: DIALOG 删除项目「DeleteB」
+1: 项目目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/DeleteB
+1: 项目文件：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/DeleteB/project.fvproj
+1: PASS selected project and model deletion
+1: DIALOG 当前账号没有 深度学习.项目管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.项目管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.模型管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.模型管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.数据集管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.数据集管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.数据集管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.数据集管理 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.数据标注 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.数据标注 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 深度学习.数据标注 的读写权限，操作未执行。
+1: DIALOG 当前账号没有 系统设置 的读写权限，操作未执行。
+1: PASS direct denied handlers and dynamic permissions
+1: DIALOG 日志路径与级别已立即生效。
+1: 数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+1: DIALOG 配置存储不可写，请检查权限后重试。
+1: DIALOG 日志路径与级别已立即生效。
+1: 数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+1: PASS settings and actual log retention
+1: DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+1: DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-atZBlG/integrated-export/annotations.json
+1: 成功 1 项，跳过 0 项，失败 0 项
+1: PASS integrated project model gallery editor reopen export
+1: PASS read-only project action
+1/2 Test #1: workflow-regression ..............   Passed    1.75 sec
+test 2
+    Start 2: startup-smoke
+
+2: Test command: D:\project\FuseVision\out\build\windows-x64-release\bin\Release\FuseVision.exe
+2: Working Directory: D:/project/FuseVision/out/build/windows-x64-release
+2: Environment variables: 
+2:  QT_QPA_PLATFORM=offscreen
+2:  FUSEVISION_STARTUP_SMOKE_TEST=1
+2:  PATH=C:\WINDOWS/System32
+2:  QT_PLUGIN_PATH=
+2:  QT_QPA_PLATFORM_PLUGIN_PATH=
+2: Test timeout computed to be: 30
+2/2 Test #2: startup-smoke ....................   Passed    0.36 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Total Test time (real) =   2.12 sec

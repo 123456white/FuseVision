@@ -1,0 +1,36 @@
+name: Documentation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  documentation:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install isolated documentation dependencies
+        shell: pwsh
+        run: ./scripts/docs/setup.ps1
+      - name: Test documentation workflow
+        run: python -X utf8 -m unittest discover -s tests -p test_docflow.py -v
+      - name: Check links, source symbols, mirrors, diagrams and archives
+        run: python -X utf8 scripts/docs/docflow.py check --diagrams
+      - name: Generate offline reader
+        run: python -X utf8 scripts/docs/docflow.py html
+      - name: Upload documentation reader
+        uses: actions/upload-artifact@v4
+        with:
+          name: FuseVision-Documentation
+          path: out/docs/site/
+          if-no-files-found: error

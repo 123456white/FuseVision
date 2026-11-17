@@ -1,0 +1,702 @@
+初始化 VS x64 编译环境...
+VS 环境已配置 (编译器: C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\VC\Tools\MSVC\14.50.35717\bin\HostX64\x64\cl.exe)
+配置: windows-x64-release
+-- Running vcpkg install
+Detecting compiler hash for triplet x64-windows...
+-- Using %HTTP(S)_PROXY% in environment variables.
+Compiler found: C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Tools/MSVC/14.50.35717/bin/Hostx64/x64/cl.exe
+The following packages are already installed:
+  * abseil:x64-windows@20260107.1#2
+  * brotli:x64-windows@1.2.0
+  * bzip2[core,tool]:x64-windows@1.0.8#6
+  * dbus:x64-windows@1.16.2#3
+  * double-conversion:x64-windows@3.4.0
+  * egl-registry:x64-windows@2025-05-27
+  * expat:x64-windows@2.7.4
+  * flatbuffers:x64-windows@25.12.19
+  * fmt:x64-windows@12.1.0
+  * freetype[core,zlib,png,bzip2,brotli]:x64-windows@2.13.3
+    gtest:x64-windows@1.17.0#2
+  * harfbuzz[core,freetype]:x64-windows@13.0.1
+  * icu[core,tools]:x64-windows@78.2
+  * jasper:x64-windows@4.2.9
+  * libjpeg-turbo:x64-windows@3.1.4.1
+  * liblzma:x64-windows@5.8.2#1
+  * libpng:x64-windows@1.6.55
+  * libpq[core,zlib,openssl,lz4]:x64-windows@18.3
+  * libwebp[core,unicode,simd,nearlossless,libwebpmux]:x64-windows@1.6.0#2
+  * lz4:x64-windows@1.10.0
+  * md4c:x64-windows@0.5.2
+    opencv4[core,win32ui,webp,tiff,thread,quirc,png,msmf,jpeg,intrinsics,highgui,gapi,fs,dshow,dnn,directml,calib3d]:x64-windows@4.12.0#1
+  * opengl:x64-windows@2022-12-04#3
+  * opengl-registry:x64-windows@2026-01-26
+  * openssl:x64-windows@3.6.1#3
+  * pcre2[core,platform-default-features,jit]:x64-windows@10.47
+  * protobuf:x64-windows@6.33.4#1
+    qtbase[core,zstd,widgets,thread,testlib,sql-sqlite,sql-psql,sql,sessionmanager,png,pcre2,openssl,opengl,network,jpeg,icu,harfbuzz,gui,freetype,doubleconversion,dnslookup,dbus,concurrent,brotli]:x64-windows@6.10.2
+    qtimageformats[core,webp,tiff,jasper]:x64-windows@6.10.2
+  * quirc:x64-windows@1.2
+    spdlog[core,tz-offset,fmt]:x64-windows@1.17.0
+  * sqlite3[core,json1]:x64-windows@3.52.0
+  * tiff[core,zip,lzma,jpeg]:x64-windows@4.7.1
+  * utf8-range:x64-windows@6.33.4
+  * vcpkg-cmake:x64-windows@2024-04-23
+  * vcpkg-cmake-config:x64-windows@2024-05-23
+  * vcpkg-cmake-get-vars:x64-windows@2025-05-29
+  * vcpkg-get-python-packages:x64-windows@2025-04-05
+  * vcpkg-make:x64-windows@2026-01-01
+  * vcpkg-tool-meson:x64-windows@1.9.0#4
+  * zlib:x64-windows@1.3.1
+  * zstd:x64-windows@1.5.7
+opencv4 is compatible with built-in CMake variables. In case of multiple OpenCV version installed, set OpenCV_ROOT *before* the find_package call:
+
+    set(OpenCV_ROOT "${VCPKG_INSTALLED_DIR}/x64-windows/share/opencv4")
+    find_package(OpenCV REQUIRED)
+
+qtbase provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(Qt6 CONFIG REQUIRED)
+  # note: 38 additional targets are not displayed.
+  target_link_libraries(main PRIVATE DB2::DB2 PPS::PPS Oracle::OCI Libb2::Libb2)
+
+  find_package(Qt6Concurrent CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Concurrent)
+
+  find_package(Qt6Core CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Core)
+
+  find_package(Qt6CorePrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::CorePrivate)
+
+  find_package(Qt6DBus CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBus)
+
+  find_package(Qt6DBusPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DBusPrivate)
+
+  find_package(Qt6DeviceDiscoverySupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::DeviceDiscoverySupportPrivate)
+
+  find_package(Qt6EntryPointPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::EntryPointPrivate Qt6::EntryPointImplementation)
+
+  find_package(Qt6ExampleIconsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExampleIconsPrivate Qt6::ExampleIconsPrivate_resources_1)
+
+  find_package(Qt6ExamplesAssetDownloaderPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::ExamplesAssetDownloaderPrivate)
+
+  find_package(Qt6FbSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::FbSupportPrivate)
+
+  find_package(Qt6Gui CONFIG REQUIRED)
+  # note: 5 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Gui Qt6::QGifPlugin Qt6::QICOPlugin Qt6::QJpegPlugin)
+
+  find_package(Qt6GuiPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::GuiPrivate)
+
+  find_package(Qt6Network CONFIG REQUIRED)
+  # note: 1 additional targets are not displayed.
+  target_link_libraries(main PRIVATE Qt6::Network Qt6::QNLMNIPlugin Qt6::QSchannelBackendPlugin Qt6::QTlsBackendOpenSSLPlugin)
+
+  find_package(Qt6NetworkPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::NetworkPrivate)
+
+  find_package(Qt6OpenGL CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGL)
+
+  find_package(Qt6OpenGLPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLPrivate)
+
+  find_package(Qt6OpenGLWidgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::OpenGLWidgets)
+
+  find_package(Qt6PrintSupport CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupport)
+
+  find_package(Qt6PrintSupportPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::PrintSupportPrivate)
+
+  find_package(Qt6Sql CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Sql Qt6::QPSQLDriverPlugin Qt6::QSQLiteDriverPlugin)
+
+  find_package(Qt6SqlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::SqlPrivate)
+
+  find_package(Qt6Test CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Test)
+
+  find_package(Qt6TestInternalsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestInternalsPrivate)
+
+  find_package(Qt6TestPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::TestPrivate)
+
+  find_package(Qt6Widgets CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Widgets Qt6::QModernWindowsStylePlugin)
+
+  find_package(Qt6WidgetsPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::WidgetsPrivate)
+
+  find_package(Qt6Xml CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::Xml)
+
+  find_package(Qt6XmlPrivate CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE Qt6::XmlPrivate)
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+The package gtest is compatible with built-in CMake targets:
+
+    enable_testing()
+    
+    find_package(GTest CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+    
+    add_test(AllTestsInMain main)
+
+All requested installations completed successfully in: 1.12 ms
+-- Running vcpkg install - done
+-- 检测通过：当前使用 64 位编译器，指针宽度: 8 字节
+-- OpenCV version: 4.12.0
+-- OpenCV include dirs: D:/project/FuseVision/out/build/windows-x64-release/vcpkg_installed/x64-windows/include/opencv4
+-- OpenCV libraries: opencv_calib3d;opencv_core;opencv_dnn;opencv_features2d;opencv_flann;opencv_highgui;opencv_imgcodecs;opencv_imgproc;opencv_ml;opencv_objdetect;opencv_photo;opencv_stitching;opencv_video;opencv_videoio
+-- Halcon detected (system): D:\software\HALCON (arch: x64-win64)
+-- MVS SDK configured for Windows
+-- ========== 项目构建信息 ==========
+-- 项目名称：FuseVision
+-- 项目版本：1.0.0
+-- C++ 标准：20
+-- 构建类型：Release
+-- 编译器：MSVC 19.50.35728.0
+-- Qt 版本：6.10.2
+-- Qt 库路径：D:/project/FuseVision/out/build/windows-x64-release/vcpkg_installed/x64-windows/share/Qt6
+-- vcpkg 三元组：x64-windows
+-- Halcon 来源：system
+-- Halcon 头文件目录：D:\software\HALCON/include
+-- Halcon 库目录：D:\software\HALCON/lib/x64-win64
+-- MVS SDK 根目录：D:/project/FuseVision/sdk/MVS
+-- OpenCV 版本：4.12.0
+-- spdlog 版本：1.17.0
+-- ==================================
+-- Configuring done (4.3s)
+-- Generating done (0.4s)
+-- Build files have been written to: D:/project/FuseVision/out/build/windows-x64-release
+构建: windows-release
+[1/16] Automatic MOC and UIC for target FuseVisionNativeAnnotationTests
+[2/15] Automatic MOC and UIC for target FuseVisionWorkflowTests
+[3/14] Automatic MOC and UIC for target FuseVisionCurrentIssuesTests
+[4/13] Automatic MOC and UIC for target FuseVisionStorageTests
+[5/12] Building CXX object CMakeFiles\FuseVisionCurrentIssuesTests.dir\tests\current_issues_regression.cpp.obj
+[6/12] Building CXX object CMakeFiles\FuseVisionStorageTests.dir\tests\storage_regression.cpp.obj
+[7/12] Building CXX object CMakeFiles\FuseVisionNativeAnnotationTests.dir\tests\native_annotation_regression.cpp.obj
+[8/12] Building CXX object CMakeFiles\FuseVisionWorkflowTests.dir\tests\workflow_regression.cpp.obj
+[9/12] Linking CXX executable bin\Release\FuseVisionStorageTests.exe
+[10/12] Linking CXX executable bin\Release\FuseVisionCurrentIssuesTests.exe
+[11/12] Linking CXX executable bin\Release\FuseVisionNativeAnnotationTests.exe
+[12/12] Linking CXX executable bin\Release\FuseVisionWorkflowTests.exe
+Test project D:/project/FuseVision/out/build/windows-x64-release
+      Start  1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+ 1/40 Test  #1: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths ............................   Passed    0.14 sec
+      Start  2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+ 2/40 Test  #2: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields ......................   Passed    0.05 sec
+      Start  3: storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+ 3/40 Test  #3: storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting ......................***Failed    0.04 sec
+Note: Google Test filter = Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+D:\project\FuseVision\tests\storage_regression.cpp(75): error: Value of: info.projectName.isEmpty()
+  Actual: false
+Expected: true
+
+D:\project\FuseVision\tests\storage_regression.cpp(75): error: Value of: error.isEmpty()
+  Actual: true
+Expected: false
+
+[  FAILED  ] Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting (16 ms)
+[----------] 1 test from Storage (17 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (17 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+
+ 1 FAILED TEST
+
+      Start  4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+ 4/40 Test  #4: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories ...........................   Passed    0.03 sec
+      Start  5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml
+ 5/40 Test  #5: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml ...........................   Passed    0.04 sec
+      Start  6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles
+ 6/40 Test  #6: storage.Storage.InvalidInMemorySavePreservesCommittedFiles .............................   Passed    0.13 sec
+      Start  7: storage.Storage.MalformedAndWrongFieldTypesAreRejected
+ 7/40 Test  #7: storage.Storage.MalformedAndWrongFieldTypesAreRejected .................................   Passed    0.05 sec
+      Start  8: storage.Storage.ModelUnknownFieldsSurviveSave
+ 8/40 Test  #8: storage.Storage.ModelUnknownFieldsSurviveSave ..........................................   Passed    0.05 sec
+      Start  9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+ 9/40 Test  #9: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten .......................   Passed    0.04 sec
+      Start 10: storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+10/40 Test #10: storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting ......................***Failed    0.04 sec
+Note: Google Test filter = Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+D:\project\FuseVision\tests\storage_regression.cpp(158): error: Value of: info.modelName.isEmpty()
+  Actual: false
+Expected: true
+
+D:\project\FuseVision\tests\storage_regression.cpp(159): error: Value of: ModelConfig::saveModel(valid,&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(159): error: Expected equality of these values:
+  read(modelPath)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+  before
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+With diff:
+
+
+[  FAILED  ] Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting (19 ms)
+[----------] 1 test from Storage (19 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (19 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+
+ 1 FAILED TEST
+
+      Start 11: storage.Storage.StatusUpdateRejectsLegacyPaths
+11/40 Test #11: storage.Storage.StatusUpdateRejectsLegacyPaths .........................................***Failed    0.14 sec
+Note: Google Test filter = Storage.StatusUpdateRejectsLegacyPaths
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.StatusUpdateRejectsLegacyPaths
+D:\project\FuseVision\tests\storage_regression.cpp(167): error: Value of: ProjectConfig::setModelStatus(path,"Model","annotated",true)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(167): error: Expected equality of these values:
+  read(path)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+  before
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+With diff:
+
+
+[  FAILED  ] Storage.StatusUpdateRejectsLegacyPaths (22 ms)
+[----------] 1 test from Storage (22 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.StatusUpdateRejectsLegacyPaths
+
+ 1 FAILED TEST
+
+      Start 12: storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+12/40 Test #12: storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject .................***Failed    0.05 sec
+Note: Google Test filter = Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+D:\project\FuseVision\tests\storage_regression.cpp(185): error: Value of: ProjectConfig::saveProject(info,&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(185): error: Expected equality of these values:
+  read(path)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+  before
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+With diff:
+
+
+[  FAILED  ] Storage.ExternalModelReferenceIsRejectedWithoutChangingProject (15 ms)
+[----------] 1 test from Storage (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+
+ 1 FAILED TEST
+
+      Start 13: storage.Storage.ModelCreationCommitsCompleteDatasetConfig
+13/40 Test #13: storage.Storage.ModelCreationCommitsCompleteDatasetConfig ..............................***Failed    0.05 sec
+Note: Google Test filter = Storage.ModelCreationCommitsCompleteDatasetConfig
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ModelCreationCommitsCompleteDatasetConfig
+D:\project\FuseVision\tests\storage_regression.cpp(23): error: Failed
+C:/Users/21012/AppData/Local/Temp/FuseVisionStorageTests-XeyMpw/Project/Model/dataset_config.json
+
+D:\project\FuseVision\tests\storage_regression.cpp(190): error: Expected equality of these values:
+  config["document_type"].toString()
+    Which is: {}
+  "fusevision.dataset"
+    Which is: 00007FF66A3C94E0
+
+D:\project\FuseVision\tests\storage_regression.cpp(191): error: Expected equality of these values:
+  config["format_version"].toString()
+    Which is: {}
+  "1.0"
+    Which is: 00007FF66A3C9300
+
+D:\project\FuseVision\tests\storage_regression.cpp(192): error: Expected equality of these values:
+  config["dataset_mode"].toString()
+    Which is: {}
+  "annotation"
+    Which is: 00007FF66A3CA6F8
+
+D:\project\FuseVision\tests\storage_regression.cpp(193): error: Value of: config["categories"].isArray()
+  Actual: false
+Expected: true
+
+D:\project\FuseVision\tests\storage_regression.cpp(193): error: Expected equality of these values:
+  config["image_count"].toInt(-1)
+    Which is: -1
+  0
+
+D:\project\FuseVision\tests\storage_regression.cpp(23): error: Failed
+C:/Users/21012/AppData/Local/Temp/FuseVisionStorageTests-XeyMpw/Project/Classify/dataset_config.json
+
+D:\project\FuseVision\tests\storage_regression.cpp(197): error: Expected equality of these values:
+  classify["dataset_mode"].toString()
+    Which is: {}
+  "classification"
+    Which is: 00007FF66A3CA970
+
+D:\project\FuseVision\tests\storage_regression.cpp(198): error: Expected equality of these values:
+  classify["label_type"].toString()
+    Which is: {}
+  "OK/NG分类"
+    Which is: 00007FF66A3CA9C0
+
+D:\project\FuseVision\tests\storage_regression.cpp(199): error: Expected equality of these values:
+  classify["categories"].toArray().size()
+    Which is: 0
+  2
+
+[  FAILED  ] Storage.ModelCreationCommitsCompleteDatasetConfig (17 ms)
+[----------] 1 test from Storage (17 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (17 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.ModelCreationCommitsCompleteDatasetConfig
+
+ 1 FAILED TEST
+
+      Start 14: storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+14/40 Test #14: storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion ..............................***Failed    0.04 sec
+Note: Google Test filter = Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+D:\project\FuseVision\tests\storage_regression.cpp(223): error: Value of: ModelConfig::loadModel(modelPath,&error).modelName.isEmpty()
+  Actual: false
+Expected: true
+
+[  FAILED  ] Storage.LegacyYoloLayoutIsRejectedEvenWithVersion (15 ms)
+[----------] 1 test from Storage (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+
+ 1 FAILED TEST
+
+      Start 15: storage.Storage.MissingRequiredFieldsAreRejected
+15/40 Test #15: storage.Storage.MissingRequiredFieldsAreRejected .......................................***Failed    0.03 sec
+Note: Google Test filter = Storage.MissingRequiredFieldsAreRejected
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.MissingRequiredFieldsAreRejected
+D:\project\FuseVision\tests\storage_regression.cpp(229): error: Value of: StorageContract::validate(raw,"fusevision.project",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(229): error: Value of: StorageContract::validate(raw,"fusevision.project",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(229): error: Value of: StorageContract::validate(raw,"fusevision.project",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(233): error: Value of: StorageContract::validate(raw,"fusevision.model",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(233): error: Value of: StorageContract::validate(raw,"fusevision.model",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(233): error: Value of: StorageContract::validate(raw,"fusevision.model",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(237): error: Value of: StorageContract::validate(raw,"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(237): error: Value of: StorageContract::validate(raw,"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(237): error: Value of: StorageContract::validate(raw,"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(237): error: Value of: StorageContract::validate(raw,"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+[  FAILED  ] Storage.MissingRequiredFieldsAreRejected (10 ms)
+[----------] 1 test from Storage (10 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (10 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Storage.MissingRequiredFieldsAreRejected
+
+ 1 FAILED TEST
+
+      Start 16: storage.StorageFiles.DatasetRejectsWrongFieldTypes
+16/40 Test #16: storage.StorageFiles.DatasetRejectsWrongFieldTypes .....................................   Passed    0.12 sec
+      Start 17: storage.StorageFiles.AtomicFailureRetainsExistingFile
+17/40 Test #17: storage.StorageFiles.AtomicFailureRetainsExistingFile ..................................   Passed    0.02 sec
+      Start 18: storage.StorageFiles.DottedLogDirectoryIsRespected
+18/40 Test #18: storage.StorageFiles.DottedLogDirectoryIsRespected .....................................   Passed    0.02 sec
+      Start 19: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+19/40 Test #19: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0 ...   Passed    0.05 sec
+      Start 20: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+20/40 Test #20: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1 ...   Passed    0.04 sec
+      Start 21: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+21/40 Test #21: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2 ...   Passed    0.05 sec
+      Start 22: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+22/40 Test #22: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0 ..............   Passed    0.04 sec
+      Start 23: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+23/40 Test #23: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1 ..............   Passed    0.04 sec
+      Start 24: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+24/40 Test #24: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2 ..............   Passed    0.04 sec
+      Start 25: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0
+25/40 Test #25: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0 ..........***Failed    0.04 sec
+Note: Google Test filter = Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0
+D:\project\FuseVision\tests\storage_regression.cpp(209): error: Value of: ProjectConfig::loadProject(path,&error).projectName.isEmpty()
+  Actual: false
+Expected: true
+
+D:\project\FuseVision\tests\storage_regression.cpp(210): error: Value of: ModelConfig::loadModel(modelPath,&error).modelName.isEmpty()
+  Actual: false
+Expected: true
+
+D:\project\FuseVision\tests\storage_regression.cpp(211): error: Value of: ProjectConfig::saveProject(project,&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(211): error: Value of: ModelConfig::saveModel(model,&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(212): error: Expected equality of these values:
+  read(path)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+  pb
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+With diff:
+
+
+D:\project\FuseVision\tests\storage_regression.cpp(212): error: Expected equality of these values:
+  read(modelPath)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+  mb
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+With diff:
+
+
+[  FAILED  ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0, where GetParam() = "document_type" (20 ms)
+[----------] 1 test from Standard/MissingMarker (20 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (20 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0, where GetParam() = "document_type"
+
+ 1 FAILED TEST
+
+      Start 26: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1
+26/40 Test #26: storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1 ..........***Failed    0.05 sec
+Note: Google Test filter = Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1
+D:\project\FuseVision\tests\storage_regression.cpp(209): error: Value of: ProjectConfig::loadProject(path,&error).projectName.isEmpty()
+  Actual: false
+Expected: true
+
+D:\project\FuseVision\tests\storage_regression.cpp(210): error: Value of: ModelConfig::loadModel(modelPath,&error).modelName.isEmpty()
+  Actual: false
+Expected: true
+
+D:\project\FuseVision\tests\storage_regression.cpp(211): error: Value of: ProjectConfig::saveProject(project,&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(211): error: Value of: ModelConfig::saveModel(model,&error)
+  Actual: true
+Expected: false
+
+D:\project\FuseVision\tests\storage_regression.cpp(212): error: Expected equality of these values:
+  read(path)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+  pb
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'c' (99, 0x63), 'r' (114, 0x72), 'e' (101, 0x65), 'a' (97, 0x61), 't' (116, 0x74), 'e' (101, 0x65), 'd' (100, 0x64), '_' (95, 0x5F), 't' (116, 0x74), 'i' (105, 0x69), 'm' (109, 0x6D), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '"' (34, 0x22), '2' (50, 0x32), '0' (48, 0x30), '2' (50, 0x32), '6' (54, 0x36), '-' (45, 0x2D), '1' (49, 0x31), '1' (49, 0x31), '-' (45, 0x2D), '1' (49, 0x31), ... }
+With diff:
+
+
+D:\project\FuseVision\tests\storage_regression.cpp(212): error: Expected equality of these values:
+  read(modelPath)
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+  mb
+    Which is: { '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), '"' (34, 0x22), 'a' (97, 0x61), 'r' (114, 0x72), 'c' (99, 0x63), 'h' (104, 0x68), 'i' (105, 0x69), 't' (116, 0x74), 'e' (101, 0x65), 'c' (99, 0x63), 't' (116, 0x74), 'u' (117, 0x75), 'r' (114, 0x72), 'e' (101, 0x65), '"' (34, 0x22), ':' (58, 0x3A), ' ' (32, 0x20), '{' (123, 0x7B), '\n' (10, 0xA), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ' ' (32, 0x20), ... }
+With diff:
+
+
+[  FAILED  ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1, where GetParam() = "format_version" (22 ms)
+[----------] 1 test from Standard/MissingMarker (22 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1, where GetParam() = "format_version"
+
+ 1 FAILED TEST
+
+      Start 27: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0
+27/40 Test #27: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0 ..................***Failed    0.04 sec
+Note: Google Test filter = Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0
+D:\project\FuseVision\tests\storage_regression.cpp(217): error: Value of: StorageContract::validate(data,"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+[  FAILED  ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0, where GetParam() = "document_type" (10 ms)
+[----------] 1 test from Standard/MissingMarker (10 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (10 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0, where GetParam() = "document_type"
+
+ 1 FAILED TEST
+
+      Start 28: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1
+28/40 Test #28: storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1 ..................***Failed    0.03 sec
+Note: Google Test filter = Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1
+D:\project\FuseVision\tests\storage_regression.cpp(217): error: Value of: StorageContract::validate(data,"fusevision.dataset",&error)
+  Actual: true
+Expected: false
+
+[  FAILED  ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1, where GetParam() = "format_version" (9 ms)
+[----------] 1 test from Standard/MissingMarker (9 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (9 ms total)
+[  PASSED  ] 0 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1, where GetParam() = "format_version"
+
+ 1 FAILED TEST
+
+      Start 29: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0
+29/40 Test #29: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0 ...............................   Passed    0.03 sec
+      Start 30: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1
+30/40 Test #30: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1 ...............................   Passed    0.02 sec
+      Start 31: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2
+31/40 Test #31: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2 ...............................   Passed    0.03 sec
+      Start 32: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3
+32/40 Test #32: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3 ...............................   Passed    0.03 sec
+      Start 33: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4
+33/40 Test #33: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4 ...............................   Passed    0.02 sec
+      Start 34: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5
+34/40 Test #34: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5 ...............................   Passed    0.03 sec
+      Start 35: native-annotation-regression
+35/40 Test #35: native-annotation-regression ...........................................................   Passed    0.39 sec
+      Start 36: data-contract-regression
+36/40 Test #36: data-contract-regression ...............................................................   Passed    0.07 sec
+      Start 37: module-boundaries
+37/40 Test #37: module-boundaries ......................................................................   Passed    0.11 sec
+      Start 38: workflow-regression
+38/40 Test #38: workflow-regression ....................................................................   Passed    2.25 sec
+      Start 39: startup-smoke
+39/40 Test #39: startup-smoke ..........................................................................   Passed    0.41 sec
+      Start 40: current-issues-regression
+40/40 Test #40: current-issues-regression ..............................................................***Failed    1.01 sec
+FAIL storage-config: unmarked dataset rejected without upgrade
+PASS ISS-011
+PASS ISS-012
+PASS ISS-013
+FAIL ISS-014: classification rejects mismatched annotation mode without rewriting
+
+
+70% tests passed, 12 tests failed out of 40
+
+Total Test time (real) =   6.16 sec
+
+The following tests FAILED:
+	  3 - storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting (Failed)
+	 10 - storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting (Failed)
+	 11 - storage.Storage.StatusUpdateRejectsLegacyPaths (Failed)
+	 12 - storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject (Failed)
+	 13 - storage.Storage.ModelCreationCommitsCompleteDatasetConfig (Failed)
+	 14 - storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion (Failed)
+	 15 - storage.Storage.MissingRequiredFieldsAreRejected (Failed)
+	 25 - storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0 (Failed)
+	 26 - storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1 (Failed)
+	 27 - storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0 (Failed)
+	 28 - storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1 (Failed)
+	 40 - current-issues-regression (Failed)
+Errors while running CTest

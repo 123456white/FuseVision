@@ -1,311 +1,114 @@
 #include "DatabaseManager.h"
+#include "SessionManager.h"
+#include "SettingsManager.h"
 #include "Logger.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QFile>
 #include <QCryptographicHash>
+#include <QSettings>
+#include <QTemporaryDir>
+#include <QUuid>
 
-/*
- * DatabaseManager.cpp — SQLite 数据访问层实现
- *
- * 数据库位置：<exe目录>/data/fusevision.db
- * 连接名称：fusevision_conn（命名连接，避免与 QSqlDatabase::defaultConnection 冲突）
- *
- * Schema 设计（详见 createTables）：
- *   users(id/username/password_hash/role)
- *   user_permissions(user_id/module_name/can_read/can_write)  FK→users ON DELETE CASCADE
- *
- * 密码存储：SHA-256 哈希（QCryptographicHash::Sha256），仅存储哈希值
- * 角色体系：0=普通用户  1=管理员  2=超级管理员
- * 权限体系：模块级读写控制（canRead/canWrite），INSERT OR IGNORE 保证幂等初始化
- */
-
-DatabaseManager& DatabaseManager::instance()
-{
-    static DatabaseManager inst;
-    return inst;
+DatabaseManager& DatabaseManager::instance() { static DatabaseManager inst; return inst; }
+DatabaseManager::~DatabaseManager() { if(m_db.isOpen()) m_db.close(); }
+QString DatabaseManager::hashPassword(const QString& password) {
+    return QString::fromLatin1(QCryptographicHash::hash(password.toUtf8(),QCryptographicHash::Sha256).toHex());
 }
-
-DatabaseManager::DatabaseManager()  = default;
-DatabaseManager::~DatabaseManager()
-{
-    if (m_db.isOpen()) m_db.close();
-}
-
-QString DatabaseManager::hashPassword(const QString& password)
-{
-    return QString(
-        QCryptographicHash::hash(password.toUtf8(), QCryptographicHash::Sha256).toHex());
-}
-
-/* ── 生命周期 ─────────────────────────────────────────────────── */
-
-bool DatabaseManager::initDatabase()
-{
-    const QString dbPath = QCoreApplication::applicationDirPath() + "/data/fusevision.db";
-    QDir().mkpath(QFileInfo(dbPath).absolutePath());
-
-    m_db = QSqlDatabase::addDatabase("QSQLITE", "fusevision_conn");
-    m_db.setDatabaseName(dbPath);
-
-    if (!m_db.open()) {
-        Logger::error(QString("Failed to open database: %1").arg(m_db.lastError().text()));
-        return false;
+bool DatabaseManager::initDatabase(const QString& databasePath,QString* errorOut) {
+    if(errorOut) errorOut->clear();
+    auto fail=[&](const QString& error) {if(errorOut) *errorOut=error;Logger::error(error);return false;};
+    const auto legacy=QCoreApplication::applicationDirPath()+"/data/fusevision.db";
+    const auto configured=SettingsManager::instance().dbPath();
+    const auto path=databasePath.isEmpty()?QFileInfo(configured.isEmpty()?legacy:QDir(configured).filePath("fusevision.db")).absoluteFilePath():databasePath;
+    if(m_db.isOpen()) return m_db.databaseName()==path?true:fail(QString::fromUtf8("数据库已打开；路径变更需重启。"));
+    if(path!=":memory:" && !QDir().mkpath(QFileInfo(path).absolutePath())) return fail(QString::fromUtf8("无法创建数据库目录：%1").arg(path));
+    QSettings settings(QSettings::defaultFormat(),QSettings::UserScope,"FuseVisionTeam","FuseVision");
+    if(databasePath.isEmpty() && !QFileInfo::exists(path)) {
+        const auto source=settings.value("database/last_opened_file",legacy).toString();
+        const bool remembered=settings.contains("database/last_opened_file");
+        if(remembered && !QFileInfo::exists(source)) return fail(QString::fromUtf8("上次使用的数据库缺失，拒绝新建账户库：%1").arg(source));
+        if(QFileInfo::exists(source)) {
+            // VACUUM INTO creates a consistent SQLite snapshot, including committed WAL pages.
+            // Keep the source intact and publish only after the snapshot connection is closed.
+            QTemporaryDir stage(QFileInfo(path).absolutePath()+"/.fusevision-db-XXXXXX");
+            if(!stage.isValid()) return fail(QString::fromUtf8("无法创建数据库迁移暂存目录：%1").arg(path));
+            const auto connection="migration-"+QUuid::createUuid().toString(QUuid::WithoutBraces);
+            QString error;
+            {
+                auto snapshot=QSqlDatabase::addDatabase("QSQLITE",connection);
+                snapshot.setDatabaseName(source);snapshot.setConnectOptions("QSQLITE_OPEN_READONLY");
+                if(!snapshot.open()) error=snapshot.lastError().text();
+                else {
+                    QSqlQuery query(snapshot);query.prepare("VACUUM INTO ?");query.addBindValue(stage.filePath("snapshot.db"));
+                    if(!query.exec()) error=query.lastError().text();
+                }
+                snapshot.close();
+            }
+            QSqlDatabase::removeDatabase(connection);
+            if(!error.isEmpty()) return fail(QString::fromUtf8("数据库迁移失败，原库保留：%1 → %2：%3").arg(source,path,error));
+            if(!QFile::rename(stage.filePath("snapshot.db"),path)) return fail(QString::fromUtf8("无法提交数据库副本，原库保留：%1 → %2").arg(source,path));
+        }
     }
-
-    Logger::info(QString("Database opened: %1").arg(dbPath));
-
-    createTables();
-    seedUsers();
+    m_db=QSqlDatabase::addDatabase("QSQLITE","fusevision_conn");
+    m_db.setDatabaseName(path);
+    if(!m_db.open()) return fail("Failed to open database: "+path+"："+m_db.lastError().text());
+    if(!createTables() || !seedUsers()) {const auto error=m_db.lastError().text();m_db.close();return fail("Failed to initialize database: "+path+"："+error);}
+    if(databasePath.isEmpty()) {
+        settings.setValue("database/last_opened_file",path);settings.sync();
+        if(settings.status()!=QSettings::NoError) {m_db.close();return fail(QString::fromUtf8("无法保存活动数据库路径：%1").arg(settings.fileName()));}
+    }
     return true;
 }
-
-bool DatabaseManager::isConnected() const
-{
-    return m_db.isOpen();
-}
-
-/* ── 建表 & 种子 ──────────────────────────────────────────────── */
-
-void DatabaseManager::createTables()
-{
+bool DatabaseManager::isConnected() const { return m_db.isOpen(); }
+bool DatabaseManager::createTables() {
     QSqlQuery q(m_db);
-
-    q.exec(
-        "CREATE TABLE IF NOT EXISTS users ("
-        "  id            INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "  username      TEXT    NOT NULL UNIQUE,"
-        "  password_hash TEXT    NOT NULL,"
-        "  role          INTEGER NOT NULL DEFAULT 0"
-        ")");
-
-    q.exec(
-        "CREATE TABLE IF NOT EXISTS user_permissions ("
-        "  user_id     INTEGER NOT NULL,"
-        "  module_name TEXT    NOT NULL,"
-        "  can_read    INTEGER NOT NULL DEFAULT 0,"
-        "  can_write   INTEGER NOT NULL DEFAULT 0,"
-        "  PRIMARY KEY (user_id, module_name),"
-        "  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
-        ")");
-
-    Logger::info("Database tables ensured.");
+    // Keep the existing schema and any legacy user_permissions table intact.
+    return q.exec("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                  "username TEXT NOT NULL UNIQUE,password_hash TEXT NOT NULL,role INTEGER NOT NULL DEFAULT 0)");
 }
-
-void DatabaseManager::seedUsers()
-{
+bool DatabaseManager::seedUsers() {
     QSqlQuery q(m_db);
-    q.exec("SELECT COUNT(*) FROM users");
-    if (q.next() && q.value(0).toInt() > 0) return;
-
-    q.prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)");
-
-    q.addBindValue("user");       q.addBindValue(hashPassword("123"));         q.addBindValue(0); q.exec();
-    q.addBindValue("admin");      q.addBindValue(hashPassword("manager123"));  q.addBindValue(1); q.exec();
-    q.addBindValue("superadmin"); q.addBindValue(hashPassword("admin123"));    q.addBindValue(2); q.exec();
-
-    Logger::info("Default users seeded: user(0), admin(1), superadmin(2)");
+    if(!q.exec("SELECT COUNT(*) FROM users") || !q.next()) return false;
+    if(q.value(0).toInt()>0) return true;
+    q.prepare("INSERT INTO users (username,password_hash,role) VALUES (?,?,?)");
+    q.addBindValue("superadmin");q.addBindValue(hashPassword("admin123"));q.addBindValue(2);
+    return q.exec();
 }
-
-/* ── 认证 ─────────────────────────────────────────────────────── */
-
-LoginResult DatabaseManager::validateLogin(const QString& username, const QString& password)
-{
-    LoginResult result;
-
+UserInfo DatabaseManager::singleAccount() const {
     QSqlQuery q(m_db);
-    q.prepare("SELECT id, password_hash, role FROM users WHERE username = ?");
-    q.addBindValue(username);
-
-    if (!q.exec() || !q.next()) return result;
-
-    if (q.value(1).toString() != hashPassword(password))
-        return result;
-
-    result.success = true;
-    result.userId  = q.value(0).toInt();
-    result.role    = q.value(2).toInt();
-    return result;
+    // Reuse superadmin and its current password; otherwise reuse the oldest highest-role account.
+    q.exec("SELECT id,username,role FROM users ORDER BY CASE WHEN username='superadmin' THEN 0 ELSE 1 END,role DESC,id LIMIT 1");
+    if(q.next()) return {q.value(0).toInt(),q.value(1).toString(),q.value(2).toInt()};
+    return {};
 }
-
-/* ── 用户管理 ─────────────────────────────────────────────────── */
-
-QList<UserInfo> DatabaseManager::allUsers() const
-{
-    QList<UserInfo> list;
+LoginResult DatabaseManager::validateLogin(const QString& username,const QString& password) {
+    const auto account=singleAccount();
+    if(account.id<0 || account.username!=username || password.isEmpty()) return {};
+    QSqlQuery q(m_db);q.prepare("SELECT password_hash FROM users WHERE id=?");q.addBindValue(account.id);
+    if(!q.exec() || !q.next() || q.value(0).toString()!=hashPassword(password)) return {};
+    return {true,account.id};
+}
+QList<UserInfo> DatabaseManager::allUsers() const {
+    QList<UserInfo> users;QSqlQuery q(m_db);q.exec("SELECT id,username,role FROM users ORDER BY id");
+    while(q.next()) users.append({q.value(0).toInt(),q.value(1).toString(),q.value(2).toInt()});
+    return users;
+}
+int DatabaseManager::getUserId(const QString& username) const {
+    QSqlQuery q(m_db);q.prepare("SELECT id FROM users WHERE username=?");q.addBindValue(username);
+    return q.exec() && q.next()?q.value(0).toInt():-1;
+}
+bool DatabaseManager::changePassword(int userId,const QString& oldPassword,const QString& newPassword) {
+    const auto& session=SessionManager::instance();
+    if(!session.isLoggedIn() || userId!=session.currentUserId() || newPassword.size()<6) return false;
+    const auto account=singleAccount();
+    if(account.id!=userId || !validateLogin(account.username,oldPassword).success) return false;
     QSqlQuery q(m_db);
-    q.exec("SELECT id, username, role FROM users ORDER BY id");
-    while (q.next()) {
-        list.append({ q.value(0).toInt(), q.value(1).toString(), q.value(2).toInt() });
-    }
-    return list;
-}
-
-int DatabaseManager::getUserId(const QString& username) const
-{
-    QSqlQuery q(m_db);
-    q.prepare("SELECT id FROM users WHERE username = ?");
-    q.addBindValue(username);
-    if (q.exec() && q.next()) return q.value(0).toInt();
-    return -1;
-}
-
-int DatabaseManager::addUser(const QString& username, const QString& password, int role)
-{
-    QSqlQuery q(m_db);
-    q.prepare("INSERT INTO users (username, password_hash, role) VALUES (?, ?, ?)");
-    q.addBindValue(username);
-    q.addBindValue(hashPassword(password));
-    q.addBindValue(role);
-
-    if (!q.exec()) {
-        Logger::error(QString("Failed to add user '%1': %2").arg(username, q.lastError().text()));
-        return -1;
-    }
-
-    int newId = q.lastInsertId().toInt();
-    Logger::info(QString("User added: %1 (id=%2, role=%3)").arg(username).arg(newId).arg(role));
-    return newId;
-}
-
-bool DatabaseManager::deleteUser(int userId)
-{
-    QSqlQuery q(m_db);
-    q.prepare("DELETE FROM users WHERE id = ?");
-    q.addBindValue(userId);
-    if (!q.exec()) {
-        Logger::error(QString("Failed to delete user %1: %2").arg(userId).arg(q.lastError().text()));
-        return false;
-    }
-    Logger::info(QString("User deleted: id=%1").arg(userId));
-    return true;
-}
-
-bool DatabaseManager::setUserRole(int userId, int role)
-{
-    QSqlQuery q(m_db);
-    q.prepare("UPDATE users SET role = ? WHERE id = ?");
-    q.addBindValue(role);
-    q.addBindValue(userId);
-    if (!q.exec()) {
-        Logger::error(QString("Failed to set role for user %1: %2").arg(userId).arg(q.lastError().text()));
-        return false;
-    }
-    Logger::info(QString("User role updated: id=%1 role=%2").arg(userId).arg(role));
-    return true;
-}
-
-bool DatabaseManager::changePassword(int userId, const QString& oldPassword, const QString& newPassword)
-{
-    QSqlQuery q(m_db);
-    q.prepare("SELECT password_hash FROM users WHERE id = ?");
-    q.addBindValue(userId);
-    if (!q.exec() || !q.next()) return false;
-    if (q.value(0).toString() != hashPassword(oldPassword)) return false;
-
-    q.prepare("UPDATE users SET password_hash = ? WHERE id = ?");
-    q.addBindValue(hashPassword(newPassword));
-    q.addBindValue(userId);
-
-    if (!q.exec()) {
-        Logger::error(QString("Failed to change password: %1").arg(q.lastError().text()));
-        return false;
-    }
-    Logger::info(QString("Password changed for user id: %1").arg(userId));
-    return true;
-}
-
-bool DatabaseManager::changePasswordByAdmin(int userId, const QString& newPassword)
-{
-    QSqlQuery q(m_db);
-    q.prepare("UPDATE users SET password_hash = ? WHERE id = ?");
-    q.addBindValue(hashPassword(newPassword));
-    q.addBindValue(userId);
-
-    if (!q.exec()) {
-        Logger::error(QString("Failed to change password by admin: %1").arg(q.lastError().text()));
-        return false;
-    }
-    Logger::info(QString("Password changed by admin for user id: %1").arg(userId));
-    return true;
-}
-
-/* ── 模块权限 ─────────────────────────────────────────────────── */
-
-void DatabaseManager::initModulePermissions(const QString& moduleName)
-{
-    const QList<UserInfo> users = allUsers();
-
-    QSqlQuery insertQ(m_db);
-    insertQ.prepare(
-        "INSERT OR IGNORE INTO user_permissions (user_id, module_name, can_read, can_write) "
-        "VALUES (?, ?, ?, ?)");
-
-    for (const auto& u : users) {
-        const bool canWrite = (u.role == 1 || u.role == 2);
-        insertQ.addBindValue(u.id);
-        insertQ.addBindValue(moduleName);
-        insertQ.addBindValue(1);                              // canRead always true
-        insertQ.addBindValue(canWrite ? 1 : 0);
-        insertQ.exec();
-    }
-
-    Logger::info(QString("Module '%1' permissions synced for %2 users.")
-                     .arg(moduleName).arg(users.size()));
-}
-
-QMap<QString, PermissionInfo> DatabaseManager::getPermissions(int userId) const
-{
-    QMap<QString, PermissionInfo> result;
-    QSqlQuery q(m_db);
-    q.prepare("SELECT module_name, can_read, can_write FROM user_permissions WHERE user_id = ?");
-    q.addBindValue(userId);
-    q.exec();
-    while (q.next()) {
-        result[q.value(0).toString()] = { q.value(1).toBool(), q.value(2).toBool() };
-    }
-    return result;
-}
-
-QMap<int, QMap<QString, PermissionInfo>> DatabaseManager::getAllPermissions() const
-{
-    QMap<int, QMap<QString, PermissionInfo>> result;
-    QSqlQuery q(m_db);
-    q.exec("SELECT user_id, module_name, can_read, can_write FROM user_permissions");
-    while (q.next()) {
-        result[q.value(0).toInt()][q.value(1).toString()] = {
-            q.value(2).toBool(), q.value(3).toBool()
-        };
-    }
-    return result;
-}
-
-void DatabaseManager::migratePermissionKey(const QString& oldKey, const QString& newKey)
-{
-    QSqlQuery q(m_db);
-    q.prepare("UPDATE user_permissions SET module_name = ? WHERE module_name = ?");
-    q.addBindValue(newKey);
-    q.addBindValue(oldKey);
-    if (q.exec() && q.numRowsAffected() > 0)
-        Logger::info(QString("Migrated permission key '%1' → '%2' (%3 rows).")
-                         .arg(oldKey, newKey).arg(q.numRowsAffected()));
-}
-
-void DatabaseManager::setPermission(int userId, const QString& moduleName,
-                                    bool canRead, bool canWrite)
-{
-    QSqlQuery q(m_db);
-    q.prepare(
-        "INSERT OR REPLACE INTO user_permissions (user_id, module_name, can_read, can_write) "
-        "VALUES (?, ?, ?, ?)");
-    q.addBindValue(userId);
-    q.addBindValue(moduleName);
-    q.addBindValue(canRead ? 1 : 0);
-    q.addBindValue(canWrite ? 1 : 0);
-
-    if (!q.exec()) {
-        Logger::error(QString("Failed to set permission: %1").arg(q.lastError().text()));
-    }
+    // Compare-and-update preserves the old password if another writer changed it in between.
+    q.prepare("UPDATE users SET password_hash=? WHERE id=? AND password_hash=?");
+    q.addBindValue(hashPassword(newPassword));q.addBindValue(userId);q.addBindValue(hashPassword(oldPassword));
+    return q.exec() && q.numRowsAffected()==1;
 }

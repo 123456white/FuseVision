@@ -1,0 +1,10 @@
+*.md text eol=lf
+*.json text eol=lf
+Doxyfile text eol=lf
+*.dox text eol=lf
+# Preserve the exact original bytes used by evidence/archive integrity checks.
+archive/** -text
+requirements/** -text
+logic/evidence/** -text
+logic/screenshots/** -text
+*.xmind -text

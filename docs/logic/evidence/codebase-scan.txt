@@ -1,0 +1,332 @@
+
+=== DIRECTORY TREE (max depth 3, source files only) ===
+.clangd
+.github
+.github\workflows
+.github\workflows\build.yml
+.gitignore
+.vscode
+.vscode\launch.json
+.vscode\settings.json
+cmake
+cmake\DeployRuntime.cmake
+cmake\FindHalcon.cmake
+cmake\FindMVS.cmake
+CmakeBuild.ps1
+CMakeLists.txt
+CMakePresets.json
+FuseVision.qrc
+FuseVision.rc
+README.md
+res
+res\AnnoBack.png
+res\AnnoBack_D.png
+res\AnnoBrush.png
+res\AnnoBrush_D.png
+res\AnnoEraser.png
+res\AnnoEraser_D.png
+res\AnnoFill.png
+res\AnnoFill_D.png
+res\AnnoFit.png
+res\AnnoFit_D.png
+res\AnnoLabelMe.png
+res\AnnoLabelMe_D.png
+res\AnnoNavFirst.png
+res\AnnoNavFirst_D.png
+res\AnnoNavLast.png
+res\AnnoNavLast_D.png
+res\AnnoNavNext.png
+res\AnnoNavNext_D.png
+res\AnnoNavPrev.png
+res\AnnoNavPrev_D.png
+res\AnnoPolygon.png
+res\AnnoPolygon_D.png
+res\AnnoRectangle.png
+res\AnnoRectangle_D.png
+res\AnnoRedo.png
+res\AnnoRedo_D.png
+res\AnnoSave.png
+res\AnnoSave_D.png
+res\AnnoSelect.png
+res\AnnoSelect_D.png
+res\AnnoUndo.png
+res\AnnoUndo_D.png
+res\AnnoZoom1.png
+res\AnnoZoom1_D.png
+res\DeepLearningWidget.png
+res\DeepLearningWidget_D.png
+res\Del.png
+res\Del_D.png
+res\FuseVision.ico
+res\FuseVision.png
+res\FuseVisionProject.png
+res\FuseVisionProject_D.png
+res\generate_icons.py
+res\NewProject.png
+res\NewProject_D.png
+res\OpenProject.png
+res\OpenProject_D.png
+res\SystemSettings.png
+res\SystemSettings_D.png
+res\TaskAnomaly.png
+res\TaskAnomaly_D.png
+res\TaskDetectionAxis.png
+res\TaskDetectionAxis_D.png
+res\TaskDetectionRotated.png
+res\TaskDetectionRotated_D.png
+res\TaskSegmentation.png
+res\TaskSegmentation_D.png
+res\TraditionalWidget.png
+res\TraditionalWidget_D.png
+res\UserManagement.png
+res\UserManagement_D.png
+scripts
+scripts\check-env.ps1
+src
+src\CMakeLists.txt
+src\core
+src\core\CMakeLists.txt
+src\core\DatabaseManager.cpp
+src\core\DatabaseManager.h
+src\core\LoadingOverlay.cpp
+src\core\LoadingOverlay.h
+src\core\Logger.cpp
+src\core\Logger.h
+src\core\LogMonitor.cpp
+src\core\LogMonitor.h
+src\core\PermissionGuard.cpp
+src\core\PermissionGuard.h
+src\core\PermissionInfo.h
+src\core\PermissionRegistry.cpp
+src\core\PermissionRegistry.h
+src\core\SessionManager.cpp
+src\core\SessionManager.h
+src\core\SettingsManager.cpp
+src\core\SettingsManager.h
+src\core\ThemeManager.cpp
+src\core\ThemeManager.h
+src\DeepLearningWidget
+src\DeepLearningWidget\AnnotationCanvas.cpp
+src\DeepLearningWidget\AnnotationCanvas.h
+src\DeepLearningWidget\AnnotationIO.cpp
+src\DeepLearningWidget\AnnotationIO.h
+src\DeepLearningWidget\AnnotationManagement.cpp
+src\DeepLearningWidget\AnnotationManagement.h
+src\DeepLearningWidget\AnnotationModel.cpp
+src\DeepLearningWidget\AnnotationModel.h
+src\DeepLearningWidget\AnnotationRender.cpp
+src\DeepLearningWidget\AnnotationRender.h
+src\DeepLearningWidget\CMakeLists.txt
+src\DeepLearningWidget\DatasetManagement.cpp
+src\DeepLearningWidget\DatasetManagement.h
+src\DeepLearningWidget\DeepLearningWidget.cpp
+src\DeepLearningWidget\DeepLearningWidget.h
+src\DeepLearningWidget\ModelConfig.cpp
+src\DeepLearningWidget\ModelConfig.h
+src\DeepLearningWidget\ModelManagement.cpp
+src\DeepLearningWidget\ModelManagement.h
+src\DeepLearningWidget\ProjectConfig.cpp
+src\DeepLearningWidget\ProjectConfig.h
+src\DeepLearningWidget\ProjectManagement.cpp
+src\DeepLearningWidget\ProjectManagement.h
+src\DeepLearningWidget\Tools
+src\DeepLearningWidget\Tools\AnnotationTool.cpp
+src\DeepLearningWidget\Tools\AnnotationTool.h
+src\DeepLearningWidget\Tools\BrushTool.cpp
+src\DeepLearningWidget\Tools\BrushTool.h
+src\DeepLearningWidget\Tools\EraserTool.cpp
+src\DeepLearningWidget\Tools\EraserTool.h
+src\DeepLearningWidget\Tools\FillTool.cpp
+src\DeepLearningWidget\Tools\FillTool.h
+src\DeepLearningWidget\Tools\PolygonTool.cpp
+src\DeepLearningWidget\Tools\PolygonTool.h
+src\DeepLearningWidget\Tools\RectTool.cpp
+src\DeepLearningWidget\Tools\RectTool.h
+src\DeepLearningWidget\Tools\SelectTool.cpp
+src\DeepLearningWidget\Tools\SelectTool.h
+src\halcon
+src\labelme
+src\labelme\labelme_embed.py
+src\labelme\run_labelme.py
+src\main.cpp
+src\MainWindows
+src\MainWindows\CMakeLists.txt
+src\MainWindows\FuseVision.cpp
+src\MainWindows\FuseVision.h
+src\MainWindows\Login.cpp
+src\MainWindows\Login.h
+src\MainWindows\SystemSettingsWidget.cpp
+src\MainWindows\SystemSettingsWidget.h
+src\MainWindows\UserManagementWidget.cpp
+src\MainWindows\UserManagementWidget.h
+src\MVS
+src\openCV
+src\TraditionalWidget
+src\TraditionalWidget\CMakeLists.txt
+src\TraditionalWidget\TraditionalWidget.cpp
+src\TraditionalWidget\TraditionalWidget.h
+src\VisionPro
+vcpkg.json
+功能记录 copy.md
+
+=== STACK DETECTION (manifest files) ===
+
+--- CMakeLists.txt ---
+# CMakeList.txt: FuseVision 的 CMake 项目，在此处包括源代码并定义
+
+# 规定项目必须使用 ≥3.21 版本的 CMake（与 vcpkg manifest 模式兼容的最低版本）
+cmake_minimum_required(VERSION 3.21)
+# 如果支持，请为 MSVC 编译器启用热重载。
+if (POLICY CMP0141)
+  cmake_policy(SET CMP0141 NEW)
+  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
+endif()
+
+# 定义一个变量 QT_RESOURCES，指向你的资源文件 FuseVision.qrc
+set(QT_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/FuseVision.qrc)
+
+# 项目定义（初始化编译器和系统变量）
+project(FuseVision
+    VERSION 1.0.0
+    DESCRIPTION "FuseVision Studio Application"
+    LANGUAGES CXX
+)
+
+include(CTest)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# vcpkg 内部消费此变量（消除 CMake "not used" 警告）
+set(_vcpkg_bs_used "${VCPKG_BINARY_SOURCES}")
+
+# 64位编译器检测（变量已初始化，检测有效）
+if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+    message(FATAL_ERROR "
+    构建失败：当前编译器为 32 位！
+    本项目仅支持 x86_64 (64 位) 编译器，请切换至 64 位编译环境。
+    Windows：使用 x64 Native Tools Command Prompt for VS 2022
+    Linux/macOS：确认系统与编译器为 64 位版本
+    ")
+endif()
+message(STATUS "检测通过：当前使用 64 位编译器，指针宽度: ${CMAKE_SIZEOF_VOID_P} 字节")
+
+# 输出目录配置
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/$<CONFIG>)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<CONFIG>)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/$<CONFIG>)
+# Qt 自动编译配置
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+
+# 查找依赖
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Sql)
+find_package(spdlog REQUIRED)
+find_package(OpenCV REQUIRED)
+
+if(OpenCV_FOUND)
+    message(STATUS "OpenCV version: ${OpenCV_VERSION}")
+    message(STATUS "OpenCV include dirs: ${OpenCV_INCLUDE_DIRS}")
+    message(STATUS "OpenCV libraries: ${OpenCV_LIBS}")
+else()
+    message(FATAL_ERROR "OpenCV not found! Please make sure OpenCV is installed via vcpkg.")
+endif()
+
+# ========== 第三方 SDK 检测 ==========
+include(cmake/FindHalcon.cmake)
+include(cmake/FindMVS.cmake)
+
+#（管理所有非 main 的源文件）
+add_subdirectory(src)
+
+# 创建可执行目标【关键：必须先创建目标，再设置属性】
+add_executable(${PROJECT_NAME}
+    "src/main.cpp"
+    ${QT_RESOURCES}
+    "FuseVision.rc"
+)
+
+# Windows 控制台配置
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        WIN32_EXECUTABLE $<IF:$<CONFIG:Release>,ON,OFF>
+    )
+
+[TRUNCATED] Showing first 80 of 166 lines.
+
+=== ENTRY POINTS ===
+No common entry points found. Check 'main' or 'scripts.start' in manifest files above.
+
+=== LINTING AND FORMATTING CONFIG ===
+No linting or formatting config files found in project root.
+
+=== ENVIRONMENT VARIABLE TEMPLATES ===
+No .env.example or .env.template found. Identify required environment variables by searching the code and config for environment variable reads.
+
+=== TODO / FIXME / HACK (production code only, test dirs excluded) ===
+None found.
+
+=== GIT RECENT COMMITS (last 20) ===
+abd7f63 修改内容：
+19e9a72 1. Clone vcpkg（ --depth 1 ，只有最新 commit） 2. Bootstrap vcpkg 3. Fetch baseline commit → git fetch --depth=1 origin fc3be1eb... ← 新增 4. Configure & Build → vcpkg 能找到 versions/baseline.json
+75d6eab 修复CI
+946a73d - Ninja 安装独立成一步（ choco install ninja ） - VS 环境用 Launch-VsDevShell.ps1 替代 vcvars64.bat （pwsh 原生支持，环境变量传播稳定）
+0195338 关键改动：
+7c4a850 fix(ci): 修复 Node 20 弃用警告 + vcpkg 目录冲突 + MSVC/Ninja 环境丢失
+20e815f windows-2025 → windows-latest + MSVC 补 arch: amd64 — 消除 Node 20 弃用警告 git clone vcpkg → 检测 .git 是否存在后 pull 或 clone --depth 1 — 修复非空目录冲突
+279a433 feat(dataset): 渐进加载 + Halcon兼容 + 崩溃修复 + 实例计数
+d22f1cf feat(dataset): 渐进加载 + Halcon兼容 + 崩溃修复 + 实例计数 新增功能： - 缩略图逐张渐进加载（processEvents），立即显示画廊页面 - 单击缩略图高亮仅更新2张卡片样式（不再全量重建） - 导出格式根据模型类型动态适配（实例分割→PNG掩码置顶） - 导入文件夹支持labels/目录可选（允许仅导入原图） - PNG灰度掩码兼容Halcon导出格式（自动检测minGray偏移、过滤≥250极端值） - saveDatasetConfig写入顶层instance_count供ModelManagement面板展示 修复： - processEvents重入导致QList越界崩溃（4层防护：refreshGallery/loadDatasetConfig/setCurrentModel防重入+循环安全网） - 双击切标签页时StepGuideBar被挤出可视区（raise+布局强制刷新） - 二次打开/从模型管理进入时画廊只显示两列（宽度三级回退+延迟重试） - 空标签(instanceCount=0)在标签重排/删除/重复扫描中正确保留 - QImageReader回退链兼容JPEG/WebP缺失插件(vcpkg)
+31b8459 feat: 完成深度学习模块模型管理层开发
+8fa6c22 feat: 完成深度学习模块项目管理层基础开发
+0105555 完成项目模块化与初始界面搭建
+02dfb36 完成项目模块化与初始界面搭建
+3ea0f3c 完成项目模块化与初始界面搭建
+275dd6e 完成项目模块化与初始界面搭建
+b669d8a 五阶段重构(基础设施、主窗口ui修正、深度学习重构、传统视觉重构、功能增强) — UI模块化 + 权限扩展 + 运行时配置 + Bug修复
+c96948e 更新README.md 由AI生成，请辩证查看
+1551c39 ci: 修复 vcpkg tool cache 缺少 .vcpkg-root 标记文件导致 configure 失败
+25cddf0 ci: 触发第二次构建以验证二进制缓存
+e7e5b34 ci: 修复 vcpkg 二进制缓存与 Ninja 检测问题- 新增 Ensure binary cache directory 步骤，解决缓存未命中时目录不存在的错误- 新增 Ninja fallback 安装步骤，防止 CMAKE_MAKE_PROGRAM 未设置- 调整步骤顺序，编译工具链在 vcpkg 之前就绪- 优化缓存键，加入 triplet 标识防止跨平台缓存污染
+
+=== HIGH-CHURN FILES (last 90 days, top 20) ===
+None found.
+
+=== MONOREPO SIGNALS ===
+No monorepo signals detected.
+
+=== CODE METRICS ===
+Total files scanned: 149
+Total lines of code: 20644
+
+Files by language:
+  Other: 80
+  C++: 33
+  C Header: 33
+  Python: 3
+
+Top 10 largest files:
+src\DeepLearningWidget\DatasetManagement.cpp: 216.8KB
+src\DeepLearningWidget\AnnotationManagement.cpp: 98.4KB
+src\DeepLearningWidget\ModelManagement.cpp: 39.6KB
+src\DeepLearningWidget\ProjectManagement.cpp: 39.4KB
+src\DeepLearningWidget\DeepLearningWidget.cpp: 25.1KB
+src\core\ThemeManager.cpp: 23.5KB
+res\FuseVision.ico: 19.2KB
+src\MainWindows\UserManagementWidget.cpp: 18.2KB
+src\DeepLearningWidget\AnnotationIO.cpp: 17.5KB
+src\DeepLearningWidget\DatasetManagement.h: 17.4KB
+
+=== CI/CD PIPELINES ===
+CI/CD: GitHub Actions
+
+=== CONTAINERS & ORCHESTRATION ===
+No containerization configs detected.
+
+=== SECURITY & COMPLIANCE ===
+No security configs detected.
+
+=== PERFORMANCE & TESTING ===
+No performance testing configs detected.
+
+=== SCAN COMPLETE ===

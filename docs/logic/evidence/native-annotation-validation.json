@@ -1,0 +1,242 @@
+{
+  "date": "2026-11-17",
+  "configuration": "windows-x64-release",
+  "verification": "Rebuilt Release; native Qt input and save/recovery regression, original 15 workflow groups, data and boundaries; Doxygen 1.18.0",
+  "passed": true,
+  "checks": [
+    {
+      "name": "native-baseline-files-retained-or-explicitly-retired",
+      "passed": true,
+      "detail": {
+        "initialFiles": 244,
+        "retired": [
+          "src/deeplearning/integrations/LabelMePaths.h",
+          "src/deeplearning/integrations/labelme/labelme_embed.py",
+          "src/deeplearning/integrations/labelme/labelme_paths.py",
+          "src/deeplearning/integrations/labelme/run_labelme.py",
+          "tests/test_labelme_paths.py"
+        ],
+        "missing": []
+      }
+    },
+    {
+      "name": "historical-evidence-and-protected-files-unchanged",
+      "passed": true,
+      "detail": {
+        "checked": 34,
+        "altered": []
+      }
+    },
+    {
+      "name": "native-changes-within-authorized-scope",
+      "passed": true,
+      "detail": {
+        "unexpected": []
+      }
+    },
+    {
+      "name": "native-original-worktree-snapshot",
+      "passed": true,
+      "detail": {
+        "files": 244,
+        "invalid": []
+      }
+    },
+    {
+      "name": "labelme-runtime-retired",
+      "passed": true,
+      "detail": {
+        "active": [],
+        "retired": [
+          "src/deeplearning/integrations/LabelMePaths.h",
+          "src/deeplearning/integrations/labelme/labelme_embed.py",
+          "src/deeplearning/integrations/labelme/labelme_paths.py",
+          "src/deeplearning/integrations/labelme/run_labelme.py",
+          "tests/test_labelme_paths.py"
+        ]
+      }
+    },
+    {
+      "name": "feature-ids-retained",
+      "passed": true,
+      "detail": {
+        "count": 38
+      }
+    },
+    {
+      "name": "single-account-decision-retained",
+      "passed": true,
+      "detail": "Q01 decided 2026-11-17; Q02–Q04 remain product decisions"
+    },
+    {
+      "name": "current-symbol-line-references",
+      "passed": true,
+      "detail": {
+        "count": 363,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-json-graph-and-current-sources",
+      "passed": true,
+      "detail": {
+        "sheets": 9,
+        "topics": 321,
+        "sources": 195,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-archive-resources",
+      "passed": true,
+      "detail": {
+        "sheets": 9,
+        "images": 26,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-feature-and-module-coverage",
+      "passed": true,
+      "detail": "F01–F38 and current module architecture"
+    },
+    {
+      "name": "xmind-existing-screenshots-retained",
+      "passed": true,
+      "detail": [
+        "P04-workflow-gallery-20261115.png",
+        "P05-workflow-reopened-20261115.png",
+        "P00-single-account-20261117.png",
+        "P01-guest-readonly-20261117.png",
+        "P12-single-account-20261117.png"
+      ]
+    },
+    {
+      "name": "markdown-local-links",
+      "passed": true,
+      "detail": {
+        "count": 337,
+        "broken": []
+      }
+    },
+    {
+      "name": "workflow-regression",
+      "passed": true,
+      "detail": {
+        "cases": [
+          "annotation model undo/redo",
+          "widget load edit save reopen",
+          "JSON rotated and polygon round trip and failed replacement",
+          "category protection",
+          "model creation signals",
+          "export semantic baseline",
+          "external PNG edit",
+          "brush eraser fill polygon masks",
+          "paired import recovery",
+          "COCO sparse IDs empty labels RLE and quality",
+          "selected project and model deletion",
+          "guest denied handlers and login state",
+          "settings and actual log retention",
+          "integrated project model gallery editor reopen export",
+          "guest pages single account login logout and password"
+        ],
+        "failures": []
+      }
+    },
+    {
+      "name": "single-account-regressions-executed",
+      "passed": true,
+      "detail": "Guest denial, all pages readable, fixed-account login/logout/password"
+    },
+    {
+      "name": "ctest-release",
+      "passed": true,
+      "detail": {
+        "passed": [
+          "native-annotation-regression",
+          "data-contract-regression",
+          "module-boundaries",
+          "workflow-regression",
+          "startup-smoke"
+        ],
+        "configuration": "Release; Widgets offscreen, data test QCoreApplication"
+      }
+    },
+    {
+      "name": "data-only-behavior-executed",
+      "passed": true,
+      "detail": "Independent configuration, model, geometry, storage, rollback and image pairing"
+    },
+    {
+      "name": "native-annotation-behavior-executed",
+      "passed": true,
+      "detail": {
+        "cases": [
+          "hover preview and keyboard focus enabled",
+          "space pan consumes its release and always ends",
+          "image refresh preserves view",
+          "zero wheel delta does not zoom",
+          "wheel zoom holds mouse anchor",
+          "drag rectangle commits one shape",
+          "two-click rectangle remains compatible",
+          "Enter completes reverse-direction rectangle",
+          "rotated rectangle hit test follows rendered orientation",
+          "corner drag can shrink rectangle",
+          "native editor has no external launch entry",
+          "dataset async category initialization completes",
+          "unfinished shape blocks save-and-next without discarding preview",
+          "model update preserves UUID selection and list item",
+          "canvas drag synchronizes list and creates one undo",
+          "focus loss restores uncommitted drag",
+          "canvas selection deletes intended object",
+          "brightness change preserves zoom and center",
+          "original-image toggle leaves annotation unchanged",
+          "failed save-and-next retains edits and committed file",
+          "retry shortcut from shape list saves and advances while keeping view",
+          "last image saves and remains open",
+          "saved-next annotation reopens with shape identity",
+          "guest handlers cannot mutate or advance through saving",
+          "offscreen native workspace capture"
+        ],
+        "failures": []
+      }
+    },
+    {
+      "name": "doxygen-html-xml-and-groups",
+      "passed": true,
+      "detail": {
+        "version": "1.18.0",
+        "groups": [
+          "app",
+          "core",
+          "deeplearning",
+          "dl_domain",
+          "dl_state",
+          "dl_storage",
+          "dl_tools",
+          "dl_widgets",
+          "traditional",
+          "ui_common"
+        ],
+        "types": 56,
+        "warnings": "",
+        "files": 865,
+        "coverage": "EXTRACT_ALL; key interfaces documented, historical member completeness not enforced"
+      }
+    }
+  ],
+  "notExecuted": [
+    "Visible Windows desktop and native dialogs",
+    "Camera hardware; LabelMe runtime retired and no longer part of acceptance",
+    "Confirmed settings reset and full process restart",
+    "Debug build, real dataset/performance benchmark and human interaction fluency",
+    "XMind desktop client",
+    "clang-format full-source run"
+  ],
+  "decisions": [
+    "Q01 single-account requirement implemented previously",
+    "Q02 anomaly classification versus masks",
+    "Q03 rectangle labels and task mapping",
+    "Q04 historical role headcount, audit and backup requirements"
+  ]
+}

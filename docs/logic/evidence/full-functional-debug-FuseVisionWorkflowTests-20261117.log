@@ -1,0 +1,42 @@
+PASS annotation model undo/redo
+PASS widget load edit save reopen
+PASS JSON rotated and polygon round trip and failed replacement
+PASS category protection
+PASS model creation signals
+PASS export semantic baseline
+PASS external PNG edit
+PASS brush eraser fill polygon masks
+PASS paired import recovery
+PASS COCO sparse IDs empty labels RLE and quality
+PASS selected project and model deletion
+
+--- STDERR ---
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/Fixture/Seg/labels/a.png
+无法创建标注目录
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+DIALOG 已有标注或未保存编辑，禁止重排类别编号。
+C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/Fixture/Seg/labels
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/export-coco/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/export-yolo
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG 成功 2 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/coco-source/bad.json
+不安全的图像相对路径：../escape.png
+DIALOG 删除项目「DeleteB」
+项目目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/DeleteB
+项目文件：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-YGeArd/DeleteB/project.fvproj
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+
+EXIT 3221225477

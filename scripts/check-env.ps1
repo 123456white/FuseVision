@@ -2,12 +2,23 @@
 FuseVision 开发环境自检脚本
 在 git clone 后运行一次，确认所有必需工具已就绪。
 #>
+param(
+    [ValidateSet("Ninja", "VisualStudio")]
+    [string]$Generator = "Ninja"
+)
 $ErrorActionPreference = "Continue"
+$ProjectRoot = Split-Path -Parent $PSScriptRoot
 
 Write-Host "===== FuseVision 开发环境检查 =====" -ForegroundColor Cyan
 Write-Host ""
 
 $allOk = $true
+$minimumCMakeVersion = [version]"3.21.0"
+$vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+if ($Generator -eq "VisualStudio" -and (Test-Path -LiteralPath $vsWherePath)) {
+    $vsVersion = & $vsWherePath -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationVersion
+    if ($vsVersion -and ([version]$vsVersion).Major -ge 18) { $minimumCMakeVersion = [version]"4.2.0" }
+}
 
 function Check-Tool {
     param(
@@ -36,10 +47,10 @@ function Check-Tool {
 # CMake
 $cmakeOutput = cmake --version 2>$null | Select-Object -First 1
 if ($cmakeOutput -match "(\d+\.\d+\.\d+)") {
-    if ([version]$matches[1] -ge [version]"3.21.0") {
+    if ([version]$matches[1] -ge $minimumCMakeVersion) {
         Write-Host "[OK]   CMake v$($matches[1])" -ForegroundColor Green
     } else {
-        Write-Host "[FAIL] CMake 版本过低 (v$($matches[1]))，需要 >= 3.21" -ForegroundColor Red
+        Write-Host "[FAIL] CMake 版本过低 (v$($matches[1]))，$Generator 入口需要 >= $minimumCMakeVersion" -ForegroundColor Red
         $allOk = $false
     }
 } else {
@@ -56,19 +67,26 @@ if ($gitOutput -match "(\d+\.\d+\.\d+)") {
     $allOk = $false
 }
 
-# Ninja
-$ninjaOutput = ninja --version 2>$null
-if ($ninjaOutput -match "(\d+\.\d+\.\d+)") {
-    Write-Host "[OK]   Ninja v$($matches[1])" -ForegroundColor Green
-} else {
-    Write-Host "[WARN] Ninja 未找到 — 构建可能失败，请确保 PATH 中包含 Ninja 或使用 MSVC 生成器" -ForegroundColor Yellow
+# Ninja is needed on PATH only for the Ninja presets.
+if ($Generator -eq "Ninja") {
+    $ninjaOutput = ninja --version 2>$null
+    if ($ninjaOutput -match "(\d+\.\d+\.\d+)") {
+        Write-Host "[OK]   Ninja v$($matches[1])" -ForegroundColor Green
+    } else {
+        Write-Host "[FAIL] Ninja 未找到 — Ninja 预设要求此工具加入 PATH" -ForegroundColor Red
+        $allOk = $false
+    }
 }
 
 # Visual Studio / MSVC
-$vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
 if (Test-Path $vsWherePath) {
-    $vsInfo = & $vsWherePath -latest -property installationPath 2>$null
-    Write-Host "[OK]   Visual Studio 已安装: $vsInfo" -ForegroundColor Green
+    $vsInfo = & $vsWherePath -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath 2>$null
+    if ($vsInfo) {
+        Write-Host "[OK]   Visual Studio C++ 工具已安装: $vsInfo" -ForegroundColor Green
+    } else {
+        Write-Host "[FAIL] 未找到 Visual Studio x64 C++ 工具" -ForegroundColor Red
+        $allOk = $false
+    }
 } else {
     Write-Host "[WARN] 未检测到 Visual Studio（如仅使用 VS Code + Ninja + MSVC BuildTools 可忽略）" -ForegroundColor Yellow
 }
@@ -87,7 +105,7 @@ if (Test-Path "$PSScriptRoot\..\vcpkg\vcpkg.exe") {
 } elseif (Test-Path "$PSScriptRoot\..\vcpkg\bootstrap-vcpkg.bat") {
     Write-Host "[INFO] vcpkg 需要引导 — 运行 .\vcpkg\bootstrap-vcpkg.bat" -ForegroundColor Yellow
 } else {
-    Write-Host "[FAIL] vcpkg 子模块未初始化 — 运行 git submodule update --init" -ForegroundColor Red
+    Write-Host "[FAIL] vcpkg 未初始化 — 先执行 git clone https://github.com/microsoft/vcpkg.git vcpkg，再运行 ./vcpkg/bootstrap-vcpkg.bat" -ForegroundColor Red
     $allOk = $false
 }
 
@@ -97,15 +115,16 @@ if ($env:HALCONROOT) {
 } else {
     $sdkHalconDir = Join-Path $ProjectRoot "sdk/halcon"
     $halconHeader = Join-Path $sdkHalconDir "include/HalconCpp.h"
-    $halconLib = Join-Path $sdkHalconDir "lib/x64-win64/halcon.lib"
-    $halconcppLib = Join-Path $sdkHalconDir "lib/x64-win64/halconcpp.lib"
+    $halconCppHeader = Join-Path $sdkHalconDir "include/halconcpp/HalconCpp.h"
+    $halconLib = Join-Path $sdkHalconDir "lib/halcon.lib"
+    $halconcppLib = Join-Path $sdkHalconDir "lib/halconcpp.lib"
     
-    if ((Test-Path $halconHeader) -and (Test-Path $halconLib) -and (Test-Path $halconcppLib)) {
+    if (((Test-Path $halconHeader) -or (Test-Path $halconCppHeader)) -and (Test-Path $halconLib) -and (Test-Path $halconcppLib)) {
         Write-Host "[OK]   Halcon（sdk/halcon 内置）: $sdkHalconDir" -ForegroundColor Green
     } else {
         Write-Host "[INFO] Halcon 未配置 — 传统视觉模块的 Halcon 功能将不可用" -ForegroundColor Gray
         if (Test-Path $sdkHalconDir) {
-            Write-Host "       sdk/halcon 目录存在但结构不完整，请检查: include/HalconCpp.h, lib/x64-win64/halcon*.lib" -ForegroundColor Yellow
+            Write-Host "       sdk/halcon 目录存在但结构不完整，请检查: include/HalconCpp.h 或 include/halconcpp/HalconCpp.h，以及 lib/halcon*.lib" -ForegroundColor Yellow
         } else {
             Write-Host "       可通过以下方式启用 Halcon 功能：" -ForegroundColor Gray
             Write-Host "         1. 安装 Halcon SDK 并设置 HALCONROOT / HALCONARCH 环境变量" -ForegroundColor Gray
@@ -120,8 +139,11 @@ Write-Host "[INFO] OpenCV 通过 vcpkg manifest 管理，将在 cmake configure 
 Write-Host ""
 if ($allOk) {
     Write-Host "===== 环境检查通过！可以开始构建 =====" -ForegroundColor Green
-    Write-Host "  运行:  cmake --preset windows-x64-debug"
-    Write-Host "  然后:  cmake --build --preset windows-debug"
+    Write-Host "  运行:  ./CmakeBuild.ps1 -Generator $Generator -Configuration Debug -NoRun -Test"
+    # Optional native probes (for example where.exe cl.exe) may leave exit code 1.
+    # GitHub Actions propagates LASTEXITCODE, so return the aggregate result explicitly.
+    exit 0
 } else {
     Write-Host "===== 存在 [FAIL] 项，请先修复后再构建 =====" -ForegroundColor Red
+    exit 1
 }

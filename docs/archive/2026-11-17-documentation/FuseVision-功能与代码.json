@@ -1,0 +1,3260 @@
+{
+  "project": "FuseVision",
+  "date": "2026-11-17",
+  "source": "features.json + issues.json；Qt原生标注更新；验证见native-annotation-validation.json；历史截图保留。",
+  "sheets": [
+    {
+      "title": "01 软件总览与核心流程",
+      "root": {
+        "id": "overview",
+        "title": "FuseVision｜功能→页面→代码",
+        "status": "当前实现；验证边界见备注",
+        "note": "2026-11-15更新核心流程；自动回归与静态确认分开。2026-11-14截图为历史，新增修复后offscreen证据见VALIDATION.md。",
+        "children": [
+          {
+            "id": "ov-module1",
+            "title": "登录与共享能力",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "ov-P00",
+                "title": "P00 登录",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F01",
+                    "title": "F01 单账户登录",
+                    "status": "自动回归通过 + 静态复核；可见Windows未验",
+                    "note": "DatabaseManager::singleAccount选择唯一兼容账户，validateLogin只认证该账户。\n错误密码或取消保持访客；成功建立会话，所有已实现写操作统一解锁。\n验证：本轮新增真实LoginDialog错误密码、取消与成功的offscreen回归，结果见VALIDATION。\n边界：新库superadmin/admin123；已有库沿用原密码，旧账户保留但不参与登录。密码算法沿用SHA-256。",
+                    "sources": [
+                      "src/app/Login.cpp:35 LoginDialog::onLoginClicked",
+                      "src/core/DatabaseManager.cpp:39 DatabaseManager::singleAccount",
+                      "src/core/DatabaseManager.cpp:46 DatabaseManager::validateLogin"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F01-single-account-20261117",
+                        "title": "当前单账户流程与验证边界",
+                        "note": "DatabaseManager::singleAccount选择唯一兼容账户，validateLogin只认证该账户。\n错误密码或取消保持访客；成功建立会话，所有已实现写操作统一解锁。\n验证：本轮新增真实LoginDialog错误密码、取消与成功的offscreen回归，结果见VALIDATION。\n边界：新库superadmin/admin123；已有库沿用原密码，旧账户保留但不参与登录。密码算法沿用SHA-256。",
+                        "status": "自动回归通过 + 静态复核；可见Windows未验"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ov-P01",
+                "title": "P01 共享导航",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F02",
+                    "title": "F02 模块导航与状态栏",
+                    "status": "自动回归通过 + 静态复核；可见Windows未验",
+                    "note": "访客可访问四个一级页面和九个深度学习子页，保留只读项目/模型/标签浏览。\n登录统一启用写操作，退出后恢复只读；页面不隐藏、不因旧权限表禁用。\n验证：本轮自动遍历主页面及九子页，并校验只读打开项目/模型/标签不写配置。\n边界：顶层导航主要静态复核；集成Widget验证活动模型/数据集/标注切页。 支持范围与产品Q02–Q04见ISSUES.md。",
+                    "sources": [
+                      "src/app/FuseVision.cpp:333 FuseVision::onMenuItemClicked",
+                      "src/app/FuseVision.cpp:378 FuseVision::initPagesAsync",
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:297 DeepLearningWidget::applyPermissions"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F02-single-account-20261117",
+                        "title": "当前单账户流程与验证边界",
+                        "note": "访客可访问四个一级页面和九个深度学习子页，保留只读项目/模型/标签浏览。\n登录统一启用写操作，退出后恢复只读；页面不隐藏、不因旧权限表禁用。\n验证：本轮自动遍历主页面及九子页，并校验只读打开项目/模型/标签不写配置。\n边界：顶层导航主要静态复核；集成Widget验证活动模型/数据集/标注切页。 支持范围与产品Q02–Q04见ISSUES.md。",
+                        "status": "自动回归通过 + 静态复核；可见Windows未验"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F03",
+                    "title": "F03 亮暗主题与日志面板",
+                    "status": "静态代码确认",
+                    "note": "主题会持久化偏好，未登录时主题写操作禁用；日志面板浏览不受限。\n主题按钮调用 ThemeManager::setTheme 并保存 ui/theme\nthemeChanged 驱动页面重新套用语义调色板和图标\n日志面板接收显式消息并HTML转义；可折叠、拖动分隔条\n验证：未执行该操作；以下为静态代码确认。\n边界：日志面板不是 spdlog 文件全部记录的实时镜像；只有接入的业务消息进入。未实测主题切换以避免保存用户偏好。",
+                    "sources": [
+                      "src/app/FuseVision.cpp:189 FuseVision::onToggleTheme",
+                      "src/ui/ThemeManager.cpp:154 ThemeManager::setTheme",
+                      "src/ui/LogMonitor.cpp:113 LogMonitor::log"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F03-single-account-20261117",
+                        "title": "当前单账户流程与验证边界",
+                        "note": "主题会持久化偏好，未登录时主题写操作禁用；日志面板浏览不受限。\n主题按钮调用 ThemeManager::setTheme 并保存 ui/theme\nthemeChanged 驱动页面重新套用语义调色板和图标\n日志面板接收显式消息并HTML转义；可折叠、拖动分隔条\n验证：未执行该操作；以下为静态代码确认。\n边界：日志面板不是 spdlog 文件全部记录的实时镜像；只有接入的业务消息进入。未实测主题切换以避免保存用户偏好。",
+                        "status": "静态代码确认"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F04",
+                    "title": "F04 登录与退出登录",
+                    "status": "自动回归通过 + 静态复核；可见Windows未验",
+                    "note": "未登录时打开单账户密码框；取消或失败保持只读。\n已登录时先完成未保存标注的保存/放弃/取消；保存失败或取消阻止退出，否则恢复只读。\n验证：主窗口实际登录和退出处理器覆盖取消、写失败和恢复重试；可见原生桌面待验。\n边界：保存决策及会话/权限刷新已自动验证；登录切账号完整可见UI未验。 支持范围与产品Q02–Q04见ISSUES.md。",
+                    "sources": [
+                      "src/app/FuseVision.cpp:199 FuseVision::onSwitchUser",
+                      "src/core/SessionManager.cpp:6 SessionManager::login",
+                      "src/core/SessionManager.cpp:13 SessionManager::logout"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F04-single-account-20261117",
+                        "title": "当前单账户流程与验证边界",
+                        "note": "未登录时打开单账户密码框；取消或失败保持只读。\n已登录时先完成未保存标注的保存/放弃/取消；保存失败或取消阻止退出，否则恢复只读。\n验证：主窗口实际登录和退出处理器覆盖取消、写失败和恢复重试；可见原生桌面待验。\n边界：保存决策及会话/权限刷新已自动验证；登录切账号完整可见UI未验。 支持范围与产品Q02–Q04见ISSUES.md。",
+                        "status": "自动回归通过 + 静态复核；可见Windows未验"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ov-module2",
+            "title": "深度学习",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "ov-P02",
+                "title": "P02 项目管理",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F05",
+                    "title": "F05 新建项目",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际点击新建项目，在临时目录创建 UI_Logic_Demo，截图P02；原业务目录未改动。"
+                  },
+                  {
+                    "id": "ov-F06",
+                    "title": "F06 就地打开项目",
+                    "status": "部分自动验证 + 静态复核；见边界",
+                    "note": "按明确选中的项目文件就地打开；项目根取文件所在目录，旧根下模型路径在内存重定位；不自动迁移或选择同名目标。\n验证：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。\n边界：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/ProjectManagement.cpp:607 ProjectManagement::onOpenProject",
+                      "src/deeplearning/widgets/ProjectManagement.cpp:777 ProjectManagement::copyDirectory",
+                      "src/deeplearning/storage/ProjectConfig.cpp:61 ProjectConfig::loadProject"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F06-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "按明确选中的项目文件就地打开；项目根取文件所在目录，旧根下模型路径在内存重定位；不自动迁移或选择同名目标。\n验证：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。\n边界：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "部分自动验证 + 静态复核；见边界"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F07",
+                    "title": "F07 项目预览与正式打开",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "单击预览与正式活动项目分离；双击先处理未保存，再通知模型/数据集清理并绑定新项目。\n验证：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。\n边界：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/ProjectManagement.cpp:689 ProjectManagement::onCardClicked",
+                      "src/deeplearning/widgets/ProjectManagement.cpp:732 ProjectManagement::onCardDoubleClicked",
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:164 DeepLearningWidget::onProjectOpened"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F07-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "单击预览与正式活动项目分离；双击先处理未保存，再通知模型/数据集清理并绑定新项目。\n验证：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。\n边界：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F08",
+                    "title": "F08 删除项目",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "确认选中卡片名称及完整路径；当前项目先处理标注；移到恢复目录后才清活动上下文。\n验证：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。\n边界：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/ProjectManagement.cpp:654 ProjectManagement::onDeleteProject",
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:165 &ProjectManagement::projectClosed"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F08-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "确认选中卡片名称及完整路径；当前项目先处理标注；移到恢复目录后才清活动上下文。\n验证：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。\n边界：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ov-P03",
+                "title": "P03 模型管理",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F09",
+                    "title": "F09 新建模型",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "名称/类型校验，描述持久化；派生路径只读；成功通知各一次，取消无成功通知。\n验证：模型对话框驱动、中文描述重开、通知及取消计数通过。\n边界：模型对话框驱动、中文描述重开、通知及取消计数通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/ModelManagement.cpp:461 ModelManagement::onNewModel",
+                      "src/deeplearning/storage/ModelConfig.cpp:21 ModelConfig::createModel"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F09-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "名称/类型校验，描述持久化；派生路径只读；成功通知各一次，取消无成功通知。\n验证：模型对话框驱动、中文描述重开、通知及取消计数通过。\n边界：模型对话框驱动、中文描述重开、通知及取消计数通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F10",
+                    "title": "F10 打开与登记模型",
+                    "status": "部分自动验证 + 静态复核；见边界",
+                    "note": "已登记模型按明确文件读取；外部模型复制到暂存目录，拒绝同名目标，配置登记失败回撤，不提前切换。\n验证：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。\n边界：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/ModelManagement.cpp:672 ModelManagement::onOpenModel",
+                      "src/deeplearning/storage/ModelConfig.cpp:174 ModelConfig::loadModel"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F10-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "已登记模型按明确文件读取；外部模型复制到暂存目录，拒绝同名目标，配置登记失败回撤，不提前切换。\n验证：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。\n边界：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "部分自动验证 + 静态复核；见边界"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F11",
+                    "title": "F11 预览模型与进入数据集",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "单击只预览；双击激活并发送currentModelChanged，数据集只订阅该信号，避免重复绑定。\n验证：集成项目/模型/图库及当前模型删除清理通过。\n边界：集成项目/模型/图库及当前模型删除清理通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/ModelManagement.cpp:799 ModelManagement::onCardClicked",
+                      "src/deeplearning/widgets/ModelManagement.cpp:829 ModelManagement::onCardDoubleClicked",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:121 DatasetManagement::setCurrentModel"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F11-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "单击只预览；双击激活并发送currentModelChanged，数据集只订阅该信号，避免重复绑定。\n验证：集成项目/模型/图库及当前模型删除清理通过。\n边界：集成项目/模型/图库及当前模型删除清理通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F12",
+                    "title": "F12 删除模型",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "删除明确选中模型，校验路径及权限；可恢复移动，项目登记失败尝试回滚；仅当前删除清空数据集/标注。\n验证：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。\n边界：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/ModelManagement.cpp:760 ModelManagement::onDeleteModel"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F12-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "删除明确选中模型，校验路径及权限；可恢复移动，项目登记失败尝试回滚；仅当前删除清空数据集/标注。\n验证：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。\n边界：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ov-P04",
+                "title": "P04 数据集管理",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F13",
+                    "title": "F13 导入数据集文件",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "图像与同基名标签按组校验/暂存/提交；同名成对覆盖或整体跳过，失败回滚并按路径报告/重试。COCO先映射外部类别ID。\n验证：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。\n边界：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2139 DatasetManagement::onImportImages",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:1872 DatasetManagement::ensureLabelTypeBeforeImport",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:1904 DatasetManagement::detectLabelsFromAnnotations"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F13-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "图像与同基名标签按组校验/暂存/提交；同名成对覆盖或整体跳过，失败回滚并按路径报告/重试。COCO先映射外部类别ID。\n验证：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。\n边界：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F14",
+                    "title": "F14 导入数据集文件夹",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "继续收集直属images/和labels/文件，共用配对导入；取消不提交，不自动递归导入分区。\n验证：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。\n边界：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2203 DatasetManagement::onImportFolder"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F14-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "继续收集直属images/和labels/文件，共用配对导入；取消不提交，不自动递归导入分区。\n验证：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。\n边界：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F15",
+                    "title": "F15 类别新增编辑删除导入",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "新增追加，重命名不改编号；有标签或未保存编辑时拒绝删除。失败恢复类别内存；COCO类别按名称映射。\n验证：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。\n边界：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2543 DatasetManagement::onAddLabel",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2574 DatasetManagement::onEditLabel",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2606 DatasetManagement::onDeleteLabel",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2636 DatasetManagement::onImportLabels"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F15-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "新增追加，重命名不改编号；有标签或未保存编辑时拒绝删除。失败恢复类别内存；COCO类别按名称映射。\n验证：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。\n边界：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F16",
+                    "title": "F16 拖动类别顺序",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "有持久化标注（递归检查）或未保存内容时禁止重排并恢复列表；空数据才可重排，保存失败回滚。\n验证：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。\n边界：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2684 DatasetManagement::onLabelOrderChanged",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:360 DatasetManagement::saveDatasetConfig"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F16-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "有持久化标注（递归检查）或未保存内容时禁止重排并恢复列表；空数据才可重排，保存失败回滚。\n验证：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。\n边界：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F17",
+                    "title": "F17 浏览筛选选择与进入标注",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际调用缩略图双击处理槽并进入标注，确认画布hasImage；其他筛选分支静态。"
+                  },
+                  {
+                    "id": "ov-F18",
+                    "title": "F18 删除样本与右键菜单",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "两个入口共用处理器；精确配对PNG/JSON/txt/XML，不按前缀误删；移动恢复目录，单组失败回滚，成功清旧画布。\n验证：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。\n边界：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2470 DatasetManagement::onDeleteSelected",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:1699 DatasetManagement::showContextMenu"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F18-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "两个入口共用处理器；精确配对PNG/JSON/txt/XML，不按前缀误删；移动恢复目录，单组失败回滚，成功清旧画布。\n验证：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。\n边界：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F19",
+                    "title": "F19 刷新信息与质量提示",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "从已提交标签统一计算样本和类别可见实例数；同图同类两个形状的回归结果为2。坏图、孤立标签、非法类别定位通过；不将旧配置当统计权威。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2747 DatasetManagement::onRefreshImageInfo",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3644 DatasetManagement::computeStats",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3688 DatasetManagement::runQualityCheck",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3667 DatasetManagement::refreshAnnotationStatistics"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F19-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "用统一读取器重扫并显示实例数；检查未标注坏图、缺失配对、孤立标签、非法类别和格式错误的完整路径。\n验证：坏图、孤立标签、非法类别可定位通过；未扩展为独立数据检查执行引擎。\n边界：坏图、孤立标签、非法类别可定位通过；未扩展为独立数据检查执行引擎。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F20",
+                    "title": "F20 标注格式转换",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "PNG/JSON/YOLO使用统一读取与编码；需要真实配对尺寸；相同txt跳过，覆盖不同内容需确认，格式损失报告。\n验证：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。\n边界：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2818 DatasetManagement::onFormatConvert",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2912 DatasetManagement::validateCurrentFormat",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3262 DatasetManagement::convertPngMaskToTarget",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3274 DatasetManagement::convertAnomalyClassification"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F20-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "PNG/JSON/YOLO使用统一读取与编码；需要真实配对尺寸；相同txt跳过，覆盖不同内容需确认，格式损失报告。\n验证：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。\n边界：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F21",
+                    "title": "F21 导出数据集",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "有选中时仅所选，否则全体；空目录内暂存整批后改名提交。COCO带图像/一致类别/RLE，YOLO按既有task，PNG保留原文件。\n验证：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。\n边界：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3469 DatasetManagement::onExportDataset",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3531 DatasetManagement::writeCocoJson",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3543 DatasetManagement::writeYoloFormat",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3555 DatasetManagement::writeMaskFormat"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F21-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "有选中时仅所选，否则全体；空目录内暂存整批后改名提交。COCO带图像/一致类别/RLE，YOLO按既有task，PNG保留原文件。\n验证：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。\n边界：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F22",
+                    "title": "F22 数据增强入口",
+                    "status": "静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n未执行该操作；以下为静态代码确认。"
+                  }
+                ]
+              },
+              {
+                "id": "ov-P05",
+                "title": "P05 数据标注",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F23",
+                    "title": "F23 加载图像与标注工具",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                    "note": "AnnotationModel 为唯一权威状态；矩形拖放/两次点击/反向 Enter 完成，多边形连续边链和顶点预览，工具与类别保持。\n画笔轮廓跟随光标；每次拖动一个撤销；Esc 或拖动失焦恢复预览前状态。\n验证：真实画布事件覆盖平移/焦点/缩放；六工具和保存重开保留原回归。\n边界：可见Windows、高DPI、触控板和人工连续标注手感未验；没有AI辅助。",
+                    "sources": [
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:98 AnnotationManagement::openImage",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1238 AnnotationManagement::onCanvasMousePressed",
+                      "src/deeplearning/tools/RectTool.cpp:66 RectTool::endRect",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1366 AnnotationManagement::renderOverlay"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F23-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "统一AnnotationModel；矩形两次点击，多边形完成入同一模型；画笔/橡皮/填充保留像素，Esc取消预览。\n验证：矩形、选择处理器及画笔/橡皮/填充/多边形自动执行，PNG/JSON重开一致；可见桌面交互未验。\n边界：矩形、选择处理器及画笔/橡皮/填充/多边形自动执行，PNG/JSON重开一致；可见桌面交互未验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F24",
+                    "title": "F24 保存与自动保存",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                    "note": "AnnotationStore 校验并用 QSaveFile 提交；成功才清修改标记并刷新统计。\n保存并下一张只在保存成功后前进；失败保留编辑/当前图片，恢复后可重试；最后一张保存后停留。\n未完成矩形/多边形阻止保存，不静默放弃；离开提示暂停自动保存。\n验证：失败保留文件字节和编辑、恢复后快捷键前进、末图停留、PNG重开形状身份通过。\n边界：30秒自动保存实际等待、断电恢复和真实数据负载未验。",
+                    "sources": [
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1413 AnnotationManagement::saveAnnotations",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1450 AnnotationManagement::onSave",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:216 DatasetManagement::currentLabelOffset"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F24-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "AnnotationStore校验并用QSaveFile单文件提交；成功才clean与更新统计；失败显示路径/原因、保留内容。提示离开时暂停30秒自动保存。\n验证：加载clean/编辑dirty、PNG/JSON形状像素、空标注、失败保留与重试通过；30秒等待及外部进程未实测。\n边界：加载clean/编辑dirty、PNG/JSON形状像素、空标注、失败保留与重试通过；30秒等待及外部进程未实测。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F25",
+                    "title": "F25 撤销重做与形状列表",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                    "note": "按 UUID 复用列表项并保持选择；画布命中和列表删除作用于同一对象。\n拖动中不重建列表；工具不再重复请求全图渲染，选中控制点独立显示并按屏幕像素缩放。\n验证：列表对象与选择保持、画布选中删除、一次拖动一个撤销、失焦取消和角点缩小通过。\n边界：列表支持多选删除；多选整体变换和旋转角度拖动未实现。",
+                    "sources": [
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1157 AnnotationManagement::updateShapeList",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1453 AnnotationManagement::onUndo",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1228 AnnotationManagement::onDeleteSelectedShapes",
+                      "src/deeplearning/model/AnnotationModel.cpp:339 AnnotationModel::undo"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F25-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "唯一AnnotationModel/QUndoStack供列表、删除、隐藏和工具操作；undo到保存快照可恢复clean。\n验证：矩形/选择/删除/画笔橡皮撤销及重开通过；复制/隐藏少数组合未逐一UI操作。\n边界：矩形/选择/删除/画笔橡皮撤销及重开通过；复制/隐藏少数组合未逐一UI操作。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F26",
+                    "title": "F26 视图调整与图像导航",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                    "note": "中键或空格+左拖平移，两种松开顺序均正确结束；滚轮以鼠标为锚点，零滚动量不缩放。\n同模型切图默认保持缩放及相对图像中心，可关闭；亮度/对比度仅改变底图显示，不重置视野。\nH切换叠加层检查原图，不改标注visible或修改状态。\n切图/返回/切项目模型/退出共用保存、放弃、取消；保存失败阻止离开。\n验证：平移结束、零滚轮/锚点缩放、亮度视野保持、保存切图保持和显示不改数据通过。\n边界：视野和显示偏好仅本次会话；跨模型/清空上下文适应窗口。",
+                    "sources": [
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:811 AnnotationManagement::onNavigateTo",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:818 AnnotationManagement::onReturnToGallery",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:905 AnnotationManagement::applyImageAdjustments"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F26-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "切图、返回图库和离开上下文共用保存/放弃/取消；保存失败阻止离开，放弃重读已保存标签，取消保留。\n验证：保存失败阻断、放弃重载、真实协调器切页取消/保存/返回/重开/导出通过；主窗口关闭人工未验。\n边界：保存失败阻断、放弃重载、真实协调器切页取消/保存/返回/重开/导出通过；主窗口关闭人工未验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F27",
+                    "title": "F27 Qt原生连续标注工作区",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                    "note": "原生工作区直接连接 AnnotationModel 和 AnnotationStore；无需Python、QProcess或外部窗口。\nCtrl+Enter保存并下一张，H查看原图，B/E/P/R/F/S或V切工具，[ ]调整笔刷；这些快捷键在类别或形状列表焦点下仍有效。\nLabelMe运行入口、环境扫描、适配脚本和部署退役；已有LabelMe rectangle/polygon JSON仍可导入。\n验证：原生入口无外部launch槽断言、画布事件、失败重试与重开、访客拒绝和offscreen截图；可见桌面未验。\n边界：参考DLT 26.03交互原则；没有本机参考软件对照，不宣称完整复刻。AI辅助、mask裁切拆分、多选变换和旋转角度拖动未实现。",
+                    "sources": [
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1718 AnnotationManagement::onSaveAndNext",
+                      "src/deeplearning/widgets/AnnotationManagement.cpp:1028 AnnotationManagement::onCanvasKeyPressed",
+                      "src/deeplearning/widgets/AnnotationCanvas.cpp:144 AnnotationCanvas::wheelEvent",
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:61 DeepLearningWidget::initUI"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F27-current-20261115",
+                        "title": "历史记录：当前流程与验证边界",
+                        "note": "启动和写标签要求标注写权限及未保存决策；Python路径持久化要求系统设置写；撤权尝试退出外部进程。\n验证：仅静态确认授权和生命周期入口；未启动LabelMe，不宣称窗口嵌入/外部保存已验证。\n边界：仅静态确认授权和生命周期入口；未启动LabelMe，不宣称窗口嵌入/外部保存已验证。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "历史：外部入口已退役"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "ov-P06",
+                "title": "P06 数据检查",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F28",
+                    "title": "F28 数据检查占位页",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际逐页显示并截图，确认占位状态。"
+                  }
+                ]
+              },
+              {
+                "id": "ov-P07",
+                "title": "P07 数据拆分",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F29",
+                    "title": "F29 数据拆分占位页",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际逐页显示并截图，确认占位状态。"
+                  }
+                ]
+              },
+              {
+                "id": "ov-P08",
+                "title": "P08 模型训练",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F30",
+                    "title": "F30 模型训练占位页",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际逐页显示并截图，确认占位状态。"
+                  }
+                ]
+              },
+              {
+                "id": "ov-P09",
+                "title": "P09 模型预测",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F31",
+                    "title": "F31 模型预测占位页",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际逐页显示并截图，确认占位状态。"
+                  }
+                ]
+              },
+              {
+                "id": "ov-P10",
+                "title": "P10 模型导出",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F32",
+                    "title": "F32 模型导出占位页",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际逐页显示并截图，确认占位状态。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ov-module3",
+            "title": "传统视觉",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "ov-P11",
+                "title": "P11 传统视觉",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F33",
+                    "title": "F33 工具栏与三区布局",
+                    "status": "实际操作验证 + 静态代码确认",
+                    "note": "详细见对应分图F节点备注。\n实际显示原始三区布局和占位文案。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ov-module4",
+            "title": "账户设置",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "ov-P12",
+                "title": "P12 账户设置",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F34",
+                    "title": "F34 账户状态与修改密码",
+                    "status": "自动回归通过 + 静态复核；可见Windows未验",
+                    "note": "校验登录、当前密码、最小长度及两次新密码一致。\n比较并更新唯一账户hash，失败保留原密码；成功清空输入并清理旧记住字段。\n验证：本轮回归覆盖访客拒绝、错误旧密码、确认不一致及成功改密；隔离数据库恢复测试密码。\n边界：旧账户数据不删除；没有新增用户、管理员重置其他用户密码或忘记密码流程。",
+                    "sources": [
+                      "src/app/UserManagementWidget.cpp:33 UserManagementWidget::onChangePassword",
+                      "src/core/DatabaseManager.cpp:62 DatabaseManager::changePassword"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F34-single-account-20261117",
+                        "title": "当前单账户流程与验证边界",
+                        "note": "校验登录、当前密码、最小长度及两次新密码一致。\n比较并更新唯一账户hash，失败保留原密码；成功清空输入并清理旧记住字段。\n验证：本轮回归覆盖访客拒绝、错误旧密码、确认不一致及成功改密；隔离数据库恢复测试密码。\n边界：旧账户数据不删除；没有新增用户、管理员重置其他用户密码或忘记密码流程。",
+                        "status": "自动回归通过 + 静态复核；可见Windows未验"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F35",
+                    "title": "F35 统一只读与编辑状态",
+                    "status": "自动回归通过 + 静态复核；可见Windows未验",
+                    "note": "不再查询数据库角色权限矩阵或创建模块权限记录。\nAccessControl/PermissionGuard统一依赖登录状态，写处理器保留实际拒绝。\n验证：本轮回归验证直接拒绝处理器、动态解锁和旧禁止权限不影响新规则；可见桌面未验。\n边界：历史users和user_permissions不清空；其他账户不认证；训练等占位功能不会因解锁而获得实现。",
+                    "sources": [
+                      "src/core/AccessControl.h:15 canWrite",
+                      "src/ui/PermissionGuard.cpp:12 PermissionGuard::canWrite"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F35-single-account-20261117",
+                        "title": "当前单账户流程与验证边界",
+                        "note": "不再查询数据库角色权限矩阵或创建模块权限记录。\nAccessControl/PermissionGuard统一依赖登录状态，写处理器保留实际拒绝。\n验证：本轮回归验证直接拒绝处理器、动态解锁和旧禁止权限不影响新规则；可见桌面未验。\n边界：历史users和user_permissions不清空；其他账户不认证；训练等占位功能不会因解锁而获得实现。",
+                        "status": "自动回归通过 + 静态复核；可见Windows未验"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ov-module5",
+            "title": "系统设置",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "ov-P13",
+                "title": "P13 系统设置",
+                "status": "静态代码确认",
+                "children": [
+                  {
+                    "id": "ov-F36",
+                    "title": "F36 路径与日志级别保存",
+                    "status": "自动回归（限定范围） + 静态代码复核",
+                    "note": "日志路径/级别立即生效，数据库/业务默认根重启生效且不迁移已有项目。保存失败恢复内存并可重试。\n验证：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。\n边界：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/app/SystemSettingsWidget.cpp:265 SystemSettingsWidget::onSave",
+                      "src/core/SettingsManager.cpp:42 SettingsManager::save",
+                      "src/deeplearning/widgets/ProjectManagement.cpp:162 ProjectManagement::ProjectManagement"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F36-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "日志路径/级别立即生效，数据库/业务默认根重启生效且不迁移已有项目。保存失败恢复内存并可重试。\n验证：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。\n边界：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "自动回归（限定范围） + 静态代码复核"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F37",
+                    "title": "F37 重置五项路径",
+                    "status": "部分自动验证 + 静态复核；见边界",
+                    "note": "仅重置日志/数据库/项目/传统数据/相机路径；日志级别、Python、主题保留。确认后共用保存策略，取消无变更。\n验证：取消重置自动通过；确认重置写入和真实重启未执行。\n边界：取消重置自动通过；确认重置写入和真实重启未执行。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/app/SystemSettingsWidget.cpp:296 SystemSettingsWidget::onReset"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F37-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "仅重置日志/数据库/项目/传统数据/相机路径；日志级别、Python、主题保留。确认后共用保存策略，取消无变更。\n验证：取消重置自动通过；确认重置写入和真实重启未执行。\n边界：取消重置自动通过；确认重置写入和真实重启未执行。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "部分自动验证 + 静态复核；见边界"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "ov-F38",
+                    "title": "F38 清理旧日志",
+                    "status": "部分自动验证 + 静态复核；见边界",
+                    "note": "匹配实际活动Logger的basename_日期文件（兼容.log）；文件日期与mtime均过期，保护当前日志和符号链接，失败列路径。\n验证：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。\n边界：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "sources": [
+                      "src/app/SystemSettingsWidget.cpp:308 SystemSettingsWidget::onCleanLogs",
+                      "src/core/Logger.cpp:40 Logger::init"
+                    ],
+                    "children": [
+                      {
+                        "id": "ov-F38-current-20261115",
+                        "title": "当前流程与验证边界",
+                        "note": "匹配实际活动Logger的basename_日期文件（兼容.log）；文件日期与mtime均过期，保护当前日志和符号链接，失败列路径。\n验证：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。\n边界：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                        "status": "部分自动验证 + 静态复核；见边界"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "ov-status",
+            "title": "阅读图例",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "ov-verified",
+                "title": "实际操作验证",
+                "status": "实际操作验证",
+                "note": "仅以runtime明确列出动作作范围；原Widget offscreen，不代表可见桌面/生产数据通过。"
+              },
+              {
+                "id": "ov-static",
+                "title": "静态代码确认",
+                "status": "静态代码确认",
+                "note": "追踪控件到处理器与数据写入。"
+              },
+              {
+                "id": "ov-todo",
+                "title": "待确认",
+                "status": "待确认",
+                "note": "Q01账号、Q02异常数据、Q03矩形映射、Q04附加需求；XMind客户端兼容。"
+              },
+              {
+                "id": "ov-plan",
+                "title": "实施与待验边界",
+                "status": "当前实现；限定范围验证",
+                "note": "代码和自动回归已实施；原生桌面、完整重启等仍未验。"
+              }
+            ]
+          },
+          {
+            "id": "ov-P04-dataset-imported",
+            "title": "P04-dataset-imported",
+            "status": "实际操作验证",
+            "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P04-dataset-imported.png\n真实文件导入流程：一张合成图像和一张 PNG 掩码\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+            "image": "screenshots/xmind/P04-dataset-imported.png"
+          }
+        ]
+      },
+      "relationships": [
+        {
+          "from": "ov-P00",
+          "to": "ov-P02",
+          "title": "认证成功"
+        },
+        {
+          "from": "ov-F05",
+          "to": "ov-F07",
+          "title": "新建后双击"
+        },
+        {
+          "from": "ov-F07",
+          "to": "ov-F09",
+          "title": "打开工程→模型"
+        },
+        {
+          "from": "ov-F09",
+          "to": "ov-F11",
+          "title": "成功通知各一次"
+        },
+        {
+          "from": "ov-F11",
+          "to": "ov-F13",
+          "title": "模型上下文"
+        },
+        {
+          "from": "ov-F13",
+          "to": "ov-F17",
+          "title": "导入→浏览"
+        },
+        {
+          "from": "ov-F17",
+          "to": "ov-F23",
+          "title": "图像双击"
+        },
+        {
+          "from": "ov-F23",
+          "to": "ov-F24",
+          "title": "完成形状→保存"
+        },
+        {
+          "from": "ov-F24",
+          "to": "ov-F26",
+          "title": "重开验证失败后返回"
+        },
+        {
+          "from": "ov-F26",
+          "to": "ov-P04",
+          "title": "重扫统计"
+        },
+        {
+          "from": "ov-P04",
+          "to": "ov-P12",
+          "title": "共享用户/权限"
+        },
+        {
+          "from": "ov-P04",
+          "to": "ov-P13",
+          "title": "共享存储设置"
+        }
+      ]
+    },
+    {
+      "title": "02 项目与模型",
+      "root": {
+        "id": "pm",
+        "title": "深度学习｜项目→模型",
+        "status": "静态代码确认",
+        "children": [
+          {
+            "id": "pm-P02",
+            "title": "P02 项目管理",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F05",
+                "title": "F05 新建项目",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "显示项目名/描述对话框\nProjectConfig::createProject 校验名称和目录冲突\n建立项目目录并写 project.fvproj\n刷新项目卡片；尚未自动打开项目\n验证：实际点击新建项目，在临时目录创建 UI_Logic_Demo，截图P02；原业务目录未改动。\n边界：取消对话框不创建；非法名、同名目录、创建/写入失败显示创建失败。文件创建不是跨文件事务。",
+                "children": [
+                  {
+                    "id": "F05-entry",
+                    "title": "菜单/按钮：新建项目 / OK / Cancel",
+                    "status": "静态代码确认",
+                    "note": "深度学习→项目管理→新建项目；必须已登录，按钮与处理器同时校验。\n项目名称必填，trim后 ^[A-Za-z0-9_]{1,64}$；描述可空；根目录从设置读取；默认名称为空。"
+                  },
+                  {
+                    "id": "F05-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F05-s1",
+                        "title": "1. 显示项目名/描述对话框",
+                        "status": "静态代码确认",
+                        "note": "显示项目名/描述对话框"
+                      },
+                      {
+                        "id": "F05-s2",
+                        "title": "2. ProjectConfig::createP…",
+                        "status": "静态代码确认",
+                        "note": "ProjectConfig::createProject 校验名称和目录冲突"
+                      },
+                      {
+                        "id": "F05-s3",
+                        "title": "3. 建立项目目录并写 project.fvpro…",
+                        "status": "静态代码确认",
+                        "note": "建立项目目录并写 project.fvproj"
+                      },
+                      {
+                        "id": "F05-s4",
+                        "title": "4. 刷新项目卡片；尚未自动打开项目",
+                        "status": "静态代码确认",
+                        "note": "刷新项目卡片；尚未自动打开项目"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F05-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "项目列表出现新卡片，用户继续双击打开。\n取消对话框不创建；非法名、同名目录、创建/写入失败显示创建失败。文件创建不是跨文件事务。"
+                  },
+                  {
+                    "id": "F05-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "<project_data>/<项目名>/project.fvproj；JSON记录模型、路径和时间。",
+                    "sources": [
+                      "src/deeplearning/widgets/ProjectManagement.cpp:537 ProjectManagement::onNewProject",
+                      "src/deeplearning/storage/ProjectConfig.cpp:18 ProjectConfig::createProject"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P02",
+                  "B02D-01",
+                  "B02D-02",
+                  "B02-02"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ProjectManagement.cpp:537 ProjectManagement::onNewProject",
+                  "src/deeplearning/storage/ProjectConfig.cpp:18 ProjectConfig::createProject"
+                ]
+              },
+              {
+                "id": "F06",
+                "title": "F06 就地打开项目",
+                "status": "部分自动验证 + 静态复核；见边界",
+                "note": "按明确选中的项目文件就地打开；项目根取文件所在目录，旧根下模型路径在内存重定位；不自动迁移或选择同名目标。\n验证：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。\n边界：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F06-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "按明确选中的项目文件就地打开；项目根取文件所在目录，旧根下模型路径在内存重定位；不自动迁移或选择同名目标。\n验证：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。\n边界：配置加载和项目卡片链路自动验证；原生文件选择器未手动操作。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "部分自动验证 + 静态复核；见边界"
+                  }
+                ],
+                "labels": [
+                  "P02",
+                  "B02-03"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ProjectManagement.cpp:607 ProjectManagement::onOpenProject",
+                  "src/deeplearning/widgets/ProjectManagement.cpp:777 ProjectManagement::copyDirectory",
+                  "src/deeplearning/storage/ProjectConfig.cpp:61 ProjectConfig::loadProject"
+                ]
+              },
+              {
+                "id": "F07",
+                "title": "F07 项目预览与正式打开",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "单击预览与正式活动项目分离；双击先处理未保存，再通知模型/数据集清理并绑定新项目。\n验证：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。\n边界：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F07-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "单击预览与正式活动项目分离；双击先处理未保存，再通知模型/数据集清理并绑定新项目。\n验证：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。\n边界：集成Widget项目→模型→数据集链路通过；A打开B选择删除通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P02"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ProjectManagement.cpp:689 ProjectManagement::onCardClicked",
+                  "src/deeplearning/widgets/ProjectManagement.cpp:732 ProjectManagement::onCardDoubleClicked",
+                  "src/deeplearning/widgets/DeepLearningWidget.cpp:164 DeepLearningWidget::onProjectOpened"
+                ]
+              },
+              {
+                "id": "F08",
+                "title": "F08 删除项目",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "确认选中卡片名称及完整路径；当前项目先处理标注；移到恢复目录后才清活动上下文。\n验证：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。\n边界：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F08-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "确认选中卡片名称及完整路径；当前项目先处理标注；移到恢复目录后才清活动上下文。\n验证：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。\n边界：A活动/B选中、取消、当前项目保存决策阻断和成功通知通过；未删除真实项目。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P02",
+                  "B02-04"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ProjectManagement.cpp:654 ProjectManagement::onDeleteProject",
+                  "src/deeplearning/widgets/DeepLearningWidget.cpp:165 &ProjectManagement::projectClosed"
+                ]
+              },
+              {
+                "id": "pm-P02-new-project-dialog",
+                "title": "P02-new-project-dialog",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P02-new-project-dialog.png\n实际创建对话框（隔离验证）\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P02-new-project-dialog.png"
+              },
+              {
+                "id": "pm-P02-project-created",
+                "title": "P02-project-created",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P02-project-created.png\n真实按钮创建项目后的项目卡片\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P02-project-created.png"
+              }
+            ]
+          },
+          {
+            "id": "pm-P03",
+            "title": "P03 模型管理",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F09",
+                "title": "F09 新建模型",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "名称/类型校验，描述持久化；派生路径只读；成功通知各一次，取消无成功通知。\n验证：模型对话框驱动、中文描述重开、通知及取消计数通过。\n边界：模型对话框驱动、中文描述重开、通知及取消计数通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F09-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "名称/类型校验，描述持久化；派生路径只读；成功通知各一次，取消无成功通知。\n验证：模型对话框驱动、中文描述重开、通知及取消计数通过。\n边界：模型对话框驱动、中文描述重开、通知及取消计数通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P03",
+                  "B03D-01",
+                  "B03D-02",
+                  "B03D-03",
+                  "B03D-04",
+                  "B03D-05",
+                  "B03D-06",
+                  "B03-02"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ModelManagement.cpp:461 ModelManagement::onNewModel",
+                  "src/deeplearning/storage/ModelConfig.cpp:21 ModelConfig::createModel"
+                ]
+              },
+              {
+                "id": "F10",
+                "title": "F10 打开与登记模型",
+                "status": "部分自动验证 + 静态复核；见边界",
+                "note": "已登记模型按明确文件读取；外部模型复制到暂存目录，拒绝同名目标，配置登记失败回撤，不提前切换。\n验证：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。\n边界：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F10-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "已登记模型按明确文件读取；外部模型复制到暂存目录，拒绝同名目标，配置登记失败回撤，不提前切换。\n验证：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。\n边界：当前模型加载与卡片激活自动验证；外部文件选择/复制失败路径主要静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "部分自动验证 + 静态复核；见边界"
+                  }
+                ],
+                "labels": [
+                  "P03",
+                  "B03-03"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ModelManagement.cpp:672 ModelManagement::onOpenModel",
+                  "src/deeplearning/storage/ModelConfig.cpp:174 ModelConfig::loadModel"
+                ]
+              },
+              {
+                "id": "F11",
+                "title": "F11 预览模型与进入数据集",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "单击只预览；双击激活并发送currentModelChanged，数据集只订阅该信号，避免重复绑定。\n验证：集成项目/模型/图库及当前模型删除清理通过。\n边界：集成项目/模型/图库及当前模型删除清理通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F11-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "单击只预览；双击激活并发送currentModelChanged，数据集只订阅该信号，避免重复绑定。\n验证：集成项目/模型/图库及当前模型删除清理通过。\n边界：集成项目/模型/图库及当前模型删除清理通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P03"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ModelManagement.cpp:799 ModelManagement::onCardClicked",
+                  "src/deeplearning/widgets/ModelManagement.cpp:829 ModelManagement::onCardDoubleClicked",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:121 DatasetManagement::setCurrentModel"
+                ]
+              },
+              {
+                "id": "F12",
+                "title": "F12 删除模型",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "删除明确选中模型，校验路径及权限；可恢复移动，项目登记失败尝试回滚；仅当前删除清空数据集/标注。\n验证：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。\n边界：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F12-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "删除明确选中模型，校验路径及权限；可恢复移动，项目登记失败尝试回滚；仅当前删除清空数据集/标注。\n验证：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。\n边界：A活动/B选中、取消、恢复目录阻塞失败、当前对象成功清理均通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P03",
+                  "B03-04"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/ModelManagement.cpp:760 ModelManagement::onDeleteModel"
+                ]
+              },
+              {
+                "id": "pm-P03-new-model-dialog",
+                "title": "P03-new-model-dialog",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P03-new-model-dialog.png\n实际创建对话框（隔离验证）\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P03-new-model-dialog.png"
+              },
+              {
+                "id": "pm-P03-model-created",
+                "title": "P03-model-created",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P03-model-created.png\n真实按钮创建模型；自动选中新模型\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P03-model-created.png"
+              }
+            ]
+          },
+          {
+            "id": "pm-valid",
+            "title": "有效名称",
+            "status": "静态代码确认",
+            "note": "项目和模型：trim后^[A-Za-z0-9_]{1,64}$；同名目录冲突失败。"
+          },
+          {
+            "id": "pm-invalid",
+            "title": "取消 / 校验失败",
+            "status": "静态代码确认",
+            "note": "取消无创建；文件错误提示；多文件流程不保证事务。"
+          },
+          {
+            "id": "pm-stale",
+            "title": "选中删除与上下文清理",
+            "status": "当前实现；验证边界见备注",
+            "note": "确认名称和绝对路径；同卷移动恢复目录；当前对象成功删除才清下游，非当前保留活动状态。"
+          },
+          {
+            "id": "pm-dataset",
+            "title": "下一步：P04数据集",
+            "status": "静态代码确认",
+            "note": "双击模型触发modelOpened/openDatasetRequested。"
+          }
+        ]
+      },
+      "relationships": [
+        {
+          "from": "F05",
+          "to": "pm-valid",
+          "title": "创建前校验"
+        },
+        {
+          "from": "pm-valid",
+          "to": "F07",
+          "title": "写工程并刷新"
+        },
+        {
+          "from": "pm-valid",
+          "to": "pm-invalid",
+          "title": "名称/目录冲突"
+        },
+        {
+          "from": "F07",
+          "to": "F09",
+          "title": "双击打开项目"
+        },
+        {
+          "from": "F09",
+          "to": "F11",
+          "title": "成功通知各一次"
+        },
+        {
+          "from": "F11",
+          "to": "pm-dataset",
+          "title": "双击跳转"
+        },
+        {
+          "from": "F06",
+          "to": "F07",
+          "title": "就地打开所选项目"
+        },
+        {
+          "from": "F08",
+          "to": "pm-stale",
+          "title": "选中目标/成功清当前"
+        },
+        {
+          "from": "F12",
+          "to": "pm-stale",
+          "title": "选中目标/成功清当前"
+        }
+      ]
+    },
+    {
+      "title": "03 数据集管理",
+      "root": {
+        "id": "ds",
+        "title": "P04 数据集｜导入→维护→导出",
+        "status": "静态代码确认",
+        "children": [
+          {
+            "id": "ds-P04",
+            "title": "P04 数据集管理",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F13",
+                "title": "F13 导入数据集文件",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "图像与同基名标签按组校验/暂存/提交；同名成对覆盖或整体跳过，失败回滚并按路径报告/重试。COCO先映射外部类别ID。\n验证：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。\n边界：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F13-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "图像与同基名标签按组校验/暂存/提交；同名成对覆盖或整体跳过，失败回滚并按路径报告/重试。COCO先映射外部类别ID。\n验证：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。\n边界：成对跳过、损坏标签失败、提交前撤权、修复重试、稀疏COCO/空标注通过；原生文件选择器未手动补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-02",
+                  "B04-09"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2139 DatasetManagement::onImportImages",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:1872 DatasetManagement::ensureLabelTypeBeforeImport",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:1904 DatasetManagement::detectLabelsFromAnnotations"
+                ]
+              },
+              {
+                "id": "F14",
+                "title": "F14 导入数据集文件夹",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "继续收集直属images/和labels/文件，共用配对导入；取消不提交，不自动递归导入分区。\n验证：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。\n边界：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F14-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "继续收集直属images/和labels/文件，共用配对导入；取消不提交，不自动递归导入分区。\n验证：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。\n边界：共享文件服务自动通过；文件夹对话框与全部图像格式未逐一实测。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-03",
+                  "B04-10"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2203 DatasetManagement::onImportFolder"
+                ]
+              },
+              {
+                "id": "F15",
+                "title": "F15 类别新增编辑删除导入",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "新增追加，重命名不改编号；有标签或未保存编辑时拒绝删除。失败恢复类别内存；COCO类别按名称映射。\n验证：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。\n边界：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F15-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "新增追加，重命名不改编号；有标签或未保存编辑时拒绝删除。失败恢复类别内存；COCO类别按名称映射。\n验证：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。\n边界：持久化标签下删除拒绝、重命名/追加后标签字节及重开语义保持通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-11",
+                  "B04-12",
+                  "B04-13",
+                  "B04-14"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2543 DatasetManagement::onAddLabel",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2574 DatasetManagement::onEditLabel",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2606 DatasetManagement::onDeleteLabel",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2636 DatasetManagement::onImportLabels"
+                ]
+              },
+              {
+                "id": "F16",
+                "title": "F16 拖动类别顺序",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "有持久化标注（递归检查）或未保存内容时禁止重排并恢复列表；空数据才可重排，保存失败回滚。\n验证：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。\n边界：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F16-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "有持久化标注（递归检查）或未保存内容时禁止重排并恢复列表；空数据才可重排，保存失败回滚。\n验证：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。\n边界：已有标签下重排被拒绝并恢复；空目录重排保存失败尚未单独注入。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2684 DatasetManagement::onLabelOrderChanged",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:360 DatasetManagement::saveDatasetConfig"
+                ]
+              },
+              {
+                "id": "F17",
+                "title": "F17 浏览筛选选择与进入标注",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "位置：FuseVision → 深度学习 → P04 → 列表视图 / 网格视图 / 标签筛选 / 全选 / 缩略图双击\n按钮编号：B04-04\n场景：查找待标注样本并批量选择。\n可用条件：数据集右侧图库/列表、标签筛选、全选与缩略图。\n输入/默认/校验：当前模型样本；类别筛选按内存categoryIds；无额外文本参数。\n步骤：1. 视图/筛选只改变呈现\n2. 选中项进入m_selectedIndices供删除和导出使用\n3. 双击缩略图发openAnnotationRequested(modelId,path)\n4. 编排器绑定标注数据源、打开图片、切换数据标注\n结果：标注页显示图像、类别、已有标注。\n失败/取消/边界：空图库无缩略图；模型切换清选择。不要把当前筛选范围自动等同导出范围，导出未选时取全部样本。\n文件/接口/算法：样本列表、选中索引、AnnotationManagement。\n实际验证范围：实际调用缩略图双击处理槽并进入标注，确认画布hasImage；其他筛选分支静态。",
+                "children": [
+                  {
+                    "id": "F17-entry",
+                    "title": "菜单/按钮：列表视图 / 网格视图 / 标签筛选 / 全选 / 缩略图双击",
+                    "status": "静态代码确认",
+                    "note": "原文：列表视图 / 网格视图 / 标签筛选 / 全选 / 缩略图双击\n截图编号：B04-04\n数据集右侧图库/列表、标签筛选、全选与缩略图。\n当前模型样本；类别筛选按内存categoryIds；无额外文本参数。"
+                  },
+                  {
+                    "id": "F17-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F17-s1",
+                        "title": "1. 视图/筛选只改变呈现",
+                        "status": "静态代码确认",
+                        "note": "视图/筛选只改变呈现"
+                      },
+                      {
+                        "id": "F17-s2",
+                        "title": "2. 选中项进入m_selectedIndices…",
+                        "status": "静态代码确认",
+                        "note": "选中项进入m_selectedIndices供删除和导出使用"
+                      },
+                      {
+                        "id": "F17-s3",
+                        "title": "3. 双击缩略图发openAnnotationRe…",
+                        "status": "静态代码确认",
+                        "note": "双击缩略图发openAnnotationRequested(modelId,path)"
+                      },
+                      {
+                        "id": "F17-s4",
+                        "title": "4. 编排器绑定标注数据源、打开图片、切换数据标注",
+                        "status": "静态代码确认",
+                        "note": "编排器绑定标注数据源、打开图片、切换数据标注"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F17-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "标注页显示图像、类别、已有标注。\n空图库无缩略图；模型切换清选择。不要把当前筛选范围自动等同导出范围，导出未选时取全部样本。"
+                  },
+                  {
+                    "id": "F17-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "样本列表、选中索引、AnnotationManagement。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:1253 DatasetManagement::refreshGallery",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2428 DatasetManagement::onThumbnailDoubleClicked",
+                      "src/deeplearning/widgets/DatasetManagement.cpp:2453 DatasetManagement::onSelectAll"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-04"
+                ]
+              },
+              {
+                "id": "F18",
+                "title": "F18 删除样本与右键菜单",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "两个入口共用处理器；精确配对PNG/JSON/txt/XML，不按前缀误删；移动恢复目录，单组失败回滚，成功清旧画布。\n验证：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。\n边界：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F18-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "两个入口共用处理器；精确配对PNG/JSON/txt/XML，不按前缀误删；移动恢复目录，单组失败回滚，成功清旧画布。\n验证：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。\n边界：精确配对、邻名保留、restore.json人工还原、拒绝不写、编排器删除后清画布通过。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-05"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2470 DatasetManagement::onDeleteSelected",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:1699 DatasetManagement::showContextMenu"
+                ]
+              },
+              {
+                "id": "F19",
+                "title": "F19 刷新信息与质量提示",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "从已提交标签统一计算样本和类别可见实例数；同图同类两个形状的回归结果为2。坏图、孤立标签、非法类别定位通过；不将旧配置当统计权威。",
+                "children": [
+                  {
+                    "id": "F19-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "用统一读取器重扫并显示实例数；检查未标注坏图、缺失配对、孤立标签、非法类别和格式错误的完整路径。\n验证：坏图、孤立标签、非法类别可定位通过；未扩展为独立数据检查执行引擎。\n边界：坏图、孤立标签、非法类别可定位通过；未扩展为独立数据检查执行引擎。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2747 DatasetManagement::onRefreshImageInfo",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3644 DatasetManagement::computeStats",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3688 DatasetManagement::runQualityCheck",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3667 DatasetManagement::refreshAnnotationStatistics"
+                ]
+              },
+              {
+                "id": "F20",
+                "title": "F20 标注格式转换",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "PNG/JSON/YOLO使用统一读取与编码；需要真实配对尺寸；相同txt跳过，覆盖不同内容需确认，格式损失报告。\n验证：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。\n边界：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F20-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "PNG/JSON/YOLO使用统一读取与编码；需要真实配对尺寸；相同txt跳过，覆盖不同内容需确认，格式损失报告。\n验证：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。\n边界：共享YOLO编码器验证类别/归一化/OBB角点及有损警告；所有转换对话框和分区实际运行仍需补验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-06"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2818 DatasetManagement::onFormatConvert",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2912 DatasetManagement::validateCurrentFormat",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3262 DatasetManagement::convertPngMaskToTarget",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3274 DatasetManagement::convertAnomalyClassification"
+                ]
+              },
+              {
+                "id": "F21",
+                "title": "F21 导出数据集",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "有选中时仅所选，否则全体；空目录内暂存整批后改名提交。COCO带图像/一致类别/RLE，YOLO按既有task，PNG保留原文件。\n验证：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。\n边界：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F21-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "有选中时仅所选，否则全体；空目录内暂存整批后改名提交。COCO带图像/一致类别/RLE，YOLO按既有task，PNG保留原文件。\n验证：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。\n边界：独立目录重读、类别引用/图像/坐标/空标注/选中范围/失败不提交通过；掩码到YOLO等有损，不承诺无损。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-08"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3469 DatasetManagement::onExportDataset",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3531 DatasetManagement::writeCocoJson",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3543 DatasetManagement::writeYoloFormat",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3555 DatasetManagement::writeMaskFormat"
+                ]
+              },
+              {
+                "id": "F22",
+                "title": "F22 数据增强入口",
+                "status": "静态代码确认",
+                "note": "位置：FuseVision → 深度学习 → P04 → 数据增强\n按钮编号：B04-07\n场景：界面展示未来增强能力入口。\n可用条件：数据集底部数据增强。\n输入/默认/校验：无可执行增强参数。\n步骤：1. 点击后仅显示后续版本提示\n结果：显示说明弹窗。\n失败/取消/边界：未执行旋转/翻转/噪声等实际增强，不产生扩增样本。\n文件/接口/算法：无增强算法调用。\n实际验证范围：未执行该操作；以下为静态代码确认。",
+                "children": [
+                  {
+                    "id": "F22-entry",
+                    "title": "菜单/按钮：数据增强",
+                    "status": "静态代码确认",
+                    "note": "原文：数据增强\n截图编号：B04-07\n数据集底部数据增强。\n无可执行增强参数。"
+                  },
+                  {
+                    "id": "F22-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F22-s1",
+                        "title": "1. 点击后仅显示后续版本提示",
+                        "status": "静态代码确认",
+                        "note": "点击后仅显示后续版本提示"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F22-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "显示说明弹窗。\n未执行旋转/翻转/噪声等实际增强，不产生扩增样本。"
+                  },
+                  {
+                    "id": "F22-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "无增强算法调用。",
+                    "sources": [
+                      "src/deeplearning/widgets/DatasetManagement.cpp:3452 DatasetManagement::onAugmentClicked"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P04",
+                  "B04-07"
+                ]
+              },
+              {
+                "id": "ds-P04-dataset-empty",
+                "title": "P04-dataset-empty",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P04-dataset-empty.png\n模型双击进入数据集，尚无图像\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P04-dataset-empty.png"
+              },
+              {
+                "id": "ds-P04-dataset-imported",
+                "title": "P04-dataset-imported",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P04-dataset-imported.png\n真实文件导入流程：一张合成图像和一张 PNG 掩码\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P04-dataset-imported.png"
+              },
+              {
+                "id": "ds-P04-dataset-after-annotation",
+                "title": "P04-dataset-after-annotation",
+                "status": "自动业务回归",
+                "note": "2026-11-15当前Release offscreen集成回归：返回图库、COCO图像与标注配对导出并独立重读。",
+                "image": "screenshots/P04-workflow-gallery-20261115.png"
+              }
+            ]
+          },
+          {
+            "id": "ds-context",
+            "title": "前提：已选模型",
+            "status": "静态代码确认",
+            "note": "双击模型设置DatasetManagement当前上下文。"
+          },
+          {
+            "id": "ds-no",
+            "title": "无模型 / 取消",
+            "status": "静态代码确认",
+            "note": "无模型提示；格式说明/选择文件/选择标签类型都可取消。"
+          },
+          {
+            "id": "ds-anno",
+            "title": "跳转P05标注",
+            "status": "静态代码确认",
+            "note": "带modelId和imagePath，编排器绑定数据源。"
+          },
+          {
+            "id": "ds-category",
+            "title": "类别编号语义保护",
+            "status": "当前实现；验证边界见备注",
+            "note": "已有标注或未保存编辑时拒绝删除/重排；重命名和追加不改变旧槽位。"
+          },
+          {
+            "id": "ds-out",
+            "title": "外部文件",
+            "status": "静态代码确认",
+            "note": "images、labels、dataset_config、COCO/YOLO/PNG导出。"
+          }
+        ]
+      },
+      "relationships": [
+        {
+          "from": "ds-context",
+          "to": "F13",
+          "title": "单文件/多文件"
+        },
+        {
+          "from": "ds-context",
+          "to": "F14",
+          "title": "根目录导入"
+        },
+        {
+          "from": "F13",
+          "to": "ds-no",
+          "title": "缺上下文或取消"
+        },
+        {
+          "from": "F14",
+          "to": "ds-no",
+          "title": "缺images或取消"
+        },
+        {
+          "from": "F13",
+          "to": "F17",
+          "title": "重扫图库"
+        },
+        {
+          "from": "F14",
+          "to": "F17",
+          "title": "重扫图库"
+        },
+        {
+          "from": "F15",
+          "to": "ds-category",
+          "title": "类别维护"
+        },
+        {
+          "from": "F16",
+          "to": "ds-category",
+          "title": "已有标注时禁止重排"
+        },
+        {
+          "from": "ds-category",
+          "to": "F17",
+          "title": "已有标注时禁止重排"
+        },
+        {
+          "from": "F17",
+          "to": "ds-anno",
+          "title": "双击缩略图"
+        },
+        {
+          "from": "F19",
+          "to": "F17",
+          "title": "统计/重扫"
+        },
+        {
+          "from": "F17",
+          "to": "F18",
+          "title": "选中删除"
+        },
+        {
+          "from": "F17",
+          "to": "F21",
+          "title": "有选出所选，无选出全量"
+        },
+        {
+          "from": "F20",
+          "to": "ds-out",
+          "title": "写YOLO txt并保留来源"
+        },
+        {
+          "from": "F21",
+          "to": "ds-out",
+          "title": "写所选格式"
+        }
+      ]
+    },
+    {
+      "title": "04 数据标注与保存断点",
+      "root": {
+        "id": "an",
+        "title": "P05 标注｜操作与数据一致性",
+        "status": "静态代码确认",
+        "children": [
+          {
+            "id": "an-P05",
+            "title": "P05 数据标注",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F23",
+                "title": "F23 加载图像与标注工具",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "AnnotationModel 为唯一权威状态；矩形拖放/两次点击/反向 Enter 完成，多边形连续边链和顶点预览，工具与类别保持。\n画笔轮廓跟随光标；每次拖动一个撤销；Esc 或拖动失焦恢复预览前状态。\n验证：真实画布事件覆盖平移/焦点/缩放；六工具和保存重开保留原回归。\n边界：可见Windows、高DPI、触控板和人工连续标注手感未验；没有AI辅助。",
+                "children": [
+                  {
+                    "id": "F23-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "统一AnnotationModel；矩形两次点击，多边形完成入同一模型；画笔/橡皮/填充保留像素，Esc取消预览。\n验证：矩形、选择处理器及画笔/橡皮/填充/多边形自动执行，PNG/JSON重开一致；可见桌面交互未验。\n边界：矩形、选择处理器及画笔/橡皮/填充/多边形自动执行，PNG/JSON重开一致；可见桌面交互未验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P05",
+                  "B05-12",
+                  "B05-13",
+                  "B05-14",
+                  "B05-15",
+                  "B05-16",
+                  "B05-17"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:98 AnnotationManagement::openImage",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1238 AnnotationManagement::onCanvasMousePressed",
+                  "src/deeplearning/tools/RectTool.cpp:66 RectTool::endRect",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1366 AnnotationManagement::renderOverlay"
+                ]
+              },
+              {
+                "id": "F24",
+                "title": "F24 保存与自动保存",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "AnnotationStore 校验并用 QSaveFile 提交；成功才清修改标记并刷新统计。\n保存并下一张只在保存成功后前进；失败保留编辑/当前图片，恢复后可重试；最后一张保存后停留。\n未完成矩形/多边形阻止保存，不静默放弃；离开提示暂停自动保存。\n验证：失败保留文件字节和编辑、恢复后快捷键前进、末图停留、PNG重开形状身份通过。\n边界：30秒自动保存实际等待、断电恢复和真实数据负载未验。",
+                "children": [
+                  {
+                    "id": "F24-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "AnnotationStore校验并用QSaveFile单文件提交；成功才clean与更新统计；失败显示路径/原因、保留内容。提示离开时暂停30秒自动保存。\n验证：加载clean/编辑dirty、PNG/JSON形状像素、空标注、失败保留与重试通过；30秒等待及外部进程未实测。\n边界：加载clean/编辑dirty、PNG/JSON形状像素、空标注、失败保留与重试通过；30秒等待及外部进程未实测。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P05",
+                  "B05-03"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1413 AnnotationManagement::saveAnnotations",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1450 AnnotationManagement::onSave",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:216 DatasetManagement::currentLabelOffset"
+                ]
+              },
+              {
+                "id": "F25",
+                "title": "F25 撤销重做与形状列表",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "按 UUID 复用列表项并保持选择；画布命中和列表删除作用于同一对象。\n拖动中不重建列表；工具不再重复请求全图渲染，选中控制点独立显示并按屏幕像素缩放。\n验证：列表对象与选择保持、画布选中删除、一次拖动一个撤销、失焦取消和角点缩小通过。\n边界：列表支持多选删除；多选整体变换和旋转角度拖动未实现。",
+                "children": [
+                  {
+                    "id": "F25-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "唯一AnnotationModel/QUndoStack供列表、删除、隐藏和工具操作；undo到保存快照可恢复clean。\n验证：矩形/选择/删除/画笔橡皮撤销及重开通过；复制/隐藏少数组合未逐一UI操作。\n边界：矩形/选择/删除/画笔橡皮撤销及重开通过；复制/隐藏少数组合未逐一UI操作。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P05",
+                  "B05-02",
+                  "B05-04",
+                  "B05-05"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1157 AnnotationManagement::updateShapeList",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1453 AnnotationManagement::onUndo",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1228 AnnotationManagement::onDeleteSelectedShapes",
+                  "src/deeplearning/model/AnnotationModel.cpp:339 AnnotationModel::undo"
+                ]
+              },
+              {
+                "id": "F26",
+                "title": "F26 视图调整与图像导航",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "中键或空格+左拖平移，两种松开顺序均正确结束；滚轮以鼠标为锚点，零滚动量不缩放。\n同模型切图默认保持缩放及相对图像中心，可关闭；亮度/对比度仅改变底图显示，不重置视野。\nH切换叠加层检查原图，不改标注visible或修改状态。\n切图/返回/切项目模型/退出共用保存、放弃、取消；保存失败阻止离开。\n验证：平移结束、零滚轮/锚点缩放、亮度视野保持、保存切图保持和显示不改数据通过。\n边界：视野和显示偏好仅本次会话；跨模型/清空上下文适应窗口。",
+                "children": [
+                  {
+                    "id": "F26-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "切图、返回图库和离开上下文共用保存/放弃/取消；保存失败阻止离开，放弃重读已保存标签，取消保留。\n验证：保存失败阻断、放弃重载、真实协调器切页取消/保存/返回/重开/导出通过；主窗口关闭人工未验。\n边界：保存失败阻断、放弃重载、真实协调器切页取消/保存/返回/重开/导出通过；主窗口关闭人工未验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P05",
+                  "B05-06",
+                  "B05-07",
+                  "B05-08",
+                  "B05-09",
+                  "B05-11",
+                  "B05-18",
+                  "B05-19",
+                  "B05-20",
+                  "B05-21"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:811 AnnotationManagement::onNavigateTo",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:818 AnnotationManagement::onReturnToGallery",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:905 AnnotationManagement::applyImageAdjustments"
+                ]
+              },
+              {
+                "id": "F27",
+                "title": "F27 Qt原生连续标注工作区",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "原生工作区直接连接 AnnotationModel 和 AnnotationStore；无需Python、QProcess或外部窗口。\nCtrl+Enter保存并下一张，H查看原图，B/E/P/R/F/S或V切工具，[ ]调整笔刷；这些快捷键在类别或形状列表焦点下仍有效。\nLabelMe运行入口、环境扫描、适配脚本和部署退役；已有LabelMe rectangle/polygon JSON仍可导入。\n验证：原生入口无外部launch槽断言、画布事件、失败重试与重开、访客拒绝和offscreen截图；可见桌面未验。\n边界：参考DLT 26.03交互原则；没有本机参考软件对照，不宣称完整复刻。AI辅助、mask裁切拆分、多选变换和旋转角度拖动未实现。",
+                "children": [
+                  {
+                    "id": "F27-current-20261115",
+                    "title": "历史记录：当前流程与验证边界",
+                    "note": "启动和写标签要求标注写权限及未保存决策；Python路径持久化要求系统设置写；撤权尝试退出外部进程。\n验证：仅静态确认授权和生命周期入口；未启动LabelMe，不宣称窗口嵌入/外部保存已验证。\n边界：仅静态确认授权和生命周期入口；未启动LabelMe，不宣称窗口嵌入/外部保存已验证。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "历史：外部入口已退役"
+                  }
+                ],
+                "labels": [
+                  "P05",
+                  "B05-10"
+                ],
+                "sources": [
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1718 AnnotationManagement::onSaveAndNext",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1028 AnnotationManagement::onCanvasKeyPressed",
+                  "src/deeplearning/widgets/AnnotationCanvas.cpp:144 AnnotationCanvas::wheelEvent",
+                  "src/deeplearning/widgets/DeepLearningWidget.cpp:61 DeepLearningWidget::initUI"
+                ]
+              },
+              {
+                "id": "an-P05-annotation-loaded",
+                "title": "P05-annotation-loaded",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P05-annotation-loaded.png\n标注页加载真实导入的演示图像及掩码\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P05-annotation-loaded.png"
+              },
+              {
+                "id": "an-P05-annotation-saved",
+                "title": "P05-annotation-saved",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P05-annotation-saved.png\n两次点击完成矩形后保存；以模型形状数和文件像素验证实际结果\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P05-annotation-saved.png"
+              },
+              {
+                "id": "an-P05-annotation-reopened",
+                "title": "P05-annotation-reopened",
+                "status": "自动业务回归",
+                "note": "2026-11-15当前Release offscreen集成回归：矩形保存→图库→重开，形状/坐标/类别断言通过。",
+                "image": "screenshots/P05-workflow-reopened-20261115.png"
+              },
+              {
+                "id": "an-native-offscreen-20261117",
+                "title": "2026-11-17 Qt原生标注工作区（合成样本）",
+                "status": "实际offscreen截图；可见桌面未验",
+                "image": "screenshots/P05-native-annotation-offscreen-20261117.png"
+              }
+            ]
+          },
+          {
+            "id": "an-load",
+            "title": "加载完成为clean",
+            "status": "当前实现；限定范围验证",
+            "note": "读取当前PNG/JSON/txt，校验后reset模型并清撤销历史，画布/列表同源。"
+          },
+          {
+            "id": "an-model",
+            "title": "AnnotationModel与唯一撤销栈",
+            "status": "当前实现；限定范围验证",
+            "note": "工具、列表、渲染、存储读取同一形状；保存快照控制dirty。"
+          },
+          {
+            "id": "an-old",
+            "title": "唯一模型的视图与撤销",
+            "status": "当前实现；验证边界见备注",
+            "note": "旧m_shapes与旧Undo已移除，所有读写消费AnnotationModel。"
+          },
+          {
+            "id": "an-fail",
+            "title": "保存重开回归通过",
+            "status": "当前实现；验证边界见备注",
+            "note": "原缺陷历史保留runtime-ui.json；当前新矩形/坐标/类别/像素重开验证通过。"
+          },
+          {
+            "id": "an-writefail",
+            "title": "写失败保留编辑并重试",
+            "status": "当前实现；验证边界见备注",
+            "note": "失败返回路径和原因；不清dirty；保存失败阻止离开。"
+          },
+          {
+            "id": "an-return",
+            "title": "保存 / 放弃 / 取消",
+            "status": "当前实现；验证边界见备注",
+            "note": "统一离开决策，提示时暂停自动保存；放弃重读已保存数据，取消保留。"
+          },
+          {
+            "id": "an-labelme",
+            "title": "原生连续操作；外部标注入口退役",
+            "status": "自动回归 + 静态确认",
+            "note": "Qt编辑、保存、视野和导航在同一工作区闭环；保留LabelMe JSON读取兼容。"
+          }
+        ]
+      },
+      "relationships": [
+        {
+          "from": "an-load",
+          "to": "F23",
+          "title": "可编辑图像"
+        },
+        {
+          "from": "F23",
+          "to": "an-model",
+          "title": "现代Transaction"
+        },
+        {
+          "from": "an-model",
+          "to": "an-old",
+          "title": "读取同一权威模型"
+        },
+        {
+          "from": "an-old",
+          "to": "F24",
+          "title": "统一模型序列化"
+        },
+        {
+          "from": "F24",
+          "to": "an-fail",
+          "title": "提交后重读验证通过"
+        },
+        {
+          "from": "F24",
+          "to": "an-writefail",
+          "title": "失败保留dirty"
+        },
+        {
+          "from": "F25",
+          "to": "an-old",
+          "title": "读取同一权威模型"
+        },
+        {
+          "from": "F26",
+          "to": "an-return",
+          "title": "切图/返回"
+        },
+        {
+          "from": "an-return",
+          "to": "an-fail",
+          "title": "提交后重新读取验证"
+        },
+        {
+          "from": "F27",
+          "to": "an-labelme",
+          "title": "外部进程共享标签"
+        }
+      ]
+    },
+    {
+      "title": "05 登录权限与共享能力",
+      "root": {
+        "id": "auth",
+        "title": "单账户 / 登录态 / 全页面只读",
+        "status": "静态代码确认",
+        "children": [
+          {
+            "id": "auth-P00",
+            "title": "P00 登录",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F01",
+                "title": "F01 单账户登录",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "DatabaseManager::singleAccount选择唯一兼容账户，validateLogin只认证该账户。\n错误密码或取消保持访客；成功建立会话，所有已实现写操作统一解锁。\n验证：真实LoginDialog错误密码、取消与成功的offscreen回归通过；记住密码不自动填充，成功后旧字段清理。\n边界：新库superadmin/admin123；已有库沿用原密码，旧账户保留但不参与登录。密码算法沿用SHA-256。",
+                "children": [
+                  {
+                    "id": "F01-single-account-20261117",
+                    "title": "当前单账户流程与验证边界",
+                    "note": "DatabaseManager::singleAccount选择唯一兼容账户，validateLogin只认证该账户。\n错误密码或取消保持访客；成功建立会话，所有已实现写操作统一解锁。\n验证：真实LoginDialog错误密码、取消与成功的offscreen回归通过；记住密码不自动填充，成功后旧字段清理。\n边界：新库superadmin/admin123；已有库沿用原密码，旧账户保留但不参与登录。密码算法沿用SHA-256。",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核"
+                  }
+                ],
+                "labels": [
+                  "P00"
+                ],
+                "sources": [
+                  "src/app/Login.cpp:35 LoginDialog::onLoginClicked",
+                  "src/core/DatabaseManager.cpp:39 DatabaseManager::singleAccount",
+                  "src/core/DatabaseManager.cpp:46 DatabaseManager::validateLogin"
+                ]
+              },
+              {
+                "id": "auth-P00-login",
+                "title": "历史截图（2026-11-14）：P00-login",
+                "status": "历史界面，不代表当前实现",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P00-login.png\n原始登录页，只展示、不提交，不保存登录设置\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P00-login.png"
+              },
+              {
+                "id": "capture-P00-single-account-20261117",
+                "title": "P00 单账户登录：密码为空，可保持只读",
+                "image": "screenshots/P00-single-account-20261117.png",
+                "status": "2026-11-17真实Qt offscreen截图",
+                "note": "来自workflow-regression的真实主窗口/登录对话框；临时工程、内存SQLite、临时INI。不是可见Windows桌面手动验收。"
+              }
+            ]
+          },
+          {
+            "id": "auth-P01",
+            "title": "P01 共享导航",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F02",
+                "title": "F02 模块导航与状态栏",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "访客可访问四个一级页面和九个深度学习子页，保留只读项目/模型/标签浏览。\n登录统一启用写操作，退出后恢复只读；页面不隐藏、不因旧权限表禁用。\n验证：四主页面与九子页均可访问；访客通过图库打开图片标注；项目/模型/数据集配置字节保持不变。\n边界：可见Windows原生桌面与外部进程仍需补验。",
+                "children": [
+                  {
+                    "id": "F02-single-account-20261117",
+                    "title": "当前单账户流程与验证边界",
+                    "note": "访客可访问四个一级页面和九个深度学习子页，保留只读项目/模型/标签浏览。\n登录统一启用写操作，退出后恢复只读；页面不隐藏、不因旧权限表禁用。\n验证：四主页面与九子页均可访问；访客通过图库打开图片标注；项目/模型/数据集配置字节保持不变。\n边界：可见Windows原生桌面与外部进程仍需补验。",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核"
+                  }
+                ],
+                "labels": [
+                  "P01"
+                ],
+                "sources": [
+                  "src/app/FuseVision.cpp:333 FuseVision::onMenuItemClicked",
+                  "src/app/FuseVision.cpp:378 FuseVision::initPagesAsync",
+                  "src/deeplearning/widgets/DeepLearningWidget.cpp:297 DeepLearningWidget::applyPermissions"
+                ]
+              },
+              {
+                "id": "F03",
+                "title": "F03 亮暗主题与日志面板",
+                "status": "部分自动验证 + 静态复核；见边界",
+                "note": "主题会持久化偏好，未登录时主题写操作禁用；日志面板浏览不受限。\n主题按钮调用 ThemeManager::setTheme 并保存 ui/theme\nthemeChanged 驱动页面重新套用语义调色板和图标\n日志面板接收显式消息并HTML转义；可折叠、拖动分隔条\n验证：自动验证访客直接调用主题处理器被拒绝，当前主题不变；未执行登录后的主题持久化操作。\n边界：日志面板不是spdlog文件全部记录的实时镜像；只显示接入的业务消息。登录后主题保存仍为静态复核。",
+                "children": [
+                  {
+                    "id": "F03-single-account-20261117",
+                    "title": "当前单账户流程与验证边界",
+                    "note": "主题会持久化偏好，未登录时主题写操作禁用；日志面板浏览不受限。\n主题按钮调用 ThemeManager::setTheme 并保存 ui/theme\nthemeChanged 驱动页面重新套用语义调色板和图标\n日志面板接收显式消息并HTML转义；可折叠、拖动分隔条\n验证：自动验证访客直接调用主题处理器被拒绝，当前主题不变；未执行登录后的主题持久化操作。\n边界：日志面板不是spdlog文件全部记录的实时镜像；只显示接入的业务消息。登录后主题保存仍为静态复核。",
+                    "status": "部分自动验证 + 静态复核；见边界"
+                  }
+                ],
+                "labels": [
+                  "P01"
+                ],
+                "sources": [
+                  "src/app/FuseVision.cpp:189 FuseVision::onToggleTheme",
+                  "src/ui/ThemeManager.cpp:154 ThemeManager::setTheme",
+                  "src/ui/LogMonitor.cpp:113 LogMonitor::log"
+                ]
+              },
+              {
+                "id": "F04",
+                "title": "F04 登录与退出登录",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "未登录时打开单账户密码框；取消或失败保持只读。\n已登录时先完成未保存标注的保存/放弃/取消；保存失败或取消阻止退出，否则恢复只读。\n验证：实际主窗口登录/退出处理器的取消、保存失败、恢复重试及放弃通过；会话和页面状态一致。\n边界：主窗口处理器在offscreen验证；可见Windows原生桌面仍待补验。",
+                "children": [
+                  {
+                    "id": "F04-single-account-20261117",
+                    "title": "当前单账户流程与验证边界",
+                    "note": "未登录时打开单账户密码框；取消或失败保持只读。\n已登录时先完成未保存标注的保存/放弃/取消；保存失败或取消阻止退出，否则恢复只读。\n验证：实际主窗口登录/退出处理器的取消、保存失败、恢复重试及放弃通过；会话和页面状态一致。\n边界：主窗口处理器在offscreen验证；可见Windows原生桌面仍待补验。",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核"
+                  }
+                ],
+                "labels": [
+                  "P01"
+                ],
+                "sources": [
+                  "src/app/FuseVision.cpp:199 FuseVision::onSwitchUser",
+                  "src/core/SessionManager.cpp:6 SessionManager::login",
+                  "src/core/SessionManager.cpp:13 SessionManager::logout"
+                ]
+              },
+              {
+                "id": "auth-P01-dl-empty",
+                "title": "历史截图（2026-11-14）：P01-dl-empty",
+                "status": "历史界面，不代表当前实现",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P01-dl-empty.png\n深度学习首页，未创建项目\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P01-dl-empty.png"
+              },
+              {
+                "id": "auth-P14-user-readonly",
+                "title": "历史截图（2026-11-14）：P14-user-readonly",
+                "status": "历史界面，不代表当前实现",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P14-user-readonly.png\n切换内存会话到普通用户后观察项目写按钮\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P14-user-readonly.png"
+              },
+              {
+                "id": "capture-P01-guest-readonly-20261117",
+                "title": "P01 退出后只读：全部导航保留，改密禁用",
+                "image": "screenshots/P01-guest-readonly-20261117.png",
+                "status": "2026-11-17真实Qt offscreen截图",
+                "note": "来自workflow-regression的真实主窗口/登录对话框；临时工程、内存SQLite、临时INI。不是可见Windows桌面手动验收。"
+              }
+            ]
+          },
+          {
+            "id": "auth-P12",
+            "title": "P12 账户设置",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F34",
+                "title": "F34 账户状态与修改密码",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "校验登录、当前密码、最小长度及两次新密码一致。\n比较并更新唯一账户hash，失败保留原密码；成功清空输入并清理旧记住字段。\n验证：访客处理器拒绝、错误旧密码、确认不一致及成功改密均通过；隔离数据库恢复测试密码。\n边界：旧账户数据不删除；没有新增用户、管理员重置其他用户密码或忘记密码流程。",
+                "children": [
+                  {
+                    "id": "F34-single-account-20261117",
+                    "title": "当前单账户流程与验证边界",
+                    "note": "校验登录、当前密码、最小长度及两次新密码一致。\n比较并更新唯一账户hash，失败保留原密码；成功清空输入并清理旧记住字段。\n验证：访客处理器拒绝、错误旧密码、确认不一致及成功改密均通过；隔离数据库恢复测试密码。\n边界：旧账户数据不删除；没有新增用户、管理员重置其他用户密码或忘记密码流程。",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核"
+                  }
+                ],
+                "labels": [
+                  "P12"
+                ],
+                "sources": [
+                  "src/app/UserManagementWidget.cpp:33 UserManagementWidget::onChangePassword",
+                  "src/core/DatabaseManager.cpp:62 DatabaseManager::changePassword"
+                ]
+              },
+              {
+                "id": "F35",
+                "title": "F35 统一只读与编辑状态",
+                "status": "自动回归通过（2026-11-17，offscreen） + 静态复核",
+                "note": "不再查询数据库角色权限矩阵或创建模块权限记录。\nAccessControl/PermissionGuard统一依赖登录状态，写处理器保留实际拒绝。\n验证：直接写处理器拒绝且文件/数据库不变；登录/退出动态刷新；旧禁止权限不影响新规则。\n边界：历史users和user_permissions不清空；其他账户不认证；训练等占位功能不会因解锁而获得实现。",
+                "children": [
+                  {
+                    "id": "F35-single-account-20261117",
+                    "title": "当前单账户流程与验证边界",
+                    "note": "不再查询数据库角色权限矩阵或创建模块权限记录。\nAccessControl/PermissionGuard统一依赖登录状态，写处理器保留实际拒绝。\n验证：直接写处理器拒绝且文件/数据库不变；登录/退出动态刷新；旧禁止权限不影响新规则。\n边界：历史users和user_permissions不清空；其他账户不认证；训练等占位功能不会因解锁而获得实现。",
+                    "status": "自动回归通过（2026-11-17，offscreen） + 静态复核"
+                  }
+                ],
+                "labels": [
+                  "P12"
+                ],
+                "sources": [
+                  "src/core/AccessControl.h:15 canWrite",
+                  "src/ui/PermissionGuard.cpp:12 PermissionGuard::canWrite"
+                ]
+              },
+              {
+                "id": "auth-P12-users",
+                "title": "历史截图（2026-11-14）：P12-users",
+                "status": "历史界面，不代表当前实现",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P12-users.png\n内存数据库中的用户与权限矩阵\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P12-users.png"
+              },
+              {
+                "id": "capture-P12-single-account-20261117",
+                "title": "P12 已登录账户：仅状态与修改密码",
+                "image": "screenshots/P12-single-account-20261117.png",
+                "status": "2026-11-17真实Qt offscreen截图",
+                "note": "来自workflow-regression的真实主窗口/登录对话框；临时工程、内存SQLite、临时INI。不是可见Windows桌面手动验收。"
+              }
+            ],
+            "note": "状态与修改自身密码，无用户列表/角色/权限矩阵。"
+          },
+          {
+            "id": "auth-session",
+            "title": "SessionManager：访客/已登录",
+            "status": "静态代码确认",
+            "note": "sessionChanged驱动所有控件刷新，不再加载权限缓存。"
+          },
+          {
+            "id": "auth-reg",
+            "title": "AccessControl→Guard：统一登录态",
+            "status": "静态代码确认",
+            "note": "Registry仅保留页面键兼容接口，不创建或读取user_permissions。"
+          },
+          {
+            "id": "auth-gap",
+            "title": "执行守卫：登录后可写",
+            "status": "当前实现；验证边界见备注",
+            "note": "访客全部页面可读，项目/模型/类别/标注/导入导出/设置处理器直接调用也拒绝写入。"
+          },
+          {
+            "id": "auth-account",
+            "title": "Q01 已决定：单账户",
+            "status": "待确认",
+            "note": "ISS-007按明确的新需求关闭；不再新增其他用户名。"
+          }
+        ],
+        "note": "2026-11-17取消角色与权限矩阵；历史数据保留，写操作统一看登录态。"
+      },
+      "relationships": [
+        {
+          "from": "F01",
+          "to": "auth-session",
+          "title": "认证成功"
+        },
+        {
+          "from": "F04",
+          "to": "auth-session",
+          "title": "覆盖会话"
+        },
+        {
+          "from": "auth-session",
+          "to": "auth-reg",
+          "title": "刷新权限"
+        },
+        {
+          "from": "F35",
+          "to": "auth-reg",
+          "title": "更新选中用户权限"
+        },
+        {
+          "from": "auth-reg",
+          "to": "auth-gap",
+          "title": "广播刷新/执行处守卫"
+        },
+        {
+          "from": "F34",
+          "to": "auth-account",
+          "title": "任意用户名可新增"
+        },
+        {
+          "from": "auth-account",
+          "to": "F01",
+          "title": "现有登录入口不支持"
+        }
+      ]
+    },
+    {
+      "title": "06 系统设置与生效范围",
+      "root": {
+        "id": "settings",
+        "title": "P13 系统设置",
+        "status": "静态代码确认",
+        "children": [
+          {
+            "id": "ss-P13",
+            "title": "P13 系统设置",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F36",
+                "title": "F36 路径与日志级别保存",
+                "status": "自动回归（限定范围） + 静态代码复核",
+                "note": "日志路径/级别立即生效，数据库/业务默认根重启生效且不迁移已有项目。保存失败恢复内存并可重试。\n验证：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。\n边界：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F36-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "日志路径/级别立即生效，数据库/业务默认根重启生效且不迁移已有项目。保存失败恢复内存并可重试。\n验证：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。\n边界：临时QSettings保存重读、阻塞路径失败重试、Logger切换及活动根不变通过；完整进程重启待验。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "自动回归（限定范围） + 静态代码复核"
+                  }
+                ],
+                "labels": [
+                  "P13",
+                  "B13-01",
+                  "B13-02",
+                  "B13-03",
+                  "B13-04",
+                  "B13-05",
+                  "B13-08"
+                ],
+                "sources": [
+                  "src/app/SystemSettingsWidget.cpp:265 SystemSettingsWidget::onSave",
+                  "src/core/SettingsManager.cpp:42 SettingsManager::save",
+                  "src/deeplearning/widgets/ProjectManagement.cpp:162 ProjectManagement::ProjectManagement"
+                ]
+              },
+              {
+                "id": "F37",
+                "title": "F37 重置五项路径",
+                "status": "部分自动验证 + 静态复核；见边界",
+                "note": "仅重置日志/数据库/项目/传统数据/相机路径；日志级别、Python、主题保留。确认后共用保存策略，取消无变更。\n验证：取消重置自动通过；确认重置写入和真实重启未执行。\n边界：取消重置自动通过；确认重置写入和真实重启未执行。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F37-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "仅重置日志/数据库/项目/传统数据/相机路径；日志级别、Python、主题保留。确认后共用保存策略，取消无变更。\n验证：取消重置自动通过；确认重置写入和真实重启未执行。\n边界：取消重置自动通过；确认重置写入和真实重启未执行。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "部分自动验证 + 静态复核；见边界"
+                  }
+                ],
+                "labels": [
+                  "P13",
+                  "B13-07"
+                ],
+                "sources": [
+                  "src/app/SystemSettingsWidget.cpp:296 SystemSettingsWidget::onReset"
+                ]
+              },
+              {
+                "id": "F38",
+                "title": "F38 清理旧日志",
+                "status": "部分自动验证 + 静态复核；见边界",
+                "note": "匹配实际活动Logger的basename_日期文件（兼容.log）；文件日期与mtime均过期，保护当前日志和符号链接，失败列路径。\n验证：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。\n边界：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                "children": [
+                  {
+                    "id": "F38-current-20261115",
+                    "title": "当前流程与验证边界",
+                    "note": "匹配实际活动Logger的basename_日期文件（兼容.log）；文件日期与mtime均过期，保护当前日志和符号链接，失败列路径。\n验证：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。\n边界：实际Logger文件名与过期选择器自动验证；清理对话框/删除失败分支静态复核。 支持范围与产品Q02–Q04（Q01已确定单账户）见ISSUES.md。",
+                    "status": "部分自动验证 + 静态复核；见边界"
+                  }
+                ],
+                "labels": [
+                  "P13",
+                  "B13-06"
+                ],
+                "sources": [
+                  "src/app/SystemSettingsWidget.cpp:308 SystemSettingsWidget::onCleanLogs",
+                  "src/core/Logger.cpp:40 Logger::init"
+                ]
+              },
+              {
+                "id": "ss-P13-settings",
+                "title": "P13-settings",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P13-settings.png\n系统设置页面，显示隔离验证路径\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P13-settings.png"
+              }
+            ]
+          },
+          {
+            "id": "ss-store",
+            "title": "SettingsManager / QSettings",
+            "status": "静态代码确认",
+            "note": "setter改内存，save同步；Windows原生格式，不保证ini。"
+          },
+          {
+            "id": "ss-now",
+            "title": "日志立即生效",
+            "status": "静态代码确认",
+            "note": "保存重建Logger；重置未重建Logger。"
+          },
+          {
+            "id": "ss-restart",
+            "title": "DB与业务默认根重启生效",
+            "status": "当前实现；验证边界见备注",
+            "note": "保持当前活动根；不迁移既有项目。"
+          },
+          {
+            "id": "ss-cache",
+            "title": "当前活动根与下次配置分开",
+            "status": "当前实现；验证边界见备注",
+            "note": "保存配置不改变本次运行项目根；Logger即时切换。"
+          },
+          {
+            "id": "ss-pending",
+            "title": "日志实际文件名已验证",
+            "status": "当前实现；验证边界见备注",
+            "note": "匹配无.log日期日志，保护当前日志和符号链接；删除错误逐项反馈。"
+          }
+        ]
+      },
+      "relationships": [
+        {
+          "from": "F36",
+          "to": "ss-store",
+          "title": "持久化"
+        },
+        {
+          "from": "F37",
+          "to": "ss-store",
+          "title": "仅重置五路径"
+        },
+        {
+          "from": "F36",
+          "to": "ss-now",
+          "title": "重建Logger"
+        },
+        {
+          "from": "F36",
+          "to": "ss-restart",
+          "title": "数据库路径"
+        },
+        {
+          "from": "F36",
+          "to": "ss-cache",
+          "title": "默认根下次启动生效"
+        },
+        {
+          "from": "F38",
+          "to": "ss-pending",
+          "title": "实际命名匹配"
+        }
+      ]
+    },
+    {
+      "title": "07 占位功能与传统视觉边界",
+      "root": {
+        "id": "bound",
+        "title": "当前未接通范围",
+        "status": "静态代码确认",
+        "children": [
+          {
+            "id": "bound-P06",
+            "title": "P06 数据检查",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F28",
+                "title": "F28 数据检查占位页",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "位置：FuseVision → 深度学习 → P06 → 数据检查\n按钮编号：该入口未有独立截图控件编号，以页面与原文定位\n场景：了解当前版本的模块边界。\n可用条件：深度学习顶部同名标签；需该权限点canRead。\n输入/默认/校验：无参数表单、无执行按钮。\n步骤：1. 点击标签切换至占位Widget\n结果：显示待开发说明。\n失败/取消/边界：没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。\n文件/接口/算法：页面Widget与权限键；无训练器/推理器调用。\n实际验证范围：实际逐页显示并截图，确认占位状态。",
+                "children": [
+                  {
+                    "id": "F28-entry",
+                    "title": "菜单/按钮：数据检查",
+                    "status": "静态代码确认",
+                    "note": "原文：数据检查\n截图编号：该入口未有独立截图控件编号，以页面与原文定位\n深度学习顶部同名标签；需该权限点canRead。\n无参数表单、无执行按钮。"
+                  },
+                  {
+                    "id": "F28-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F28-s1",
+                        "title": "1. 点击标签切换至占位Widget",
+                        "status": "静态代码确认",
+                        "note": "点击标签切换至占位Widget"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F28-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "显示待开发说明。\n没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。"
+                  },
+                  {
+                    "id": "F28-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "页面Widget与权限键；无训练器/推理器调用。",
+                    "sources": [
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:61 DeepLearningWidget::initUI"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P06"
+                ]
+              },
+              {
+                "id": "bound-P06-placeholder",
+                "title": "P06-placeholder",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P06-placeholder.png\n数据检查占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P06-placeholder.png"
+              }
+            ]
+          },
+          {
+            "id": "bound-P07",
+            "title": "P07 数据拆分",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F29",
+                "title": "F29 数据拆分占位页",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "位置：FuseVision → 深度学习 → P07 → 数据拆分\n按钮编号：该入口未有独立截图控件编号，以页面与原文定位\n场景：了解当前版本的模块边界。\n可用条件：深度学习顶部同名标签；需该权限点canRead。\n输入/默认/校验：无参数表单、无执行按钮。\n步骤：1. 点击标签切换至占位Widget\n结果：显示待开发说明。\n失败/取消/边界：没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。\n文件/接口/算法：页面Widget与权限键；无训练器/推理器调用。\n实际验证范围：实际逐页显示并截图，确认占位状态。",
+                "children": [
+                  {
+                    "id": "F29-entry",
+                    "title": "菜单/按钮：数据拆分",
+                    "status": "静态代码确认",
+                    "note": "原文：数据拆分\n截图编号：该入口未有独立截图控件编号，以页面与原文定位\n深度学习顶部同名标签；需该权限点canRead。\n无参数表单、无执行按钮。"
+                  },
+                  {
+                    "id": "F29-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F29-s1",
+                        "title": "1. 点击标签切换至占位Widget",
+                        "status": "静态代码确认",
+                        "note": "点击标签切换至占位Widget"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F29-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "显示待开发说明。\n没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。"
+                  },
+                  {
+                    "id": "F29-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "页面Widget与权限键；无训练器/推理器调用。",
+                    "sources": [
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:61 DeepLearningWidget::initUI"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P07"
+                ]
+              },
+              {
+                "id": "bound-P07-placeholder",
+                "title": "P07-placeholder",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P07-placeholder.png\n数据拆分占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P07-placeholder.png"
+              }
+            ]
+          },
+          {
+            "id": "bound-P08",
+            "title": "P08 模型训练",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F30",
+                "title": "F30 模型训练占位页",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "位置：FuseVision → 深度学习 → P08 → 模型训练\n按钮编号：该入口未有独立截图控件编号，以页面与原文定位\n场景：了解当前版本的模块边界。\n可用条件：深度学习顶部同名标签；需该权限点canRead。\n输入/默认/校验：无参数表单、无执行按钮。\n步骤：1. 点击标签切换至占位Widget\n结果：显示待开发说明。\n失败/取消/边界：没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。\n文件/接口/算法：页面Widget与权限键；无训练器/推理器调用。\n实际验证范围：实际逐页显示并截图，确认占位状态。",
+                "children": [
+                  {
+                    "id": "F30-entry",
+                    "title": "菜单/按钮：模型训练",
+                    "status": "静态代码确认",
+                    "note": "原文：模型训练\n截图编号：该入口未有独立截图控件编号，以页面与原文定位\n深度学习顶部同名标签；需该权限点canRead。\n无参数表单、无执行按钮。"
+                  },
+                  {
+                    "id": "F30-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F30-s1",
+                        "title": "1. 点击标签切换至占位Widget",
+                        "status": "静态代码确认",
+                        "note": "点击标签切换至占位Widget"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F30-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "显示待开发说明。\n没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。"
+                  },
+                  {
+                    "id": "F30-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "页面Widget与权限键；无训练器/推理器调用。",
+                    "sources": [
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:61 DeepLearningWidget::initUI"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P08"
+                ]
+              },
+              {
+                "id": "bound-P08-placeholder",
+                "title": "P08-placeholder",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P08-placeholder.png\n模型训练占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P08-placeholder.png"
+              }
+            ]
+          },
+          {
+            "id": "bound-P09",
+            "title": "P09 模型预测",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F31",
+                "title": "F31 模型预测占位页",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "位置：FuseVision → 深度学习 → P09 → 模型预测\n按钮编号：该入口未有独立截图控件编号，以页面与原文定位\n场景：了解当前版本的模块边界。\n可用条件：深度学习顶部同名标签；需该权限点canRead。\n输入/默认/校验：无参数表单、无执行按钮。\n步骤：1. 点击标签切换至占位Widget\n结果：显示待开发说明。\n失败/取消/边界：没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。\n文件/接口/算法：页面Widget与权限键；无训练器/推理器调用。\n实际验证范围：实际逐页显示并截图，确认占位状态。",
+                "children": [
+                  {
+                    "id": "F31-entry",
+                    "title": "菜单/按钮：模型预测",
+                    "status": "静态代码确认",
+                    "note": "原文：模型预测\n截图编号：该入口未有独立截图控件编号，以页面与原文定位\n深度学习顶部同名标签；需该权限点canRead。\n无参数表单、无执行按钮。"
+                  },
+                  {
+                    "id": "F31-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F31-s1",
+                        "title": "1. 点击标签切换至占位Widget",
+                        "status": "静态代码确认",
+                        "note": "点击标签切换至占位Widget"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F31-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "显示待开发说明。\n没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。"
+                  },
+                  {
+                    "id": "F31-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "页面Widget与权限键；无训练器/推理器调用。",
+                    "sources": [
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:61 DeepLearningWidget::initUI"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P09"
+                ]
+              },
+              {
+                "id": "bound-P09-placeholder",
+                "title": "P09-placeholder",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P09-placeholder.png\n模型预测占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P09-placeholder.png"
+              }
+            ]
+          },
+          {
+            "id": "bound-P10",
+            "title": "P10 模型导出",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F32",
+                "title": "F32 模型导出占位页",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "位置：FuseVision → 深度学习 → P10 → 模型导出\n按钮编号：该入口未有独立截图控件编号，以页面与原文定位\n场景：了解当前版本的模块边界。\n可用条件：深度学习顶部同名标签；需该权限点canRead。\n输入/默认/校验：无参数表单、无执行按钮。\n步骤：1. 点击标签切换至占位Widget\n结果：显示待开发说明。\n失败/取消/边界：没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。\n文件/接口/算法：页面Widget与权限键；无训练器/推理器调用。\n实际验证范围：实际逐页显示并截图，确认占位状态。",
+                "children": [
+                  {
+                    "id": "F32-entry",
+                    "title": "菜单/按钮：模型导出",
+                    "status": "静态代码确认",
+                    "note": "原文：模型导出\n截图编号：该入口未有独立截图控件编号，以页面与原文定位\n深度学习顶部同名标签；需该权限点canRead。\n无参数表单、无执行按钮。"
+                  },
+                  {
+                    "id": "F32-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F32-s1",
+                        "title": "1. 点击标签切换至占位Widget",
+                        "status": "静态代码确认",
+                        "note": "点击标签切换至占位Widget"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F32-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "显示待开发说明。\n没有已接通的检查/拆分/训练/预测/模型导出流程。数据集页面有局部质量统计及数据导出，不代表这些独立页已完成。"
+                  },
+                  {
+                    "id": "F32-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "页面Widget与权限键；无训练器/推理器调用。",
+                    "sources": [
+                      "src/deeplearning/widgets/DeepLearningWidget.cpp:61 DeepLearningWidget::initUI"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P10"
+                ]
+              },
+              {
+                "id": "bound-P10-placeholder",
+                "title": "P10-placeholder",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P10-placeholder.png\n模型导出占位页\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P10-placeholder.png"
+              }
+            ]
+          },
+          {
+            "id": "bound-P11",
+            "title": "P11 传统视觉",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "F33",
+                "title": "F33 工具栏与三区布局",
+                "status": "实际操作验证 + 静态代码确认",
+                "note": "位置：FuseVision → 传统视觉 → P11 → 流程文件 / 相机配置 / 相机标定 / 相机建模 / 通讯设置 / 系统设置 / 采集 / 预处理 / 定位 / 测量 / 识别\n按钮编号：B11-01、B11-02、B11-03、B11-04、B11-05、B11-06、B11-08、B11-09、B11-10、B11-11、B11-12、B11-16\n场景：查看传统视觉规划入口。\n可用条件：侧边栏传统视觉；工具栏按对应读写权限控制enabled。\n输入/默认/校验：无实际算法参数；资源树显示示例流程和未连接相机。\n步骤：1. 构造资源树、编辑器占位、视觉工具箱\n2. PermissionGuard关注七个传统权限键\n3. applyPermissions控制动作可用状态\n结果：显示流程编辑器/图像显示及五类工具的待开发布局。\n失败/取消/边界：工具栏动作未接通业务triggered处理；不能采集相机、标定或执行视觉流程。本次只观察，不将SDK存在视为业务可用。\n文件/接口/算法：Qt工具栏/树/堆叠页；sdk/MVS、Halcon尚无src业务调用证据。\n实际验证范围：实际显示原始三区布局和占位文案。",
+                "children": [
+                  {
+                    "id": "F33-entry",
+                    "title": "菜单/按钮：流程文件 / 相机配置 / 相机标定 / 相机建模 / 通讯设置 / 系统设",
+                    "status": "静态代码确认",
+                    "note": "原文：流程文件 / 相机配置 / 相机标定 / 相机建模 / 通讯设置 / 系统设置 / 采集 / 预处理 / 定位 / 测量 / 识别\n截图编号：B11-01、B11-02、B11-03、B11-04、B11-05、B11-06、B11-08、B11-09、B11-10、B11-11、B11-12、B11-16\n侧边栏传统视觉；工具栏按对应读写权限控制enabled。\n无实际算法参数；资源树显示示例流程和未连接相机。"
+                  },
+                  {
+                    "id": "F33-flow",
+                    "title": "操作流程",
+                    "status": "静态代码确认",
+                    "children": [
+                      {
+                        "id": "F33-s1",
+                        "title": "1. 构造资源树、编辑器占位、视觉工具箱",
+                        "status": "静态代码确认",
+                        "note": "构造资源树、编辑器占位、视觉工具箱"
+                      },
+                      {
+                        "id": "F33-s2",
+                        "title": "2. PermissionGuard关注七个传统权…",
+                        "status": "静态代码确认",
+                        "note": "PermissionGuard关注七个传统权限键"
+                      },
+                      {
+                        "id": "F33-s3",
+                        "title": "3. applyPermissions控制动作可用…",
+                        "status": "静态代码确认",
+                        "note": "applyPermissions控制动作可用状态"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "F33-end",
+                    "title": "结果 / 失败 / 取消",
+                    "status": "静态代码确认",
+                    "note": "显示流程编辑器/图像显示及五类工具的待开发布局。\n工具栏动作未接通业务triggered处理；不能采集相机、标定或执行视觉流程。本次只观察，不将SDK存在视为业务可用。"
+                  },
+                  {
+                    "id": "F33-data",
+                    "title": "数据与实现",
+                    "status": "静态代码确认",
+                    "note": "Qt工具栏/树/堆叠页；sdk/MVS、Halcon尚无src业务调用证据。",
+                    "sources": [
+                      "src/traditional/TraditionalWidget.cpp:95 TraditionalWidget::initToolBar",
+                      "src/traditional/TraditionalWidget.cpp:258 TraditionalWidget::applyPermissions"
+                    ]
+                  }
+                ],
+                "labels": [
+                  "P11",
+                  "B11-01",
+                  "B11-02",
+                  "B11-03",
+                  "B11-04",
+                  "B11-05",
+                  "B11-06",
+                  "B11-08",
+                  "B11-09",
+                  "B11-10",
+                  "B11-11",
+                  "B11-12",
+                  "B11-16"
+                ]
+              },
+              {
+                "id": "bound-P11-traditional",
+                "title": "P11-traditional",
+                "status": "实际操作验证",
+                "note": "2026-11-14历史offscreen截图，未覆盖更新后的完整界面。\n真实Qt Widget offscreen截图的等比缩小副本；原图：screenshots/P11-traditional.png\n传统视觉当前界面骨架\n按钮编号与坐标见SCREENSHOTS.md / button-index.json；截图不代表所有控件已操作。",
+                "image": "screenshots/xmind/P11-traditional.png"
+              }
+            ]
+          },
+          {
+            "id": "bound-exists",
+            "title": "P04已有局部能力",
+            "status": "静态代码确认",
+            "note": "数据集质量提示、数据导出与独立检查页/模型导出页不同。"
+          },
+          {
+            "id": "bound-sdk",
+            "title": "SDK存在不等于业务完成",
+            "status": "静态代码确认",
+            "note": "OpenCV/Halcon/MVS/YOLO依赖/资源存在，未见src相机、训练或推理执行链。"
+          }
+        ]
+      },
+      "relationships": [
+        {
+          "from": "F28",
+          "to": "bound-exists",
+          "title": "独立页仍占位"
+        },
+        {
+          "from": "F32",
+          "to": "bound-exists",
+          "title": "模型导出≠数据导出"
+        },
+        {
+          "from": "F33",
+          "to": "bound-sdk",
+          "title": "按钮无triggered业务处理"
+        }
+      ]
+    },
+    {
+      "title": "08 架构与数据关系",
+      "root": {
+        "id": "architecture",
+        "title": "core / ui / app / deeplearning / traditional",
+        "status": "静态代码确认",
+        "children": [
+          {
+            "id": "ar-entry",
+            "title": "app｜FuseVision / Login / Settings",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "src/main.cpp为启动组合根；app创建四顶层页。访客全部可读，单账户登录统一解锁，退出前处理未保存内容。主窗口头前向声明业务页。",
+            "sources": [
+              "src/main.cpp:105 int main",
+              "src/app/FuseVision.cpp:378 FuseVision::initPagesAsync"
+            ]
+          },
+          {
+            "id": "ar-dl",
+            "title": "deeplearning/widgets｜页面编排",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "FuseVisionDeepLearning链接共享UI和数据目标，协调项目→模型→数据集→标注；9子页中的训练预测等仍为占位。"
+          },
+          {
+            "id": "ar-project",
+            "title": "widgets → storage｜项目/模型",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "ProjectManagement / ModelManagement交互，ProjectConfig / ModelConfig持久化。FvprojInfo、FvdlInfo和任务类型在domain，不再由Widget头提供。"
+          },
+          {
+            "id": "ar-dataset",
+            "title": "widgets｜DatasetManagement",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "页面仍承担类别、图库、格式编排与质量检查；配对文件处理由DatasetFileService承担，未大规模重写。"
+          },
+          {
+            "id": "ar-anno",
+            "title": "model / tools / widgets｜标注",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "AnnotationModel唯一形状/dirty/撤销状态；六工具仅依赖模型与领域类型，Canvas和AnnotationManagement负责交互。"
+          },
+          {
+            "id": "ar-render",
+            "title": "domain / render｜几何与掩码",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "AnnotationShape与AnnotationRender使用Qt Gui，无Widgets。没有已接通的训练或推理执行器。"
+          },
+          {
+            "id": "ar-files",
+            "title": "storage｜AnnotationStore / DatasetFileService",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "配置、标签、配对提交回滚、统一编码与暂存导出；输入为领域类型，不包含DatasetManagement或AnnotationManagement。"
+          },
+          {
+            "id": "ar-db",
+            "title": "core｜DatabaseManager / SQLite",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "单账户认证与改密；保留历史users/user_permissions记录，旧权限不参与授权。非视觉项目总数据库。"
+          },
+          {
+            "id": "ar-shared",
+            "title": "core｜通用服务",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "Logger、Settings、Session、AccessControl、AtomicFile、RecoveryStore。无Widgets、业务页或视觉SDK依赖；授权判定与弹窗分开。"
+          },
+          {
+            "id": "ar-io",
+            "title": "storage｜AnnotationIO兼容入口",
+            "status": "当前代码与自动回归；边界见VALIDATION",
+            "note": "独立保留已有格式契约，依赖AnnotationShape，未假设与当前存储格式完全可互换。"
+          },
+          {
+            "id": "ar-contract",
+            "title": "任务语义待确认",
+            "status": "待确认",
+            "note": "Q02异常检测分类vs掩码；Q03自由/非自由与detect/obb实际映射。"
+          },
+          {
+            "id": "ar-ui",
+            "title": "ui｜共享界面",
+            "note": "Theme、LogMonitor、LoadingOverlay、PermissionGuard、WriteAccess；仅依赖core和Qt Widgets。拒绝弹窗不进入core。"
+          },
+          {
+            "id": "ar-data",
+            "title": "FuseVisionDeepLearningData｜无Widgets目标",
+            "note": "domain/model/render/storage/tools与集成路径辅助；链接Core + Qt Gui。QCoreApplication回归在QT_WIDGETS_LIB存在时拒绝编译。"
+          },
+          {
+            "id": "ar-traditional",
+            "title": "traditional｜传统视觉",
+            "note": "仅原有界面骨架；与深度学习互不依赖。算法执行引擎未实现，本轮未开发。"
+          },
+          {
+            "id": "ar-sdk",
+            "title": "FuseVisionVisionSdk｜SDK依赖边界",
+            "note": "OpenCV / Halcon / MVS的include/link集中于INTERFACE目标；由traditional私有消费，顶层继续发现依赖与部署运行库。"
+          },
+          {
+            "id": "ar-docs",
+            "title": "Doxygen 1.18.0｜HTML / XML",
+            "note": "docs/Doxyfile按实际模块分组，关键接口补充所有权、线程和失败语义。完整声明索引不代表所有历史成员注释完整。"
+          }
+        ],
+        "note": "2026-11-17按实际CMake目标与include整理；业务流程和磁盘格式不变。无Widgets数据目标及五项CTest验证见VALIDATION.md。"
+      },
+      "relationships": [
+        {
+          "from": "ar-entry",
+          "to": "ar-dl",
+          "title": "组合"
+        },
+        {
+          "from": "ar-entry",
+          "to": "ar-traditional",
+          "title": "组合"
+        },
+        {
+          "from": "ar-entry",
+          "to": "ar-ui",
+          "title": "共享界面"
+        },
+        {
+          "from": "ar-ui",
+          "to": "ar-shared",
+          "title": "单向依赖"
+        },
+        {
+          "from": "ar-dl",
+          "to": "ar-data",
+          "title": "业务数据"
+        },
+        {
+          "from": "ar-dl",
+          "to": "ar-ui",
+          "title": "共享界面"
+        },
+        {
+          "from": "ar-data",
+          "to": "ar-shared",
+          "title": "通用服务"
+        },
+        {
+          "from": "ar-data",
+          "to": "ar-files",
+          "title": "存储组成"
+        },
+        {
+          "from": "ar-data",
+          "to": "ar-anno",
+          "title": "模型/工具组成"
+        },
+        {
+          "from": "ar-data",
+          "to": "ar-render",
+          "title": "类型/渲染组成"
+        },
+        {
+          "from": "ar-traditional",
+          "to": "ar-ui",
+          "title": "共享界面"
+        },
+        {
+          "from": "ar-traditional",
+          "to": "ar-sdk",
+          "title": "私有链接"
+        },
+        {
+          "from": "ar-project",
+          "to": "ar-files",
+          "title": "持久化"
+        },
+        {
+          "from": "ar-dataset",
+          "to": "ar-files",
+          "title": "文件服务"
+        },
+        {
+          "from": "ar-anno",
+          "to": "ar-files",
+          "title": "标签保存"
+        },
+        {
+          "from": "ar-entry",
+          "to": "ar-db",
+          "title": "单账户认证"
+        },
+        {
+          "from": "ar-project",
+          "to": "ar-contract",
+          "title": "任务语义待确认"
+        }
+      ]
+    },
+    {
+      "title": "09 问题证据与改进计划",
+      "root": {
+        "id": "refactor",
+        "title": "实施状态与剩余验收",
+        "status": "当前实现；验证边界见备注",
+        "note": "五阶段主要代码和自动业务回归已实施；可见Windows、确认重置/重启、LabelMe等未验。ISS-007已按单账户决定关闭。",
+        "children": [
+          {
+            "id": "rf-issues",
+            "title": "问题及证据",
+            "status": "静态代码确认",
+            "children": [
+              {
+                "id": "ISS-001",
+                "title": "ISS-001 标注状态、渲染与撤销分裂",
+                "status": "已修复；自动业务回归通过",
+                "note": "AnnotationModel统一形状/dirty/撤销；列表、工具、渲染与保存同源，加载与保存基线一致。\n验证：矩形与选择处理器、画笔/橡皮/填充/多边形、PNG和JSON重开；修复填充覆盖旧笔画，Esc取消预览。\n限制：原生Windows手动交互与大图工具性能未验。",
+                "sources": [
+                  "src/deeplearning/model/AnnotationModel.cpp:286 AnnotationModel::reset",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1413 AnnotationManagement::saveAnnotations"
+                ],
+                "labels": [
+                  "P0",
+                  "F23",
+                  "F24",
+                  "F25",
+                  "F26"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-002",
+                "title": "ISS-002 保存结果不传播与离页缺少阻断",
+                "status": "已修复；自动业务回归通过，入口集成部分静态确认",
+                "note": "AnnotationStore返回路径/原因，QSaveFile提交；成功才清dirty和更新统计。统一保存/放弃/取消，保存失败不离开。\n验证：模拟labels为普通文件，验证失败保留内容/统计、取消和失败阻断、恢复重试、放弃重载。\n限制：账号切换/窗口关闭及原生文件对话框全流程需可见桌面补验；断电不等于普通写失败。",
+                "sources": [
+                  "src/deeplearning/storage/AnnotationStore.cpp:82 AnnotationStore::save",
+                  "src/deeplearning/widgets/AnnotationManagement.cpp:1676 AnnotationManagement::prepareToLeave"
+                ],
+                "labels": [
+                  "P0",
+                  "F24",
+                  "F26"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-003",
+                "title": "ISS-003 新建模型的通知被屏蔽",
+                "status": "已修复；自动回归通过",
+                "note": "解除发成功通知时的信号屏蔽；创建成功通知各一次，取消零通知，数据集只绑定当前模型。\n验证：真实新建模型对话框驱动，检查活动模型、currentModelChanged/modelCreated和取消计数。\n限制：新建失败各分支未逐一注入系统级故障。",
+                "sources": [
+                  "src/deeplearning/widgets/ModelManagement.cpp:461 ModelManagement::onNewModel"
+                ],
+                "labels": [
+                  "P1",
+                  "F09",
+                  "F11"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-004",
+                "title": "ISS-004 项目/模型删除目标与上下文未闭合",
+                "status": "已修复；自动回归通过",
+                "note": "项目/模型预览与活动对象分离，删除选中对象，确认含路径；成功清当前上下文，非当前保留。删除改为恢复目录移动，登记失败回滚。\n验证：A活动/B选中、取消、恢复目录阻塞、当前项目/模型删除通知；样本精确配对删除及手动恢复。\n限制：恢复目录无自动还原/保留期管理UI；跨文件提交中断需按恢复记录人工处理。",
+                "sources": [
+                  "src/deeplearning/widgets/ProjectManagement.cpp:654 ProjectManagement::onDeleteProject",
+                  "src/deeplearning/widgets/ModelManagement.cpp:760 ModelManagement::onDeleteModel"
+                ],
+                "labels": [
+                  "P1",
+                  "F07",
+                  "F08",
+                  "F12"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-005",
+                "title": "ISS-005 类别变更未保持磁盘ID语义",
+                "status": "已修复；自动回归通过",
+                "note": "标签目录递归存在标注或有未保存编辑时禁止删除/重排；重命名和追加保持已有编号，不自动迁移。\n验证：类别重排/删除被拒绝；重命名和新增后标签字节不变，重开仍引用原类别槽位；COCO稀疏ID映射。\n限制：不支持已标注数据的破坏性类别迁移；PNG最多255个非背景类别。",
+                "sources": [
+                  "src/deeplearning/widgets/DatasetManagement.cpp:2684 DatasetManagement::onLabelOrderChanged",
+                  "src/deeplearning/widgets/DatasetManagement.cpp:3754 DatasetManagement::hasPersistedAnnotations"
+                ],
+                "labels": [
+                  "P1",
+                  "F15",
+                  "F16"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-006",
+                "title": "ISS-006 模块读写授权覆盖不一致",
+                "status": "已按单账户规则简化；2026-11-17自动回归通过",
+                "note": "未登录所有页面可读，登录统一可写；业务执行处守卫保留，旧模块权限矩阵不再参与授权。\n验证：访客直接写处理器拒绝并保持文件/数据库；登录/退出刷新；旧禁止权限不影响登录解锁。\n边界：可见Windows原生桌面及LabelMe外部进程退出流程仍需补验；多用户CRUD已取消。",
+                "sources": [
+                  "src/core/AccessControl.h:15 canWrite",
+                  "src/ui/PermissionGuard.cpp:12 PermissionGuard::canWrite"
+                ],
+                "labels": [
+                  "P0",
+                  "F02",
+                  "F04",
+                  "F05",
+                  "F35",
+                  "F36"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-007",
+                "title": "ISS-007 新增用户名缺登录入口",
+                "status": "按单账户需求关闭（不再支持新增用户名）",
+                "note": "2026-11-17用户明确只需一个账户；移除新增用户/角色权限入口，固定账户认证，访客可浏览。\n验证：新库单账户；旧账号拒绝；密码错误/取消保持只读；登录解除只读。\n边界：只认证唯一兼容账户；历史其他账号保留但不能登录。没有新增账号或忘记密码恢复流程。",
+                "sources": [
+                  "src/core/DatabaseManager.cpp:39 DatabaseManager::singleAccount",
+                  "src/app/Login.cpp:35 LoginDialog::onLoginClicked"
+                ],
+                "labels": [
+                  "P1",
+                  "F01",
+                  "F34"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-008",
+                "title": "ISS-008 模型表单字段未被创建流程消费",
+                "status": "已修复；自动回归通过",
+                "note": "createModel接收并持久化中文描述；路径派生只读，移除无效浏览按钮；重开保留描述。\n验证：真实模型创建对话框填中文描述，加载.fvdl核对内容和通知。\n限制：未逐一截图检查所有缩放比例下的表单布局。",
+                "sources": [
+                  "src/deeplearning/storage/ModelConfig.cpp:21 ModelConfig::createModel"
+                ],
+                "labels": [
+                  "P2",
+                  "F09"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-009",
+                "title": "ISS-009 设置保存/重置的生效范围不明确",
+                "status": "已修复主要行为；部分验收待人工",
+                "note": "日志立即生效，数据库/业务默认根重启生效；重置仅五项路径；默认根不迁移项目。日志清理匹配真实无.log文件名并保护当前日志。\n验证：临时QSettings保存重读、写失败回滚内存并重试；活动根保持、无迁移、取消重置；实际Logger文件和过期选择器。\n限制：确认重置后的实际写入、完整进程重启和真实ACL场景未验；QSettings多键不是断电事务。",
+                "sources": [
+                  "src/app/SystemSettingsWidget.cpp:265 SystemSettingsWidget::onSave",
+                  "src/app/SystemSettingsWidget.cpp:387 SystemSettingsWidget::expiredLogs"
+                ],
+                "labels": [
+                  "P2",
+                  "F36",
+                  "F37",
+                  "F38"
+                ],
+                "children": []
+              },
+              {
+                "id": "ISS-010",
+                "title": "ISS-010 数据/标注Widget承担重复持久化与格式职责",
+                "status": "必要提取已完成；基准通过；保留部分Widget编排",
+                "note": "先复现COCO类别表与引用不一致，再提取AnnotationStore与DatasetFileService，统一读取/编码、配对复制回滚、暂存导出。未重写全架构或引入无依据线程。\n验证：导出图像配对、编号、坐标、旋转角点、空标注、选中范围、RLE重读、失败无半成品；导入失败重试/删除恢复。\n限制：聚合COCO与配置仍由DatasetManagement编排；压缩RLE、LabelMe circle等明确不支持；全分区导入不在当前支持范围。",
+                "sources": [
+                  "src/deeplearning/storage/DatasetFileService.cpp:75 DatasetFileService::importFiles",
+                  "src/deeplearning/storage/DatasetFileService.cpp:221 DatasetFileService::exportFiles"
+                ],
+                "labels": [
+                  "P2",
+                  "F13",
+                  "F14",
+                  "F20",
+                  "F21",
+                  "F24"
+                ],
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "rf-plan",
+            "title": "五阶段实施与剩余验收",
+            "status": "当前实现；限定范围验证",
+            "children": [
+              {
+                "id": "rf-phase1",
+                "title": "阶段1 标注单一状态与保存",
+                "status": "规划建议",
+                "note": "TASK-001–004；修复前固定失败fixture，收敛状态源→SaveResult→离页阻断；AC-001/002。"
+              },
+              {
+                "id": "rf-phase2",
+                "title": "阶段2 授权闭合",
+                "status": "规划建议",
+                "note": "TASK-005–006；共享通知和所有入口/处理器守卫；AC-005。"
+              },
+              {
+                "id": "rf-phase3",
+                "title": "阶段3 上下文与类别保护",
+                "status": "规划建议",
+                "note": "TASK-007–009；模型通知、删除上下文、已有标签阻止删/重排类别；AC-003/004。"
+              },
+              {
+                "id": "rf-phase4",
+                "title": "阶段4 表单/设置契约",
+                "status": "规划建议",
+                "note": "TASK-010–011；描述保存、派生路径、准确生效提示；AC-006/007。"
+              },
+              {
+                "id": "rf-phase5",
+                "title": "阶段5 提取与回归",
+                "status": "规划建议",
+                "note": "TASK-012–014；先fixture语义基准再提取文件处理/存储，注册CTest，更新文档；AC-008。"
+              }
+            ],
+            "note": "主要代码/业务回归已实施，人工未验项集中在VALIDATION.md；ISS-007未修复。"
+          },
+          {
+            "id": "rf-decision",
+            "title": "Q01–Q04产品意图",
+            "status": "待确认",
+            "note": "账号模式、异常任务、矩形命名、附加需求保留决策；不阻塞文档交付。"
+          }
+        ]
+      },
+      "relationships": [
+        {
+          "from": "ISS-001",
+          "to": "rf-phase1",
+          "title": "P0"
+        },
+        {
+          "from": "ISS-002",
+          "to": "rf-phase1",
+          "title": "P0"
+        },
+        {
+          "from": "ISS-006",
+          "to": "rf-phase2",
+          "title": "P0"
+        },
+        {
+          "from": "ISS-003",
+          "to": "rf-phase3",
+          "title": "P1"
+        },
+        {
+          "from": "ISS-004",
+          "to": "rf-phase3",
+          "title": "P1"
+        },
+        {
+          "from": "ISS-005",
+          "to": "rf-phase3",
+          "title": "P1"
+        },
+        {
+          "from": "ISS-008",
+          "to": "rf-phase4",
+          "title": "P2"
+        },
+        {
+          "from": "ISS-009",
+          "to": "rf-phase4",
+          "title": "P2"
+        },
+        {
+          "from": "ISS-010",
+          "to": "rf-phase5",
+          "title": "行为稳定后提取"
+        },
+        {
+          "from": "rf-phase1",
+          "to": "rf-phase3",
+          "title": "保存决策依赖"
+        },
+        {
+          "from": "rf-phase2",
+          "to": "rf-phase5",
+          "title": "服务入口仍需守卫"
+        },
+        {
+          "from": "rf-phase3",
+          "to": "rf-phase5",
+          "title": "状态契约稳定"
+        },
+        {
+          "from": "rf-phase4",
+          "to": "rf-phase5",
+          "title": "回归门禁"
+        },
+        {
+          "from": "ISS-007",
+          "to": "rf-decision",
+          "title": "产品选择"
+        }
+      ]
+    }
+  ]
+}

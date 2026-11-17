@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-15",
+  "centralIndex": "docs/README.md",
+  "nonDocumentationFilesChecked": 792,
+  "changedNonDocumentationFiles": [],
+  "localLinksChecked": 313,
+  "brokenLinks": [],
+  "rootDocumentationFilesRemaining": [],
+  "completeDuplicateGroupsBefore": [],
+  "removedOverlap": [
+    "跨目录导航统一到docs/README.md",
+    "旧README重复技术栈/架构/目录改为专题引用"
+  ],
+  "originalRequirementsPreserved": true,
+  "preexistingDeeplearnDeletionUnchanged": true,
+  "passed": true
+}

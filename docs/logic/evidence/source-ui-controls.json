@@ -1,0 +1,571 @@
+[
+  {
+    "file": "src/DeepLearningWidget/AnnotationCanvas.cpp",
+    "lines": 224,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/AnnotationIO.cpp",
+    "lines": 501,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/AnnotationManagement.cpp",
+    "lines": 2586,
+    "controls": [
+      {
+        "line": 406,
+        "code": "m_btnFilmFirst = new QPushButton;"
+      },
+      {
+        "line": 410,
+        "code": "m_btnFilmFirst->setToolTip(QString::fromUtf8(\"第一张\"));"
+      },
+      {
+        "line": 420,
+        "code": "m_btnFilmPrev = new QPushButton;"
+      },
+      {
+        "line": 424,
+        "code": "m_btnFilmPrev->setToolTip(QString::fromUtf8(\"上一张\"));"
+      },
+      {
+        "line": 437,
+        "code": "m_btnFilmNext = new QPushButton;"
+      },
+      {
+        "line": 441,
+        "code": "m_btnFilmNext->setToolTip(QString::fromUtf8(\"下一张\"));"
+      },
+      {
+        "line": 448,
+        "code": "m_btnFilmLast = new QPushButton;"
+      },
+      {
+        "line": 452,
+        "code": "m_btnFilmLast->setToolTip(QString::fromUtf8(\"最后一张\"));"
+      },
+      {
+        "line": 531,
+        "code": "auto* b = new QPushButton(text);"
+      },
+      {
+        "line": 538,
+        "code": "auto* b = new QPushButton;"
+      },
+      {
+        "line": 542,
+        "code": "b->setToolTip(tip);"
+      },
+      {
+        "line": 589,
+        "code": "m_btnFit->setToolTip(QString::fromUtf8(\"适应窗口\\nCtrl+0\"));"
+      },
+      {
+        "line": 595,
+        "code": "m_btnZoom1->setToolTip(QString::fromUtf8(\"原始大小\\nCtrl+1\"));"
+      },
+      {
+        "line": 600,
+        "code": "m_btnZoomOut = new QPushButton(QString::fromUtf8(\"-\"));"
+      },
+      {
+        "line": 604,
+        "code": "m_btnZoomOut->setToolTip(QString::fromUtf8(\"缩小  (Ctrl+-)\"));"
+      },
+      {
+        "line": 613,
+        "code": "m_btnZoomIn = new QPushButton(QString::fromUtf8(\"+\"));"
+      },
+      {
+        "line": 617,
+        "code": "m_btnZoomIn->setToolTip(QString::fromUtf8(\"放大  (Ctrl++)\"));"
+      },
+      {
+        "line": 635,
+        "code": "m_btnLabelMe->setToolTip(QString::fromUtf8(\"使用 LabelMe 打开当前图像进行外部标注\\n右键可重新选择 Python 环境\"));"
+      },
+      {
+        "line": 640,
+        "code": "QAction* act = menu.addAction(QString::fromUtf8(\"重新选择 Python 环境...\"));"
+      },
+      {
+        "line": 683,
+        "code": "QPushButton* btn = new QPushButton;"
+      },
+      {
+        "line": 688,
+        "code": "btn->setToolTip(t.tip);"
+      },
+      {
+        "line": 770,
+        "code": "m_btnDeleteShape = new QPushButton(QString::fromUtf8(\"🗑 删除选中\"));"
+      },
+      {
+        "line": 806,
+        "code": "m_zoomSlider->setToolTip(QString::fromUtf8(\"缩放\"));"
+      },
+      {
+        "line": 1074,
+        "code": "pathItem->setToolTip(envs[i]);"
+      },
+      {
+        "line": 1092,
+        "code": "auto* browseBtn = new QPushButton(QString::fromUtf8(\"浏览...\"));"
+      },
+      {
+        "line": 1104,
+        "code": "pathItem->setToolTip(fi.absoluteFilePath());"
+      },
+      {
+        "line": 1600,
+        "code": "QAction* visAction = menu.addAction("
+      },
+      {
+        "line": 1603,
+        "code": "menu.addAction(QString::fromUtf8(\"删除\"), this, &AnnotationManagement::onDeleteSelectedShapes);"
+      }
+    ]
+  },
+  {
+    "file": "src/DeepLearningWidget/AnnotationModel.cpp",
+    "lines": 387,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/AnnotationRender.cpp",
+    "lines": 231,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/DatasetManagement.cpp",
+    "lines": 5239,
+    "controls": [
+      {
+        "line": 589,
+        "code": "m_datasetPathLabel->setToolTip(QString::fromUtf8(\"点击复制路径\"));"
+      },
+      {
+        "line": 640,
+        "code": "m_imagePathLabel->setToolTip(QString::fromUtf8(\"点击复制路径\"));"
+      },
+      {
+        "line": 661,
+        "code": "m_btnRefreshImage = new QPushButton(QString::fromUtf8(\"刷新\"));"
+      },
+      {
+        "line": 666,
+        "code": "m_btnOpenFolder = new QPushButton(QString::fromUtf8(\"打开文件夹\"));"
+      },
+      {
+        "line": 708,
+        "code": "m_btnAddLabel = new QPushButton(QString::fromUtf8(\"+ 添加\"));"
+      },
+      {
+        "line": 713,
+        "code": "m_btnEditLabel = new QPushButton(QString::fromUtf8(\"编辑\"));"
+      },
+      {
+        "line": 718,
+        "code": "m_btnDeleteLabel = new QPushButton(QString::fromUtf8(\"删除\"));"
+      },
+      {
+        "line": 723,
+        "code": "m_btnImportLabels = new QPushButton(QString::fromUtf8(\"导入\"));"
+      },
+      {
+        "line": 762,
+        "code": "QPushButton* btnImportFile = new QPushButton(QString::fromUtf8(\"导入数据集文件\"));"
+      },
+      {
+        "line": 775,
+        "code": "QPushButton* btnImportFolder = new QPushButton(QString::fromUtf8(\"导入数据集文件夹\"));"
+      },
+      {
+        "line": 811,
+        "code": "m_lblQualityWarn->setToolTip(QString::fromUtf8(\"点击查看质量详情\"));"
+      },
+      {
+        "line": 856,
+        "code": "m_btnDeleteSelected = new QPushButton(QString::fromUtf8(\"删除选中\"));"
+      },
+      {
+        "line": 894,
+        "code": "m_btnFormatConvert = new QPushButton(QString::fromUtf8(\"格式转换\"));"
+      },
+      {
+        "line": 898,
+        "code": "m_btnFormatConvert->setToolTip(QString::fromUtf8(\"将导入的标注转换为当前模型所需的 YOLO txt 格式\"));"
+      },
+      {
+        "line": 903,
+        "code": "m_btnAugment = new QPushButton(QString::fromUtf8(\"数据增强\"));"
+      },
+      {
+        "line": 907,
+        "code": "m_btnAugment->setToolTip(QString::fromUtf8(\"数据增强功能开发中…\"));"
+      },
+      {
+        "line": 917,
+        "code": "m_btnExport = new QPushButton(QString::fromUtf8(\"导出\"));"
+      },
+      {
+        "line": 920,
+        "code": "m_btnExport->setToolTip(QString::fromUtf8(\"导出数据集（COCO JSON / YOLO 格式）\"));"
+      },
+      {
+        "line": 962,
+        "code": "m_btnEmptyImport = new QPushButton(QString::fromUtf8(\"  导入数据集文件\"));"
+      },
+      {
+        "line": 970,
+        "code": "m_btnEmptyImportFolder = new QPushButton(QString::fromUtf8(\"  导入数据集文件夹\"));"
+      },
+      {
+        "line": 1592,
+        "code": "chip->setToolTip(chipTooltip);"
+      },
+      {
+        "line": 1835,
+        "code": "QAction* actDelete = menu.addAction(QString::fromUtf8(\"删除当前图像\"));"
+      },
+      {
+        "line": 1836,
+        "code": "QAction* actOpenDir = menu.addAction(QString::fromUtf8(\"打开文件目录\"));"
+      },
+      {
+        "line": 1837,
+        "code": "QAction* actCopyPath = menu.addAction(QString::fromUtf8(\"复制图像路径\"));"
+      },
+      {
+        "line": 1838,
+        "code": "QAction* actReannotate = menu.addAction(QString::fromUtf8(\"重新标注\"));"
+      },
+      {
+        "line": 3477,
+        "code": "QPushButton* btnAddRow = new QPushButton(QString::fromUtf8(\"+ 添加类别\"));"
+      },
+      {
+        "line": 3478,
+        "code": "QPushButton* btnRemoveRow = new QPushButton(QString::fromUtf8(\"- 删除选中\"));"
+      },
+      {
+        "line": 3479,
+        "code": "QPushButton* btnImport = new QPushButton(QString::fromUtf8(\"导入类别\"));"
+      },
+      {
+        "line": 3892,
+        "code": "QPushButton* btnAdd = new QPushButton(QString::fromUtf8(\"+ 添加类别\"));"
+      },
+      {
+        "line": 3893,
+        "code": "QPushButton* btnRemove = new QPushButton(QString::fromUtf8(\"- 删除选中\"));"
+      },
+      {
+        "line": 3894,
+        "code": "QPushButton* btnImport = new QPushButton(QString::fromUtf8(\"导入类别\"));"
+      },
+      {
+        "line": 3895,
+        "code": "QPushButton* btnExample = new QPushButton(QString::fromUtf8(\"查看 JSON 示例\"));"
+      },
+      {
+        "line": 4014,
+        "code": "QPushButton* closeBtn = new QPushButton(QString::fromUtf8(\"关闭\"));"
+      },
+      {
+        "line": 4392,
+        "code": "QPushButton* closeBtn = new QPushButton(QString::fromUtf8(\"关闭\"));"
+      },
+      {
+        "line": 5227,
+        "code": "m_lblQualityWarn->setToolTip(stats.warnings.join(\"\\n\"));"
+      },
+      {
+        "line": 5235,
+        "code": "m_lblQualityWarn->setToolTip(QString::fromUtf8(\"数据集质量良好\"));"
+      }
+    ]
+  },
+  {
+    "file": "src/DeepLearningWidget/DeepLearningWidget.cpp",
+    "lines": 666,
+    "controls": [
+      {
+        "line": 175,
+        "code": "m_btnExitLabelMe = new QPushButton(QString::fromUtf8(\"\\u25C0  退出 LabelMe\"));"
+      }
+    ]
+  },
+  {
+    "file": "src/DeepLearningWidget/ModelConfig.cpp",
+    "lines": 248,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/ModelManagement.cpp",
+    "lines": 1074,
+    "controls": [
+      {
+        "line": 269,
+        "code": "m_newModelBtn = new QPushButton(QString::fromUtf8(\"  新建模型\"));"
+      },
+      {
+        "line": 276,
+        "code": "m_openModelBtn = new QPushButton(QString::fromUtf8(\"  打开模型\"));"
+      },
+      {
+        "line": 286,
+        "code": "m_deleteModelBtn = new QPushButton(QString::fromUtf8(\"  删除模型\"));"
+      },
+      {
+        "line": 491,
+        "code": "QPushButton* btn = new QPushButton;"
+      },
+      {
+        "line": 568,
+        "code": "nameEdit->setPlaceholderText(QString::fromUtf8(\"仅允许英文字母、数字和下划线\"));"
+      },
+      {
+        "line": 588,
+        "code": "QPushButton* browseBtn = new QPushButton(QString::fromUtf8(\"浏览\"));"
+      },
+      {
+        "line": 619,
+        "code": "descEdit->setPlaceholderText(QString::fromUtf8(\"可选，简要描述模型用途\"));"
+      }
+    ]
+  },
+  {
+    "file": "src/DeepLearningWidget/ProjectConfig.cpp",
+    "lines": 244,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/ProjectManagement.cpp",
+    "lines": 1041,
+    "controls": [
+      {
+        "line": 219,
+        "code": "m_newProjectBtn = new QPushButton(QString::fromUtf8(\"  新建项目\"));"
+      },
+      {
+        "line": 226,
+        "code": "m_openProjectBtn = new QPushButton(QString::fromUtf8(\"  打开项目\"));"
+      },
+      {
+        "line": 233,
+        "code": "m_deleteProjectBtn = new QPushButton(QString::fromUtf8(\"  删除项目\"));"
+      },
+      {
+        "line": 550,
+        "code": "nameEdit->setPlaceholderText(QString::fromUtf8(\"仅允许英文字母、数字和下划线\"));"
+      },
+      {
+        "line": 560,
+        "code": "descEdit->setPlaceholderText(QString::fromUtf8(\"可选，简要描述项目用途\"));"
+      }
+    ]
+  },
+  {
+    "file": "src/MainWindows/FuseVision.cpp",
+    "lines": 450,
+    "controls": [
+      {
+        "line": 265,
+        "code": "m_navBtns[i] = new QPushButton;"
+      },
+      {
+        "line": 269,
+        "code": "m_navBtns[i]->setToolTip(s_navTips[i]);"
+      },
+      {
+        "line": 286,
+        "code": "m_themeBtn = new QPushButton;"
+      },
+      {
+        "line": 288,
+        "code": "m_themeBtn->setToolTip(\"切换主题\");"
+      },
+      {
+        "line": 294,
+        "code": "m_switchUserBtn = new QPushButton(QString::fromUtf8(\"\\u21C4\"));  // ⇄"
+      },
+      {
+        "line": 296,
+        "code": "m_switchUserBtn->setToolTip(\"切换用户\");"
+      }
+    ]
+  },
+  {
+    "file": "src/MainWindows/Login.cpp",
+    "lines": 344,
+    "controls": [
+      {
+        "line": 88,
+        "code": "m_passwordEdit->setPlaceholderText(\"请输入密码\");"
+      },
+      {
+        "line": 94,
+        "code": "m_loginBtn  = new QPushButton(\"登 录\", this);"
+      },
+      {
+        "line": 96,
+        "code": "m_cancelBtn = new QPushButton(\"取 消\", this);"
+      },
+      {
+        "line": 188,
+        "code": "m_passwordEdit->setPlaceholderText(\"默认密码 123\");"
+      },
+      {
+        "line": 194,
+        "code": "m_passwordEdit->setPlaceholderText(\"请输入管理员密码\");"
+      },
+      {
+        "line": 200,
+        "code": "m_passwordEdit->setPlaceholderText(\"请输入超级管理员密码\");"
+      }
+    ]
+  },
+  {
+    "file": "src/MainWindows/SystemSettingsWidget.cpp",
+    "lines": 366,
+    "controls": [
+      {
+        "line": 50,
+        "code": "QPushButton* browseLogBtn = new QPushButton(\"浏览...\");"
+      },
+      {
+        "line": 59,
+        "code": "QPushButton* browseDbBtn = new QPushButton(\"浏览...\");"
+      },
+      {
+        "line": 108,
+        "code": "QPushButton* browseDlDataBtn = new QPushButton(\"浏览...\");"
+      },
+      {
+        "line": 134,
+        "code": "QPushButton* browseTradDataBtn = new QPushButton(\"浏览...\");"
+      },
+      {
+        "line": 141,
+        "code": "QPushButton* browseTradCameraBtn = new QPushButton(\"浏览...\");"
+      },
+      {
+        "line": 158,
+        "code": "m_cleanBtn = new QPushButton(\"清理旧日志\");"
+      },
+      {
+        "line": 159,
+        "code": "m_resetBtn = new QPushButton(\"重置\");"
+      },
+      {
+        "line": 160,
+        "code": "m_saveBtn  = new QPushButton(\"保存配置\");"
+      },
+      {
+        "line": 321,
+        "code": "QPushButton* cancelBtn = new QPushButton(\"取消\");"
+      },
+      {
+        "line": 322,
+        "code": "QPushButton* okBtn = new QPushButton(\"清理\");"
+      }
+    ]
+  },
+  {
+    "file": "src/MainWindows/UserManagementWidget.cpp",
+    "lines": 516,
+    "controls": [
+      {
+        "line": 33,
+        "code": "m_userEdit->setPlaceholderText(\"请输入用户名\");"
+      },
+      {
+        "line": 38,
+        "code": "m_pwdEdit->setPlaceholderText(\"请输入密码\");"
+      },
+      {
+        "line": 87,
+        "code": "m_pwdEdit->setPlaceholderText(\"请输入新密码（至少6位）\");"
+      },
+      {
+        "line": 146,
+        "code": "m_addUserBtn    = new QPushButton(\"添加用户\");"
+      },
+      {
+        "line": 147,
+        "code": "m_deleteUserBtn = new QPushButton(\"删除用户\");"
+      },
+      {
+        "line": 148,
+        "code": "m_resetPwdBtn   = new QPushButton(\"重置密码\");"
+      }
+    ]
+  },
+  {
+    "file": "src/TraditionalWidget/TraditionalWidget.cpp",
+    "lines": 281,
+    "controls": [
+      {
+        "line": 102,
+        "code": "QAction* actFlow  = m_toolBar->addAction(\"流程文件\");"
+      },
+      {
+        "line": 103,
+        "code": "QAction* actCam   = m_toolBar->addAction(\"相机配置\");"
+      },
+      {
+        "line": 104,
+        "code": "QAction* actCalib = m_toolBar->addAction(\"相机标定\");"
+      },
+      {
+        "line": 105,
+        "code": "QAction* actModel = m_toolBar->addAction(\"相机建模\");"
+      },
+      {
+        "line": 107,
+        "code": "QAction* actComm  = m_toolBar->addAction(\"通讯设置\");"
+      },
+      {
+        "line": 108,
+        "code": "QAction* actSys   = m_toolBar->addAction(\"系统设置\");"
+      }
+    ]
+  },
+  {
+    "file": "src/DeepLearningWidget/Tools/AnnotationTool.cpp",
+    "lines": 58,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/Tools/BrushTool.cpp",
+    "lines": 88,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/Tools/EraserTool.cpp",
+    "lines": 78,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/Tools/FillTool.cpp",
+    "lines": 158,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/Tools/PolygonTool.cpp",
+    "lines": 135,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/Tools/RectTool.cpp",
+    "lines": 102,
+    "controls": []
+  },
+  {
+    "file": "src/DeepLearningWidget/Tools/SelectTool.cpp",
+    "lines": 161,
+    "controls": []
+  }
+]

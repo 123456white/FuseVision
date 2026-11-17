@@ -1,0 +1,105 @@
+{
+  "date": "2026-11-17",
+  "session": "fix-current-issues-20261117",
+  "scope": "Post-repair source and evidence snapshot; prior dirty workspace is preserved, this is not a commit snapshot.",
+  "ctest": {
+    "passed": 6,
+    "failed": 0,
+    "issues": [
+      "ISS-011",
+      "ISS-012",
+      "ISS-013",
+      "ISS-014"
+    ]
+  },
+  "doxygen_warnings_bytes": 0,
+  "original_audit_evidence": [
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-probe.cpp",
+      "unchanged": true
+    },
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-build-probe.ps1",
+      "unchanged": true
+    },
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-probe.log",
+      "unchanged": true
+    },
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-release-build.log",
+      "unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "path": "CMakeLists.txt",
+      "sha256": "a5a62683c9f2fca341959b8c9ebf8e7c9501357ca9c46383f6dfb6b491617269"
+    },
+    {
+      "path": "src/main.cpp",
+      "sha256": "f75f59f238d32ef6e56d2a43b7342e9f37c64336e3451773673680c515d31f64"
+    },
+    {
+      "path": "src/core/DatabaseManager.cpp",
+      "sha256": "e15bfc53871b89f91d22e9ffc1ea0f06cc34592976c69e31a8f6129d89989f5a"
+    },
+    {
+      "path": "src/core/DatabaseManager.h",
+      "sha256": "df89838da9e4a4554cd8c46f1105858f4761acae3114a3991c27ed7cb43e536c"
+    },
+    {
+      "path": "src/deeplearning/domain/DatasetTypes.h",
+      "sha256": "a69f3c4ba65ba5bfcb8e3e83d884822b217bdbd939b5c3e119e2f436adde8d4a"
+    },
+    {
+      "path": "src/deeplearning/model/AnnotationModel.cpp",
+      "sha256": "d5ebaca0b702e88880793dd55a7cc0c6dd8e4038e51c1733c8997ea6a9a4f352"
+    },
+    {
+      "path": "src/deeplearning/storage/AnnotationStore.cpp",
+      "sha256": "9ea330d1aa81377fe0e6a7e7318590e8d2edd8cdaa286a212db14ec03b212659"
+    },
+    {
+      "path": "src/deeplearning/storage/DatasetFileService.cpp",
+      "sha256": "5114d1ad0062e620768c01105555665a3f927844d03d48e86970c74c0ab8b812"
+    },
+    {
+      "path": "src/deeplearning/storage/DatasetFileService.h",
+      "sha256": "d1efdbad2a262145a252cc190e4d5dc72ac7ad64fbbc88c97c3274742c419aa9"
+    },
+    {
+      "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+      "sha256": "a40abe148a13c3516a0dbcbc6259b2fd91138414fb4cca4ed36796823891eedc"
+    },
+    {
+      "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+      "sha256": "0233ca401f5721b5301d507a2f594beaf09b253f81e1b2e9c094e2b87143d994"
+    },
+    {
+      "path": "src/deeplearning/widgets/DatasetManagement.h",
+      "sha256": "c411b6c08ca8576ddca989157dc9c05c7a8b1d99bae5fef167e90d1b013bdb12"
+    },
+    {
+      "path": "tests/current_issues_regression.cpp",
+      "sha256": "539cfddfefd39b729aad669ee9ac2c1a18414a9ac008157f2772334ecb792330"
+    },
+    {
+      "path": "docs/logic/evidence/issue-fixes-final-release-20261117.log",
+      "sha256": "4fde275fc179449f3849997f607580ff1dfffb01f8c7e8cba953bd5c7ba01b20"
+    },
+    {
+      "path": "docs/logic/evidence/issue-fixes-final-ctest-20261117.log",
+      "sha256": "dd58673272e7cb832fe8e48b2a01e7ed2d54000564c23563aff781bed796fcfb"
+    },
+    {
+      "path": "docs/logic/evidence/issue-fixes-final-doxygen-20261117.log",
+      "sha256": "75805724c2f1daefb3861a20252aef7d0c1ac06835dd0c3f3e3a6c58929b9596"
+    }
+  ],
+  "limitations": [
+    "No visible Windows desktop/native file dialog acceptance",
+    "No Debug/camera/representative load benchmark",
+    "Database restart tested in isolated test subprocesses, not full interactive application"
+  ]
+}

@@ -1,0 +1,183 @@
+Start testing: Nov 17 14:41 �й���׼ʱ��
+----------------------------------------------------------
+1/6 Testing: native-annotation-regression
+1/6 Test: native-annotation-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionNativeAnnotationTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"native-annotation-regression" start time: Nov 17 14:41 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS hover preview and keyboard focus enabled
+PASS space pan consumes its release and always ends
+PASS image refresh preserves view
+PASS zero wheel delta does not zoom
+PASS wheel zoom holds mouse anchor
+PASS drag rectangle commits one shape
+PASS two-click rectangle remains compatible
+PASS Enter completes reverse-direction rectangle
+PASS rotated rectangle hit test follows rendered orientation
+PASS corner drag can shrink rectangle
+PASS native editor has no external launch entry
+PASS dataset async category initialization completes
+PASS unfinished shape blocks save-and-next without discarding preview
+PASS model update preserves UUID selection and list item
+PASS canvas drag synchronizes list and creates one undo
+PASS focus loss restores uncommitted drag
+PASS canvas selection deletes intended object
+PASS brightness change preserves zoom and center
+PASS original-image toggle leaves annotation unchanged
+PASS failed save-and-next retains edits and committed file
+PASS retry shortcut from shape list saves and advances while keeping view
+PASS last image saves and remains open
+PASS saved-next annotation reopens with shape identity
+PASS guest handlers cannot mutate or advance through saving
+<end of output>
+Test time =   0.72 sec
+----------------------------------------------------------
+Test Passed.
+"native-annotation-regression" end time: Nov 17 14:41 �й���׼ʱ��
+"native-annotation-regression" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/6 Testing: data-contract-regression
+2/6 Test: data-contract-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionDataTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"data-contract-regression" start time: Nov 17 14:41 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS data-only project and model configuration
+PASS data-only undo storage round trip and failure
+PASS data-only paired export independently reread
+<end of output>
+Test time =   0.09 sec
+----------------------------------------------------------
+Test Passed.
+"data-contract-regression" end time: Nov 17 14:41 �й���׼ʱ��
+"data-contract-regression" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/6 Testing: module-boundaries
+3/6 Test: module-boundaries
+Command: "D:/pythonbase/python.exe" "-X" "utf8" "D:/project/FuseVision/tests/check_module_boundaries.py"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"module-boundaries" start time: Nov 17 14:41 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS module include boundaries (core, UI, deep learning, traditional, app)
+<end of output>
+Test time =   0.11 sec
+----------------------------------------------------------
+Test Passed.
+"module-boundaries" end time: Nov 17 14:41 �й���׼ʱ��
+"module-boundaries" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/6 Testing: workflow-regression
+4/6 Test: workflow-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionWorkflowTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"workflow-regression" start time: Nov 17 14:41 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS annotation model undo/redo
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/Fixture/Seg/labels/a.png
+无法创建标注目录
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+PASS widget load edit save reopen
+PASS JSON rotated and polygon round trip and failed replacement
+DIALOG 已有标注或未保存编辑，禁止重排类别编号。
+C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/Fixture/Seg/labels
+PASS category protection
+PASS model creation signals
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/export-coco/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/export-yolo
+成功 1 项，跳过 0 项，失败 0 项
+PASS export semantic baseline
+PASS external PNG edit
+PASS brush eraser fill polygon masks
+PASS paired import recovery
+DIALOG 成功 2 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/coco-source/bad.json
+不安全的图像相对路径：../escape.png
+PASS COCO sparse IDs empty labels RLE and quality
+DIALOG 删除项目「DeleteB」
+项目目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/DeleteB
+项目文件：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/DeleteB/project.fvproj
+PASS selected project and model deletion
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+PASS guest denied handlers and login state
+DIALOG 日志路径与级别已立即生效。
+数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+DIALOG 配置存储不可写，请检查权限后重试。
+DIALOG 日志路径与级别已立即生效。
+数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+PASS settings and actual log retention
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/integrated-export/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+PASS integrated project model gallery editor reopen export
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 密码错误或管理账户不可用，请重试。
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-Ibpbjr/Fixture/Detect/images/one.png 有未保存的编辑或尚未完成的绘制。
+DIALOG 当前密码不正确或数据库无法写入，原密码保持不变。
+DIALOG 新密码至少6位，且两次输入必须一致。
+DIALOG 管理账户密码已更新，下次登录请使用新密码。
+PASS guest pages single account login logout and password
+<end of output>
+Test time =   2.24 sec
+----------------------------------------------------------
+Test Passed.
+"workflow-regression" end time: Nov 17 14:41 �й���׼ʱ��
+"workflow-regression" time elapsed: 00:00:02
+----------------------------------------------------------
+
+5/6 Testing: startup-smoke
+5/6 Test: startup-smoke
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVision.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"startup-smoke" start time: Nov 17 14:41 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.37 sec
+----------------------------------------------------------
+Test Passed.
+"startup-smoke" end time: Nov 17 14:41 �й���׼ʱ��
+"startup-smoke" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/6 Testing: current-issues-regression
+6/6 Test: current-issues-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionCurrentIssuesTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"current-issues-regression" start time: Nov 17 14:41 �й���׼ʱ��
+Output:
+----------------------------------------------------------
+PASS ISS-011
+PASS ISS-012
+PASS ISS-013
+PASS ISS-014
+<end of output>
+Test time =   1.20 sec
+----------------------------------------------------------
+Test Passed.
+"current-issues-regression" end time: Nov 17 14:41 �й���׼ʱ��
+"current-issues-regression" time elapsed: 00:00:01
+----------------------------------------------------------
+
+End testing: Nov 17 14:41 �й���׼ʱ��

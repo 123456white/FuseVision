@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-17",
+  "session": "strict-storage-20261117",
+  "scope": "Strict native 1.0 storage; user explicitly waives legacy compatibility",
+  "configuration": "Release",
+  "tests": 40,
+  "failures": 0,
+  "gtest_cases": 34,
+  "regression_groups": 6,
+  "red_failures": 12,
+  "doxygen_warning_bytes": 0,
+  "source_sha256": {
+    "src/deeplearning/storage/StorageContract.h": "6c2185fd895dd650ca6a22249b51bf560fc19f0dc6e1290e55cd7b87f1814c0e",
+    "src/deeplearning/storage/ProjectConfig.cpp": "d9d856a30b7f9ea004da856f42db296974cd2631f55f28f060c3ffcd65e796cd",
+    "src/deeplearning/storage/ModelConfig.cpp": "d419a3dba5f6ad373ee935e35db7373bf8d624b7cc621ca171d0e4b21fdabed4",
+    "src/deeplearning/widgets/DatasetManagement.cpp": "fee3a0cbf0dc704f271ad4e53e4ab271c03d10bb266b97b56ca5468ebcbef23b",
+    "src/deeplearning/domain/ModelTypes.h": "79394733e932d1748c1e66a39d6d7aa8f3de81263a6a9aefed5b10797606a3d0",
+    "tests/DatasetFixture.h": "da9489068c013a93d1b114ec485647cd6011bac9b680ab951642d9854b135dec",
+    "tests/storage_regression.cpp": "7ea4363d6ae01b40cf437f4e09d94afd2b3784f65f323c47a7f04a0803462284",
+    "tests/current_issues_regression.cpp": "bde653cffba0d615e14d4891e6b14dc684c06a974a056d9327baddf941b1bdaf",
+    "tests/native_annotation_regression.cpp": "552c3ddaa208667a3f4d5041707aaef9ecfeb11e9957daf6ee89c6a462019633",
+    "tests/workflow_regression.cpp": "3b49ac847f85518520cb8bcea910f6ed32b993eb6cbbf27b6bb6f8c9a2f79168"
+  },
+  "evidence_sha256": {
+    "docs/logic/evidence/strict-storage-red-20261117.log": "ba97ed68e6abebe1799a06d45e85855292cf39adc7c40d13d24da475474a98b0",
+    "docs/logic/evidence/strict-storage-green-20261117.log": "3884536b17b5369c492537f738537a4c8e99565cdc81100600a689c71a5ebaec",
+    "docs/logic/evidence/strict-storage-ctest-20261117.log": "66278e37cbfe08801eaa3b0058694d77acc80308ea8164c3be2db29c4c035c83",
+    "docs/logic/evidence/strict-storage-junit-20261117.xml": "33fdf48913d58981589579d0184d84d9f09da25dfe9b4a44c3feb068e5f64248",
+    "docs/logic/evidence/strict-storage-doxygen-20261117.log": "75805724c2f1daefb3861a20252aef7d0c1ac06835dd0c3f3e3a6c58929b9596"
+  },
+  "not_verified": [
+    "Debug",
+    "full visible Windows desktop",
+    "native file dialogs",
+    "hardware",
+    "real workload"
+  ]
+}

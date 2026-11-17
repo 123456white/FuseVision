@@ -1,0 +1,567 @@
+[
+  {
+    "path": "src/core/DatabaseManager.cpp",
+    "symbol": "DatabaseManager::validateLogin",
+    "line": 46
+  },
+  {
+    "path": "src/app/FuseVision.cpp",
+    "symbol": "FuseVision::onMenuItemClicked",
+    "line": 333
+  },
+  {
+    "path": "src/app/FuseVision.cpp",
+    "symbol": "FuseVision::initPagesAsync",
+    "line": 378
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::applyPermissions",
+    "line": 297
+  },
+  {
+    "path": "src/app/FuseVision.cpp",
+    "symbol": "FuseVision::onToggleTheme",
+    "line": 189
+  },
+  {
+    "path": "src/ui/ThemeManager.cpp",
+    "symbol": "ThemeManager::setTheme",
+    "line": 154
+  },
+  {
+    "path": "src/ui/LogMonitor.cpp",
+    "symbol": "LogMonitor::log",
+    "line": 113
+  },
+  {
+    "path": "src/app/FuseVision.cpp",
+    "symbol": "FuseVision::onSwitchUser",
+    "line": 199
+  },
+  {
+    "path": "src/core/SessionManager.cpp",
+    "symbol": "SessionManager::login",
+    "line": 6
+  },
+  {
+    "path": "src/ui/PermissionGuard.cpp",
+    "symbol": "PermissionGuard::refresh",
+    "line": 15
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::onNewProject",
+    "line": 537
+  },
+  {
+    "path": "src/deeplearning/storage/ProjectConfig.cpp",
+    "symbol": "ProjectConfig::createProject",
+    "line": 18
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::onOpenProject",
+    "line": 607
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::copyDirectory",
+    "line": 777
+  },
+  {
+    "path": "src/deeplearning/storage/ProjectConfig.cpp",
+    "symbol": "ProjectConfig::loadProject",
+    "line": 61
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::onCardClicked",
+    "line": 689
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::onCardDoubleClicked",
+    "line": 732
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::onProjectOpened",
+    "line": 164
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::onDeleteProject",
+    "line": 654
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "&ProjectManagement::projectClosed",
+    "line": 165
+  },
+  {
+    "path": "src/deeplearning/widgets/ModelManagement.cpp",
+    "symbol": "ModelManagement::onNewModel",
+    "line": 461
+  },
+  {
+    "path": "src/deeplearning/storage/ModelConfig.cpp",
+    "symbol": "ModelConfig::createModel",
+    "line": 21
+  },
+  {
+    "path": "src/deeplearning/widgets/ModelManagement.cpp",
+    "symbol": "ModelManagement::onOpenModel",
+    "line": 672
+  },
+  {
+    "path": "src/deeplearning/storage/ModelConfig.cpp",
+    "symbol": "ModelConfig::loadModel",
+    "line": 174
+  },
+  {
+    "path": "src/deeplearning/widgets/ModelManagement.cpp",
+    "symbol": "ModelManagement::onCardClicked",
+    "line": 799
+  },
+  {
+    "path": "src/deeplearning/widgets/ModelManagement.cpp",
+    "symbol": "ModelManagement::onCardDoubleClicked",
+    "line": 829
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::setCurrentModel",
+    "line": 121
+  },
+  {
+    "path": "src/deeplearning/widgets/ModelManagement.cpp",
+    "symbol": "ModelManagement::onDeleteModel",
+    "line": 760
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onImportImages",
+    "line": 2139
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::ensureLabelTypeBeforeImport",
+    "line": 1872
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::detectLabelsFromAnnotations",
+    "line": 1904
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onImportFolder",
+    "line": 2203
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onAddLabel",
+    "line": 2543
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onEditLabel",
+    "line": 2574
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onDeleteLabel",
+    "line": 2606
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onImportLabels",
+    "line": 2636
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onLabelOrderChanged",
+    "line": 2684
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::saveDatasetConfig",
+    "line": 360
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::refreshGallery",
+    "line": 1253
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onThumbnailDoubleClicked",
+    "line": 2428
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onSelectAll",
+    "line": 2453
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onDeleteSelected",
+    "line": 2470
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::showContextMenu",
+    "line": 1699
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onRefreshImageInfo",
+    "line": 2747
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::computeStats",
+    "line": 3644
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::runQualityCheck",
+    "line": 3688
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onFormatConvert",
+    "line": 2818
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::validateCurrentFormat",
+    "line": 2912
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::convertPngMaskToTarget",
+    "line": 3262
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::convertAnomalyClassification",
+    "line": 3274
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onExportDataset",
+    "line": 3469
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::writeCocoJson",
+    "line": 3531
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::writeYoloFormat",
+    "line": 3543
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::writeMaskFormat",
+    "line": 3555
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onAugmentClicked",
+    "line": 3452
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::openImage",
+    "line": 98
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onCanvasMousePressed",
+    "line": 1238
+  },
+  {
+    "path": "src/deeplearning/tools/RectTool.cpp",
+    "symbol": "RectTool::endRect",
+    "line": 66
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::renderOverlay",
+    "line": 1366
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::saveAnnotations",
+    "line": 1413
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onSave",
+    "line": 1450
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::currentLabelOffset",
+    "line": 216
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::updateShapeList",
+    "line": 1157
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onUndo",
+    "line": 1453
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onDeleteSelectedShapes",
+    "line": 1228
+  },
+  {
+    "path": "src/deeplearning/model/AnnotationModel.cpp",
+    "symbol": "AnnotationModel::undo",
+    "line": 339
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onNavigateTo",
+    "line": 811
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onReturnToGallery",
+    "line": 818
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::applyImageAdjustments",
+    "line": 905
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onSaveAndNext",
+    "line": 1718
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::initUI",
+    "line": 61
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::onTabChanged",
+    "line": 281
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::initUI",
+    "line": 61
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::initUI",
+    "line": 61
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::initUI",
+    "line": 61
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::initUI",
+    "line": 61
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::initUI",
+    "line": 61
+  },
+  {
+    "path": "src/traditional/TraditionalWidget.cpp",
+    "symbol": "TraditionalWidget::initToolBar",
+    "line": 95
+  },
+  {
+    "path": "src/traditional/TraditionalWidget.cpp",
+    "symbol": "TraditionalWidget::applyPermissions",
+    "line": 258
+  },
+  {
+    "path": "src/core/PermissionRegistry.cpp",
+    "symbol": "PermissionRegistry::refreshPermissions",
+    "line": 20
+  },
+  {
+    "path": "src/app/SystemSettingsWidget.cpp",
+    "symbol": "SystemSettingsWidget::onSave",
+    "line": 265
+  },
+  {
+    "path": "src/core/SettingsManager.cpp",
+    "symbol": "SettingsManager::save",
+    "line": 42
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::ProjectManagement",
+    "line": 162
+  },
+  {
+    "path": "src/app/SystemSettingsWidget.cpp",
+    "symbol": "SystemSettingsWidget::onReset",
+    "line": 296
+  },
+  {
+    "path": "src/app/SystemSettingsWidget.cpp",
+    "symbol": "SystemSettingsWidget::onCleanLogs",
+    "line": 308
+  },
+  {
+    "path": "src/core/Logger.cpp",
+    "symbol": "Logger::init",
+    "line": 40
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::openImage",
+    "line": 98
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::saveAnnotations",
+    "line": 1413
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onUndo",
+    "line": 1453
+  },
+  {
+    "path": "src/deeplearning/tools/RectTool.cpp",
+    "symbol": "RectTool::endRect",
+    "line": 66
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::saveAnnotations",
+    "line": 1413
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::onReturnToGallery",
+    "line": 818
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "&ModelManagement::modelCreated",
+    "line": 180
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::onDeleteProject",
+    "line": 654
+  },
+  {
+    "path": "src/deeplearning/widgets/ModelManagement.cpp",
+    "symbol": "ModelManagement::onDeleteModel",
+    "line": 760
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "&ProjectManagement::projectClosed",
+    "line": 165
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onDeleteLabel",
+    "line": 2606
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onLabelOrderChanged",
+    "line": 2684
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::saveDatasetConfig",
+    "line": 360
+  },
+  {
+    "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+    "symbol": "DeepLearningWidget::applyPermissions",
+    "line": 297
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::onNewProject",
+    "line": 537
+  },
+  {
+    "path": "src/app/SystemSettingsWidget.cpp",
+    "symbol": "SystemSettingsWidget::onSave",
+    "line": 265
+  },
+  {
+    "path": "src/core/PermissionRegistry.cpp",
+    "symbol": "PermissionRegistry::refreshPermissions",
+    "line": 20
+  },
+  {
+    "path": "src/deeplearning/widgets/ModelManagement.cpp",
+    "symbol": "ModelManagement::onNewModel",
+    "line": 461
+  },
+  {
+    "path": "src/deeplearning/storage/ModelConfig.cpp",
+    "symbol": "ModelConfig::createModel",
+    "line": 21
+  },
+  {
+    "path": "src/app/SystemSettingsWidget.cpp",
+    "symbol": "SystemSettingsWidget::onSave",
+    "line": 265
+  },
+  {
+    "path": "src/app/SystemSettingsWidget.cpp",
+    "symbol": "SystemSettingsWidget::onReset",
+    "line": 296
+  },
+  {
+    "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+    "symbol": "ProjectManagement::ProjectManagement",
+    "line": 162
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onImportImages",
+    "line": 2139
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::writeCocoJson",
+    "line": 3531
+  },
+  {
+    "path": "src/deeplearning/storage/AnnotationIO.cpp",
+    "symbol": "AnnotationIO::saveCOCO",
+    "line": 47
+  },
+  {
+    "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+    "symbol": "AnnotationManagement::saveAnnotations",
+    "line": 1413
+  },
+  {
+    "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+    "symbol": "DatasetManagement::onLabelOrderChanged",
+    "line": 2684
+  }
+]

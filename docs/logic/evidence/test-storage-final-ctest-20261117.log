@@ -1,0 +1,886 @@
+Start testing: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+----------------------------------------------------------
+1/33 Testing: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+1/33 Test: storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.NewDocumentsHaveTypeVersionAndRelativePaths" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+[       OK ] Storage.NewDocumentsHaveTypeVersionAndRelativePaths (15 ms)
+[----------] 1 test from Storage (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/33 Testing: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+2/33 Test: storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+[       OK ] Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields (16 ms)
+[----------] 1 test from Storage (16 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (16 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/33 Testing: storage.Storage.LegacyAbsoluteReferencesRelocateWithoutWriting
+3/33 Test: storage.Storage.LegacyAbsoluteReferencesRelocateWithoutWriting
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.LegacyAbsoluteReferencesRelocateWithoutWriting" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.LegacyAbsoluteReferencesRelocateWithoutWriting" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.LegacyAbsoluteReferencesRelocateWithoutWriting
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyAbsoluteReferencesRelocateWithoutWriting
+[       OK ] Storage.LegacyAbsoluteReferencesRelocateWithoutWriting (15 ms)
+[----------] 1 test from Storage (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.LegacyAbsoluteReferencesRelocateWithoutWriting" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.LegacyAbsoluteReferencesRelocateWithoutWriting" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/33 Testing: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+4/33 Test: storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.AnnotationWorkspaceMatchesRuntimeDirectories" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+[       OK ] Storage.AnnotationWorkspaceMatchesRuntimeDirectories (8 ms)
+[----------] 1 test from Storage (8 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (8 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/33 Testing: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml
+5/33 Test: storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.ClassificationKeepsSixFoldersAndPortableYaml" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.ClassificationKeepsSixFoldersAndPortableYaml
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ClassificationKeepsSixFoldersAndPortableYaml
+[       OK ] Storage.ClassificationKeepsSixFoldersAndPortableYaml (19 ms)
+[----------] 1 test from Storage (19 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (19 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/33 Testing: storage.Storage.InvalidInMemorySavePreservesCommittedFiles
+6/33 Test: storage.Storage.InvalidInMemorySavePreservesCommittedFiles
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.InvalidInMemorySavePreservesCommittedFiles" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.InvalidInMemorySavePreservesCommittedFiles" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.InvalidInMemorySavePreservesCommittedFiles
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.InvalidInMemorySavePreservesCommittedFiles
+[       OK ] Storage.InvalidInMemorySavePreservesCommittedFiles (9 ms)
+[----------] 1 test from Storage (9 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (9 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.InvalidInMemorySavePreservesCommittedFiles" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.InvalidInMemorySavePreservesCommittedFiles" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/33 Testing: storage.Storage.MalformedAndWrongFieldTypesAreRejected
+7/33 Test: storage.Storage.MalformedAndWrongFieldTypesAreRejected
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.MalformedAndWrongFieldTypesAreRejected" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.MalformedAndWrongFieldTypesAreRejected" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.MalformedAndWrongFieldTypesAreRejected
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.MalformedAndWrongFieldTypesAreRejected
+[       OK ] Storage.MalformedAndWrongFieldTypesAreRejected (23 ms)
+[----------] 1 test from Storage (23 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (24 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.14 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.MalformedAndWrongFieldTypesAreRejected" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.MalformedAndWrongFieldTypesAreRejected" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/33 Testing: storage.Storage.ModelUnknownFieldsSurviveSave
+8/33 Test: storage.Storage.ModelUnknownFieldsSurviveSave
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.ModelUnknownFieldsSurviveSave" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.ModelUnknownFieldsSurviveSave" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.ModelUnknownFieldsSurviveSave
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ModelUnknownFieldsSurviveSave
+[       OK ] Storage.ModelUnknownFieldsSurviveSave (21 ms)
+[----------] 1 test from Storage (21 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (21 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.15 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.ModelUnknownFieldsSurviveSave" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.ModelUnknownFieldsSurviveSave" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/33 Testing: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+9/33 Test: storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.SemanticallyInvalidOriginalModelIsNotOverwritten" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+[       OK ] Storage.SemanticallyInvalidOriginalModelIsNotOverwritten (15 ms)
+[----------] 1 test from Storage (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/33 Testing: storage.Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave
+10/33 Test: storage.Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave
+[       OK ] Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave (21 ms)
+[----------] 1 test from Storage (22 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.LegacyModelWithoutMarkersIsReadOnlyUntilExplicitSave" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/33 Testing: storage.Storage.StatusUpdateNormalizesLegacyPaths
+11/33 Test: storage.Storage.StatusUpdateNormalizesLegacyPaths
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.StatusUpdateNormalizesLegacyPaths" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.StatusUpdateNormalizesLegacyPaths" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.StatusUpdateNormalizesLegacyPaths
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.StatusUpdateNormalizesLegacyPaths
+[       OK ] Storage.StatusUpdateNormalizesLegacyPaths (21 ms)
+[----------] 1 test from Storage (21 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (21 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.StatusUpdateNormalizesLegacyPaths" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.StatusUpdateNormalizesLegacyPaths" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/33 Testing: storage.Storage.ExternalModelReferenceRemainsAbsolute
+12/33 Test: storage.Storage.ExternalModelReferenceRemainsAbsolute
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Storage.ExternalModelReferenceRemainsAbsolute" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Storage.ExternalModelReferenceRemainsAbsolute" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Storage.ExternalModelReferenceRemainsAbsolute
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ExternalModelReferenceRemainsAbsolute
+[       OK ] Storage.ExternalModelReferenceRemainsAbsolute (15 ms)
+[----------] 1 test from Storage (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (16 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Storage.ExternalModelReferenceRemainsAbsolute" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Storage.ExternalModelReferenceRemainsAbsolute" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/33 Testing: storage.StorageFiles.DatasetRejectsWrongFieldTypes
+13/33 Test: storage.StorageFiles.DatasetRejectsWrongFieldTypes
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=StorageFiles.DatasetRejectsWrongFieldTypes" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.StorageFiles.DatasetRejectsWrongFieldTypes" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = StorageFiles.DatasetRejectsWrongFieldTypes
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from StorageFiles
+[ RUN      ] StorageFiles.DatasetRejectsWrongFieldTypes
+[       OK ] StorageFiles.DatasetRejectsWrongFieldTypes (0 ms)
+[----------] 1 test from StorageFiles (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"storage.StorageFiles.DatasetRejectsWrongFieldTypes" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.StorageFiles.DatasetRejectsWrongFieldTypes" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/33 Testing: storage.StorageFiles.AtomicFailureRetainsExistingFile
+14/33 Test: storage.StorageFiles.AtomicFailureRetainsExistingFile
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=StorageFiles.AtomicFailureRetainsExistingFile" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.StorageFiles.AtomicFailureRetainsExistingFile" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = StorageFiles.AtomicFailureRetainsExistingFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from StorageFiles
+[ RUN      ] StorageFiles.AtomicFailureRetainsExistingFile
+[       OK ] StorageFiles.AtomicFailureRetainsExistingFile (3 ms)
+[----------] 1 test from StorageFiles (3 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (3 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.StorageFiles.AtomicFailureRetainsExistingFile" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.StorageFiles.AtomicFailureRetainsExistingFile" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/33 Testing: storage.StorageFiles.DottedLogDirectoryIsRespected
+15/33 Test: storage.StorageFiles.DottedLogDirectoryIsRespected
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=StorageFiles.DottedLogDirectoryIsRespected" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.StorageFiles.DottedLogDirectoryIsRespected" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = StorageFiles.DottedLogDirectoryIsRespected
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from StorageFiles
+[ RUN      ] StorageFiles.DottedLogDirectoryIsRespected
+[       OK ] StorageFiles.DottedLogDirectoryIsRespected (3 ms)
+[----------] 1 test from StorageFiles (3 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (3 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.StorageFiles.DottedLogDirectoryIsRespected" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.StorageFiles.DottedLogDirectoryIsRespected" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/33 Testing: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+16/33 Test: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+[       OK ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0 (22 ms)
+[----------] 1 test from Format/InvalidDocument (22 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.06 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+17/33 Testing: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+17/33 Test: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+[       OK ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1 (15 ms)
+[----------] 1 test from Format/InvalidDocument (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+18/33 Testing: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+18/33 Test: storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+[       OK ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2 (14 ms)
+[----------] 1 test from Format/InvalidDocument (14 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (14 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+19/33 Testing: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+19/33 Test: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+[       OK ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0 (25 ms)
+[----------] 1 test from Format/InvalidDocument (25 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (25 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.05 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+20/33 Testing: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+20/33 Test: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+[       OK ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1 (14 ms)
+[----------] 1 test from Format/InvalidDocument (14 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (14 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+21/33 Testing: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+21/33 Test: storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+[       OK ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2 (14 ms)
+[----------] 1 test from Format/InvalidDocument (14 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (14 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+22/33 Testing: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0
+22/33 Test: storage.Windows/ReservedName.RejectBeforeCreatingFiles/0
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Windows/ReservedName.RejectBeforeCreatingFiles/0" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/0" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/0
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/0 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/0" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/0" time elapsed: 00:00:00
+----------------------------------------------------------
+
+23/33 Testing: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1
+23/33 Test: storage.Windows/ReservedName.RejectBeforeCreatingFiles/1
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Windows/ReservedName.RejectBeforeCreatingFiles/1" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/1" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/1
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/1 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/1" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/1" time elapsed: 00:00:00
+----------------------------------------------------------
+
+24/33 Testing: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2
+24/33 Test: storage.Windows/ReservedName.RejectBeforeCreatingFiles/2
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Windows/ReservedName.RejectBeforeCreatingFiles/2" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/2" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/2
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/2
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/2 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/2" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/2" time elapsed: 00:00:00
+----------------------------------------------------------
+
+25/33 Testing: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3
+25/33 Test: storage.Windows/ReservedName.RejectBeforeCreatingFiles/3
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Windows/ReservedName.RejectBeforeCreatingFiles/3" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/3" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/3
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/3
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/3 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.12 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/3" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/3" time elapsed: 00:00:00
+----------------------------------------------------------
+
+26/33 Testing: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4
+26/33 Test: storage.Windows/ReservedName.RejectBeforeCreatingFiles/4
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Windows/ReservedName.RejectBeforeCreatingFiles/4" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/4" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/4
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/4
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/4 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/4" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/4" time elapsed: 00:00:00
+----------------------------------------------------------
+
+27/33 Testing: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5
+27/33 Test: storage.Windows/ReservedName.RejectBeforeCreatingFiles/5
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionStorageTests.exe" "--gtest_filter=Windows/ReservedName.RejectBeforeCreatingFiles/5" "--gtest_also_run_disabled_tests"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/5" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/5
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/5
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/5 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.13 sec
+----------------------------------------------------------
+Test Passed.
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/5" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"storage.Windows/ReservedName.RejectBeforeCreatingFiles/5" time elapsed: 00:00:00
+----------------------------------------------------------
+
+28/33 Testing: native-annotation-regression
+28/33 Test: native-annotation-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionNativeAnnotationTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"native-annotation-regression" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+PASS hover preview and keyboard focus enabled
+PASS space pan consumes its release and always ends
+PASS image refresh preserves view
+PASS zero wheel delta does not zoom
+PASS wheel zoom holds mouse anchor
+PASS drag rectangle commits one shape
+PASS two-click rectangle remains compatible
+PASS Enter completes reverse-direction rectangle
+PASS rotated rectangle hit test follows rendered orientation
+PASS corner drag can shrink rectangle
+PASS native editor has no external launch entry
+PASS dataset async category initialization completes
+PASS unfinished shape blocks save-and-next without discarding preview
+PASS model update preserves UUID selection and list item
+PASS canvas drag synchronizes list and creates one undo
+PASS focus loss restores uncommitted drag
+PASS canvas selection deletes intended object
+PASS brightness change preserves zoom and center
+PASS original-image toggle leaves annotation unchanged
+PASS failed save-and-next retains edits and committed file
+PASS retry shortcut from shape list saves and advances while keeping view
+PASS last image saves and remains open
+PASS saved-next annotation reopens with shape identity
+PASS guest handlers cannot mutate or advance through saving
+<end of output>
+Test time =   0.58 sec
+----------------------------------------------------------
+Test Passed.
+"native-annotation-regression" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"native-annotation-regression" time elapsed: 00:00:00
+----------------------------------------------------------
+
+29/33 Testing: data-contract-regression
+29/33 Test: data-contract-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionDataTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"data-contract-regression" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+PASS data-only project and model configuration
+PASS data-only undo storage round trip and failure
+PASS data-only paired export independently reread
+<end of output>
+Test time =   0.08 sec
+----------------------------------------------------------
+Test Passed.
+"data-contract-regression" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"data-contract-regression" time elapsed: 00:00:00
+----------------------------------------------------------
+
+30/33 Testing: module-boundaries
+30/33 Test: module-boundaries
+Command: "D:/pythonbase/python.exe" "-X" "utf8" "D:/project/FuseVision/tests/check_module_boundaries.py"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"module-boundaries" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+PASS module include boundaries (core, UI, deep learning, traditional, app)
+<end of output>
+Test time =   0.11 sec
+----------------------------------------------------------
+Test Passed.
+"module-boundaries" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"module-boundaries" time elapsed: 00:00:00
+----------------------------------------------------------
+
+31/33 Testing: workflow-regression
+31/33 Test: workflow-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionWorkflowTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"workflow-regression" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+PASS annotation model undo/redo
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/Fixture/Seg/labels/a.png
+æ— æ³•åˆ›å»ºæ ‡æ³¨ç›®å½•
+DIALOG å›¾åƒ C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/Fixture/Seg/images/a.png æœ‰æœªä¿å­˜çš„ç¼–è¾‘æˆ–å°šæœªå®Œæˆçš„ç»˜åˆ¶ã€‚
+PASS widget load edit save reopen
+PASS JSON rotated and polygon round trip and failed replacement
+DIALOG å·²æœ‰æ ‡æ³¨æˆ–æœªä¿å­˜ç¼–è¾‘ï¼Œç¦æ­¢é‡æ’ç±»åˆ«ç¼–å·ã€‚
+C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/Fixture/Seg/labels
+PASS category protection
+PASS model creation signals
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/export-coco/annotations.json
+æˆåŠŸ 1 é¡¹ï¼Œè·³è¿‡ 0 é¡¹ï¼Œå¤±è´¥ 0 é¡¹
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/export-yolo
+æˆåŠŸ 1 é¡¹ï¼Œè·³è¿‡ 0 é¡¹ï¼Œå¤±è´¥ 0 é¡¹
+PASS export semantic baseline
+PASS external PNG edit
+PASS brush eraser fill polygon masks
+PASS paired import recovery
+DIALOG æˆåŠŸ 2 é¡¹ï¼Œè·³è¿‡ 0 é¡¹ï¼Œå¤±è´¥ 0 é¡¹
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/coco-source/bad.json
+ä¸å®‰å…¨çš„å›¾åƒç›¸å¯¹è·¯å¾„ï¼š../escape.png
+PASS COCO sparse IDs empty labels RLE and quality
+DIALOG åˆ é™¤é¡¹ç›®ã€ŒDeleteBã€
+é¡¹ç›®ç›®å½•ï¼šC:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/DeleteB
+é¡¹ç›®æ–‡ä»¶ï¼šC:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/DeleteB/project.fvproj
+PASS selected project and model deletion
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+PASS guest denied handlers and login state
+DIALOG æ—¥å¿—è·¯å¾„ä¸çº§åˆ«å·²ç«‹å³ç”Ÿæ•ˆã€‚
+æ•°æ®åº“åŠæ¨¡å—æ•°æ®è·¯å¾„å°†åœ¨é‡å¯åç”Ÿæ•ˆï¼›å·²æœ‰é¡¹ç›®ä¸ä¼šè¿ç§»ã€‚
+DIALOG é…ç½®å­˜å‚¨ä¸å¯å†™ï¼Œè¯·æ£€æŸ¥æƒé™åé‡è¯•ã€‚
+DIALOG æ—¥å¿—è·¯å¾„ä¸çº§åˆ«å·²ç«‹å³ç”Ÿæ•ˆã€‚
+æ•°æ®åº“åŠæ¨¡å—æ•°æ®è·¯å¾„å°†åœ¨é‡å¯åç”Ÿæ•ˆï¼›å·²æœ‰é¡¹ç›®ä¸ä¼šè¿ç§»ã€‚
+PASS settings and actual log retention
+DIALOG å›¾åƒ C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/Fixture/Seg/images/a.png æœ‰æœªä¿å­˜çš„ç¼–è¾‘æˆ–å°šæœªå®Œæˆçš„ç»˜åˆ¶ã€‚
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/integrated-export/annotations.json
+æˆåŠŸ 1 é¡¹ï¼Œè·³è¿‡ 0 é¡¹ï¼Œå¤±è´¥ 0 é¡¹
+PASS integrated project model gallery editor reopen export
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG è¯·å…ˆç™»å½•ç®¡ç†è´¦æˆ·ï¼Œå†æ‰§è¡Œä¿®æ”¹æ“ä½œã€‚
+DIALOG å¯†ç é”™è¯¯æˆ–ç®¡ç†è´¦æˆ·ä¸å¯ç”¨ï¼Œè¯·é‡è¯•ã€‚
+DIALOG å›¾åƒ C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-ZcGiJz/Fixture/Detect/images/one.png æœ‰æœªä¿å­˜çš„ç¼–è¾‘æˆ–å°šæœªå®Œæˆçš„ç»˜åˆ¶ã€‚
+DIALOG å½“å‰å¯†ç ä¸æ­£ç¡®æˆ–æ•°æ®åº“æ— æ³•å†™å…¥ï¼ŒåŸå¯†ç ä¿æŒä¸å˜ã€‚
+DIALOG æ–°å¯†ç è‡³å°‘6ä½ï¼Œä¸”ä¸¤æ¬¡è¾“å…¥å¿…é¡»ä¸€è‡´ã€‚
+DIALOG ç®¡ç†è´¦æˆ·å¯†ç å·²æ›´æ–°ï¼Œä¸‹æ¬¡ç™»å½•è¯·ä½¿ç”¨æ–°å¯†ç ã€‚
+PASS guest pages single account login logout and password
+<end of output>
+Test time =   2.26 sec
+----------------------------------------------------------
+Test Passed.
+"workflow-regression" end time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+"workflow-regression" time elapsed: 00:00:02
+----------------------------------------------------------
+
+32/33 Testing: startup-smoke
+32/33 Test: startup-smoke
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVision.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"startup-smoke" start time: Nov 17 15:00 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.34 sec
+----------------------------------------------------------
+Test Passed.
+"startup-smoke" end time: Nov 17 15:01 ÖĞ¹ú±ê×¼Ê±¼ä
+"startup-smoke" time elapsed: 00:00:00
+----------------------------------------------------------
+
+33/33 Testing: current-issues-regression
+33/33 Test: current-issues-regression
+Command: "D:/project/FuseVision/out/build/windows-x64-release/bin/Release/FuseVisionCurrentIssuesTests.exe"
+Directory: D:/project/FuseVision/out/build/windows-x64-release
+"current-issues-regression" start time: Nov 17 15:01 ÖĞ¹ú±ê×¼Ê±¼ä
+Output:
+----------------------------------------------------------
+PASS storage-config
+PASS ISS-011
+PASS ISS-012
+PASS ISS-013
+PASS ISS-014
+<end of output>
+Test time =   0.99 sec
+----------------------------------------------------------
+Test Passed.
+"current-issues-regression" end time: Nov 17 15:01 ÖĞ¹ú±ê×¼Ê±¼ä
+"current-issues-regression" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 17 15:01 ÖĞ¹ú±ê×¼Ê±¼ä

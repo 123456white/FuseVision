@@ -1,0 +1,36 @@
+# 当前文档目录
+
+<!-- generated: scripts/docs/docflow.py sync；勿手工编辑 -->
+
+只列当前维护文档；原始证据与归档不计入当前说明。
+
+- [FuseVision 环境与启动指南](../GETTING-STARTED.md)
+- [FuseVision 文档中心](../README.md)
+- [FuseVision 架构与模块边界](../codebase/ARCHITECTURE.md)
+- [Codebase Concerns](../codebase/CONCERNS.md)
+- [Coding Conventions](../codebase/CONVENTIONS.md)
+- [External Integrations](../codebase/INTEGRATIONS.md)
+- [Technology Stack](../codebase/STACK.md)
+- [Codebase Structure](../codebase/STRUCTURE.md)
+- [Testing Patterns](../codebase/TESTING.md)
+- [当前算法与格式处理说明](../logic/ALGORITHMS.md)
+- [核心工作流（2026-11-17 更新）](../logic/CORE-FLOW.md)
+- [业务数据与文件契约（2026-11-17）](../logic/DATA-CONTRACTS.md)
+- [功能关系与失败传播](../logic/FEATURE-RELATIONS.md)
+- [FuseVision 功能、页面与按钮清单](../logic/FEATURES.md)
+- [功能范围与证据说明](../logic/README.md)
+- [真实界面与按钮编号](../logic/SCREENSHOTS.md)
+- [核心状态与迁移表](../logic/STATE-MACHINES.md)
+- [功能关系与测试追踪](../logic/TEST-TRACEABILITY.md)
+- [核心流程实施与验证（2026-11-17 更新）](../logic/VALIDATION.md)
+- [旧工具入口已归档](../logic/tools/README.md)
+- [FuseVision AI工具与技能](AI-TOOLS.md)
+- [文档架构与自更新实施记录](MIGRATION.md)
+- [文档维护与自更新](README.md)
+- [FuseVision 文档维护规范](STANDARD.md)
+- [改进问题清单（2026-11-17 当前状态）](../refactor/ISSUES.md)
+- [Introduction](../refactor/feature-native-annotation-1.md)
+- [Introduction](../refactor/refactor-module-boundaries.md)
+- [Introduction](../refactor/refactor-workflow-consistency-1.md)
+- [Introduction](../refactor/spec-process-workflow-consistency.md)
+- [原始功能需求记录](../requirements/FUNCTION-RECORD.md)

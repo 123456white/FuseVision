@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-14",
+  "timezone": "Asia/Tokyo",
+  "passed": true,
+  "checks": [
+    {
+      "name": "original-source-hashes",
+      "passed": true,
+      "detail": {
+        "files": 794,
+        "changed": []
+      }
+    },
+    {
+      "name": "new-files-within-docs",
+      "passed": true,
+      "detail": {
+        "newOutsideDocs": []
+      }
+    },
+    {
+      "name": "feature-structure",
+      "passed": true,
+      "detail": {
+        "count": 38,
+        "uniqueIds": 38
+      }
+    },
+    {
+      "name": "real-ui-captures",
+      "passed": true,
+      "detail": {
+        "count": 21,
+        "platform": "offscreen"
+      }
+    },
+    {
+      "name": "unique-button-id-within-capture",
+      "passed": true,
+      "detail": "同一截图重复文字按钮使用出现次序区分；同页面跨状态复用ID。"
+    },
+    {
+      "name": "source-symbol-line-evidence",
+      "passed": true,
+      "detail": {
+        "references": 278,
+        "unique": 113,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-json-graph",
+      "passed": true,
+      "detail": {
+        "sheets": 9,
+        "topics": 478,
+        "relationships": 88,
+        "invalid": []
+      }
+    },
+    {
+      "name": "xmind-feature-coverage",
+      "passed": true,
+      "detail": "全部F01–F38有独立详细节点，含代码证据备注。"
+    },
+    {
+      "name": "xmind-zip-content-resources",
+      "passed": true,
+      "detail": {
+        "sheets": 9,
+        "topics": 478,
+        "relationships": 88,
+        "embeddedUniqueImages": 21,
+        "invalid": [],
+        "crcError": null
+      }
+    },
+    {
+      "name": "xmind-chinese-notes-labels",
+      "passed": true,
+      "detail": "中文功能、源文件/函数、备注与状态标签均保留。"
+    },
+    {
+      "name": "markdown-local-links",
+      "passed": true,
+      "detail": {
+        "links": 292,
+        "broken": []
+      }
+    },
+    {
+      "name": "seven-codebase-documents",
+      "passed": true,
+      "detail": [
+        "ARCHITECTURE.md",
+        "CONCERNS.md",
+        "CONVENTIONS.md",
+        "INTEGRATIONS.md",
+        "STACK.md",
+        "STRUCTURE.md",
+        "TESTING.md"
+      ]
+    },
+    {
+      "name": "spec-plan-template-sections",
+      "passed": true,
+      "detail": "规格11章节，计划8个指定章节及Planned front matter。"
+    },
+    {
+      "name": "plan-unique-id-declarations",
+      "passed": true,
+      "detail": {
+        "declarations": 14,
+        "duplicate": [],
+        "tasks": 14,
+        "phases": 5
+      }
+    },
+    {
+      "name": "recorded-runtime-observations",
+      "passed": true,
+      "detail": {
+        "new-model-signals": {
+          "case": "new-model-signals",
+          "currentModelChanged": 0,
+          "modelCreated": 0,
+          "selectedModel": "SurfaceSeg"
+        },
+        "annotation-save": {
+          "case": "annotation-save",
+          "dirtyAfterSave": false,
+          "dirtyBeforeSave": false,
+          "modelDirtyAfterSave": true,
+          "modelShapeCountBeforeSave": 2,
+          "savedMaskReadable": true,
+          "savedPixelInNewRectangle": 0
+        },
+        "annotation-reopen": {
+          "case": "annotation-reopen",
+          "modelShapeCountAfterReopen": 1
+        },
+        "ordinary-user-project-write-control": {
+          "canWrite": false,
+          "case": "ordinary-user-project-write-control",
+          "newProjectEnabled": true
+        }
+      }
+    },
+    {
+      "name": "ctest-startup-smoke",
+      "passed": true,
+      "detail": "1/1 startup-smoke通过；不等于业务标注保存通过。"
+    }
+  ],
+  "limitations": [
+    "XMind客户端未打开；仅验证ZIP/JSON/图片/关联线结构",
+    "Qt offscreen真实Widget运行，未验证可见Windows窗口/原生对话框/DWM",
+    "第三方LabelMe、相机、训练/预测与真实生产数据未验证",
+    "静态分支未当作实测；不执行删除/类别重排/设置写/真实用户CRUD"
+  ],
+  "sourceFilesUnchanged": 794
+}

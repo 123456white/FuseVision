@@ -1,0 +1,547 @@
+{
+  "date": "2026-11-17",
+  "scope": "Current uncommitted workspace; post-audit snapshot. Not a clean-commit or pre-change snapshot. Business sources were not edited in this audit.",
+  "session": "audit-current-20261117",
+  "release_configure_build_exit": 0,
+  "release_build": "incremental, ninja no work to do",
+  "ctest": {
+    "passed": 5,
+    "failed": 0
+  },
+  "probe_exit": 0,
+  "probe_observations": {
+    "ISS-011": {
+      "import_ok": true,
+      "reopen_ok": false,
+      "previous_valid_label_replaced": true
+    },
+    "ISS-012": {
+      "requested_delta": [
+        10,
+        0
+      ],
+      "rendered_corner_delta": [
+        0,
+        10
+      ],
+      "center_unchanged": true
+    },
+    "ISS-013": {
+      "configured_path_used": false
+    },
+    "ISS-014": {
+      "stored_classification_images": 2,
+      "gallery_samples": 0
+    }
+  },
+  "source_files": [
+    {
+      "path": "cmake/DeployRuntime.cmake",
+      "bytes": 4329,
+      "sha256": "812a7ccd2fba479ee77ac674abfd14c75e2cb202d0b9ae415af0de429b036686"
+    },
+    {
+      "path": "cmake/Documentation.cmake",
+      "bytes": 702,
+      "sha256": "f84153f0903bbb349444b148e25d6821b529896a381195f3b86603f20e4696f4"
+    },
+    {
+      "path": "cmake/FindHalcon.cmake",
+      "bytes": 2445,
+      "sha256": "296538ffc742432f2ea8f468a8ee491c2d023fb0091cc55d12022c313101e360"
+    },
+    {
+      "path": "cmake/FindMVS.cmake",
+      "bytes": 880,
+      "sha256": "1eb62199d563a1478285903d6012cb1365e60d6f9b30402f5c0a54c804a3b2ce"
+    },
+    {
+      "path": "cmake/ModuleBoundaries.cmake",
+      "bytes": 1142,
+      "sha256": "3ebc7c485b0b2b657e382921788882ba981e45725a0ffe950cea870ade7392f7"
+    },
+    {
+      "path": "src/app/CMakeLists.txt",
+      "bytes": 464,
+      "sha256": "e00db1f0ef1556cec23a67288f40c34eb0717b843b710fe80e74bb5aee4658f2"
+    },
+    {
+      "path": "src/app/FuseVision.cpp",
+      "bytes": 18926,
+      "sha256": "c98d887693d62a1938f62bad422dd88a0fe89fb0ea3f5b1582da69096165e52b"
+    },
+    {
+      "path": "src/app/FuseVision.h",
+      "bytes": 5446,
+      "sha256": "264c30769179fcf13ce454aec0d9458cc5eafe7c5df72fc3f67071f7d8440a1b"
+    },
+    {
+      "path": "src/app/Login.cpp",
+      "bytes": 2566,
+      "sha256": "31a3e145e6658bd3967febcb3e015dd468fb6b7b0a50ba1e9d9ede6fb0c94a67"
+    },
+    {
+      "path": "src/app/Login.h",
+      "bytes": 564,
+      "sha256": "a4583a4789224b5f7fb30303d4926ab01de744e2169dff8437a5e967b2af383f"
+    },
+    {
+      "path": "src/app/SystemSettingsWidget.cpp",
+      "bytes": 18235,
+      "sha256": "5c524ae2465a8050450e3fcb6489fd3a1b579db4b6289fcfa7de9b8621c2312f"
+    },
+    {
+      "path": "src/app/SystemSettingsWidget.h",
+      "bytes": 3001,
+      "sha256": "b8534291f1a1b6782aff4b126c6b35152612dbba61c567be26a93134a2983020"
+    },
+    {
+      "path": "src/app/UserManagementWidget.cpp",
+      "bytes": 3100,
+      "sha256": "f9b734c421501b98a65e92c5a9c1dd78286a066808bed909d93ae0260ec013cc"
+    },
+    {
+      "path": "src/app/UserManagementWidget.h",
+      "bytes": 781,
+      "sha256": "36a15b34f62c9cad19e06eb41604d2c219030a43490b9997b9eb4d0e33c36117"
+    },
+    {
+      "path": "src/CMakeLists.txt",
+      "bytes": 213,
+      "sha256": "621219e254622dff710c709fafb0bc65c4730f8bb34a5202cbf1ac38cc04b7ba"
+    },
+    {
+      "path": "src/core/AccessControl.h",
+      "bytes": 698,
+      "sha256": "3d7ddeefa2506cabeedcdcbbc4482154019fc9324802ff95e7057760145cb2f2"
+    },
+    {
+      "path": "src/core/AtomicFile.h",
+      "bytes": 597,
+      "sha256": "128e5712c18bbfa2242775510c3cd86519af1b9fe41f7e0a8e3fc04ffecc456e"
+    },
+    {
+      "path": "src/core/CMakeLists.txt",
+      "bytes": 587,
+      "sha256": "13cf637029e54d9efa2f0ce13061d3f391102addac7d247369a9d971c922f3ce"
+    },
+    {
+      "path": "src/core/DatabaseManager.cpp",
+      "bytes": 4034,
+      "sha256": "9782c21d0ab3a14a363899c9e742346a83acee205c3ca73cddec0b40fe308790"
+    },
+    {
+      "path": "src/core/DatabaseManager.h",
+      "bytes": 2085,
+      "sha256": "0f0a7ea97b7d9efa6a5ee7b66cf8761f03737f0afd98e793975281e8e8a840f0"
+    },
+    {
+      "path": "src/core/Logger.cpp",
+      "bytes": 4761,
+      "sha256": "0eeb31d8cedcf7af3c0c48ad88251e505858d9136e57e2c269142fffdfc6c5ff"
+    },
+    {
+      "path": "src/core/Logger.h",
+      "bytes": 1757,
+      "sha256": "93a2e543031ed0b5996db560b68a8a9122172e269f1b7ba3d50c5937fe1a3f2f"
+    },
+    {
+      "path": "src/core/PermissionInfo.h",
+      "bytes": 1087,
+      "sha256": "bfe29a8948c2ddbf1f40aab09316f10a5f88be23c59c730a79aad72aab11eeb5"
+    },
+    {
+      "path": "src/core/PermissionRegistry.cpp",
+      "bytes": 999,
+      "sha256": "486185acd72ce72b865b8fb31ee4f54a4a54bbe265cb929525f3ad8c65fe0093"
+    },
+    {
+      "path": "src/core/PermissionRegistry.h",
+      "bytes": 1053,
+      "sha256": "536b275e4222e01db630cfcf6f1d2ab198b341c192cf02dc6c34b49375ff8aa9"
+    },
+    {
+      "path": "src/core/RecoveryStore.h",
+      "bytes": 1053,
+      "sha256": "6596ff8169640b5b88f4d725f4ebe96b62f32b35b6e280bd7f46a39b657e3550"
+    },
+    {
+      "path": "src/core/SessionManager.cpp",
+      "bytes": 878,
+      "sha256": "79132a6fc7100b75dd8b4c509ed4bc19f02d2759dadf305b09ecb06669615984"
+    },
+    {
+      "path": "src/core/SessionManager.h",
+      "bytes": 968,
+      "sha256": "c17d54ee779cef72067cd417eef833868ffb41fb74c4a50f854ce6d5485de535"
+    },
+    {
+      "path": "src/core/SettingsManager.cpp",
+      "bytes": 5061,
+      "sha256": "f549fab875b749758d2909c0fa1d689ff50bc6ab565bc5e51f8d274d74f937df"
+    },
+    {
+      "path": "src/core/SettingsManager.h",
+      "bytes": 3659,
+      "sha256": "286546bc453e9fa7b69be3d2dd88c6b3357fc48ac5cd2febef1469357f80adac"
+    },
+    {
+      "path": "src/deeplearning/CMakeLists.txt",
+      "bytes": 1680,
+      "sha256": "8811af44168e9d479de270682ddfdd626cf5f0dd601885b935b9e8877cd540dc"
+    },
+    {
+      "path": "src/deeplearning/domain/AnnotationShape.cpp",
+      "bytes": 934,
+      "sha256": "ab4e1f4079f48c232c008d4a3d45092558897a931074f94a636f0a8030d66d0b"
+    },
+    {
+      "path": "src/deeplearning/domain/AnnotationShape.h",
+      "bytes": 1351,
+      "sha256": "bfa1871925ba7d107732c1ab8e9adbd49bcfde8bf19d94ed412d209cd76e4e29"
+    },
+    {
+      "path": "src/deeplearning/domain/DatasetTypes.h",
+      "bytes": 3759,
+      "sha256": "212eb2b14305f8c6ee8a9ce0862bde2d970390de008985333b121dbfbd923e2c"
+    },
+    {
+      "path": "src/deeplearning/domain/ModelTypes.h",
+      "bytes": 2414,
+      "sha256": "a3bdcc72a3058db4d3c83f4c662062573b82b3d9c8eab371c16de8d7bf7e8247"
+    },
+    {
+      "path": "src/deeplearning/domain/ProjectTypes.h",
+      "bytes": 1321,
+      "sha256": "3dbb40cbdd1d1ca99a9abbf0ac6f786cb55219f7d664379adb0b3901c55f8710"
+    },
+    {
+      "path": "src/deeplearning/model/AnnotationModel.cpp",
+      "bytes": 12393,
+      "sha256": "315f4521001a7ae68cfeaf92831388a2ef5594a7e6bf0b05b6af69cf873d648f"
+    },
+    {
+      "path": "src/deeplearning/model/AnnotationModel.h",
+      "bytes": 6336,
+      "sha256": "b9f52b7fa76e459be5adab8ddd7a836a59c1dc69055b5fe25ebe262799c2f427"
+    },
+    {
+      "path": "src/deeplearning/render/AnnotationRender.cpp",
+      "bytes": 7310,
+      "sha256": "6c5f5b43f294df107e5ae6e04e11fce5266fd7cd81a3ad506983a6f60517ca15"
+    },
+    {
+      "path": "src/deeplearning/render/AnnotationRender.h",
+      "bytes": 3417,
+      "sha256": "523064667c69f1be941c97e140d98756084876663e3b08bd169483244cb8fd99"
+    },
+    {
+      "path": "src/deeplearning/storage/AnnotationIO.cpp",
+      "bytes": 18457,
+      "sha256": "9de240518f599680d9ea7683ec6422d76d38a6af1fbc50d75d4d28abb538ce28"
+    },
+    {
+      "path": "src/deeplearning/storage/AnnotationIO.h",
+      "bytes": 3342,
+      "sha256": "7990a4d71f27d4e818b94af1b6ec638478206cde829b9d9f66d55c10fc27d2cd"
+    },
+    {
+      "path": "src/deeplearning/storage/AnnotationStore.cpp",
+      "bytes": 15999,
+      "sha256": "83040b01b6a3a8b7d8ddc4edfde548e42fc20e18157c0eca2849956b280de7d0"
+    },
+    {
+      "path": "src/deeplearning/storage/AnnotationStore.h",
+      "bytes": 1508,
+      "sha256": "2acdb2d70b920e12be9f1002a3d9744e6e27a054539bcd7a3595c16650d2e345"
+    },
+    {
+      "path": "src/deeplearning/storage/DatasetFileService.cpp",
+      "bytes": 22470,
+      "sha256": "5b065dfeda28fd3311888ac9793624fa8995226da600d933d27b552234e257b5"
+    },
+    {
+      "path": "src/deeplearning/storage/DatasetFileService.h",
+      "bytes": 2572,
+      "sha256": "400287a93c38e34eb1885b45fe43cd22429814c61dea79a3c735693d6cd0befe"
+    },
+    {
+      "path": "src/deeplearning/storage/ModelConfig.cpp",
+      "bytes": 10247,
+      "sha256": "101676f9abead7b5ae33643808787d25eed3dc2fa3b46a6b6ce78f2f8b377a50"
+    },
+    {
+      "path": "src/deeplearning/storage/ModelConfig.h",
+      "bytes": 3181,
+      "sha256": "13294aceb826e2a31e5cba30cfe8bac2270bfdb621ae810dd070dca20549af8d"
+    },
+    {
+      "path": "src/deeplearning/storage/ProjectConfig.cpp",
+      "bytes": 10717,
+      "sha256": "52fa7833117b80f909c68384279a8e5db7a35d023690a767413196453bcaa9b1"
+    },
+    {
+      "path": "src/deeplearning/storage/ProjectConfig.h",
+      "bytes": 3677,
+      "sha256": "a4dda1a988c25b9257c141f77054dc9f1f92140455cbb497a13fe2cb1cf8b2d3"
+    },
+    {
+      "path": "src/deeplearning/tools/AnnotationTool.cpp",
+      "bytes": 1215,
+      "sha256": "dbb5c49288f578e096c9304be191f127b2e0a3946997ba945b128118d7912cf8"
+    },
+    {
+      "path": "src/deeplearning/tools/AnnotationTool.h",
+      "bytes": 4555,
+      "sha256": "4215e1c5589fd05088ad1cca1b26c023e2c90ce0bf5f3c5df6625d1deb0f8b8c"
+    },
+    {
+      "path": "src/deeplearning/tools/BrushTool.cpp",
+      "bytes": 2662,
+      "sha256": "96de579d4c696991f1685e9ab2ad3a5ad8ae9ff4a2a6e085aae05b92ef5d29c9"
+    },
+    {
+      "path": "src/deeplearning/tools/BrushTool.h",
+      "bytes": 1129,
+      "sha256": "134f9b7f8e27d9e04c24de46464d4e3411cb9a0776b45fccc97a7a8124ce34b1"
+    },
+    {
+      "path": "src/deeplearning/tools/EraserTool.cpp",
+      "bytes": 2403,
+      "sha256": "82bdfc8abada11744137b11433e57aeaf4feaa28df921330f66664cd564a2133"
+    },
+    {
+      "path": "src/deeplearning/tools/EraserTool.h",
+      "bytes": 1160,
+      "sha256": "c9a478fd64419c9c138299ec2bc34b4d7be7bd4cd01b87cd8e45875ecc0d5040"
+    },
+    {
+      "path": "src/deeplearning/tools/FillTool.cpp",
+      "bytes": 4075,
+      "sha256": "c5dbb5cfe65c76aded46319c26737acef58d2c2c773790ecbe441dc1959e1c14"
+    },
+    {
+      "path": "src/deeplearning/tools/FillTool.h",
+      "bytes": 959,
+      "sha256": "d6b55f5b9ef15bf8609b5212b927d5421086d2c8fc9ea6e2a9d6a33622e659b1"
+    },
+    {
+      "path": "src/deeplearning/tools/PolygonTool.cpp",
+      "bytes": 3530,
+      "sha256": "39081095b76a7830f1e70badac2b79494a5afeb89fef1b749c78bc7d6b9479f7"
+    },
+    {
+      "path": "src/deeplearning/tools/PolygonTool.h",
+      "bytes": 1224,
+      "sha256": "e15a0c69424221cd5dd1107d3ace6cd51c00ebea3f1d76449b7292e199653969"
+    },
+    {
+      "path": "src/deeplearning/tools/RectTool.cpp",
+      "bytes": 2886,
+      "sha256": "aed8b4408f649df93a31286e8453922e8e4e6b9b3564151ef89f019b885854a4"
+    },
+    {
+      "path": "src/deeplearning/tools/RectTool.h",
+      "bytes": 1366,
+      "sha256": "af36d59e6cbd55573898b1b80d51ca22eb4009c31dc9b36aee52599beb995c56"
+    },
+    {
+      "path": "src/deeplearning/tools/SelectTool.cpp",
+      "bytes": 3258,
+      "sha256": "0c879ac6d91493e0b2d2213fdef18383ddc3bad197d350459b08f04f9487aec1"
+    },
+    {
+      "path": "src/deeplearning/tools/SelectTool.h",
+      "bytes": 1739,
+      "sha256": "4ea878cd11a177a662e7c2b135650fa534a8736febca832cb05c6faf5a9ecbc2"
+    },
+    {
+      "path": "src/deeplearning/widgets/AnnotationCanvas.cpp",
+      "bytes": 9506,
+      "sha256": "3933c067aa6906e4f360e8563d302b523876214fc9d379d0b2f9e22149e8065e"
+    },
+    {
+      "path": "src/deeplearning/widgets/AnnotationCanvas.h",
+      "bytes": 4561,
+      "sha256": "030c0e943331a16b64251304c6d487c47ea088112e7d4d1322fcbcb44932b7af"
+    },
+    {
+      "path": "src/deeplearning/widgets/AnnotationManagement.cpp",
+      "bytes": 74316,
+      "sha256": "c82271d81d364be00510d5e5893f3d40f6bd0d820793302cb30d6610678228d8"
+    },
+    {
+      "path": "src/deeplearning/widgets/AnnotationManagement.h",
+      "bytes": 10008,
+      "sha256": "113a1d84cf67d79279926c909f1ff36e2dd184ade0aaf2bb2bd41ee602f13600"
+    },
+    {
+      "path": "src/deeplearning/widgets/DatasetManagement.cpp",
+      "bytes": 179088,
+      "sha256": "a653a5bbb9a2dc78435ba851b386dc2999fcc2338a6ee9f7e3ea5963e999d20e"
+    },
+    {
+      "path": "src/deeplearning/widgets/DatasetManagement.h",
+      "bytes": 15347,
+      "sha256": "890b2a67f95af9630a3507b2149d085f2d2323c4980f05d71199bf7b67eb27fe"
+    },
+    {
+      "path": "src/deeplearning/widgets/DeepLearningWidget.cpp",
+      "bytes": 14430,
+      "sha256": "1a0c99aaa35f4460e9dcaacbf1b67e9adaba2665a1eca077e0e76d6d205697cb"
+    },
+    {
+      "path": "src/deeplearning/widgets/DeepLearningWidget.h",
+      "bytes": 2321,
+      "sha256": "933d39f88ada72e4d70d8fcc8758e6b402c33851f144184f1b925fee2a8379b1"
+    },
+    {
+      "path": "src/deeplearning/widgets/ModelManagement.cpp",
+      "bytes": 42109,
+      "sha256": "4a29abbc6abafe641aeaa5603c9a35701344fbb1b811bce3850949a91a4f46e8"
+    },
+    {
+      "path": "src/deeplearning/widgets/ModelManagement.h",
+      "bytes": 6553,
+      "sha256": "507fb4b111c6b71f828f6fe38b748a1f91fa656acce2167958c21f0a81060d93"
+    },
+    {
+      "path": "src/deeplearning/widgets/ProjectManagement.cpp",
+      "bytes": 36080,
+      "sha256": "a2fd57be21a5dc13ef11fd8500160f59d9c03c35fa4d12985248a9eb09669b1c"
+    },
+    {
+      "path": "src/deeplearning/widgets/ProjectManagement.h",
+      "bytes": 8322,
+      "sha256": "90034fa383b2f9e899491db3d437ce0c57bbdc6110d310c08cd3b39abc9a163e"
+    },
+    {
+      "path": "src/main.cpp",
+      "bytes": 13446,
+      "sha256": "6522ee04dd0803e9121398822246d432855310d729a00722a8e89b9a946f3e48"
+    },
+    {
+      "path": "src/traditional/CMakeLists.txt",
+      "bytes": 273,
+      "sha256": "5a13082bc783019876ce5b41866340b10715083b2adfcaca247541abca7cc747"
+    },
+    {
+      "path": "src/traditional/TraditionalWidget.cpp",
+      "bytes": 11423,
+      "sha256": "be2a6113e869046f8b5531d88614cbd04083428d42758ccf3d74113dadef08bf"
+    },
+    {
+      "path": "src/traditional/TraditionalWidget.h",
+      "bytes": 4816,
+      "sha256": "8e587be8de939a9a0962f468a140f5ce04da22d0c58b872894506e1be11ec158"
+    },
+    {
+      "path": "src/ui/CMakeLists.txt",
+      "bytes": 393,
+      "sha256": "5dd29e95aa32bac94b2ae0bf8e1865d125e2b829c0e4fbc9442417cf13c9a062"
+    },
+    {
+      "path": "src/ui/LoadingOverlay.cpp",
+      "bytes": 2110,
+      "sha256": "1a011d206c7f0993146f19daa91c4031c6e2d65f695885c9d250d460e24de1fd"
+    },
+    {
+      "path": "src/ui/LoadingOverlay.h",
+      "bytes": 1426,
+      "sha256": "5e1b9d498208af83670bbba20fd5b93870b050eca46d4334def55e26edc55f98"
+    },
+    {
+      "path": "src/ui/LogMonitor.cpp",
+      "bytes": 4770,
+      "sha256": "28adcfe525442b93012408afb0eeea173472dd8c8922acba014fa25f727106cc"
+    },
+    {
+      "path": "src/ui/LogMonitor.h",
+      "bytes": 2485,
+      "sha256": "2b6b9facf8b7f2b4678dacf04d0932939a5efa846217a46a191a0c6588be8e02"
+    },
+    {
+      "path": "src/ui/PermissionGuard.cpp",
+      "bytes": 874,
+      "sha256": "2501eddaf9bead4ced788a3927998acadf192a3f834a57cba13867dc0d4f7f42"
+    },
+    {
+      "path": "src/ui/PermissionGuard.h",
+      "bytes": 815,
+      "sha256": "8974dd46f1368e1e849038235d72fbf2b4df6c4d69e02199cbba66a06799f31a"
+    },
+    {
+      "path": "src/ui/ThemeManager.cpp",
+      "bytes": 24747,
+      "sha256": "125ec3dfe108eaefea27433a5653a2cbe48c05be6a908c4acb394c9096bc7456"
+    },
+    {
+      "path": "src/ui/ThemeManager.h",
+      "bytes": 2700,
+      "sha256": "1c0dedaa91b495ddbae0a35cce05ccf1dba7fb6b0b12509d418d77938128759a"
+    },
+    {
+      "path": "src/ui/WriteAccess.cpp",
+      "bytes": 476,
+      "sha256": "be4963b13882b289bd9c9a1fe833f77cc98d600989df391cd8f37f6ecfdec117"
+    },
+    {
+      "path": "src/ui/WriteAccess.h",
+      "bytes": 624,
+      "sha256": "a1220d870e0019881a56b68784585ea21d571d9547080c8db7a6f5153f414c1f"
+    },
+    {
+      "path": "tests/data_contract_regression.cpp",
+      "bytes": 5935,
+      "sha256": "ac179fcf0c4867db40a08221e4f470642113f222e7d2486e420755747f8d2499"
+    },
+    {
+      "path": "tests/native_annotation_regression.cpp",
+      "bytes": 13045,
+      "sha256": "608d938835db7d18bf7a3098b22465467411d35032c339628ac119135394fff5"
+    },
+    {
+      "path": "tests/workflow_regression.cpp",
+      "bytes": 59166,
+      "sha256": "e473929c8721cf1f8f7d059a13d83f05a0ad53b456a206849dfc92f00cb149c2"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 7516,
+      "sha256": "890f33fa99710a7eda92fc69e6dc76a1b5d4ed70aaa0b40221e21d4be37dd2b1"
+    },
+    {
+      "path": "CMakePresets.json",
+      "bytes": 5410,
+      "sha256": "3a9bb9855a037bf66fd02f66a3188a613d71a888646dedacc4795fe3f47b6496"
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-probe.cpp",
+      "bytes": 5810,
+      "sha256": "ac08cd93b42208c6ddc52d26173f1d223228bc347afbc4534b292190bd582197"
+    },
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-build-probe.ps1",
+      "bytes": 2282,
+      "sha256": "ecae4a1533bf9b2db941ef36554067708e35a1d3d7e1fa180dc0ff6ea1ebddbb"
+    },
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-probe.log",
+      "bytes": 476,
+      "sha256": "26aff97f81f5817295939dfece25fdb51ac2adee8e1e55e1f3cfb12c8b905ed8"
+    },
+    {
+      "path": "docs/logic/evidence/current-audit-20261117-release-build.log",
+      "bytes": 8580,
+      "sha256": "f39540f1e6ee27341c6952afcd6dda444025deaf7e9f0651b68388074a5990e3"
+    }
+  ],
+  "limitations": [
+    "No visible Windows desktop or native dialog verification",
+    "No full application two-process restart",
+    "No Debug, camera or representative load performance benchmark",
+    "Probe findings remain unfixed; exit zero means completed diagnostic execution"
+  ]
+}

@@ -34,6 +34,30 @@
       }
     },
     {
+      "name": "windows-vs",
+      "hidden": true,
+      "inherits": "windows-x64",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      },
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES": "Debug;Release"
+      }
+    },
+    {
+      "name": "windows-vs2022-x64",
+      "displayName": "Visual Studio 2022 x64 (Debug / Release)",
+      "inherits": "windows-vs",
+      "generator": "Visual Studio 17 2022"
+    },
+    {
+      "name": "windows-vs2026-x64",
+      "displayName": "Visual Studio 2026 x64 (Debug / Release)",
+      "inherits": "windows-vs",
+      "generator": "Visual Studio 18 2026"
+    },
+    {
       "name": "linux-x64",
       "hidden": true,
       "inherits": "base-common",
@@ -90,6 +114,48 @@
       "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
     }
   ],
+  "testPresets": [
+    {
+      "name": "windows-debug",
+      "configurePreset": "windows-x64-debug",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    },
+    {
+      "name": "windows-release",
+      "configurePreset": "windows-x64-release",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    },
+    {
+      "name": "windows-vs2022-debug",
+      "configurePreset": "windows-vs2022-x64",
+      "configuration": "Debug",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    },
+    {
+      "name": "windows-vs2022-release",
+      "configurePreset": "windows-vs2022-x64",
+      "configuration": "Release",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    },
+    {
+      "name": "windows-vs2026-debug",
+      "configurePreset": "windows-vs2026-x64",
+      "configuration": "Debug",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    },
+    {
+      "name": "windows-vs2026-release",
+      "configurePreset": "windows-vs2026-x64",
+      "configuration": "Release",
+      "output": { "outputOnFailure": true },
+      "execution": { "noTestsAction": "error" }
+    }
+  ],
   "buildPresets": [
     {
       "name": "windows-debug",
@@ -98,6 +164,26 @@
     {
       "name": "windows-release",
       "configurePreset": "windows-x64-release"
+    },
+    {
+      "name": "windows-vs2022-debug",
+      "configurePreset": "windows-vs2022-x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-vs2022-release",
+      "configurePreset": "windows-vs2022-x64",
+      "configuration": "Release"
+    },
+    {
+      "name": "windows-vs2026-debug",
+      "configurePreset": "windows-vs2026-x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "windows-vs2026-release",
+      "configurePreset": "windows-vs2026-x64",
+      "configuration": "Release"
     },
     {
       "name": "linux-debug",

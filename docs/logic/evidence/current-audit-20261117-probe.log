@@ -1,0 +1,5 @@
+current-audit-20261117-probe.cpp
+OBSERVE database configured=C:/Users/21012/AppData/Local/Temp/probe-VlbZhF/configured-database actual=D:/project/FuseVision/out/current-audit-20261117/data/fusevision.db configured_path_used=0
+OBSERVE rotated_move requested=(10,0) rendered_first_corner_delta=(0,10) center_unchanged=1
+OBSERVE invalid_label_overwrite import_ok=1 reopen_ok=0 previous_valid_label_replaced=1
+OBSERVE anomaly_classification stored_images=2 gallery_samples=0

@@ -17,6 +17,8 @@
 struct Logger::Impl
 {
     std::shared_ptr<spdlog::logger> logger;
+    QString directory;
+    QString baseName;
     
     static spdlog::level::level_enum toSpdlog(Logger::Level level)
     {
@@ -35,20 +37,18 @@ struct Logger::Impl
 
 std::unique_ptr<Logger::Impl> Logger::s_impl;
 
-void Logger::init(const QString& logPath, Level level)
+bool Logger::init(const QString& logPath, Level level, QString* errorOut)
 {
     // 先释放旧 logger（从 spdlog 全局注册表移除 + 销毁 s_impl）
-    spdlog::drop("fusevision");
-    s_impl.reset();
+    try {
 
     QFileInfo fileInfo(logPath);
     QString dirPath;
     QString baseName;
 
     // 判断 logPath 是目录还是文件路径：
-    //   - 无后缀（如 ".../logs"）→ 视为目录，默认文件名前缀 = "fusevision"
-    //   - 有后缀（如 ".../fusevision.log"）→ 取目录 + 文件名前缀
-    if (fileInfo.suffix().isEmpty()) {
+    // 既有目录和非.log路径均作为目录；只有显式.log文件使用自定义前缀。
+    if (fileInfo.isDir() || fileInfo.suffix().compare("log", Qt::CaseInsensitive) != 0) {
         // logPath 是目录路径
         dirPath  = QDir(logPath).absolutePath();
         baseName = "fusevision";
@@ -84,13 +84,21 @@ void Logger::init(const QString& logPath, Level level)
     logger->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%^%l%$] [%s:%#] %v");
     logger->flush_on(spdlog::level::trace);
 
+    spdlog::drop("fusevision");
     spdlog::register_logger(logger);
 
     s_impl = std::make_unique<Impl>();
     s_impl->logger = logger;
+    s_impl->directory=dirPath;
+    s_impl->baseName=baseName;
 
     s_impl->logger->info("Logger initialized (daily rolling, append mode). Log directory: {}",
         dirPath.toStdString());
+    return true;
+    } catch(const std::exception& error) {
+        if(errorOut) *errorOut=QString::fromUtf8(error.what());
+        return false;
+    }
 }
 
 void Logger::setLevel(Level level)
@@ -99,6 +107,9 @@ void Logger::setLevel(Level level)
         s_impl->logger->set_level(Impl::toSpdlog(level));
     }
 }
+
+QString Logger::activeDirectory() { return s_impl?s_impl->directory:QString(); }
+QString Logger::activeBaseName() { return s_impl?s_impl->baseName:QString(); }
 
 void Logger::trace(const QString& msg)    { if (s_impl && s_impl->logger) s_impl->logger->trace(msg.toStdString()); }
 void Logger::debug(const QString& msg)    { if (s_impl && s_impl->logger) s_impl->logger->debug(msg.toStdString()); }

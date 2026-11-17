@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QMessageBox>
 #include <QIcon>
 #include <QDir>
 #include <QCoreApplication>
@@ -8,13 +9,19 @@
 #include <QPainter>
 #include <QFont>
 #include <QTimer>
-#include "MainWindows/FuseVision.h"
+#include <QProgressBar>
+#include <QLabel>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QTemporaryDir>
+#include "app/FuseVision.h"
 #include "core/Logger.h"
 #include "core/DatabaseManager.h"
 #include "core/PermissionRegistry.h"
+#include "core/SessionManager.h"
 #include "core/SettingsManager.h"
-#include "core/ThemeManager.h"
-#include "MainWindows/Login.h"
+#include "ui/ThemeManager.h"
+#include "app/Login.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -78,9 +85,9 @@ static void qtMessageHandler(QtMsgType type, const QMessageLogContext& ctx, cons
 //   2. 创建 QApplication + 设置组织/应用名 + Fusion 风格
 //   3. 初始化 ThemeManager（加载上次主题选择或检测系统主题）
 //   4. 初始化 SettingsManager → Logger::init（在此之前不能打日志）
-//   5. 初始化 DatabaseManager（打开 SQLite、建表、种子用户）
-//   6. 注册权限模块（PermissionRegistry）
-//   7. 登录对话框（模态阻塞）
+//   5. 初始化 DatabaseManager（打开 SQLite、建表、唯一管理账户）
+//   6. 登记页面键（PermissionRegistry，无角色权限矩阵）
+//   7. 以未登录只读状态启动
 //   8. 主窗口事件循环（QApplication::exec）
 //
 // 编译时日志级别：
@@ -98,6 +105,7 @@ static void qtMessageHandler(QtMsgType type, const QMessageLogContext& ctx, cons
 
 int main(int argc, char* argv[])
 {
+    const bool startupSmokeTest = qgetenv("FUSEVISION_STARTUP_SMOKE_TEST") == "1";
     // ── 步骤 1：Windows 控制台编码设置 ──────────────────────────
     // 将控制台代码页设为 UTF-8（65001），确保 spdlog 控制台日志
     // 和 QDebug 能正确输出中文
@@ -126,12 +134,14 @@ int main(int argc, char* argv[])
 
     // 获取日志路径（默认 <exe>/logs/fusevision）
     QString logPath = settings.logPath();
+    if (startupSmokeTest)
+        logPath = QCoreApplication::applicationDirPath() + "/startup-smoke/logs";
     if (logPath.isEmpty())
         logPath = QCoreApplication::applicationDirPath() + "/logs/fusevision";
     // 初始化日志系统（从此刻起 Logger::info 等才能正常工作）
     Logger::init(logPath, LOG_BUILD_LEVEL);
     // 应用用户配置的日志级别（覆盖编译时默认值）
-    Logger::setLevel(static_cast<Logger::Level>(settings.logLevel()));
+    Logger::setLevel(startupSmokeTest ? Logger::Info : static_cast<Logger::Level>(settings.logLevel()));
 
     // 安装 Qt 消息过滤器（静默平台噪音日志）
     qInstallMessageHandler(qtMessageHandler);
@@ -139,26 +149,26 @@ int main(int argc, char* argv[])
     Logger::info("=== Application started ===");
 
     // ── 步骤 5：初始化数据库 ───────────────────────────────────
-    // DatabaseManager 自动打开 SQLite、建表、插入种子用户
-    // 路径：<exe>/data/fusevision.db
-    if (!DatabaseManager::instance().initDatabase()) {
+    // DatabaseManager 打开 SQLite、建表，仅在空库创建唯一管理账户
+    // 使用保存的数据库目录；空目标从上次活动库建立保留账户的副本。
+    QString databaseError;
+    if (!DatabaseManager::instance().initDatabase(startupSmokeTest ? QString(":memory:") : QString(),&databaseError)) {
         Logger::error("Failed to initialize database!");
+        if(!startupSmokeTest) QMessageBox::critical(nullptr,QString::fromUtf8("数据库初始化失败"),databaseError);
         return -1;  // 数据库初始化失败，应用无法运行
     }
 
-    // ── 步骤 6：权限数据迁移（一次性） ─────────────────────────
-    DatabaseManager::instance().migratePermissionKey("传统视觉.图像处理", "传统视觉.视觉工具区");
 
     // ── 步骤 7：注册权限模块 ───────────────────────────────────
     // 每个模块的权限点格式：一级模块名.子模块名
-    // 注册后 PermissionRegistry 会自动在所有用户的 user_permissions 表中
-    // 创建对应记录（管理员可读写，普通用户只读）
-    PermissionRegistry::instance().registerModule("用户管理");
+    // 仅保留页面键登记；不创建或读取角色权限记录。
+    PermissionRegistry::instance().registerModule("账户设置");
     PermissionRegistry::instance().registerModule("系统设置");
     PermissionRegistry::instance().registerModule("深度学习.项目管理");
     PermissionRegistry::instance().registerModule("深度学习.模型管理");
     PermissionRegistry::instance().registerModule("深度学习.数据集管理");
     PermissionRegistry::instance().registerModule("深度学习.数据标注");
+    PermissionRegistry::instance().registerModule("深度学习.数据检查");
     PermissionRegistry::instance().registerModule("深度学习.数据拆分");
     PermissionRegistry::instance().registerModule("深度学习.模型训练");
     PermissionRegistry::instance().registerModule("深度学习.模型预测");
@@ -171,64 +181,115 @@ int main(int argc, char* argv[])
     PermissionRegistry::instance().registerModule("传统视觉.系统设置");
     PermissionRegistry::instance().registerModule("传统视觉.视觉工具区");
 
-    // ── 步骤 8：显示登录对话框 ─────────────────────────────────
-    // exec() 为模态阻塞调用：
-    //   - 点击"登录"→ validateLogin → SessionManager::login → accept() → 返回 Accepted
-    //   - 点击"取消"→ reject() → 返回 Rejected → return 0 退出
+    if (startupSmokeTest) {
+        auto& database = DatabaseManager::instance();
+        const auto admin = database.validateLogin("superadmin", "admin123");
+        if (!admin.success || database.validateLogin("superadmin", "incorrect-password").success
+            || database.validateLogin("user", "123").success || database.allUsers().size()!=1) {
+            Logger::error("Startup smoke test failed: authentication or permission initialization.");
+            return 1;
+        }
 
-    // 设置应用图标（必须在登录对话框之前，否则登录窗口无图标）
-    QIcon appIcon(":/res/FuseVision.png");
-    if (!appIcon.isNull())
-        app.setWindowIcon(appIcon);
+        // Exercise a Qt modal event loop without touching saved login settings.
+        LoginDialog testLogin;
+        QTimer::singleShot(0, &testLogin, &QDialog::reject);
+        if (testLogin.exec() != QDialog::Rejected)
+            return 1;
 
-    LoginDialog loginDlg;
-    if (loginDlg.exec() != QDialog::Accepted) {
-        Logger::info("Login cancelled, application will exit.");
-        return 0;  // 用户取消登录，正常退出
+        QTemporaryDir testData;
+        if (!testData.isValid())
+            return 1;
+        settings.setProjectDataPath(testData.path() + "/projects");
+        settings.setTraditionalDataPath(testData.path() + "/traditional");
+        settings.setTraditionalCameraPath(testData.path() + "/cameras");
+        SessionManager::instance().logout();
+        FuseVision testWindow;
+        testWindow.initPagesAsync();
+        testWindow.resize(1280, 800);
+        testWindow.show();
+        QTimer::singleShot(100, &app, &QCoreApplication::quit);
+        const int result = app.exec();
+        if (result != 0)
+            return result;
+        Logger::info("Startup smoke test completed successfully.");
+        Logger::flush();
+        return 0;
     }
 
-    // ── 步骤 9：启动画面（登录成功 → 主界面就绪）──────────────
-    // FuseVision 构造函数较重（初始化 UI/模块/数据库连接），
-    // 这段时间用户看不到任何界面。用 QSplashScreen 填补空白。
-    QPixmap splashBg(400, 200);
-    splashBg.fill(QColor(30, 30, 40));
-    QPainter sp(&splashBg);
-    sp.setRenderHint(QPainter::Antialiasing, true);
-    // 品牌标题
-    sp.setPen(Qt::white);
-    QFont titleF = sp.font();
-    titleF.setPointSize(18);
-    titleF.setBold(true);
-    sp.setFont(titleF);
-    sp.drawText(QRect(0, 40, 400, 40), Qt::AlignCenter, "FuseVision");
-    // 加载提示
-    QFont hintF = sp.font();
-    hintF.setPointSize(11);
-    sp.setFont(hintF);
-    sp.setPen(QColor(180, 180, 200));
-    sp.drawText(QRect(0, 110, 400, 30), Qt::AlignCenter, "正在加载主界面...");
-    // 版本
-    QFont verF = sp.font();
-    verF.setPointSize(9);
-    sp.setFont(verF);
-    sp.setPen(QColor(100, 100, 120));
-    sp.drawText(QRect(0, 170, 400, 20), Qt::AlignCenter, "v1.0.0");
-    sp.end();
+    // Startup is always guest/read-only. Login is an optional main-window action.
+    SessionManager::instance().logout();
+    QIcon appIcon(":/res/FuseVision.png");
+    if (!appIcon.isNull()) app.setWindowIcon(appIcon);
 
-    QSplashScreen splash(splashBg);
-    splash.setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
-    splash.show();
+    // Show the splash while constructing the browsable main window.
+    QWidget splashWidget;
+    splashWidget.setFixedSize(480, 280);
+    splashWidget.setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    splashWidget.setAutoFillBackground(true);
+    splashWidget.setStyleSheet(
+        "QWidget {"
+        "  background-color: #1e1e28;"
+        "  border: 1px solid rgba(255, 255, 255, 20);"
+        "  border-radius: 12px;"
+        "}");
+
+    QVBoxLayout* splashLayout = new QVBoxLayout(&splashWidget);
+    splashLayout->setContentsMargins(40, 50, 40, 36);
+    splashLayout->setSpacing(16);
+
+    QLabel* titleLabel = new QLabel("FuseVision", &splashWidget);
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setStyleSheet(
+        "color: white; font-size: 26px; font-weight: bold; background: transparent; border: none;");
+    splashLayout->addWidget(titleLabel);
+
+    QLabel* subtitleLabel = new QLabel(QString::fromUtf8("智能视觉系统"), &splashWidget);
+    subtitleLabel->setAlignment(Qt::AlignCenter);
+    subtitleLabel->setStyleSheet(
+        "color: rgba(255,255,255,180); font-size: 13px; background: transparent; border: none;");
+    splashLayout->addWidget(subtitleLabel);
+
+    splashLayout->addSpacing(10);
+
+    // 循环加载条（不指定具体进度，持续滚动示意加载中）
+    QProgressBar* progressBar = new QProgressBar(&splashWidget);
+    progressBar->setRange(0, 0);  // 0,0 = 不确定模式，循环滚动
+    progressBar->setTextVisible(false);
+    progressBar->setFixedHeight(6);
+    progressBar->setStyleSheet(
+        "QProgressBar { background: rgba(255,255,255,30); border: none; border-radius: 3px; }"
+        "QProgressBar::chunk { background: #4a9eff; border-radius: 3px; }");
+    splashLayout->addWidget(progressBar);
+
+    splashLayout->addSpacing(8);
+
+    QLabel* hintLabel = new QLabel(QString::fromUtf8("正在启动，请稍候..."), &splashWidget);
+    hintLabel->setAlignment(Qt::AlignCenter);
+    hintLabel->setStyleSheet(
+        "color: rgba(255,255,255,120); font-size: 12px; background: transparent; border: none;");
+    splashLayout->addWidget(hintLabel);
+
+    splashLayout->addStretch();
+
+    splashWidget.show();
     QApplication::processEvents();
 
-    // ── 步骤 10：创建主窗口 ────────────────────────────────────
-    FuseVision w;
-    w.setWindowTitle("FuseVision - 智能视觉系统");
-    w.showMaximized();
+    // 后台创建主窗口后关闭启动画面
+    FuseVision* w = nullptr;
+    QTimer::singleShot(100, [&]() {
+        w = new FuseVision();
+        w->setWindowTitle("FuseVision - 智能视觉系统");
+        w->setAttribute(Qt::WA_DeleteOnClose);
 
-    // 主界面已显示 → 关闭启动画面
-    splash.finish(&w);
+        // 在 splash 期间创建子页面，processEvents() 保证进度条持续滚动
+        w->initPagesAsync();
 
-    // 进入 Qt 事件循环（阻塞直到所有窗口关闭）
+        w->showMaximized();
+        splashWidget.close();
+        QApplication::processEvents();
+    });
+
+    // 进入 Qt 事件循环（GIF 在 splashWidget 上持续播放）
     int ret = app.exec();
     Logger::info(QString("=== Application exited with code: %1 ===").arg(ret));
 

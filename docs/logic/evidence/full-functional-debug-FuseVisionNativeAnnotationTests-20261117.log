@@ -1,0 +1,24 @@
+PASS hover preview and keyboard focus enabled
+PASS space pan consumes its release and always ends
+PASS image refresh preserves view
+PASS zero wheel delta does not zoom
+PASS wheel zoom holds mouse anchor
+PASS drag rectangle commits one shape
+PASS two-click rectangle remains compatible
+PASS Enter completes reverse-direction rectangle
+PASS rotated rectangle hit test follows rendered orientation
+PASS corner drag can shrink rectangle
+PASS native editor has no external launch entry
+PASS dataset async category initialization completes
+PASS unfinished shape blocks save-and-next without discarding preview
+PASS model update preserves UUID selection and list item
+PASS canvas drag synchronizes list and creates one undo
+PASS focus loss restores uncommitted drag
+PASS canvas selection deletes intended object
+PASS brightness change preserves zoom and center
+PASS original-image toggle leaves annotation unchanged
+PASS failed save-and-next retains edits and committed file
+
+--- STDERR ---
+
+EXIT 3221225477

@@ -1,0 +1,12 @@
+DIALOG: 登录 FuseVision
+DIALOG: 新建项目
+DIALOG: 创建成功
+DIALOG: 新建模型
+DIALOG: 数据集格式说明
+DIALOG: 第一步：选择原图文件
+SELECT: C:/Users/21012/AppData/Local/Temp/FuseVisionAnalysisCapture-uixxfo/fixture/images/surface_demo.png
+DIALOG: 导入标签文件
+DIALOG: 设置标签格式
+DIALOG: 第二步：选择标签文件
+SELECT: C:/Users/21012/AppData/Local/Temp/FuseVisionAnalysisCapture-uixxfo/fixture/labels/surface_demo.png
+Captured 21 original Qt widget states
