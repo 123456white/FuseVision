@@ -2553,7 +2553,7 @@
             "status": "2026-11-17已修复；隔离独立进程回归通过，P1",
             "note": "默认初始化读取paths/database目录并追加fusevision.db；空配置使用exe/data。已有目标直接复用；空目标从database/last_opened_file（首次为旧默认库）经VACUUM INTO建立一致副本并保留来源。记忆来源缺失、目录或迁移失败时停止并显示原因；不以默认新账户回落。显式文件或:memory:路径保持调用者契约，不改活动路径记忆\n原记录验证：[新增回归](../../tests/current_issues_regression.cpp)将exe复制到临时runtime启动8次独立子进程，覆盖默认→配置路径、重开密码保持、自定义再次迁移、来源连接仍打开时已提交WAL密码快照、缺失来源、复用已有目标、普通文件阻塞目录。[Release结果](../logic/evidence/issue-fixes-final-release-20261117.log)；未访问真实账户库\n边界：已有目标不合并或覆盖，重置回默认目录时沿用该目标自身账户；可见完整应用的设置→重启交互与真实ACL未人工验收。传统视觉两个路径仍只有持久化配置",
             "sources": [
-              "src/main.cpp:106 main",
+              "src/main.cpp:107 main",
               "src/core/DatabaseManager.cpp:21 DatabaseManager::initDatabase",
               "src/app/SystemSettingsWidget.cpp:265 SystemSettingsWidget::onSave"
             ]
@@ -2591,6 +2591,16 @@
             "sources": [
               "src/deeplearning/widgets/AnnotationManagement.cpp:107 AnnotationManagement::openImage",
               "src/deeplearning/widgets/AnnotationManagement.cpp:65 AnnotationManagement::~AnnotationManagement"
+            ]
+          },
+          {
+            "id": "ISS-017",
+            "title": "ISS-017 动态图像插件缺少运行依赖",
+            "status": "2026-11-17已修复；新增隔离编解码回归通过，P1",
+            "note": "原部署仅复制Qt图像插件和JPEG库，TIFF/WebP/Jasper传递依赖未随应用部署。新增CMake脚本扫描已部署类型对应的vcpkg插件依赖，复制清单内依赖且拒绝未解析依赖，排除Windows系统库。脚本变更触发重新链接部署\n原记录验证：[新增编解码红阶段](../logic/evidence/full-functional-codecs-before-20261117.log)40/41、[运行日志](../logic/evidence/full-functional-codecs-red-runtime-20261117.log)明确TIFF失败；[修复后Release](../logic/evidence/full-functional-codecs-fixed-release-20261117.log)41/41。startup-smoke新增PNG/JPEG/BMP/TIFF/WebP真实写入/重读，交付ZIP解压后在系统PATH与无外部Qt插件路径下复跑\n边界：Windows与MSVC系统运行库仍是目标环境要求；未验证全部第三方SDK或相机驱动",
+            "sources": [
+              "src/main.cpp:107 main",
+              "cmake/DeployRuntime.cmake:15 fusevision_deploy_runtime"
             ]
           }
         ]

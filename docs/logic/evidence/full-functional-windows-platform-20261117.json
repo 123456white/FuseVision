@@ -1,0 +1,17 @@
+[
+  {
+    "test": "FuseVisionNativeAnnotationTests",
+    "platform": "windows",
+    "exit_code": 0
+  },
+  {
+    "test": "FuseVisionWorkflowTests",
+    "platform": "windows",
+    "exit_code": 0
+  },
+  {
+    "test": "FuseVisionCurrentIssuesTests",
+    "platform": "windows",
+    "exit_code": 0
+  }
+]

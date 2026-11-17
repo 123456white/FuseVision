@@ -33,3 +33,6 @@ Logger/spdlog 提供控制台/文件，LogMonitor 提供接入的界面消息。
 ## 6. Evidence
 
 [部署](../../cmake/DeployRuntime.cmake)、[原生标注事件测试](../../tests/native_annotation_regression.cpp)、[数据库](../../src/core/DatabaseManager.cpp)、[文档目标](../../cmake/Documentation.cmake)、[验证](../logic/VALIDATION.md)。
+
+
+Qt动态图像插件依赖由cmake/DeployPluginDependencies.cmake扫描vcpkg运行库并复制，Windows系统DLL排除，未解析依赖使构建失败。仅复制插件本体不足以支持TIFF/WebP；startup-smoke与解压交付包均实际验证五种格式读写（ISS-017）。

@@ -14,6 +14,7 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QTemporaryDir>
+#include <cstdio>
 #include "app/FuseVision.h"
 #include "core/Logger.h"
 #include "core/DatabaseManager.h"
@@ -199,6 +200,16 @@ int main(int argc, char* argv[])
         QTemporaryDir testData;
         if (!testData.isValid())
             return 1;
+        QImage image(24, 16, QImage::Format_RGB32);
+        image.fill(Qt::green);
+        for (const QString& format : {QString("png"), QString("jpg"), QString("bmp"),
+                                      QString("tiff"), QString("webp")}) {
+            const QString path = testData.filePath("codec." + format);
+            if (!image.save(path) || QImage(path).size() != image.size()) {
+                Logger::error("Startup smoke test failed: image codec " + format);
+                return 1;
+            }
+        }
         settings.setProjectDataPath(testData.path() + "/projects");
         settings.setTraditionalDataPath(testData.path() + "/traditional");
         settings.setTraditionalCameraPath(testData.path() + "/cameras");
@@ -213,6 +224,7 @@ int main(int argc, char* argv[])
             return result;
         Logger::info("Startup smoke test completed successfully.");
         Logger::flush();
+        std::puts("PASS startup image codecs and isolated initialization");
         return 0;
     }
 

@@ -1,0 +1,762 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Win32-ninja"
+	tests="41"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname="DESKTOP-3HQMBHP"
+	time="23"
+	timestamp="2026-11-17T16:02:36"
+	>
+	<testcase name="storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths" classname="storage.Storage.NewDocumentsHaveTypeVersionAndRelativePaths" time="0.0532605" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.NewDocumentsHaveTypeVersionAndRelativePaths
+[       OK ] Storage.NewDocumentsHaveTypeVersionAndRelativePaths (18 ms)
+[----------] 1 test from Storage (18 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (18 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields" classname="storage.Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields" time="0.148027" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields
+[       OK ] Storage.MoveAndSaveKeepPortableReferencesAndUnknownFields (25 ms)
+[----------] 1 test from Storage (25 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (25 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting" classname="storage.Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting" time="0.0534369" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting
+[       OK ] Storage.LegacyAbsoluteReferencesAreRejectedWithoutWriting (20 ms)
+[----------] 1 test from Storage (20 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (21 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories" classname="storage.Storage.AnnotationWorkspaceMatchesRuntimeDirectories" time="0.148483" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.AnnotationWorkspaceMatchesRuntimeDirectories
+[       OK ] Storage.AnnotationWorkspaceMatchesRuntimeDirectories (14 ms)
+[----------] 1 test from Storage (14 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (14 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml" classname="storage.Storage.ClassificationKeepsSixFoldersAndPortableYaml" time="0.0508475" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.ClassificationKeepsSixFoldersAndPortableYaml
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ClassificationKeepsSixFoldersAndPortableYaml
+[       OK ] Storage.ClassificationKeepsSixFoldersAndPortableYaml (26 ms)
+[----------] 1 test from Storage (26 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (26 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.InvalidInMemorySavePreservesCommittedFiles" classname="storage.Storage.InvalidInMemorySavePreservesCommittedFiles" time="0.14018" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.InvalidInMemorySavePreservesCommittedFiles
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.InvalidInMemorySavePreservesCommittedFiles
+[       OK ] Storage.InvalidInMemorySavePreservesCommittedFiles (15 ms)
+[----------] 1 test from Storage (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.MalformedAndWrongFieldTypesAreRejected" classname="storage.Storage.MalformedAndWrongFieldTypesAreRejected" time="0.0595905" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.MalformedAndWrongFieldTypesAreRejected
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.MalformedAndWrongFieldTypesAreRejected
+[       OK ] Storage.MalformedAndWrongFieldTypesAreRejected (27 ms)
+[----------] 1 test from Storage (27 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (27 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.ModelUnknownFieldsSurviveSave" classname="storage.Storage.ModelUnknownFieldsSurviveSave" time="0.0517468" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.ModelUnknownFieldsSurviveSave
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ModelUnknownFieldsSurviveSave
+[       OK ] Storage.ModelUnknownFieldsSurviveSave (27 ms)
+[----------] 1 test from Storage (27 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (27 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten" classname="storage.Storage.SemanticallyInvalidOriginalModelIsNotOverwritten" time="0.143678" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.SemanticallyInvalidOriginalModelIsNotOverwritten
+[       OK ] Storage.SemanticallyInvalidOriginalModelIsNotOverwritten (20 ms)
+[----------] 1 test from Storage (20 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (20 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting" classname="storage.Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting" time="0.146158" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting
+[       OK ] Storage.LegacyModelWithoutMarkersIsRejectedWithoutWriting (22 ms)
+[----------] 1 test from Storage (22 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.StatusUpdateRejectsLegacyPaths" classname="storage.Storage.StatusUpdateRejectsLegacyPaths" time="0.143267" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.StatusUpdateRejectsLegacyPaths
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.StatusUpdateRejectsLegacyPaths
+[       OK ] Storage.StatusUpdateRejectsLegacyPaths (19 ms)
+[----------] 1 test from Storage (19 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (19 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject" classname="storage.Storage.ExternalModelReferenceIsRejectedWithoutChangingProject" time="0.0430547" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ExternalModelReferenceIsRejectedWithoutChangingProject
+[       OK ] Storage.ExternalModelReferenceIsRejectedWithoutChangingProject (14 ms)
+[----------] 1 test from Storage (14 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (14 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.ModelCreationCommitsCompleteDatasetConfig" classname="storage.Storage.ModelCreationCommitsCompleteDatasetConfig" time="0.146438" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.ModelCreationCommitsCompleteDatasetConfig
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.ModelCreationCommitsCompleteDatasetConfig
+[       OK ] Storage.ModelCreationCommitsCompleteDatasetConfig (24 ms)
+[----------] 1 test from Storage (24 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (24 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion" classname="storage.Storage.LegacyYoloLayoutIsRejectedEvenWithVersion" time="0.0441478" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.LegacyYoloLayoutIsRejectedEvenWithVersion
+[       OK ] Storage.LegacyYoloLayoutIsRejectedEvenWithVersion (19 ms)
+[----------] 1 test from Storage (19 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (19 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Storage.MissingRequiredFieldsAreRejected" classname="storage.Storage.MissingRequiredFieldsAreRejected" time="0.0438245" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Storage.MissingRequiredFieldsAreRejected
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Storage
+[ RUN      ] Storage.MissingRequiredFieldsAreRejected
+[       OK ] Storage.MissingRequiredFieldsAreRejected (18 ms)
+[----------] 1 test from Storage (18 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (19 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.StorageFiles.DatasetRejectsWrongFieldTypes" classname="storage.StorageFiles.DatasetRejectsWrongFieldTypes" time="0.122112" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = StorageFiles.DatasetRejectsWrongFieldTypes
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from StorageFiles
+[ RUN      ] StorageFiles.DatasetRejectsWrongFieldTypes
+[       OK ] StorageFiles.DatasetRejectsWrongFieldTypes (0 ms)
+[----------] 1 test from StorageFiles (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.StorageFiles.AtomicFailureRetainsExistingFile" classname="storage.StorageFiles.AtomicFailureRetainsExistingFile" time="0.125194" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = StorageFiles.AtomicFailureRetainsExistingFile
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from StorageFiles
+[ RUN      ] StorageFiles.AtomicFailureRetainsExistingFile
+[       OK ] StorageFiles.AtomicFailureRetainsExistingFile (3 ms)
+[----------] 1 test from StorageFiles (3 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (3 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.StorageFiles.DottedLogDirectoryIsRespected" classname="storage.StorageFiles.DottedLogDirectoryIsRespected" time="0.0428015" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = StorageFiles.DottedLogDirectoryIsRespected
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from StorageFiles
+[ RUN      ] StorageFiles.DottedLogDirectoryIsRespected
+[2026-11-17 16:02:38.331] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionStorageTests-JgVnKC/logs.v1
+[2026-11-17 16:02:38.332] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionStorageTests-JgVnKC/new.logs
+[2026-11-17 16:02:38.332] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionStorageTests-JgVnKC
+[       OK ] StorageFiles.DottedLogDirectoryIsRespected (5 ms)
+[----------] 1 test from StorageFiles (5 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (5 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0" classname="storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0" time="0.145595" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0
+[       OK ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/0 (21 ms)
+[----------] 1 test from Format/InvalidDocument (21 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1" classname="storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1" time="0.0469373" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1
+[       OK ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/1 (21 ms)
+[----------] 1 test from Format/InvalidDocument (21 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (21 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2" classname="storage.Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2" time="0.0474829" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2
+[       OK ] Format/InvalidDocument.ProjectRejectsLoadSaveAndStatusWithoutChangingBytes/2 (21 ms)
+[----------] 1 test from Format/InvalidDocument (21 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0" classname="storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0" time="0.0561757" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0
+[       OK ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/0 (21 ms)
+[----------] 1 test from Format/InvalidDocument (21 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (21 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1" classname="storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1" time="0.0507724" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1
+[       OK ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/1 (20 ms)
+[----------] 1 test from Format/InvalidDocument (20 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (20 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2" classname="storage.Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2" time="0.141858" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Format/InvalidDocument
+[ RUN      ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2
+[       OK ] Format/InvalidDocument.ModelRejectsLoadSaveWithoutChangingBytes/2 (19 ms)
+[----------] 1 test from Format/InvalidDocument (19 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (19 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0" classname="storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0" time="0.0462758" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0
+[       OK ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/0 (22 ms)
+[----------] 1 test from Standard/MissingMarker (22 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1" classname="storage.Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1" time="0.0468389" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1
+[       OK ] Standard/MissingMarker.RejectProjectAndModelWithoutAutomaticUpgrade/1 (22 ms)
+[----------] 1 test from Standard/MissingMarker (22 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (22 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0" classname="storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0" time="0.0371319" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0
+[       OK ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/0 (12 ms)
+[----------] 1 test from Standard/MissingMarker (12 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (12 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1" classname="storage.Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1" time="0.142012" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Standard/MissingMarker
+[ RUN      ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1
+[       OK ] Standard/MissingMarker.RejectDatasetWithoutAutomaticUpgrade/1 (14 ms)
+[----------] 1 test from Standard/MissingMarker (15 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (15 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Windows/ReservedName.RejectBeforeCreatingFiles/0" classname="storage.Windows/ReservedName.RejectBeforeCreatingFiles/0" time="0.0240172" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/0
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/0
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/0 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Windows/ReservedName.RejectBeforeCreatingFiles/1" classname="storage.Windows/ReservedName.RejectBeforeCreatingFiles/1" time="0.0232741" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/1
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/1
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/1 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Windows/ReservedName.RejectBeforeCreatingFiles/2" classname="storage.Windows/ReservedName.RejectBeforeCreatingFiles/2" time="0.024093" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/2
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/2
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/2 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Windows/ReservedName.RejectBeforeCreatingFiles/3" classname="storage.Windows/ReservedName.RejectBeforeCreatingFiles/3" time="0.0241021" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/3
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/3
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/3 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Windows/ReservedName.RejectBeforeCreatingFiles/4" classname="storage.Windows/ReservedName.RejectBeforeCreatingFiles/4" time="0.126425" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/4
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/4
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/4 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="storage.Windows/ReservedName.RejectBeforeCreatingFiles/5" classname="storage.Windows/ReservedName.RejectBeforeCreatingFiles/5" time="0.0252047" status="run">
+		<properties/>
+		<system-out>Note: Google Test filter = Windows/ReservedName.RejectBeforeCreatingFiles/5
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Windows/ReservedName
+[ RUN      ] Windows/ReservedName.RejectBeforeCreatingFiles/5
+[       OK ] Windows/ReservedName.RejectBeforeCreatingFiles/5 (0 ms)
+[----------] 1 test from Windows/ReservedName (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="native-annotation-regression" classname="native-annotation-regression" time="1.54402" status="run">
+		<properties/>
+		<system-out>PASS hover preview and keyboard focus enabled
+PASS space pan consumes its release and always ends
+PASS image refresh preserves view
+PASS zero wheel delta does not zoom
+PASS wheel zoom holds mouse anchor
+PASS drag rectangle commits one shape
+PASS two-click rectangle remains compatible
+PASS Enter completes reverse-direction rectangle
+PASS rotated rectangle hit test follows rendered orientation
+PASS corner drag can shrink rectangle
+PASS native editor has no external launch entry
+PASS dataset async category initialization completes
+PASS unfinished shape blocks save-and-next without discarding preview
+PASS model update preserves UUID selection and list item
+PASS canvas drag synchronizes list and creates one undo
+PASS focus loss restores uncommitted drag
+PASS canvas selection deletes intended object
+PASS brightness change preserves zoom and center
+PASS original-image toggle leaves annotation unchanged
+PASS failed save-and-next retains edits and committed file
+PASS retry shortcut from shape list saves and advances while keeping view
+PASS last image saves and remains open
+PASS saved-next annotation reopens with shape identity
+PASS next navigation loads saved second image
+PASS previous navigation keeps destination valid across sample refresh
+PASS guest handlers cannot mutate or advance through saving
+</system-out>
+	</testcase>
+	<testcase name="documentation-tools" classname="documentation-tools" time="0.880291" status="run">
+		<properties/>
+		<system-out>test_only_runtime_files_selected (test_ci_tools.PackageTests.test_only_runtime_files_selected) ... ok
+test_missing_smoke_or_duplicate_rejected (test_ci_tools.TraceabilityTests.test_missing_smoke_or_duplicate_rejected) ... ok
+test_missing_test_or_assertion_rejected (test_ci_tools.TraceabilityTests.test_missing_test_or_assertion_rejected) ... ok
+test_skipped_and_failed_rejected (test_ci_tools.TraceabilityTests.test_skipped_and_failed_rejected) ... ok
+test_unmapped_case_rejected (test_ci_tools.TraceabilityTests.test_unmapped_case_rejected) ... ok
+test_valid (test_ci_tools.TraceabilityTests.test_valid) ... ok
+test_cannot_complete_unreviewed_change (test_docflow.DocumentationTests.test_cannot_complete_unreviewed_change) ... ok
+test_dialog_button_identifiers_are_preserved (test_docflow.DocumentationTests.test_dialog_button_identifiers_are_preserved) ... ok
+test_duplicate_feature_id_fails (test_docflow.DocumentationTests.test_duplicate_feature_id_fails) ... ok
+test_features_come_from_markdown_and_preserve_history (test_docflow.DocumentationTests.test_features_come_from_markdown_and_preserve_history) ... ok
+test_fenced_example_links_are_not_treated_as_real_links (test_docflow.DocumentationTests.test_fenced_example_links_are_not_treated_as_real_links) ... ok
+test_file_deletion_is_detected (test_docflow.DocumentationTests.test_file_deletion_is_detected) ... ok
+test_generated_changes_do_not_invalidate_semantic_receipt (test_docflow.DocumentationTests.test_generated_changes_do_not_invalidate_semantic_receipt) ... ok
+test_generation_failure_releases_repository_lock (test_docflow.DocumentationTests.test_generation_failure_releases_repository_lock) ... ok
+test_hooks_skip_other_projects (test_docflow.DocumentationTests.test_hooks_skip_other_projects) ... ok
+test_html_refresh_tracks_linked_code_and_downloads (test_docflow.DocumentationTests.test_html_refresh_tracks_linked_code_and_downloads) ... ok
+test_integrity_check_does_not_change_input_or_create_reports (test_docflow.DocumentationTests.test_integrity_check_does_not_change_input_or_create_reports) ... ok
+test_issue_current_status_and_original_history_are_separate (test_docflow.DocumentationTests.test_issue_current_status_and_original_history_are_separate) ... ok
+test_map_relationships_come_from_markdown_and_validate_endpoints (test_docflow.DocumentationTests.test_map_relationships_come_from_markdown_and_validate_endpoints) ... ok
+test_missing_file_and_heading_links_fail (test_docflow.DocumentationTests.test_missing_file_and_heading_links_fail) ... ok
+test_missing_required_field_fails_instead_of_inventing_fact (test_docflow.DocumentationTests.test_missing_required_field_fails_instead_of_inventing_fact) ... ok
+test_moved_symbol_invalidates_old_code_line (test_docflow.DocumentationTests.test_moved_symbol_invalidates_old_code_line) ... ok
+test_original_evidence_tampering_fails (test_docflow.DocumentationTests.test_original_evidence_tampering_fails) ... ok
+test_preexisting_dirty_untracked_files_not_attributed_to_session (test_docflow.DocumentationTests.test_preexisting_dirty_untracked_files_not_attributed_to_session) ... ok
+test_receipts_are_project_local_and_reject_outside_docs (test_docflow.DocumentationTests.test_receipts_are_project_local_and_reject_outside_docs) ... ok
+test_resume_and_compact_do_not_reset_pending_baseline (test_docflow.DocumentationTests.test_resume_and_compact_do_not_reset_pending_baseline) ... ok
+test_review_invalidated_after_additional_edit (test_docflow.DocumentationTests.test_review_invalidated_after_additional_edit) ... ok
+test_shared_capability_has_no_invented_button (test_docflow.DocumentationTests.test_shared_capability_has_no_invented_button) ... ok
+test_stale_mirrors_fail (test_docflow.DocumentationTests.test_stale_mirrors_fail) ... ok
+test_stop_requests_one_continuation_and_then_reports_unresolved (test_docflow.DocumentationTests.test_stop_requests_one_continuation_and_then_reports_unresolved) ... ok
+test_updated_receipt_completes_and_advances_baseline (test_docflow.DocumentationTests.test_updated_receipt_completes_and_advances_baseline) ... ok
+test_updated_receipt_requires_actual_markdown_update (test_docflow.DocumentationTests.test_updated_receipt_requires_actual_markdown_update) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.645s
+
+OK
+</system-out>
+	</testcase>
+	<testcase name="data-contract-regression" classname="data-contract-regression" time="0.0994459" status="run">
+		<properties/>
+		<system-out>PASS data-only project and model configuration
+PASS data-only undo storage round trip and failure
+PASS data-only paired export independently reread
+</system-out>
+	</testcase>
+	<testcase name="module-boundaries" classname="module-boundaries" time="0.109895" status="run">
+		<properties/>
+		<system-out>PASS module include boundaries (core, UI, deep learning, traditional, app)
+</system-out>
+	</testcase>
+	<testcase name="workflow-regression" classname="workflow-regression" time="13.0292" status="run">
+		<properties/>
+		<system-out>PASS annotation model undo/redo
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Seg/labels/a.png
+无法创建标注目录
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+PASS widget load edit save reopen
+PASS JSON rotated and polygon round trip and failed replacement
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Coverage/Samples/dataset_config.json
+拒绝访问。
+PASS theme logs filters and reorder recovery
+DIALOG 已有标注或未保存编辑，禁止重排类别编号。
+C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Seg/labels
+PASS category protection
+PASS model creation signals
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/export-coco/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/export-yolo
+成功 1 项，跳过 0 项，失败 0 项
+PASS export semantic baseline
+PASS external PNG edit
+PASS brush eraser fill polygon masks
+PASS paired import recovery
+DIALOG 成功 2 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/coco-source/bad.json
+不安全的图像相对路径：../escape.png
+PASS COCO sparse IDs empty labels RLE and quality
+DIALOG 删除项目「DeleteB」
+项目目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/DeleteB
+项目文件：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/DeleteB/project.fvproj
+PASS selected project and model deletion
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+PASS guest denied handlers and login state
+[2026-11-17 16:02:48.456] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/logger
+[2026-11-17 16:02:48.456] [info] [:] fixture
+[2026-11-17 16:02:48.484] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 16:02:48.486] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/settings-logs
+DIALOG 日志路径与级别已立即生效。
+数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+[2026-11-17 16:02:48.581] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/settings-logs
+[2026-11-17 16:02:48.582] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/settings-logs
+DIALOG 配置存储不可写，请检查权限后重试。
+[2026-11-17 16:02:48.593] [info] [:] Logger initialized (daily rolling, append mode). Log directory: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/settings-logs
+DIALOG 日志路径与级别已立即生效。
+数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+PASS settings and actual log retention
+[2026-11-17 16:02:48.620] [info] [:] Editing unlocked: superadmin
+[2026-11-17 16:02:48.620] [info] [:] Editing unlocked: superadmin
+[2026-11-17 16:02:48.723] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt)
+[2026-11-17 16:02:50.863] [info] [:] 项目已加载: Fixture (4 个模型)
+[2026-11-17 16:02:50.878] [info] [:] 项目已打开(双击): Fixture
+[2026-11-17 16:02:50.890] [info] [:] 模型已加载: CocoImport (实例分割)
+[2026-11-17 16:02:50.892] [info] [:] 模型已加载: Created (实例分割)
+[2026-11-17 16:02:50.895] [info] [:] 模型已加载: Detect (物体检测(自由矩形))
+[2026-11-17 16:02:50.897] [info] [:] 模型已加载: Seg (实例分割)
+[2026-11-17 16:02:50.899] [info] [:] 模型管理：绑定项目 "Fixture" (4 个模型)
+[2026-11-17 16:02:50.900] [info] [:] 模型已加载: Seg (实例分割)
+[2026-11-17 16:02:50.900] [info] [:] 模型已打开(双击): Seg
+[2026-11-17 16:02:50.903] [info] [:] 数据集管理：绑定模型 "Seg"
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+[2026-11-17 16:02:51.253] [info] [:] 项目已加载: Fixture (4 个模型)
+[2026-11-17 16:02:51.256] [info] [:] 标注已保存：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Seg/labels/a.png
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/integrated-export/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+[2026-11-17 16:02:51.361] [info] [:] 数据集已导出：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/integrated-export/annotations.json
+[2026-11-17 16:02:51.459] [info] [:] 图像已移入恢复目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Seg/images/a.png → C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Seg/.fusevision-trash/sample-tUnSHO
+PASS integrated project model gallery editor reopen export
+[2026-11-17 16:02:51.475] [info] [:] Editing unlocked: superadmin
+[2026-11-17 16:02:51.475] [info] [:] Editing unlocked: superadmin
+[2026-11-17 16:02:51.475] [info] [:] Read-only guest session
+[2026-11-17 16:02:51.476] [info] [:] FuseVision application starting...
+[2026-11-17 16:02:51.486] [info] [:] UI initialization completed successfully
+[2026-11-17 16:02:51.513] [info] [:] Screen count: 1
+[2026-11-17 16:02:51.513] [info] [:] Primary screen: 800x800
+[2026-11-17 16:02:51.513] [info] [:] Theme: Dark
+[2026-11-17 16:02:51.616] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt)
+[2026-11-17 16:02:53.810] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 16:02:54.144] [info] [:] All pages created successfully
+[2026-11-17 16:02:54.340] [info] [:] 项目已加载: Fixture (4 个模型)
+[2026-11-17 16:02:54.354] [info] [:] 项目已打开(双击): Fixture
+[2026-11-17 16:02:54.363] [info] [:] 模型已加载: CocoImport (实例分割)
+[2026-11-17 16:02:54.365] [info] [:] 模型已加载: Created (实例分割)
+[2026-11-17 16:02:54.368] [info] [:] 模型已加载: Detect (物体检测(自由矩形))
+[2026-11-17 16:02:54.370] [info] [:] 模型已加载: Seg (实例分割)
+[2026-11-17 16:02:54.372] [info] [:] 模型管理：绑定项目 "Fixture" (4 个模型)
+[2026-11-17 16:02:54.373] [info] [:] 模型已加载: Detect (物体检测(自由矩形))
+[2026-11-17 16:02:54.374] [info] [:] 模型已打开(双击): Detect
+[2026-11-17 16:02:54.376] [info] [:] 数据集管理：绑定模型 "Detect"
+[2026-11-17 16:02:54.537] [warning] [:] 只读模式拒绝写操作：深度学习.数据标注
+DIALOG 请先登录管理账户，再执行修改操作。
+[2026-11-17 16:02:54.576] [warning] [:] 只读模式拒绝写操作：账户设置
+DIALOG 请先登录管理账户，再执行修改操作。
+[2026-11-17 16:02:54.595] [warning] [:] 只读模式拒绝写操作：系统设置
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 密码错误或管理账户不可用，请重试。
+[2026-11-17 16:02:54.685] [info] [:] Editing unlocked: superadmin
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Detect/images/one.png 有未保存的编辑或尚未完成的绘制。
+[2026-11-17 16:02:54.810] [warning] [:] 标注保存失败：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Detect/labels/one.json：无法创建标注目录
+[2026-11-17 16:02:54.852] [info] [:] 项目已加载: Fixture (4 个模型)
+[2026-11-17 16:02:54.856] [info] [:] 标注已保存：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-XYIllt/Fixture/Detect/labels/one.json
+[2026-11-17 16:02:54.856] [info] [:] Read-only guest session
+[2026-11-17 16:02:54.857] [info] [:] Editing locked; guest read-only mode restored
+[2026-11-17 16:02:54.876] [info] [:] Editing unlocked: superadmin
+DIALOG 当前密码不正确或数据库无法写入，原密码保持不变。
+DIALOG 新密码至少6位，且两次输入必须一致。
+DIALOG 管理账户密码已更新，下次登录请使用新密码。
+[2026-11-17 16:02:54.948] [info] [:] Read-only guest session
+[2026-11-17 16:02:54.950] [info] [:] Editing locked; guest read-only mode restored
+[2026-11-17 16:02:54.951] [info] [:] FuseVision application shutting down...
+PASS guest pages single account login logout and password
+[2026-11-17 16:02:54.975] [info] [:] Editing unlocked: superadmin
+</system-out>
+	</testcase>
+	<testcase name="startup-smoke" classname="startup-smoke" time="2.35243" status="run">
+		<properties/>
+		<system-out>[2026-11-17 16:02:55.160] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-debug/bin/Debug/startup-smoke/logs
+[2026-11-17 16:02:55.160] [info] [:] === Application started ===
+[2026-11-17 16:02:55.174] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-debug/bin/Debug/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 16:02:55.180] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 16:02:55.210] [info] [:] Read-only guest session
+[2026-11-17 16:02:55.210] [info] [:] FuseVision application starting...
+[2026-11-17 16:02:55.219] [info] [:] UI initialization completed successfully
+[2026-11-17 16:02:55.249] [info] [:] Screen count: 1
+[2026-11-17 16:02:55.249] [info] [:] Primary screen: 800x800
+[2026-11-17 16:02:55.249] [info] [:] Theme: Dark
+[2026-11-17 16:02:55.320] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-NnSebO/projects)
+[2026-11-17 16:02:57.010] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 16:02:57.246] [info] [:] All pages created successfully
+[2026-11-17 16:02:57.251] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 16:02:57.362] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 16:02:57.362] [info] [:] FuseVision application shutting down...
+PASS startup image codecs and isolated initialization
+</system-out>
+	</testcase>
+	<testcase name="current-issues-regression" classname="current-issues-regression" time="2.32661" status="run">
+		<properties/>
+		<system-out>PASS storage-config
+PASS ISS-011
+PASS ISS-012
+PASS ISS-013
+PASS ISS-014
+</system-out>
+	</testcase>
+</testsuite>

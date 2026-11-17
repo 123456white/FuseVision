@@ -74,3 +74,11 @@
 | EXEC | TC-017 | `storage\..+` | `[  PASSED  ] 1 test.` |
 | EXEC | TC-018 | `current-issues-regression` | `PASS storage-config` |
 | EXEC | TC-019 | `workflow-regression` | `PASS theme logs filters and reorder recovery` |
+
+| 用例ID | 功能/关系 | 真实测试位置 | 关键断言 | 证据/缺口 |
+|---|---|---|---|---|
+| TC-020 | F13/F17；交付依赖；ISS-017 | [startup smoke](../../src/main.cpp) | 系统PATH下PNG/JPEG/BMP/TIFF/WebP保存并重读尺寸，内存库和页面初始化；交付ZIP解压后复跑 | 插件传递DLL必须齐全；不代替真实大图性能 |
+
+| 类型 | 用例 | 执行测试（正则） | 必须输出 |
+|---|---|---|---|
+| EXEC | TC-020 | `startup-smoke` | `PASS startup image codecs and isolated initialization` |

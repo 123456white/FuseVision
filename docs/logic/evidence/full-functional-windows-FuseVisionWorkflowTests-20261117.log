@@ -1,0 +1,16 @@
+PASS annotation model undo/redo
+PASS widget load edit save reopen
+PASS JSON rotated and polygon round trip and failed replacement
+PASS theme logs filters and reorder recovery
+PASS category protection
+PASS model creation signals
+PASS export semantic baseline
+PASS external PNG edit
+PASS brush eraser fill polygon masks
+PASS paired import recovery
+PASS COCO sparse IDs empty labels RLE and quality
+PASS selected project and model deletion
+PASS guest denied handlers and login state
+PASS settings and actual log retention
+PASS integrated project model gallery editor reopen export
+PASS guest pages single account login logout and password

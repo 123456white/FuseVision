@@ -22,6 +22,7 @@
 | [ISS-012](#iss-012) 旋转框平移未移动旋转中心 | P1 | 已修复；新增自动回归通过 |
 | [ISS-013](#iss-013) 数据库路径配置未接入启动 | P1 | 已修复；新增自动回归通过 |
 | [ISS-014](#iss-014) 异常分类导入布局未接入图库 | P1 | 分类链路已接通；采用明确新模式 |
+| [ISS-017](#iss-017) 动态图像插件缺少运行依赖 | P1 | 已修复；五格式隔离启动测试通过 |
 | [ISS-016](#iss-016) 标注导航与页面销毁生命周期崩溃 | P1 | 已修复；Debug/Release自动回归通过 |
 | [ISS-015](#iss-015) 原生配置缺格式守卫、绝对引用与工作目录不一致 | P1 | 已修复；存储GTest及真实Widget回归通过 |
 
@@ -192,7 +193,7 @@
 
 **未完成或边界**：已有目标不合并或覆盖，重置回默认目录时沿用该目标自身账户；可见完整应用的设置→重启交互与真实ACL未人工验收。传统视觉两个路径仍只有持久化配置。
 
-**当前代码**：[main](../../src/main.cpp:106)；[DatabaseManager::initDatabase](../../src/core/DatabaseManager.cpp:21)；[SystemSettingsWidget::onSave](../../src/app/SystemSettingsWidget.cpp:265)。
+**当前代码**：[main](../../src/main.cpp:107)；[DatabaseManager::initDatabase](../../src/core/DatabaseManager.cpp:21)；[SystemSettingsWidget::onSave](../../src/app/SystemSettingsWidget.cpp:265)。
 
 <a id="iss-014"></a>
 ## ISS-014 异常分类导入布局未接入图库
@@ -232,6 +233,19 @@
 **未完成或边界**：自动Qt事件测试不代替完整可见桌面、高DPI与相机验收。
 
 **当前代码**：[AnnotationManagement::openImage](../../src/deeplearning/widgets/AnnotationManagement.cpp:107)；[AnnotationManagement::~AnnotationManagement](../../src/deeplearning/widgets/AnnotationManagement.cpp:65)。
+
+<a id="iss-017"></a>
+## ISS-017 动态图像插件缺少运行依赖
+
+**状态**：2026-11-17已修复；新增隔离编解码回归通过，P1。
+
+**当前实现/限制**：原部署仅复制Qt图像插件和JPEG库，TIFF/WebP/Jasper传递依赖未随应用部署。新增CMake脚本扫描已部署类型对应的vcpkg插件依赖，复制清单内依赖且拒绝未解析依赖，排除Windows系统库。脚本变更触发重新链接部署。
+
+**验证**：[新增编解码红阶段](../logic/evidence/full-functional-codecs-before-20261117.log)40/41、[运行日志](../logic/evidence/full-functional-codecs-red-runtime-20261117.log)明确TIFF失败；[修复后Release](../logic/evidence/full-functional-codecs-fixed-release-20261117.log)41/41。startup-smoke新增PNG/JPEG/BMP/TIFF/WebP真实写入/重读，交付ZIP解压后在系统PATH与无外部Qt插件路径下复跑。
+
+**未完成或边界**：Windows与MSVC系统运行库仍是目标环境要求；未验证全部第三方SDK或相机驱动。
+
+**当前代码**：[main](../../src/main.cpp:107)；[fusevision_deploy_runtime](../../cmake/DeployRuntime.cmake:15)。
 
 ## 待确认的产品决策与推荐
 

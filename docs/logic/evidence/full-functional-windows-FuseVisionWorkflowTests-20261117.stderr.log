@@ -1,0 +1,46 @@
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/Fixture/Seg/labels/a.png
+无法创建标注目录
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/Coverage/Samples/dataset_config.json
+拒绝访问。
+DIALOG 已有标注或未保存编辑，禁止重排类别编号。
+C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/Fixture/Seg/labels
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/export-coco/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/export-yolo
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG 成功 2 项，跳过 0 项，失败 0 项
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/coco-source/bad.json
+不安全的图像相对路径：../escape.png
+DIALOG 删除项目「DeleteB」
+项目目录：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/DeleteB
+项目文件：C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/DeleteB/project.fvproj
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 日志路径与级别已立即生效。
+数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+DIALOG 配置存储不可写，请检查权限后重试。
+DIALOG 日志路径与级别已立即生效。
+数据库及模块数据路径将在重启后生效；已有项目不会迁移。
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/Fixture/Seg/images/a.png 有未保存的编辑或尚未完成的绘制。
+DIALOG C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/integrated-export/annotations.json
+成功 1 项，跳过 0 项，失败 0 项
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 请先登录管理账户，再执行修改操作。
+DIALOG 密码错误或管理账户不可用，请重试。
+DIALOG 图像 C:/Users/21012/AppData/Local/Temp/FuseVisionWorkflowTests-gddCXR/Fixture/Detect/images/one.png 有未保存的编辑或尚未完成的绘制。
+DIALOG 当前密码不正确或数据库无法写入，原密码保持不变。
+DIALOG 新密码至少6位，且两次输入必须一致。
+DIALOG 管理账户密码已更新，下次登录请使用新密码。
+QTemporaryDir: Unable to remove "C:\\Users\\21012\\AppData\\Local\\Temp\\FuseVisionWorkflowTests-gddCXR" most likely due to the presence of read-only files.

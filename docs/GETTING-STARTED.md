@@ -183,7 +183,7 @@ ctest --preset windows-debug
 ctest --preset windows-release
 ```
 
-`startup-smoke` 使用 Qt offscreen 平台、内存 SQLite、临时项目目录和独立测试日志，验证默认用户、错误密码拒绝、权限初始化、登录对话框和主窗口各页面初始化后退出。
+`startup-smoke` 使用 Qt offscreen 平台、内存 SQLite、临时项目目录和独立测试日志，验证PNG/JPEG/BMP/TIFF/WebP编解码、默认用户、错误密码拒绝、权限初始化、登录对话框和主窗口各页面初始化后退出。
 测试不修改现有用户数据库。它覆盖启动与基础认证，不覆盖登录后的业务操作、相机采集、模型训练或第三方 SDK 的完整功能。
 Windows 测试会将 PATH 限制为系统目录并清空外部 Qt 插件路径，避免借用 Conda、Qt SDK 等开发环境中的运行库。
 构建和文档作业都通过后，delivery作业下载候选包，重验SHA256及隔离启动，再上传带提交SHA的Windows Release ZIP与校验文件。候选包不等于通过全部门禁的交付包。v*标签额外创建GitHub prerelease；分支验证不创建正式版本。没有远程服务部署目标，CD在本项目表示经门禁验证的桌面包交付。

@@ -1,0 +1,669 @@
+[2026-11-17 10:07:54.509] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:07:54.509] [info] [:] === Application started ===
+[2026-11-17 10:07:54.512] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:07:54.513] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:07:54.514] [info] [:] Read-only guest session
+[2026-11-17 10:07:54.514] [info] [:] FuseVision application starting...
+[2026-11-17 10:07:54.517] [info] [:] UI initialization completed successfully
+[2026-11-17 10:07:54.519] [info] [:] Screen count: 1
+[2026-11-17 10:07:54.519] [info] [:] Primary screen: 800x800
+[2026-11-17 10:07:54.519] [info] [:] Theme: Dark
+[2026-11-17 10:07:54.527] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-hKTajK/projects)
+[2026-11-17 10:07:54.691] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:07:54.715] [info] [:] All pages created successfully
+[2026-11-17 10:07:54.716] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:07:54.817] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:07:54.817] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:08:28.525] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:08:28.525] [info] [:] === Application started ===
+[2026-11-17 10:08:28.529] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:08:28.530] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:08:28.531] [info] [:] Read-only guest session
+[2026-11-17 10:08:28.531] [info] [:] FuseVision application starting...
+[2026-11-17 10:08:28.533] [info] [:] UI initialization completed successfully
+[2026-11-17 10:08:28.536] [info] [:] Screen count: 1
+[2026-11-17 10:08:28.536] [info] [:] Primary screen: 800x800
+[2026-11-17 10:08:28.536] [info] [:] Theme: Dark
+[2026-11-17 10:08:28.543] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-KCyhhQ/projects)
+[2026-11-17 10:08:28.704] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:08:28.727] [info] [:] All pages created successfully
+[2026-11-17 10:08:28.728] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:08:28.829] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:08:28.829] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:08:57.090] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:08:57.090] [info] [:] === Application started ===
+[2026-11-17 10:08:57.093] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:08:57.094] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:08:57.095] [info] [:] Read-only guest session
+[2026-11-17 10:08:57.095] [info] [:] FuseVision application starting...
+[2026-11-17 10:08:57.098] [info] [:] UI initialization completed successfully
+[2026-11-17 10:08:57.101] [info] [:] Screen count: 1
+[2026-11-17 10:08:57.101] [info] [:] Primary screen: 800x800
+[2026-11-17 10:08:57.101] [info] [:] Theme: Dark
+[2026-11-17 10:08:57.107] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-NqjPDt/projects)
+[2026-11-17 10:08:57.261] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:08:57.282] [info] [:] All pages created successfully
+[2026-11-17 10:08:57.283] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:08:57.385] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:08:57.385] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:09:11.339] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:09:11.339] [info] [:] === Application started ===
+[2026-11-17 10:09:11.343] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:09:11.344] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:09:11.345] [info] [:] Read-only guest session
+[2026-11-17 10:09:11.345] [info] [:] FuseVision application starting...
+[2026-11-17 10:09:11.348] [info] [:] UI initialization completed successfully
+[2026-11-17 10:09:11.351] [info] [:] Screen count: 1
+[2026-11-17 10:09:11.351] [info] [:] Primary screen: 800x800
+[2026-11-17 10:09:11.351] [info] [:] Theme: Dark
+[2026-11-17 10:09:11.358] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-RKJMWf/projects)
+[2026-11-17 10:09:11.536] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:09:11.564] [info] [:] All pages created successfully
+[2026-11-17 10:09:11.565] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:09:11.667] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:09:11.667] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:25:09.951] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:25:09.952] [info] [:] === Application started ===
+[2026-11-17 10:25:09.955] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:25:09.956] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:25:09.957] [info] [:] Read-only guest session
+[2026-11-17 10:25:09.957] [info] [:] FuseVision application starting...
+[2026-11-17 10:25:09.960] [info] [:] UI initialization completed successfully
+[2026-11-17 10:25:09.963] [info] [:] Screen count: 1
+[2026-11-17 10:25:09.963] [info] [:] Primary screen: 800x800
+[2026-11-17 10:25:09.963] [info] [:] Theme: Dark
+[2026-11-17 10:25:09.969] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-fgZTqQ/projects)
+[2026-11-17 10:25:10.136] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:25:10.159] [info] [:] All pages created successfully
+[2026-11-17 10:25:10.159] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:25:10.261] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:25:10.261] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:34:12.374] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:34:12.374] [info] [:] === Application started ===
+[2026-11-17 10:34:12.378] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:34:12.379] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:34:12.380] [info] [:] Read-only guest session
+[2026-11-17 10:34:12.380] [info] [:] FuseVision application starting...
+[2026-11-17 10:34:12.382] [info] [:] UI initialization completed successfully
+[2026-11-17 10:34:12.385] [info] [:] Screen count: 1
+[2026-11-17 10:34:12.385] [info] [:] Primary screen: 800x800
+[2026-11-17 10:34:12.385] [info] [:] Theme: Dark
+[2026-11-17 10:34:12.391] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-iaYCwL/projects)
+[2026-11-17 10:34:12.562] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:34:12.588] [info] [:] All pages created successfully
+[2026-11-17 10:34:12.589] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:34:12.690] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:34:12.690] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:37:02.054] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:37:02.054] [info] [:] === Application started ===
+[2026-11-17 10:37:02.058] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:37:02.059] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:37:02.060] [info] [:] Read-only guest session
+[2026-11-17 10:37:02.060] [info] [:] FuseVision application starting...
+[2026-11-17 10:37:02.063] [info] [:] UI initialization completed successfully
+[2026-11-17 10:37:02.066] [info] [:] Screen count: 1
+[2026-11-17 10:37:02.066] [info] [:] Primary screen: 800x800
+[2026-11-17 10:37:02.066] [info] [:] Theme: Dark
+[2026-11-17 10:37:02.073] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-IoBvno/projects)
+[2026-11-17 10:37:02.234] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:37:02.258] [info] [:] All pages created successfully
+[2026-11-17 10:37:02.259] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:37:02.360] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:37:02.360] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:43:19.769] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:43:19.769] [info] [:] === Application started ===
+[2026-11-17 10:43:19.773] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:43:19.774] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:43:19.774] [info] [:] Read-only guest session
+[2026-11-17 10:43:19.775] [info] [:] FuseVision application starting...
+[2026-11-17 10:43:19.777] [info] [:] UI initialization completed successfully
+[2026-11-17 10:43:19.779] [info] [:] Screen count: 1
+[2026-11-17 10:43:19.779] [info] [:] Primary screen: 800x800
+[2026-11-17 10:43:19.779] [info] [:] Theme: Dark
+[2026-11-17 10:43:19.785] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-yKDvAw/projects)
+[2026-11-17 10:43:19.948] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:43:19.974] [info] [:] All pages created successfully
+[2026-11-17 10:43:19.974] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:43:20.076] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:43:20.076] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:50:05.580] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:50:05.580] [info] [:] === Application started ===
+[2026-11-17 10:50:05.584] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:50:05.585] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:50:05.586] [info] [:] Read-only guest session
+[2026-11-17 10:50:05.586] [info] [:] FuseVision application starting...
+[2026-11-17 10:50:05.589] [info] [:] UI initialization completed successfully
+[2026-11-17 10:50:05.592] [info] [:] Screen count: 1
+[2026-11-17 10:50:05.592] [info] [:] Primary screen: 800x800
+[2026-11-17 10:50:05.592] [info] [:] Theme: Dark
+[2026-11-17 10:50:05.599] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-NBRqiy/projects)
+[2026-11-17 10:50:05.757] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:50:05.781] [info] [:] All pages created successfully
+[2026-11-17 10:50:05.782] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:50:05.884] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:50:05.884] [info] [:] FuseVision application shutting down...
+[2026-11-17 10:50:39.103] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 10:50:39.103] [info] [:] === Application started ===
+[2026-11-17 10:50:39.107] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 10:50:39.108] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:50:39.109] [info] [:] Read-only guest session
+[2026-11-17 10:50:39.109] [info] [:] FuseVision application starting...
+[2026-11-17 10:50:39.111] [info] [:] UI initialization completed successfully
+[2026-11-17 10:50:39.115] [info] [:] Screen count: 1
+[2026-11-17 10:50:39.115] [info] [:] Primary screen: 800x800
+[2026-11-17 10:50:39.115] [info] [:] Theme: Dark
+[2026-11-17 10:50:39.121] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-XxgEbH/projects)
+[2026-11-17 10:50:39.285] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 10:50:39.311] [info] [:] All pages created successfully
+[2026-11-17 10:50:39.311] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 10:50:39.413] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 10:50:39.413] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:03:12.085] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:03:12.086] [info] [:] === Application started ===
+[2026-11-17 11:03:12.089] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:03:12.090] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:03:12.091] [info] [:] Read-only guest session
+[2026-11-17 11:03:12.091] [info] [:] FuseVision application starting...
+[2026-11-17 11:03:12.094] [info] [:] UI initialization completed successfully
+[2026-11-17 11:03:12.097] [info] [:] Screen count: 1
+[2026-11-17 11:03:12.097] [info] [:] Primary screen: 800x800
+[2026-11-17 11:03:12.097] [info] [:] Theme: Dark
+[2026-11-17 11:03:12.103] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-bfBzsW/projects)
+[2026-11-17 11:03:12.265] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:03:12.289] [info] [:] All pages created successfully
+[2026-11-17 11:03:12.289] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:03:12.391] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:03:12.391] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:05:58.529] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:05:58.529] [info] [:] === Application started ===
+[2026-11-17 11:05:58.532] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:05:58.533] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:05:58.534] [info] [:] Read-only guest session
+[2026-11-17 11:05:58.534] [info] [:] FuseVision application starting...
+[2026-11-17 11:05:58.537] [info] [:] UI initialization completed successfully
+[2026-11-17 11:05:58.540] [info] [:] Screen count: 1
+[2026-11-17 11:05:58.540] [info] [:] Primary screen: 800x800
+[2026-11-17 11:05:58.540] [info] [:] Theme: Dark
+[2026-11-17 11:05:58.547] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-CYbidT/projects)
+[2026-11-17 11:05:58.699] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:05:58.724] [info] [:] All pages created successfully
+[2026-11-17 11:05:58.724] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:05:58.826] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:05:58.826] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:08:10.969] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:08:10.969] [info] [:] === Application started ===
+[2026-11-17 11:08:10.973] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:08:10.974] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:08:10.974] [info] [:] Read-only guest session
+[2026-11-17 11:08:10.975] [info] [:] FuseVision application starting...
+[2026-11-17 11:08:10.977] [info] [:] UI initialization completed successfully
+[2026-11-17 11:08:10.980] [info] [:] Screen count: 1
+[2026-11-17 11:08:10.980] [info] [:] Primary screen: 800x800
+[2026-11-17 11:08:10.980] [info] [:] Theme: Dark
+[2026-11-17 11:08:10.986] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-AKrsuP/projects)
+[2026-11-17 11:08:11.137] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:08:11.159] [info] [:] All pages created successfully
+[2026-11-17 11:08:11.160] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:08:11.261] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:08:11.261] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:09:12.738] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:09:12.738] [info] [:] === Application started ===
+[2026-11-17 11:09:12.741] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:09:12.743] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:09:12.743] [info] [:] Read-only guest session
+[2026-11-17 11:09:12.743] [info] [:] FuseVision application starting...
+[2026-11-17 11:09:12.746] [info] [:] UI initialization completed successfully
+[2026-11-17 11:09:12.749] [info] [:] Screen count: 1
+[2026-11-17 11:09:12.749] [info] [:] Primary screen: 800x800
+[2026-11-17 11:09:12.749] [info] [:] Theme: Dark
+[2026-11-17 11:09:12.755] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-BlgfVB/projects)
+[2026-11-17 11:09:12.916] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:09:12.940] [info] [:] All pages created successfully
+[2026-11-17 11:09:12.940] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:09:13.041] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:09:13.041] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:10:10.595] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:10:10.595] [info] [:] === Application started ===
+[2026-11-17 11:10:10.599] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:10:10.600] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:10:10.601] [info] [:] Read-only guest session
+[2026-11-17 11:10:10.601] [info] [:] FuseVision application starting...
+[2026-11-17 11:10:10.604] [info] [:] UI initialization completed successfully
+[2026-11-17 11:10:10.607] [info] [:] Screen count: 1
+[2026-11-17 11:10:10.607] [info] [:] Primary screen: 800x800
+[2026-11-17 11:10:10.607] [info] [:] Theme: Dark
+[2026-11-17 11:10:10.614] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-MbirmW/projects)
+[2026-11-17 11:10:10.757] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:10:10.780] [info] [:] All pages created successfully
+[2026-11-17 11:10:10.781] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:10:10.882] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:10:10.882] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:11:37.231] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:11:37.231] [info] [:] === Application started ===
+[2026-11-17 11:11:37.235] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:11:37.236] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:11:37.237] [info] [:] Read-only guest session
+[2026-11-17 11:11:37.237] [info] [:] FuseVision application starting...
+[2026-11-17 11:11:37.239] [info] [:] UI initialization completed successfully
+[2026-11-17 11:11:37.242] [info] [:] Screen count: 1
+[2026-11-17 11:11:37.242] [info] [:] Primary screen: 800x800
+[2026-11-17 11:11:37.242] [info] [:] Theme: Dark
+[2026-11-17 11:11:37.248] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-XOPOiR/projects)
+[2026-11-17 11:11:37.384] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:11:37.406] [info] [:] All pages created successfully
+[2026-11-17 11:11:37.406] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:11:37.508] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:11:37.508] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:12:24.615] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:12:24.615] [info] [:] === Application started ===
+[2026-11-17 11:12:24.619] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:12:24.620] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:12:24.620] [info] [:] Read-only guest session
+[2026-11-17 11:12:24.620] [info] [:] FuseVision application starting...
+[2026-11-17 11:12:24.623] [info] [:] UI initialization completed successfully
+[2026-11-17 11:12:24.625] [info] [:] Screen count: 1
+[2026-11-17 11:12:24.625] [info] [:] Primary screen: 800x800
+[2026-11-17 11:12:24.625] [info] [:] Theme: Dark
+[2026-11-17 11:12:24.632] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-KWxWCE/projects)
+[2026-11-17 11:12:24.772] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:12:24.793] [info] [:] All pages created successfully
+[2026-11-17 11:12:24.794] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:12:24.895] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:12:24.895] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:13:38.640] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:13:38.640] [info] [:] === Application started ===
+[2026-11-17 11:13:38.643] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:13:38.644] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:13:38.645] [info] [:] Read-only guest session
+[2026-11-17 11:13:38.645] [info] [:] FuseVision application starting...
+[2026-11-17 11:13:38.647] [info] [:] UI initialization completed successfully
+[2026-11-17 11:13:38.650] [info] [:] Screen count: 1
+[2026-11-17 11:13:38.650] [info] [:] Primary screen: 800x800
+[2026-11-17 11:13:38.650] [info] [:] Theme: Dark
+[2026-11-17 11:13:38.657] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-Hzuhqm/projects)
+[2026-11-17 11:13:38.798] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:13:38.820] [info] [:] All pages created successfully
+[2026-11-17 11:13:38.821] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:13:38.922] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:13:38.922] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:17:02.004] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:17:02.004] [info] [:] === Application started ===
+[2026-11-17 11:17:02.008] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:17:02.008] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:17:02.009] [info] [:] Read-only guest session
+[2026-11-17 11:17:02.009] [info] [:] FuseVision application starting...
+[2026-11-17 11:17:02.012] [info] [:] UI initialization completed successfully
+[2026-11-17 11:17:02.015] [info] [:] Screen count: 1
+[2026-11-17 11:17:02.015] [info] [:] Primary screen: 800x800
+[2026-11-17 11:17:02.015] [info] [:] Theme: Dark
+[2026-11-17 11:17:02.021] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-XBHhDm/projects)
+[2026-11-17 11:17:02.167] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:17:02.190] [info] [:] All pages created successfully
+[2026-11-17 11:17:02.190] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:17:02.291] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:17:02.291] [info] [:] FuseVision application shutting down...
+[2026-11-17 11:17:23.878] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 11:17:23.879] [info] [:] === Application started ===
+[2026-11-17 11:17:23.882] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 11:17:23.883] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:17:23.884] [info] [:] Read-only guest session
+[2026-11-17 11:17:23.884] [info] [:] FuseVision application starting...
+[2026-11-17 11:17:23.886] [info] [:] UI initialization completed successfully
+[2026-11-17 11:17:23.889] [info] [:] Screen count: 1
+[2026-11-17 11:17:23.889] [info] [:] Primary screen: 800x800
+[2026-11-17 11:17:23.889] [info] [:] Theme: Dark
+[2026-11-17 11:17:23.895] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-OAqsCW/projects)
+[2026-11-17 11:17:24.033] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 11:17:24.054] [info] [:] All pages created successfully
+[2026-11-17 11:17:24.055] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 11:17:24.156] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 11:17:24.156] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:07:44.535] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:07:44.536] [info] [:] === Application started ===
+[2026-11-17 14:07:44.539] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:07:44.540] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:07:44.541] [info] [:] Read-only guest session
+[2026-11-17 14:07:44.541] [info] [:] FuseVision application starting...
+[2026-11-17 14:07:44.543] [info] [:] UI initialization completed successfully
+[2026-11-17 14:07:44.546] [info] [:] Screen count: 1
+[2026-11-17 14:07:44.546] [info] [:] Primary screen: 800x800
+[2026-11-17 14:07:44.546] [info] [:] Theme: Dark
+[2026-11-17 14:07:44.553] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-wjIDUo/projects)
+[2026-11-17 14:07:44.694] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:07:44.717] [info] [:] All pages created successfully
+[2026-11-17 14:07:44.718] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:07:44.819] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:07:44.819] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:30:02.947] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:30:02.947] [info] [:] === Application started ===
+[2026-11-17 14:30:02.951] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:30:02.952] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:30:02.953] [info] [:] Read-only guest session
+[2026-11-17 14:30:02.953] [info] [:] FuseVision application starting...
+[2026-11-17 14:30:02.955] [info] [:] UI initialization completed successfully
+[2026-11-17 14:30:02.958] [info] [:] Screen count: 1
+[2026-11-17 14:30:02.958] [info] [:] Primary screen: 800x800
+[2026-11-17 14:30:02.958] [info] [:] Theme: Dark
+[2026-11-17 14:30:02.964] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-yjUWKC/projects)
+[2026-11-17 14:30:03.106] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:30:03.128] [info] [:] All pages created successfully
+[2026-11-17 14:30:03.128] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:30:03.229] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:30:03.229] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:34:23.650] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:34:23.650] [info] [:] === Application started ===
+[2026-11-17 14:34:23.654] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:34:23.655] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:34:23.656] [info] [:] Read-only guest session
+[2026-11-17 14:34:23.656] [info] [:] FuseVision application starting...
+[2026-11-17 14:34:23.658] [info] [:] UI initialization completed successfully
+[2026-11-17 14:34:23.662] [info] [:] Screen count: 1
+[2026-11-17 14:34:23.662] [info] [:] Primary screen: 800x800
+[2026-11-17 14:34:23.662] [info] [:] Theme: Dark
+[2026-11-17 14:34:23.669] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-KTgMsv/projects)
+[2026-11-17 14:34:23.809] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:34:23.830] [info] [:] All pages created successfully
+[2026-11-17 14:34:23.831] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:34:23.932] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:34:23.932] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:35:43.254] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:35:43.254] [info] [:] === Application started ===
+[2026-11-17 14:35:43.258] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:35:43.259] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:35:43.260] [info] [:] Read-only guest session
+[2026-11-17 14:35:43.260] [info] [:] FuseVision application starting...
+[2026-11-17 14:35:43.262] [info] [:] UI initialization completed successfully
+[2026-11-17 14:35:43.265] [info] [:] Screen count: 1
+[2026-11-17 14:35:43.265] [info] [:] Primary screen: 800x800
+[2026-11-17 14:35:43.265] [info] [:] Theme: Dark
+[2026-11-17 14:35:43.271] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-RdrRKq/projects)
+[2026-11-17 14:35:43.413] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:35:43.435] [info] [:] All pages created successfully
+[2026-11-17 14:35:43.436] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:35:43.538] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:35:43.538] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:40:34.257] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:40:34.257] [info] [:] === Application started ===
+[2026-11-17 14:40:34.260] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:40:34.261] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:40:34.262] [info] [:] Read-only guest session
+[2026-11-17 14:40:34.262] [info] [:] FuseVision application starting...
+[2026-11-17 14:40:34.264] [info] [:] UI initialization completed successfully
+[2026-11-17 14:40:34.267] [info] [:] Screen count: 1
+[2026-11-17 14:40:34.267] [info] [:] Primary screen: 800x800
+[2026-11-17 14:40:34.267] [info] [:] Theme: Dark
+[2026-11-17 14:40:34.273] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-GPivHx/projects)
+[2026-11-17 14:40:34.414] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:40:34.435] [info] [:] All pages created successfully
+[2026-11-17 14:40:34.436] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:40:34.537] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:40:34.537] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:41:26.397] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:41:26.397] [info] [:] === Application started ===
+[2026-11-17 14:41:26.401] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:41:26.402] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:41:26.403] [info] [:] Read-only guest session
+[2026-11-17 14:41:26.403] [info] [:] FuseVision application starting...
+[2026-11-17 14:41:26.405] [info] [:] UI initialization completed successfully
+[2026-11-17 14:41:26.409] [info] [:] Screen count: 1
+[2026-11-17 14:41:26.409] [info] [:] Primary screen: 800x800
+[2026-11-17 14:41:26.409] [info] [:] Theme: Dark
+[2026-11-17 14:41:26.415] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-AxsBFB/projects)
+[2026-11-17 14:41:26.555] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:41:26.579] [info] [:] All pages created successfully
+[2026-11-17 14:41:26.580] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:41:26.682] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:41:26.682] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:49:59.670] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:49:59.670] [info] [:] === Application started ===
+[2026-11-17 14:49:59.674] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:49:59.675] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:49:59.675] [info] [:] Read-only guest session
+[2026-11-17 14:49:59.676] [info] [:] FuseVision application starting...
+[2026-11-17 14:49:59.678] [info] [:] UI initialization completed successfully
+[2026-11-17 14:49:59.681] [info] [:] Screen count: 1
+[2026-11-17 14:49:59.681] [info] [:] Primary screen: 800x800
+[2026-11-17 14:49:59.681] [info] [:] Theme: Dark
+[2026-11-17 14:49:59.688] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-djayAD/projects)
+[2026-11-17 14:49:59.833] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:49:59.854] [info] [:] All pages created successfully
+[2026-11-17 14:49:59.855] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:49:59.956] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:49:59.956] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:54:08.339] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:54:08.339] [info] [:] === Application started ===
+[2026-11-17 14:54:08.342] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:54:08.343] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:54:08.344] [info] [:] Read-only guest session
+[2026-11-17 14:54:08.344] [info] [:] FuseVision application starting...
+[2026-11-17 14:54:08.346] [info] [:] UI initialization completed successfully
+[2026-11-17 14:54:08.349] [info] [:] Screen count: 1
+[2026-11-17 14:54:08.349] [info] [:] Primary screen: 800x800
+[2026-11-17 14:54:08.349] [info] [:] Theme: Dark
+[2026-11-17 14:54:08.355] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-MfyIns/projects)
+[2026-11-17 14:54:08.503] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:54:08.528] [info] [:] All pages created successfully
+[2026-11-17 14:54:08.529] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:54:08.630] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:54:08.630] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:54:51.334] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:54:51.334] [info] [:] === Application started ===
+[2026-11-17 14:54:51.338] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:54:51.339] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:54:51.340] [info] [:] Read-only guest session
+[2026-11-17 14:54:51.340] [info] [:] FuseVision application starting...
+[2026-11-17 14:54:51.342] [info] [:] UI initialization completed successfully
+[2026-11-17 14:54:51.346] [info] [:] Screen count: 1
+[2026-11-17 14:54:51.346] [info] [:] Primary screen: 800x800
+[2026-11-17 14:54:51.346] [info] [:] Theme: Dark
+[2026-11-17 14:54:51.352] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-QetEIP/projects)
+[2026-11-17 14:54:51.501] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:54:51.525] [info] [:] All pages created successfully
+[2026-11-17 14:54:51.526] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:54:51.627] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:54:51.627] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:56:01.870] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:56:01.871] [info] [:] === Application started ===
+[2026-11-17 14:56:01.874] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:56:01.875] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:56:01.876] [info] [:] Read-only guest session
+[2026-11-17 14:56:01.876] [info] [:] FuseVision application starting...
+[2026-11-17 14:56:01.878] [info] [:] UI initialization completed successfully
+[2026-11-17 14:56:01.881] [info] [:] Screen count: 1
+[2026-11-17 14:56:01.881] [info] [:] Primary screen: 800x800
+[2026-11-17 14:56:01.881] [info] [:] Theme: Dark
+[2026-11-17 14:56:01.887] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-PQAgfS/projects)
+[2026-11-17 14:56:02.028] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:56:02.049] [info] [:] All pages created successfully
+[2026-11-17 14:56:02.050] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:56:02.151] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:56:02.151] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:57:13.901] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:57:13.901] [info] [:] === Application started ===
+[2026-11-17 14:57:13.904] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:57:13.905] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:57:13.906] [info] [:] Read-only guest session
+[2026-11-17 14:57:13.906] [info] [:] FuseVision application starting...
+[2026-11-17 14:57:13.908] [info] [:] UI initialization completed successfully
+[2026-11-17 14:57:13.911] [info] [:] Screen count: 1
+[2026-11-17 14:57:13.911] [info] [:] Primary screen: 800x800
+[2026-11-17 14:57:13.911] [info] [:] Theme: Dark
+[2026-11-17 14:57:13.917] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-atHcnn/projects)
+[2026-11-17 14:57:14.055] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:57:14.078] [info] [:] All pages created successfully
+[2026-11-17 14:57:14.079] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:57:14.180] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:57:14.180] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:58:20.040] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:58:20.040] [info] [:] === Application started ===
+[2026-11-17 14:58:20.044] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:58:20.045] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:58:20.045] [info] [:] Read-only guest session
+[2026-11-17 14:58:20.045] [info] [:] FuseVision application starting...
+[2026-11-17 14:58:20.047] [info] [:] UI initialization completed successfully
+[2026-11-17 14:58:20.050] [info] [:] Screen count: 1
+[2026-11-17 14:58:20.050] [info] [:] Primary screen: 800x800
+[2026-11-17 14:58:20.050] [info] [:] Theme: Dark
+[2026-11-17 14:58:20.057] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-AWHOqJ/projects)
+[2026-11-17 14:58:20.202] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:58:20.223] [info] [:] All pages created successfully
+[2026-11-17 14:58:20.224] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:58:20.325] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:58:20.325] [info] [:] FuseVision application shutting down...
+[2026-11-17 14:59:39.127] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 14:59:39.127] [info] [:] === Application started ===
+[2026-11-17 14:59:39.130] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 14:59:39.131] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:59:39.132] [info] [:] Read-only guest session
+[2026-11-17 14:59:39.132] [info] [:] FuseVision application starting...
+[2026-11-17 14:59:39.134] [info] [:] UI initialization completed successfully
+[2026-11-17 14:59:39.137] [info] [:] Screen count: 1
+[2026-11-17 14:59:39.137] [info] [:] Primary screen: 800x800
+[2026-11-17 14:59:39.137] [info] [:] Theme: Dark
+[2026-11-17 14:59:39.143] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-VqbiLr/projects)
+[2026-11-17 14:59:39.280] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 14:59:39.301] [info] [:] All pages created successfully
+[2026-11-17 14:59:39.301] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 14:59:39.403] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 14:59:39.403] [info] [:] FuseVision application shutting down...
+[2026-11-17 15:00:59.876] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 15:00:59.876] [info] [:] === Application started ===
+[2026-11-17 15:00:59.879] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 15:00:59.880] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:00:59.881] [info] [:] Read-only guest session
+[2026-11-17 15:00:59.881] [info] [:] FuseVision application starting...
+[2026-11-17 15:00:59.883] [info] [:] UI initialization completed successfully
+[2026-11-17 15:00:59.887] [info] [:] Screen count: 1
+[2026-11-17 15:00:59.887] [info] [:] Primary screen: 800x800
+[2026-11-17 15:00:59.887] [info] [:] Theme: Dark
+[2026-11-17 15:00:59.893] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-SvJMRW/projects)
+[2026-11-17 15:01:00.037] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 15:01:00.057] [info] [:] All pages created successfully
+[2026-11-17 15:01:00.058] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:01:00.159] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 15:01:00.159] [info] [:] FuseVision application shutting down...
+[2026-11-17 15:27:47.220] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 15:27:47.220] [info] [:] === Application started ===
+[2026-11-17 15:27:47.224] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 15:27:47.225] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:27:47.226] [info] [:] Read-only guest session
+[2026-11-17 15:27:47.226] [info] [:] FuseVision application starting...
+[2026-11-17 15:27:47.228] [info] [:] UI initialization completed successfully
+[2026-11-17 15:27:47.231] [info] [:] Screen count: 1
+[2026-11-17 15:27:47.231] [info] [:] Primary screen: 800x800
+[2026-11-17 15:27:47.231] [info] [:] Theme: Dark
+[2026-11-17 15:27:47.237] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-GQyntR/projects)
+[2026-11-17 15:27:47.375] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 15:27:47.397] [info] [:] All pages created successfully
+[2026-11-17 15:27:47.397] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:27:47.498] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 15:27:47.499] [info] [:] FuseVision application shutting down...
+[2026-11-17 15:29:05.443] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 15:29:05.443] [info] [:] === Application started ===
+[2026-11-17 15:29:05.446] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 15:29:05.447] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:29:05.448] [info] [:] Read-only guest session
+[2026-11-17 15:29:05.448] [info] [:] FuseVision application starting...
+[2026-11-17 15:29:05.450] [info] [:] UI initialization completed successfully
+[2026-11-17 15:29:05.453] [info] [:] Screen count: 1
+[2026-11-17 15:29:05.453] [info] [:] Primary screen: 800x800
+[2026-11-17 15:29:05.453] [info] [:] Theme: Dark
+[2026-11-17 15:29:05.459] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-DKaecH/projects)
+[2026-11-17 15:29:05.598] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 15:29:05.619] [info] [:] All pages created successfully
+[2026-11-17 15:29:05.620] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:29:05.721] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 15:29:05.721] [info] [:] FuseVision application shutting down...
+[2026-11-17 15:47:14.269] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 15:47:14.269] [info] [:] === Application started ===
+[2026-11-17 15:47:14.273] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 15:47:14.274] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:47:14.275] [info] [:] Read-only guest session
+[2026-11-17 15:47:14.275] [info] [:] FuseVision application starting...
+[2026-11-17 15:47:14.277] [info] [:] UI initialization completed successfully
+[2026-11-17 15:47:14.280] [info] [:] Screen count: 1
+[2026-11-17 15:47:14.280] [info] [:] Primary screen: 800x800
+[2026-11-17 15:47:14.280] [info] [:] Theme: Dark
+[2026-11-17 15:47:14.286] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-pqKrGj/projects)
+[2026-11-17 15:47:14.429] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 15:47:14.450] [info] [:] All pages created successfully
+[2026-11-17 15:47:14.451] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:47:14.552] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 15:47:14.552] [info] [:] FuseVision application shutting down...
+[2026-11-17 15:49:43.973] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 15:49:43.973] [info] [:] === Application started ===
+[2026-11-17 15:49:43.977] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 15:49:43.977] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:49:43.978] [info] [:] Read-only guest session
+[2026-11-17 15:49:43.978] [info] [:] FuseVision application starting...
+[2026-11-17 15:49:43.981] [info] [:] UI initialization completed successfully
+[2026-11-17 15:49:43.984] [info] [:] Screen count: 1
+[2026-11-17 15:49:43.984] [info] [:] Primary screen: 800x800
+[2026-11-17 15:49:43.984] [info] [:] Theme: Dark
+[2026-11-17 15:49:43.990] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-PTahLs/projects)
+[2026-11-17 15:49:44.129] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 15:49:44.152] [info] [:] All pages created successfully
+[2026-11-17 15:49:44.152] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:49:44.254] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 15:49:44.254] [info] [:] FuseVision application shutting down...
+[2026-11-17 15:59:03.643] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 15:59:03.643] [info] [:] === Application started ===
+[2026-11-17 15:59:03.647] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 15:59:03.648] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 15:59:03.672] [error] [:] Startup smoke test failed: image codec tiff
+[2026-11-17 16:01:13.844] [info] [:] Logger initialized (daily rolling, append mode). Log directory: D:/project/FuseVision/out/build/windows-x64-release/bin/Release/startup-smoke/logs
+[2026-11-17 16:01:13.844] [info] [:] === Application started ===
+[2026-11-17 16:01:13.848] [warning] [:] [Qt] QFontDatabase: Cannot find font directory D:/project/FuseVision/out/build/windows-x64-release/bin/Release/lib/fonts.
+Note that Qt no longer ships fonts. Deploy some (from https://dejavu-fonts.github.io/ for example) or switch to fontconfig.
+[2026-11-17 16:01:13.849] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 16:01:13.875] [info] [:] Read-only guest session
+[2026-11-17 16:01:13.875] [info] [:] FuseVision application starting...
+[2026-11-17 16:01:13.876] [info] [:] UI initialization completed successfully
+[2026-11-17 16:01:13.880] [info] [:] Screen count: 1
+[2026-11-17 16:01:13.880] [info] [:] Primary screen: 800x800
+[2026-11-17 16:01:13.880] [info] [:] Theme: Dark
+[2026-11-17 16:01:13.886] [info] [:] 项目管理模块已初始化 (数据根: C:/Users/21012/AppData/Local/Temp/FuseVision-tPfyYi/projects)
+[2026-11-17 16:01:14.031] [info] [:] SystemSettingsWidget initialized
+[2026-11-17 16:01:14.054] [info] [:] All pages created successfully
+[2026-11-17 16:01:14.054] [warning] [:] [Qt] This plugin does not support propagateSizeHints()
+[2026-11-17 16:01:14.155] [info] [:] Startup smoke test completed successfully.
+[2026-11-17 16:01:14.155] [info] [:] FuseVision application shutting down...

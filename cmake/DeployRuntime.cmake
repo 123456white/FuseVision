@@ -68,6 +68,21 @@ function(fusevision_deploy_runtime)
         VERBATIM
     )
 
+    # Dynamic plugins also import TIFF/WebP/Jasper and their transitive DLLs.
+    get_filename_component(linker_dir "${CMAKE_LINKER}" DIRECTORY)
+    set_property(TARGET ${ARG_TARGET} APPEND PROPERTY LINK_DEPENDS
+        "${PROJECT_SOURCE_DIR}/cmake/DeployPluginDependencies.cmake")
+    add_custom_command(
+        TARGET ${ARG_TARGET} POST_BUILD
+        COMMAND ${CMAKE_COMMAND}
+            "-DRUNTIME_DIR=${OUT_DIR}"
+            "-DDEPENDENCY_DIR=${CMAKE_BINARY_DIR}/vcpkg_installed/${VCPKG_TARGET_TRIPLET}/$<IF:$<CONFIG:Debug>,debug/,>bin"
+            "-DDUMPBIN=${linker_dir}/dumpbin.exe"
+            -P "${PROJECT_SOURCE_DIR}/cmake/DeployPluginDependencies.cmake"
+        COMMENT "Deploy transitive Qt plugin dependencies"
+        VERBATIM
+    )
+
     # ── Halcon 运行时 DLL ───────────────────────────────────
     if(HALCON_FOUND)
         add_custom_command(

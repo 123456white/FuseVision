@@ -67,7 +67,7 @@ Doxygen使用`./scripts/build-docs.ps1 -DoxygenPath <doxygen.exe路径>`或CMake
 
 ## 2026-11-17 全功能关系回归与CI门禁
 
-当前CTest总数41：34个GoogleTest、6组既有业务/边界/启动回归，以及新增documentation-tools（32个Python工具断言，含6个CI工具测试）。Ninja Debug和Release均41/41通过；[追踪映射](../logic/TEST-TRACEABILITY.md#执行门禁映射)关联19个TC与24条输出核验。默认JUnit成功输出上限提高至1000000字节，避免后续业务分组断言被截断。门禁拒绝未映射追踪、缺失测试、失败/跳过、重复测试及缺少断言标记；不宣称覆盖率100%。
+当前CTest总数41：34个GoogleTest、6组既有业务/边界/启动回归，以及新增documentation-tools（32个Python工具断言，含6个CI工具测试）。Ninja Debug和Release均41/41通过；[追踪映射](../logic/TEST-TRACEABILITY.md#执行门禁映射)关联20个TC与25条输出核验。默认JUnit成功输出上限提高至1000000字节，避免后续业务分组断言被截断。门禁拒绝未映射追踪、缺失测试、失败/跳过、重复测试及缺少断言标记；不宣称覆盖率100%。
 
 新增additionalFunctions真实Widget测试覆盖主题持久化、日志文本转义/1000行保留/清空/折叠、无标注类别重排失败恢复及重试、图库筛选全选。ISS-016保留Debug两项崩溃与堆栈，修复导航目标引用失效与页面析构信号回调。隔离数据规则继续适用。
 
@@ -78,3 +78,5 @@ python -X utf8 scripts/ci/package_windows.py --archive out/delivery/FuseVision-W
 ```
 
 打包只选应用exe、运行DLL和三类Qt插件，不携带测试exe/GTest、账户、项目、配置、日志和恢复目录。SHA256校验及解压启动在临时目录执行，PATH仅系统目录，清空外部Qt插件路径，内存数据库。GitHub Actions同时检查Ninja Debug/Release及VS2022 Debug；文档可复用工作流检查镜像、引用与Mermaid。两项作业通过才交付版本化ZIP和校验文件；v*标签才发布prerelease。详见[CI/CD](../GETTING-STARTED.md#cicd)。
+
+补充交付故障回归TC-020：startup-smoke实际保存并重读PNG/JPEG/BMP/TIFF/WebP，修复前TIFF失败、补齐插件传递运行DLL后通过（ISS-017）。文档夹具的临时根使用resolve消除Windows runner的8.3路径别名；首轮远端26项文档测试的4失败2错误保留，修复不放宽越界断言。Windows原生平台直接执行native/workflow/current-issues三组均退出0，见[平台证据](../logic/evidence/full-functional-windows-platform-20261117.json)，仍不等于人工连续交互验收。

@@ -20,7 +20,8 @@ class DocumentationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name)
+        # Windows runners may provide TEMP through an 8.3 alias; use one canonical root.
+        self.root = Path(self.temp.name).resolve()
         self.put("AGENTS.md", "# Project\n")
         self.put("src/Sample.cpp", "void Sample::save() {}\n")
         self.put("docs/logic/CORE-FLOW.md", "# Core\n")

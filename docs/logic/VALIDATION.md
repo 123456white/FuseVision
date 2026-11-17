@@ -284,3 +284,9 @@ git diff --check
 [Visual Studio 2026 Debug日志](evidence/full-functional-vsdebug-20261117.log)、[JUnit](evidence/full-functional-vsdebug-junit-20261117.xml)与[门禁结果](evidence/full-functional-vsdebug-traceability-20261117.json)均通过41/41。本机Doxygen生成通过，见[日志](evidence/full-functional-doxygen-20261117.log)；[32项Python工具测试](evidence/full-functional-python-20261117.log)通过。仓库.gitattributes固定源码LF并保留历史证据原字节，避免跨机器检出改变保护摘要。
 
 远端CI/CD运行状态在完成后追加；本地结果不能代替远端成功。完整可见Windows连续操作、原生文件对话框、高DPI/触控板、大图性能及硬件仍需人工或对应设备补验。
+
+本轮继续发现并修复ISS-017：交付插件缺TIFF/WebP等传递DLL，五格式读写加入startup-smoke。见[编解码红阶段](evidence/full-functional-codecs-before-20261117.log)、[失败运行日志](evidence/full-functional-codecs-red-runtime-20261117.log)和[修复Release](evidence/full-functional-codecs-fixed-release-20261117.log)。新增TC-020后门禁为20个TC、25条映射。[Windows原生平台三组](evidence/full-functional-windows-platform-20261117.json)全部退出0，分别覆盖原生编辑事件、完整业务工作流及当前问题回归。
+
+首轮远端运行44042443238的[文档失败日志](evidence/full-functional-ci-first-docs-failure-20261117.log)记录26项中4失败2错误：TEMP短路径别名与规范路径比较误判，测试夹具已改为resolve，保留原越界断言。该轮取消以免在已失败门禁下继续消耗构建；不计为通过，待后续修复提交重新执行。
+
+补修后的最终本地证据：[Ninja Debug](evidence/full-functional-final-debug-20261117.log)、[Release](evidence/full-functional-final-release-20261117.log)、[VS2026 Debug](evidence/full-functional-final-vsdebug-20261117.log)各41/41通过；对应[Debug映射](evidence/full-functional-final-debug-traceability-20261117.json)、[Release映射](evidence/full-functional-final-release-traceability-20261117.json)、[VS映射](evidence/full-functional-final-vsdebug-traceability-20261117.json)均20个TC和25条核验。独立[Debug JUnit](evidence/full-functional-final-debug-junit-20261117.xml)、[Release JUnit](evidence/full-functional-final-release-junit-20261117.xml)、[VS JUnit](evidence/full-functional-final-vsdebug-junit-20261117.xml)保留完整断言输出。[最终本地交付包](evidence/full-functional-final-package-20261117.log)解压后五格式编解码与启动通过。此前final前的日志仅对应各自阶段。
